@@ -36,10 +36,11 @@
 
         <TextView
             android:id="@+id/timeCreated"
-            android:maxLines="2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/lb_action_text_size"
+            android:maxLines="2"
+            android:textAlignment="textStart"
 
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toStartOf="@id/guidelinea"
@@ -48,14 +49,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
-            />
+            app:layout_constraintVertical_bias="0.0" />
+
 
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:barrierDirection="bottom"></androidx.constraintlayout.widget.Barrier>
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="timeCreated,post_name"/>
 
 
         <ImageView
@@ -64,7 +67,7 @@
             android:layout_height="100dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@id/barrier2"
-            app:layout_constraintEnd_toStartOf="@id/guidelinea"
+            app:layout_constraintEnd_toStartOf="@id/body_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier" />
 
@@ -73,17 +76,23 @@
             android:id="@+id/body_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+
             android:text="miss"
+
+            app:layout_constraintStart_toEndOf="@id/thumb"
+            app:layout_constraintTop_toBottomOf="@id/barrier"
             app:layout_constraintBottom_toTopOf="@id/barrier2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guidelinea"
-            app:layout_constraintTop_toTopOf="@id/barrier" />
+
+
+   />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:barrierDirection="top" />
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="body_text,thumb" />
 
 
         <TextView
@@ -91,11 +100,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MIssing"
-            app:layout_constraintTop_toBottomOf="@id/barrier2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
- />
+            app:layout_constraintTop_toBottomOf="@id/barrier2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
