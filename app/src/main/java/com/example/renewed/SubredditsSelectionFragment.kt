@@ -30,6 +30,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        disposable = subsAndPostsVM.go(1).subscribe(
+            { Timber.d("----done fetching both ") },
+            { Timber.e("----error fetching is ${it.localizedMessage}") })
+
+
+
         super.onCreate(savedInstanceState)
 
         //here or in onresume?
@@ -126,9 +132,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 //SHOULD THIS BE WITH ONCREATE FUNCTION? SOMEWHERE ELSE?
 
 //TODO make sure you should be doing it here and if so where do I stop it so no bugs?
-                disposable = subsAndPostsVM.go(1).subscribe(
-                    { Timber.d("----done fetching both ") },
-                    { Timber.e("----error fetching is ${it.localizedMessage}") })
+         //       disposable = subsAndPostsVM.go(1).subscribe(
+           //         { Timber.d("----done fetching both ") },
+             //       { Timber.e("----error fetching is ${it.localizedMessage}") })
 
                 subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent)
 
