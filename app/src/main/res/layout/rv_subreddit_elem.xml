@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="visible"
+>
+
+    <ImageView
+        android:id="@+id/detail_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toBottomOf="@id/display_name"
+
+        app:layout_constraintEnd_toStartOf="@id/display_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+
+     />
+
+    <TextView
+        android:id="@+id/display_name"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+
+        android:maxLines="2"
+        android:ellipsize="end"
+      android:gravity="end"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/detail_image"
+
+        app:layout_constraintEnd_toStartOf="@id/time_last_accessed"
+        app:layout_constraintStart_toEndOf="@id/detail_image"
+        />
+
+
+    <TextView
+        android:id="@+id/time_last_accessed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/detail_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/display_name" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

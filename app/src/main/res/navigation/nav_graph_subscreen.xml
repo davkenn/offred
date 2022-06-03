@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_subscreen.xml"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/blankFragment">
+
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.example.renewed.PostFragment"
+        android:label="Post"/>
+<!--        tools:layout="@layout/post_view" -->
+
+
+
+
+    <fragment
+        android:id="@+id/subredditFragment"
+        android:name="com.example.renewed.SubredditFragment"
+        android:label="Subreddit"/>
+     <!--   tools:layout="@layout/sub_view"-->
+
+
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.example.renewed.BlankFragment"
+        android:label="Blank"/>
+<!--        tools:layout="@layout/blank_view"-->
+
+
+
+</navigation>
