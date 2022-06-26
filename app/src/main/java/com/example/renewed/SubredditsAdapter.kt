@@ -25,17 +25,10 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         RecyclerView.ViewHolder(elementBinding.root) {
 
         fun bind(sr: ViewStateT5, onClickFunction: (ViewStateT5) -> Unit){
-
-
             elementBinding.displayName.text = sr.displayName
             elementBinding.root.setOnClickListener {
 
-
-
                 onClickFunction.invoke(sr); //elementBinding.root.setBackgroundColor(Color.BLUE)
-
-
-
             }
 
             if (sr.displayName.length > 18) {

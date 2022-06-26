@@ -29,13 +29,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
 
+    private var selectedSubreddit: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         disposable = subsAndPostsVM.go(1).subscribe(
             { Timber.d("----done fetching both ") },
             { Timber.e("----error fetching is ${it.localizedMessage}") })
 
-
-
+        selectedSubreddit= savedInstanceState?.getString("SELECTED_SUB")
+ //   if (savedInstanceState==null) {
+   //      Timber.d("----called on first creation")
+     //   subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(selectedSubreddit))
+    //}
         super.onCreate(savedInstanceState)
 
         //here or in onresume?
@@ -43,22 +49,31 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     }
 
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putString("SELECTED_SUB", selectedSubreddit)
+        }
+        super.onSaveInstanceState(outState)
+    }
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         Timber.d("onViewCreated in home Fragment")
-
 
         val navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
 
-//TODO no need for this here right bc cascading delete?
         val adapter2 = PostsAdapter { x ->
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
 
         val adapter = SubredditsAdapter { x ->
+           //TODO fix this weird side effecty way
+            selectedSubreddit =x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
 
         }
@@ -76,14 +91,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 )
             }
 
-            //TODO here i can remove it by marking it unviewed do i need to double up depends on
-            //if it disappears and if i click again
-            //i can also change the way the back arrow looks here
             button2.setOnClickListener {
 
                 if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
                     Timber.e("ITS A SUB FRAG")
-                    //TODO this is a cheat clean this up
                     (navHostFragment.childFragmentManager.fragments.reversed()[0]
                             as SubredditFragment).setNotDisplayed()
                 }
@@ -93,14 +104,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
 
 
-
-            subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
-
-                { x ->
-
+        subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
+            { x ->
                     x.t5ListForRV?.let { adapter.submitList(it.vsT5) }
 
-                    adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
+                //    x.t3ListForRV?.let { adapter2.submitList(it.vsT3) }
+
+                   adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
 
                     x.latestEvent3?.let {
                         navHostFragment.navController.navigate(
@@ -113,41 +123,25 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                             bundleOf("key" to it.t5.name))}
                 },
 
-                { Timber.e("error fetching viewstate: ${it.localizedMessage}") })
-                .addTo(disposables)
+                { Timber.e("error fetching vs: ${it.localizedMessage}") }).addTo(disposables)
         }
-
-            //TODO in here add test to see if i want that button
-            //    subsAndPostsVM.viewState3.observeOn(AndroidSchedulers.mainThread()).subscribe{navHostFragment.navController.navigate(R.id.postFragment,
-            //      bundleOf("key" to it.t3.name))}
-
-
-            //subsAndPostsVM.viewState4.observeOn(AndroidSchedulers.mainThread())
-            //  .subscribe{navHostFragment.navController.navigate(R.id.subredditFragment,
-            // bundleOf("key" to it.t5.name))}}
 
 
             override fun onStart() {
                 super.onStart()
-//SHOULD THIS BE WITH ONCREATE FUNCTION? SOMEWHERE ELSE?
-
-//TODO make sure you should be doing it here and if so where do I stop it so no bugs?
-         //       disposable = subsAndPostsVM.go(1).subscribe(
-           //         { Timber.d("----done fetching both ") },
-             //       { Timber.e("----error fetching is ${it.localizedMessage}") })
-
-                subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent)
+                Timber.d("onStart in home Fragment")
+                subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(selectedSubreddit))
 
             }
 
             override fun onResume() {
+                Timber.d("onResume in home Fragment")
+                //subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent)
                 super.onResume()
-
             }
 
             override fun onPause() {
                 super.onPause()
-
             }
 
             override fun onDestroyView() {
@@ -161,7 +155,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 disposable?.dispose()
                 super.onDestroy()
             }
-
 
         }
 

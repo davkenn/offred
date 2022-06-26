@@ -46,28 +46,23 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private val inputEvents: PublishRelay<MyEvent> = PublishRelay.create()
 
-    val shared: Observable<MyViewState> = inputEvents.eventToResult().
-    replay(1).autoConnect(1)        { upstreamConnection -> upstreamConnection.addTo(disposables) }
-
-
-    val vs: Observable<FullViewState> = shared.combineResults()
-
     fun processInput(name: MyEvent) {
         inputEvents.accept(name)
     }
 
+    val vs: Observable<FullViewState> = inputEvents.
+                                        eventToResult()
+  //      .share()
+                                        .replay(1)
+                                        .autoConnect(1)
+                                                       {upstream -> upstream.addTo(disposables) }
+                                        .combineResults()
 
-    private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
 
-            return scan(FullViewState()) { state, event ->
-                when (event) {
-                    is MyViewState.T5ListForRV -> state.copy(t5ListForRV = event,latestEvent5 = null,latestEvent3 = null)
-                    is MyViewState.T3ListForRV -> state.copy(t3ListForRV = event,latestEvent5 = null,latestEvent3 = null)
-                    is MyViewState.T5ForViewing -> state.copy(latestEvent5= event,latestEvent3 = null)
-                    is MyViewState.T3ForViewing -> state.copy(latestEvent3 = event,latestEvent5 = null)
-                }
-//this makes it so cant click same view twice, but still can click on another then this one
-        }.distinctUntilChanged()}
+
+
+
+
 
 
     private fun Observable<MyEvent>.eventToResult(): Observable<MyViewState> {
@@ -77,19 +72,34 @@ class SubredditsAndPostsVM @Inject constructor(
                 o.ofType(MyEvent.ClickOnT5ViewEvent::class.java).onClickT5(),
                 o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
                 o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList()
-            )
-        }
+            ) }}
 
-    }
+
+    private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
+
+        return scan(FullViewState()) { state, event ->
+            when (event) {
+                is MyViewState.T5ListForRV -> state.copy(t5ListForRV = event,latestEvent5 = null,latestEvent3 = null)
+                is MyViewState.T3ListForRV -> state.copy(t3ListForRV = event,latestEvent5 = null,latestEvent3 = null)
+                is MyViewState.T5ForViewing -> state.copy(latestEvent5= event,latestEvent3 = null)
+                is MyViewState.T3ForViewing -> state.copy(latestEvent3 = event,latestEvent5 = null)
+            }
+//this makes it so cant click same view twice, but still can click on another then this one
+        }.distinctUntilChanged()}
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<MyViewState> {
 
-        return flatMap {
+        return Observable.merge(flatMap {
             repository.getSubreddits()
                 .subscribeOn(Schedulers.io())
                 .map { list -> list.map { it.toViewState() } }
                 .map { MyViewState.T5ListForRV(it) }
-        }
+        },
+
+        flatMapSingle{repository.getPosts(it.name?:"")
+            .subscribeOn(Schedulers.io())
+                .map { list -> list.map { x -> x.toViewState() }}
+                .map { x -> MyViewState.T3ListForRV(x) }})
 
     }
 
@@ -97,7 +107,6 @@ class SubredditsAndPostsVM @Inject constructor(
 
         return Observable.merge(
             flatMap{ _ -> Observable.just(MyViewState.T3ListForRV(null))},
-
 
             flatMap {
                 repository.updateSubreddits(it.srList)
@@ -107,16 +116,15 @@ class SubredditsAndPostsVM @Inject constructor(
             }.concatMap {
                     repository.getSubreddits().subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
-                        .map { MyViewState.T5ListForRV(it) as MyViewState }
-                }
-        )
+                        .map { MyViewState.T5ListForRV(it) as MyViewState }})
     }
 
 
 
     private fun Observable<MyEvent.ClickOnT3ViewEvent>.onClickT3(): Observable<MyViewState> {
 
-        return flatMapSingle{repository.getPost(it.name)        .subscribeOn(Schedulers.io())
+        return flatMapSingle{repository.getPost(it.name)
+            .subscribeOn(Schedulers.io())
             .map {  x -> MyViewState.T3ForViewing(x.toViewState())}   }
     }
 
@@ -141,7 +149,6 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
         override fun onCleared() {
-
             super.onCleared()
             disposables.dispose()
         }
