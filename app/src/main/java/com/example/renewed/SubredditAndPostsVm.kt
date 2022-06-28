@@ -26,7 +26,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
     //TODo you need to get rid of this
 
-    fun go(): Completable =
+    fun prefetch(): Completable =
 
 
         repository.deleteUninterestingSubreddits()
@@ -114,13 +114,15 @@ class SubredditsAndPostsVM @Inject constructor(
 
             flatMap {
                 repository.updateSubreddits(it.srList)
-                    .andThen(go())
+                    .andThen(prefetch())
                     .toObservable<Unit>()
                     .subscribeOn(Schedulers.io())
             }.concatMap {
-                    repository.getSubreddits().subscribeOn(Schedulers.io())
+                    repository.getSubreddits()
+                        .subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
                         .map { MyViewState.T5ListForRV(it) as MyViewState }})
+
     }
 
 

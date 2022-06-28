@@ -8,11 +8,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.renewed.*
 import com.example.renewed.models.MyEvent
 
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
-import com.jakewharton.rxbinding4.material.select
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -133,7 +131,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 super.onStart()
                 Timber.d("onStart in home Fragment")
 
-                disposable = subsAndPostsVM.go()
+                disposable = subsAndPostsVM.prefetch()
                     .concatWith{subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
                     selectedSubreddit))}.subscribe(
                     { Timber.d("----done fetching both ") },

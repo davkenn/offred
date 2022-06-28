@@ -84,8 +84,8 @@ class SubredditsAndPostsRepository(private val api : API,
                          .flatMapCompletable {  t5Dao.delete(it) }
                          .toObservable()
     }
-//TODO how do I keep saved cases out of here? does it override the saved prop? test by doing one saved one not
-    //TODO do the saved test from the last note
+
+    //TODO
     override fun updateSubreddits(srList: List<String>): Completable {
 
         return Observable.fromIterable(srList)
