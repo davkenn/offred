@@ -69,7 +69,8 @@ fun T3.toDbModel() : RoomT3 =
                 .atZone(ZoneId.of("America/Los_Angeles"))
                 .toLocalDateTime()
                 .format(DateTimeFormatter.ofPattern("MMMM dd, yyyy"))
-                .toString()
+                .toString(),
+        timeLastAccessed=timeLastAccessed
 
 
 

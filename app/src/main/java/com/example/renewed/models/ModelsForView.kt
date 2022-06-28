@@ -1,6 +1,7 @@
 package com.example.renewed.models
 
 import com.example.renewed.models.MyViewState
+import java.time.Instant
 
 //data class ViewStateT5(val displayName:String, val timeLastAccessed: String,val created_utc:String)
 
@@ -20,7 +21,9 @@ data class ViewStateT5(
     val thumbnail: String,
     val bannerImg: String,
     val subscribers: Int,
-    val created: String)
+    val created: String,
+    val timeLastAccessed: Instant
+)
 
 data class ViewStateT3(
     val name: String,

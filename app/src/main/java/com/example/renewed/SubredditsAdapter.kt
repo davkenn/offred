@@ -82,9 +82,7 @@ object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
     }
 
     override fun areContentsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
-        //TODO what to do here
-      //  return oldItem.timeLastAccessed == newItem.timeLastAccessed
-        return oldItem.subscribers == newItem.subscribers
+        return oldItem.timeLastAccessed == newItem.timeLastAccessed
 
 
 
