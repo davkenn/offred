@@ -25,8 +25,7 @@ interface T5DAO {
         @Query("SELECT * FROM RoomT5 WHERE RoomT5.name like :name")
         fun getSubreddit(name: String) : Single<RoomT5>
 
-        @Query("UPDATE RoomT5 SET isDisplayed = 0")
-        fun clearViewedStates(): Completable
+
 
         @Query("UPDATE RoomT5 SET isDisplayed = :isDisplayed,timeLastAccessed=:time," +
                 "totalViews=totalViews+:totalViewsIncrement WHERE RoomT5.name like :name" )
