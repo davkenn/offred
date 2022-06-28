@@ -58,7 +58,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
                                         .combineResults()
-        .publish ()
+        .replay(1)
         .autoConnect(1)
         {upstream -> upstream.addTo(disposables) }
 

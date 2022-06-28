@@ -12,6 +12,7 @@ import com.example.renewed.*
 import com.example.renewed.models.MyEvent
 
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
+import com.jakewharton.rxbinding4.material.select
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -33,14 +34,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        disposable = subsAndPostsVM.go(1).subscribe(
-            { Timber.d("----done fetching both ") },
-            { Timber.e("----error fetching is ${it.localizedMessage}") })
+//        disposable = subsAndPostsVM.go(1).subscribe(
+  //          { Timber.d("----done fetching both ") },
+   //         { Timber.e("----error fetching is ${it.localizedMessage}") })
 
         selectedSubreddit= savedInstanceState?.getString("SELECTED_SUB")
  //   if (savedInstanceState==null) {
    //      Timber.d("----called on first creation")
-     //   subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(selectedSubreddit))
+     // subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(selectedSubreddit))
     //}
         super.onCreate(savedInstanceState)
 
@@ -131,7 +132,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             override fun onStart() {
                 super.onStart()
                 Timber.d("onStart in home Fragment")
-                subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(selectedSubreddit))
+
+                disposable = subsAndPostsVM.go(1)
+                    .concatWith{subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
+                    selectedSubreddit))}.subscribe(
+                    { Timber.d("----done fetching both ") },
+                    { Timber.e("----error fetching is ${it.localizedMessage}") })
+
+
+         //       subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(selectedSubreddit))
 
             }
 
