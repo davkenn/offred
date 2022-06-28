@@ -16,11 +16,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
 import com.example.renewed.databinding.PostViewBinding
+import dagger.Binds
+import dagger.Module
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.components.SingletonComponent
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-
-
+import timber.log.Timber
+import javax.inject.Singleton
 
 
 @AndroidEntryPoint
@@ -58,44 +61,50 @@ class PostFragment : Fragment() {
         postsVM.setFullname(name).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe { x ->
 
+                postBinding!!.fullImg.visibility= GONE
 
-                            postBinding!!.postName.text = x.t3.displayName
-                            postBinding!!.timeCreated.text = x.t3.created +": "
-                            postBinding!!.bodyText.text = x.t3.selftext
-                            postBinding!!.url.text =  x.t3.url
+                postBinding!!.postName.text = x.t3.displayName
+                postBinding!!.timeCreated.text = x.t3.created + ": "
+                postBinding!!.bodyText.text = x.t3.selftext
+                postBinding!!.url.text = x.t3.url
 
 
+                if (x.t3.thumbnail.isNullOrBlank() || x.t3.thumbnail == "self")
+                    postBinding!!.thumb.visibility = GONE
+                else if (("i.redd.it" in x.t3.url)){
+                 postBinding!!.thumb.visibility = GONE
+                    postBinding!!.fullImg.visibility=VISIBLE
 
 
-                            if ((x.t3.url.startsWith("http")// && "com" in x.t3.url
+                    Glide.with(this).load(x.t3.url)
+                        .into(postBinding!!.fullImg)
+
+
+                }
+                else{
+                    postBinding!!.thumb.visibility = VISIBLE
+
+                    if (x.t3.thumbnail.equals("spoiler")) //rpg_gamers Expeditions
+                        postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
+                    if (x.t3.thumbnail.equals("nsfw"))
+                        postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
+
+                    Glide.with(this).load(x.t3.thumbnail)
+                        .apply( RequestOptions().override(100, 100))
+                        .placeholder(ColorDrawable(Color.BLACK))
+                        .error(ColorDrawable(Color.RED))
+                        .fallback(ColorDrawable(Color.YELLOW))
+                        .into(postBinding!!.thumb)
+
+                    }
+                    if ((x.t3.url.startsWith("http")// && "com" in x.t3.url
                                 && "reddit" !in x.t3.url  && "redd.it" !in x.t3.url) ||
                                    "reddit" in x.t3.url && "gallery" in x.t3.url ){
-                                postBinding!!.url.setOnClickListener {   val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(x.t3.url))
+                                postBinding!!.url.setOnClickListener {
+                                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(x.t3.url))
                                     startActivity(browserIntent)}
                             }
 
-
-                            if (x.t3.thumbnail.isNullOrBlank() || x.t3.thumbnail.equals("self") )
-            //TODO do i need to set this all over the place?
-                                postBinding!!.thumb.visibility = GONE
-                            else if (x.t3.thumbnail.equals("spoiler")) //rpg_gamers Expeditions
-                                 postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
-                            else if (x.t3.thumbnail.equals("nsfw")){
-                                postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
-
-                                //TODO what to do here?
-                            }
-                            else
-                            {
-                                postBinding!!.thumb.visibility = VISIBLE
-                                //TODO set an onclicklistener here to load full image
-                                Glide.with(this).load(x.t3.thumbnail)
-                                  .apply( RequestOptions().override(100, 100))
-                                  .placeholder(ColorDrawable(Color.BLACK))
-                                  .error(ColorDrawable(Color.RED))
-                                  .fallback(ColorDrawable(Color.YELLOW))
-                                  .into(postBinding!!.thumb)
                             }
                         }
     }
-}

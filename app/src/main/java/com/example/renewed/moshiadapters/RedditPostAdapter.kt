@@ -17,9 +17,9 @@ class RedditPostAdapter {
         val jsonObj = reader.readJsonValue() as Map<String, Any>
         val type = jsonObj["kind"]
         val data = when (type) {
-            "t5" -> t5Adapter.fromJsonValue(jsonObj["data"])!! as T5
-            "t3" -> t3Adapter.fromJsonValue(jsonObj["data"])!! as T3
-            "t1" -> t1Adapter.fromJsonValue(jsonObj["data"])!! as T1
+            "t5" -> t5Adapter.fromJsonValue(jsonObj["data"])!!
+            "t3" -> t3Adapter.fromJsonValue(jsonObj["data"])!!
+            "t1" -> t1Adapter.fromJsonValue(jsonObj["data"])!!
             else -> throw IllegalStateException("unexpected type: $type")
         }
 

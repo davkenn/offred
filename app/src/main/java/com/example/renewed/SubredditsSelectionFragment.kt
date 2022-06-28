@@ -31,23 +31,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var selectedSubreddit: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-//        disposable = subsAndPostsVM.go(1).subscribe(
-  //          { Timber.d("----done fetching both ") },
-   //         { Timber.e("----error fetching is ${it.localizedMessage}") })
-
         selectedSubreddit= savedInstanceState?.getString("SELECTED_SUB")
- //   if (savedInstanceState==null) {
-   //      Timber.d("----called on first creation")
-     // subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(selectedSubreddit))
-    //}
         super.onCreate(savedInstanceState)
-
-        //here or in onresume?
-
-
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
@@ -138,7 +124,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     { Timber.e("----error fetching is ${it.localizedMessage}") })
 
 
-         //       subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(selectedSubreddit))
 
             }
 
