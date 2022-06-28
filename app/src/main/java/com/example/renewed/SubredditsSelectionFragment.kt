@@ -133,7 +133,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 super.onStart()
                 Timber.d("onStart in home Fragment")
 
-                disposable = subsAndPostsVM.go(1)
+                disposable = subsAndPostsVM.go()
                     .concatWith{subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
                     selectedSubreddit))}.subscribe(
                     { Timber.d("----done fetching both ") },

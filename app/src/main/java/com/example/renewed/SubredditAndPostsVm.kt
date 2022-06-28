@@ -26,10 +26,10 @@ class SubredditsAndPostsVM @Inject constructor(
 
     //TODo you need to get rid of this
 
-    fun go(clearViewState: Int= 0): Completable =
+    fun go(): Completable =
 
 
-        repository.deleteUninterestingSubreddits(clearViewState)
+        repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
                                 .doOnComplete { Timber.d("---- done fetching subreddits") }
                                 .doOnError { Timber.e("----error getting subreddits " +
@@ -91,19 +91,21 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<MyViewState> {
 
-        return Observable.merge(flatMap {
-            repository.getSubreddits()
-                .subscribeOn(Schedulers.io())
-                .map { list -> list.map { it.toViewState() } }
-                .map { MyViewState.T5ListForRV(it) }
-        },
+         return        Observable.merge(flatMap {
+                    repository.getSubreddits()
+                        .subscribeOn(Schedulers.io())
+                        .map { list -> list.map { it.toViewState() } }
+                        .map { MyViewState.T5ListForRV(it) }
+                },
 
-        flatMapSingle{repository.getPosts(it.name?:"")
-            .subscribeOn(Schedulers.io())
-                .map { list -> list.map { x -> x.toViewState() }}
-                .map { x -> MyViewState.T3ListForRV(x) }})
+                    flatMapSingle {
+                        repository.getPosts(it.name ?: "")
+                            .subscribeOn(Schedulers.io())
+                            .map { list -> list.map { x -> x.toViewState() } }
+                            .map { x -> MyViewState.T3ListForRV(x) }
+                    })
 
-    }
+            }
 
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<MyViewState> {
 

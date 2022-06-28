@@ -72,8 +72,7 @@ class SubredditsAndPostsRepository(private val api : API,
     }
 
     //TODO if this is seven it will repeat the ones with the lowest vals, fix the alg or leave it at thre
-    override fun deleteUninterestingSubreddits(clearViewState: Int): Completable{
-  //      if (clearViewState == 1 ) t5Dao.clearViewedStates().subscribeOn(Schedulers.io()).subscribe()
+    override fun deleteUninterestingSubreddits(): Completable{
 
         return  t5Dao.deleteUnwanted(3)
     }

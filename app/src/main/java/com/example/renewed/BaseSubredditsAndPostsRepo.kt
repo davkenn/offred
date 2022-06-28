@@ -18,7 +18,7 @@ interface BaseSubredditsAndPostsRepo {
     fun getPosts(name: String): Single<List<RoomT3>>
 
     fun deleteSubreddits(names: List<String>): Observable<Unit>
-    fun deleteUninterestingSubreddits(clearViewState: Int = 0): Completable
+    fun deleteUninterestingSubreddits(): Completable
 
     fun updateSubreddits(srList: List<String>): Completable
 
