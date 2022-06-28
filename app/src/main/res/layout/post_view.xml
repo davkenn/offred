@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:text="yes thats it"
 
-            android:textAlignment="textStart"
+            android:textAlignment="textEnd"
             app:layout_constraintBaseline_toBaselineOf="@+id/timeCreated"
 
             app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,8 @@
             android:id="@+id/timeCreated"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/lb_action_text_size"
+            android:layout_marginLeft="16sp"
+            android:layout_marginBottom="16sp"
             android:maxLines="2"
             android:textAlignment="textStart"
 
@@ -48,8 +49,7 @@
 
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
-            app:layout_constraintVertical_bias="0.0" />
+            />
 
 
 
