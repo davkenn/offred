@@ -106,7 +106,5 @@ class SubredditsAndPostsRepository(private val api : API,
         return t5Dao.setViewedState(name, setDisplayed.compareTo(false),
                                     Instant.now(),setDisplayed.compareTo(false))
     }
-    override fun clearViewed(): Completable {
-        return t5Dao.clearViewedStates()
-    }
+
 }

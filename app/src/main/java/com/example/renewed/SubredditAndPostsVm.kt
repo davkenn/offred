@@ -53,12 +53,12 @@ class SubredditsAndPostsVM @Inject constructor(
     val vs: Observable<FullViewState> = inputEvents.
                                         eventToResult()
   //      .share()
-                                        .replay(1)
-                                        .autoConnect(1)
-                                                       {upstream -> upstream.addTo(disposables) }
+
+
                                         .combineResults()
-
-
+        .publish ()
+        .autoConnect(1)
+        {upstream -> upstream.addTo(disposables) }
 
 
 
