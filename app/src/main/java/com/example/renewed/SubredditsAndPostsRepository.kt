@@ -68,7 +68,6 @@ class SubredditsAndPostsRepository(private val api : API,
 
 
     override fun getPosts(name:String) : Single<List<RoomT3>> {
-        if (name == "") return Single.just(emptyList())
       return  t3Dao.getPosts(name)
     }
 

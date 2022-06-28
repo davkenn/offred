@@ -48,10 +48,12 @@ class SubredditsAndPostsVM @Inject constructor(
 
     fun processInput(name: MyEvent) {
         inputEvents.accept(name)
+
     }
 
-    val vs: Observable<FullViewState> = inputEvents.
-                                        eventToResult()
+    val vs: Observable<FullViewState> = inputEvents
+        .doOnNext { Timber.d("---- Event is ${it.toString()}")}
+        . eventToResult()
   //      .share()
 
 
