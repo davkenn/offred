@@ -5,7 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17083333333333334" />
         <entry key="app/src/main/res/layout/fragment_subreddits_selection.xml" value="0.19166666666666668" />
-        <entry key="app/src/main/res/layout/post_view.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/post_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/rv_post_elem.xml" value="0.18489583333333334" />
         <entry key="app/src/main/res/layout/rv_subreddit_elem.xml" value="0.18489583333333334" />
         <entry key="app/src/main/res/layout/sub_view.xml" value="0.18489583333333334" />

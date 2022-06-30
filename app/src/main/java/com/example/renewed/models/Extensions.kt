@@ -70,6 +70,7 @@ fun T3.toDbModel() : RoomT3 =
                 .toLocalDateTime()
                 .format(DateTimeFormatter.ofPattern("d MM uu hma"))
                 .toString(),
+
         timeLastAccessed=timeLastAccessed
 
 
@@ -104,7 +105,7 @@ fun RoomT3.toViewState(): ViewStateT3 =
             .atZone(ZoneId.of("America/Los_Angeles"))
             .toLocalDateTime()
             .format(DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a"))
-            .toString()
+            .toString().replaceFirst(" ","\n")
 
      )
 

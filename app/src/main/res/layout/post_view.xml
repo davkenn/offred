@@ -26,8 +26,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="yes thats it"
-
-            android:textAlignment="textEnd"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textAlignment="center"
             app:layout_constraintBaseline_toBaselineOf="@+id/timeCreated"
 
             app:layout_constraintEnd_toEndOf="parent"
