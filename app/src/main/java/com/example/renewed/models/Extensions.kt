@@ -44,19 +44,6 @@ fun T3.toDbModel() : RoomT3 =
 
 
 
-/**fun RoomT5.toViewState(): ViewStateT5 =
-    ViewStateT5(
-        displayName = this.displayName,
-        timeLastAccessed= timeLastAccessed.atZone(ZoneId.systemDefault())
-                        .toLocalDateTime()
-                        .format(DateTimeFormatter.ofPattern("EE MMM dd, yy h:mm a"))
-                        .toString(),
-        created_utc= created_utc.atZone(ZoneId.systemDefault())
-                    .toLocalDateTime()
-                    .format(DateTimeFormatter.ofPattern("EE MMMM dd, yyyy hh:mm a"))
-                    .toString()
-        )
-**/
     fun RoomT5.toViewState(): ViewStateT5 =
         ViewStateT5(
             name = name,
@@ -66,7 +53,6 @@ fun T3.toDbModel() : RoomT3 =
             bannerImg=banner_img,
             subscribers = subscribers,
            created= created_utc.instantToDateString(),
-
         timeLastAccessed=timeLastAccessed
 
 )
@@ -84,15 +70,14 @@ fun RoomT3.toViewState(): ViewStateT3 =
 
      )
 
-private fun Instant.instantToDateString() =
-    this.atZone(ZoneId.of("America/Los_Angeles"))
-    .toLocalDateTime()
-    .format(DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a"))
-    .toString()
+    private fun Instant.instantToDateString() =
+        this.atZone(ZoneId.of("America/Los_Angeles"))
+        .toLocalDateTime()
+        .format(DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a"))
+        .toString()
 
 
-fun combineDescriptions(description : String="", publicDescription : String="") : String {
-
+    private fun combineDescriptions(description : String="", publicDescription : String="") : String {
         return buildString {
                                     append(description)
                                         append("\n\n")

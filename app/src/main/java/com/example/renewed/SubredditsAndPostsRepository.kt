@@ -85,7 +85,6 @@ class SubredditsAndPostsRepository(private val api : API,
                          .toObservable()
     }
 
-    //TODO
     override fun updateSubreddits(srList: List<String>): Completable {
 
         return Observable.fromIterable(srList)
