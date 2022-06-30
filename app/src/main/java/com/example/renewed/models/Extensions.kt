@@ -65,33 +65,12 @@ fun T3.toDbModel() : RoomT3 =
             thumbnail =thumbnail,
             bannerImg=banner_img,
             subscribers = subscribers,
-           created= created_utc
-                .atZone(ZoneId.of("America/Los_Angeles"))
-                .toLocalDateTime()
-                .format(DateTimeFormatter.ofPattern("d MM uu hma"))
-                .toString(),
+           created= created_utc.instantToDateString(),
 
         timeLastAccessed=timeLastAccessed
 
-
-
-        //TODO it mixes up nov 22 and nov 23
-        //            https://www.reddit.com/r/thatHappened/
 )
 
-/**fun RoomT5.toViewState(): ViewStateT5 =
-ViewStateT5(
-displayName = this.displayName,
-timeLastAccessed= timeLastAccessed.atZone(ZoneId.systemDefault())
-.toLocalDateTime()
-.format(DateTimeFormatter.ofPattern("EE MMM dd, yy h:mm a"))
-.toString(),
-created_utc= created_utc.atZone(ZoneId.systemDefault())
-.toLocalDateTime()
-.format(DateTimeFormatter.ofPattern("EE MMMM dd, yyyy hh:mm a"))
-.toString()
-)
- **/
 fun RoomT3.toViewState(): ViewStateT3 =
 
     ViewStateT3(
@@ -100,16 +79,16 @@ fun RoomT3.toViewState(): ViewStateT3 =
         selftext = this.selftext,
         thumbnail = this.thumbnail,
         url = this.url,
-        //TODO maybe make this n days ago
         created= this.created_utc
-            .atZone(ZoneId.of("America/Los_Angeles"))
-            .toLocalDateTime()
-            .format(DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a"))
-            .toString().replaceFirst(" ","\n")
+            .instantToDateString().replaceFirst(" ","\n")
 
      )
 
-
+private fun Instant.instantToDateString() =
+    this.atZone(ZoneId.of("America/Los_Angeles"))
+    .toLocalDateTime()
+    .format(DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a"))
+    .toString()
 
 
 fun combineDescriptions(description : String="", publicDescription : String="") : String {
