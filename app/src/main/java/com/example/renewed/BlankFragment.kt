@@ -14,7 +14,7 @@ class BlankFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //TODO do i need to empty these out in ondestroyview?
+
         lateinit var view: View
         view = inflater.inflate(R.layout.blank_view, container, false)
         return view

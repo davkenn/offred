@@ -30,7 +30,7 @@ class DescriptionAdapter {
             .replace("\n"," ")
             .replace("&gt;", " ")
             .replace("&lt;", " ")
-            .replace("&amp;", "and")
+            .replace("&amp;", " and ")
 
             .filter{it !in "|-[]()#*"}
             .replace("\\s+", " ")

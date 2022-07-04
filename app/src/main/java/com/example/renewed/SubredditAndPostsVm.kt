@@ -104,7 +104,6 @@ class SubredditsAndPostsVM @Inject constructor(
                             .map { list -> list.map { x -> x.toViewState() } }
                             .map { x -> MyViewState.T3ListForRV(x) }
                     })
-             .startWith(prefetch())
 
             }
 
@@ -122,7 +121,7 @@ class SubredditsAndPostsVM @Inject constructor(
                     repository.getSubreddits()
                         .subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
-                        .map { MyViewState.T5ListForRV(it)  }})
+                        .map { MyViewState.T5ListForRV(it) as MyViewState }})
 
     }
 
