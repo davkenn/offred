@@ -23,9 +23,7 @@ class SubredditsAndPostsRepository(private val api : API,
 
     override fun prefetchPosts(): Completable {
 
-        //TODO im not doing anything to limit these here...do they delete when parents do?
-        //SEEMS TO BE RISING AND RISING AND THEN JUST KINDA CHILLIN at 810 for 80
-        //also seems to go up 10 each for every one clicked on so that is good
+
         return t5Dao.getSubredditIDsNeedingPosts()
             .flattenAsObservable { it }
             .flatMap( { api.getPostsInDateRange(it).toObservable() }, 6)
