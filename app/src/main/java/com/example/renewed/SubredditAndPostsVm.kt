@@ -112,16 +112,20 @@ class SubredditsAndPostsVM @Inject constructor(
         return Observable.merge(
             flatMap{ _ -> Observable.just(MyViewState.T3ListForRV(null))},
 
-            flatMap {
-                repository.updateSubreddits(it.srList)
-                    .andThen(prefetch())
-                    .toObservable<Unit>()
-                    .subscribeOn(Schedulers.io())
-            }.concatMap {
+         //   flatMap {
+           //     repository.updateSubreddits(it.srList)
+             //       .andThen(prefetch())
+               //     .toObservable<Unit>()
+                 //   .subscribeOn(Schedulers.io())
+
+            flatMap{
                     repository.getSubreddits()
                         .subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
-                        .map { MyViewState.T5ListForRV(it)  }})
+                        .map { MyViewState.T5ListForRV(it)  }
+                        .startWith( repository.updateSubreddits(it.srList).andThen(prefetch()))
+                        .subscribeOn(Schedulers.io())})
+
 
     }
 
