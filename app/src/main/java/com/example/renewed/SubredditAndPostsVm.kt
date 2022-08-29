@@ -54,7 +54,7 @@ class SubredditsAndPostsVM @Inject constructor(
     val vs: Observable<FullViewState> = inputEvents
         .doOnNext { Timber.d("---- Event is ${it.toString()}")}
         . eventToResult()
-  //      .share()
+   //     .share()
 
 
                                         .combineResults()
@@ -110,26 +110,19 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<MyViewState> {
 
         return Observable.merge(
-            flatMap{ _ -> Observable.just(MyViewState.T3ListForRV(null))},
 
-         //   flatMap {
-           //     repository.updateSubreddits(it.srList)
-             //       .andThen(prefetch())
-               //     .toObservable<Unit>()
-                 //   .subscribeOn(Schedulers.io())
+            flatMap{ _ -> Observable.just(MyViewState.T3ListForRV(null))},
 
             flatMap{
                     repository.getSubreddits()
-                        .subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
                         .map { MyViewState.T5ListForRV(it)  }
                         .startWith( repository.updateSubreddits(it.srList).andThen(prefetch()))
-                        .subscribeOn(Schedulers.io())})
+                        .subscribeOn(Schedulers.io())}
+        )
 
 
     }
-
-
 
     private fun Observable<MyEvent.ClickOnT3ViewEvent>.onClickT3(): Observable<MyViewState> {
 
@@ -140,8 +133,6 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
 
-//this returns two events
-        //so then do i wanna just return ViewState for all these
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
     return Observable.merge(
                 flatMapSingle {

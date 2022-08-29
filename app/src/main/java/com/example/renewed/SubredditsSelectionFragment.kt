@@ -117,13 +117,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 super.onStart()
                 Timber.d("onStart in home Fragment")
 
+              //  subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
+                //    selectedSubreddit))
                 disposable = subsAndPostsVM.prefetch()
-                    .concatWith{subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
+                   .concatWith{subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
                     selectedSubreddit))}.subscribe(
                     { Timber.d("----done fetching both ") },
                     { Timber.e("----error fetching is ${it.localizedMessage}") })
 
-
+//TODO selectedSubreddit gets out od date and do I need it?
 
             }
 
