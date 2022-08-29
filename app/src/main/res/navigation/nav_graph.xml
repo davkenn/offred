@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_subreddits_selection" />
     <fragment
         android:id="@id/feed"
-        android:name="com.example.renewed.SubredditsSelectionFragment"
+        android:name="com.example.renewed.FavoritesListFragment"
         android:label="Select some subreddits"
-        tools:layout="@layout/fragment_subreddits_selection" />
+        tools:layout="@layout/fragment_favorites_list" />
 
 </navigation>
