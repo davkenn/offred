@@ -121,7 +121,7 @@ class SubredditsAndPostsVM @Inject constructor(
                     repository.getSubreddits()
                         .subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
-                        .map { MyViewState.T5ListForRV(it) as MyViewState }})
+                        .map { MyViewState.T5ListForRV(it)  }})
 
     }
 

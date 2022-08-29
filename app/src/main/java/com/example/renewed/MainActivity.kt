@@ -8,6 +8,11 @@ import androidx.fragment.app.activityViewModels
 
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -18,8 +23,7 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
-
-
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
 
 
@@ -28,20 +32,22 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         Timber.d("onCreate called")
 
 
-
-
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
 
-
-
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNavigationView.setupWithNavController(navController)
 
 
 
 
     }
+
+  //  override fun onSupportNavigateUp(): Boolean {
+    //    return navController.navigateUp(appBarConfiguration)
+   // }
 //
   //  override fun onRestart() {
     //    super.onRestart()
