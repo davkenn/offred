@@ -18,7 +18,7 @@ android {
         //for desugaring
         multiDexEnabled=true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.renewed.CustomTestRunner"
         minSdkVersion 29
         targetSdkVersion 30
     }

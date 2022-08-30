@@ -18,7 +18,7 @@ abstract class TestRepoModule {
         components = [SingletonComponent::class],
         replaces = [RepoModule::class]
     )
-    abstract class TestTasksRepositoryModule {
+    object TestTasksRepositoryModule {
 
         @Singleton
         @Provides
@@ -27,3 +27,5 @@ abstract class TestRepoModule {
 
     }
 }
+
+
