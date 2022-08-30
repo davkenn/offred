@@ -57,7 +57,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
 
         val adapter = SubredditsAdapter { x ->
-           //TODO fix this weird side effecty way
+
             selectedSubreddit =x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
 
@@ -81,9 +81,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                 if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
                     Timber.e("ITS A SUB FRAG")
+
                     (navHostFragment.childFragmentManager.fragments.reversed()[0]
-                            as SubredditFragment).setNotDisplayed()
-                }
+                            as SubredditFragment).setNotDisplayed() }
 
                 navHostFragment.navController.navigateUp()
             }
@@ -94,9 +94,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             { x ->
                     x.t5ListForRV?.let { adapter.submitList(it.vsT5) }
 
-                //    x.t3ListForRV?.let { adapter2.submitList(it.vsT3) }
-
-                   adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
+                    adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
 
                     x.latestEvent3?.let {
                         navHostFragment.navController.navigate(
@@ -125,7 +123,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     { Timber.d("----done fetching both ") },
                     { Timber.e("----error fetching is ${it.localizedMessage}") })
 
-//TODO selectedSubreddit gets out od date and do I need it?
+
 
             }
 

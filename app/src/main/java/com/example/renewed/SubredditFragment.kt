@@ -47,7 +47,6 @@ class SubredditFragment : Fragment() {
                 subBinding!!.apply{
                     subname.text = x.t5.displayName
                     subBinding!!.timeCreated.append(x.t5.created)
-                    //TODO will this make probs if append again?
                     subBinding!!.subscribers.append(x.t5.subscribers.toString())
                     subBinding!!.description.text = x.t5.description
                 }

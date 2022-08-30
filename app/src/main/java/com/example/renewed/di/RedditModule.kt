@@ -13,6 +13,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,11 +28,6 @@ object RedditModule {
     //private const val BASE_URL = "https://www.reddit.com/api/v1/authorize?"
     private const val BASE_URL = "https://www.reddit.com/"
 
-
-    @Singleton
-    @Provides
-    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO) :
-            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api,t5Dao,t3Dao)
 
 
 
@@ -93,5 +89,17 @@ object RedditModule {
         retrofit.create(LoginAPI::class.java)
 }
 
+@Module
+@InstallIn(SingletonComponent::class)
+object RepoModule {
 
+    @Singleton
+    @Provides
+    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO) :
+            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api,t5Dao,t3Dao)
+
+
+
+
+}
 

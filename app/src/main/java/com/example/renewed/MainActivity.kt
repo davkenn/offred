@@ -23,7 +23,7 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private lateinit var navController: NavController
-    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var bottomNavigationView: BottomNavigationView
 
 
 
@@ -37,17 +37,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navController = navHostFragment.navController
 
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavigationView.setupWithNavController(navController)
 
-
-
-
     }
-
-  //  override fun onSupportNavigateUp(): Boolean {
-    //    return navController.navigateUp(appBarConfiguration)
-   // }
 //
   //  override fun onRestart() {
     //    super.onRestart()
