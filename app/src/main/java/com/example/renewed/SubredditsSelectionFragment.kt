@@ -77,7 +77,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 )
             }
 
-            button2.setOnClickListener {
+
+            backButton.setOnClickListener {
 
                 if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
                     Timber.e("ITS A SUB FRAG")
@@ -114,7 +115,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             override fun onStart() {
                 super.onStart()
                 Timber.d("onStart in home Fragment")
-
+//TODO should this be here or in the viewmodel?
               //  subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
                 //    selectedSubreddit))
                 disposable = subsAndPostsVM.prefetch()
