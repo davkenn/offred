@@ -8,7 +8,11 @@
     <fragment
         android:id="@+id/postFragment"
         android:name="com.example.renewed.PostFragment"
-        android:label="Post"/>
+        android:label="Post">
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </fragment>
 <!--        tools:layout="@layout/post_view" -->
 
 
@@ -17,7 +21,11 @@
     <fragment
         android:id="@+id/subredditFragment"
         android:name="com.example.renewed.SubredditFragment"
-        android:label="Subreddit"/>
+        android:label="Subreddit">
+        <argument
+            android:name="key"
+            app:argType="string" />
+    </fragment>
      <!--   tools:layout="@layout/sub_view"-->
 
 

@@ -5,12 +5,11 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavArgument
 import androidx.navigation.fragment.NavHostFragment
-
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.renewed.models.MyEvent
-
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
+import com.example.renewed.models.MyEvent
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -77,14 +76,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 )
             }
 
-
             backButton.setOnClickListener {
                 var name: String? = null
                 if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
                     name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
                             as SubredditFragment).getName()
-
-
                 }
 
                 subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name,false))
@@ -108,20 +104,30 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
             { x ->
-                    x.t5ListForRV?.let { adapter.submitList(it.vsT5) }
+                x.t5ListForRV?.let { adapter.submitList(it.vsT5) }
 
-                    adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
+                adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
+//TODO i fixed the bug by making it so you cant add again
+                x.latestEvent3?.let { t3 ->
+                    //       if (navHostFragment.childFragmentManager.findFragmentByTag())
 
-                    x.latestEvent3?.let {
-                        navHostFragment.navController.navigate(
-                                     R.id.postFragment, bundleOf("key" to it.t3.name)) }
+                    var b = navHostFragment.navController.backQueue
+                        .any { t3.t3.name == it.arguments?.get("key") ?: "NOMATCH" }
+                    if (!b) navHostFragment.navController.navigate(
+                            R.id.postFragment, bundleOf("key" to t3.t3.name))
 
-                    x.latestEvent5?.let {
+                }
+                x.latestEvent5?.let { t5 ->
+                                var b = navHostFragment.navController.backQueue
+                                .any { t5.t5.name == it.arguments?.get("key") ?: "NOMATCH" }
+                           if (!b) navHostFragment.navController.navigate(
+                                  R.id.subredditFragment, bundleOf("key" to t5.t5.name))
 
-                        navHostFragment.navController.navigate(
-                                     R.id.subredditFragment, bundleOf("key" to it.t5.name))}
-
-                    if (x.eventProcessed) navHostFragment.navController.navigateUp()
+                //    navHostFragment.navController.navigate(
+                  //                           R.id.subredditFragment, bundleOf("key" to t5.t5.name))
+                }
+//TODO WHAT THE HECK
+                       if (x.eventProcessed) navHostFragment.navController.navigateUp()
                 },
 
                 { Timber.e("error fetching vs: ${it.localizedMessage}") }).addTo(disposables)
@@ -131,7 +137,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             override fun onStart() {
                 super.onStart()
                 Timber.d("onStart in home Fragment")
-//TODO should this be here or in the viewmodel?
+
                 disposable = subsAndPostsVM.prefetch()
                    .concatWith{subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
                     selectedSubreddit))}.subscribe(
