@@ -91,7 +91,7 @@ class SubredditsAndPostsVM @Inject constructor(
                 is MyViewState.T3ListForRV -> state.copy(t3ListForRV = event,latestEvent5 = null,latestEvent3 = null)
                 is MyViewState.T5ForViewing -> state.copy(latestEvent5= event,latestEvent3 = null)
                 is MyViewState.T3ForViewing -> state.copy(latestEvent3 = event,latestEvent5 = null)
-                is MyViewState.NavigateBack -> state.copy(latestEvent3 = null, latestEvent5 = null, )
+                is MyViewState.NavigateBack -> state.copy(latestEvent3 = null, latestEvent5 = null )
             }
 //this makes it so cant click same view twice, but still can click on another then this one
         }.distinctUntilChanged()}
@@ -143,26 +143,12 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
     private fun Observable<MyEvent.BackOrDeletePressedEvent>.onBackDeletePressed(): Observable<MyViewState> {
-/**
-        flatMap {
+
+        return flatMap {
             repository.updateSubreddits(
-                if (it.name == null) listOf() else listOf(it.name),
-                false, it.shouldDelete)
-                .subscribeOn(Schedulers.io())}.andThen(Observable.just(MyViewState.NavigateBack))
-        //TODO this is assuming that I don't want to do anything here on return
-        //then id have to repeat the back logic for delete
-
-**/
-
-        return flatMapCompletable {
-            repository.updateSubreddits(
-                if (it.name == null) listOf() else listOf(it.name), false, it.shouldDelete)
-                .subscribeOn(Schedulers.io())}.
-                andThen(Observable.just(MyViewState.NavigateBack))
-                //TODO this is assuming that I don't want to do anything here on return
-                //then id have to repeat the back logic for delete
-
-
+                if (it.name==null) listOf() else listOf(it.name), false, it.shouldDelete)
+                .subscribeOn(Schedulers.io())
+                .andThen(Observable.just(MyViewState.NavigateBack))}
         }
 
 
