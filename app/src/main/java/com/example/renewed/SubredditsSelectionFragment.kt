@@ -90,6 +90,17 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name,false))
           //      navHostFragment.navController.navigateUp()
             }
+            saveButton.setOnClickListener {
+                var name: String? = null
+                if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
+                    name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
+                            as SubredditFragment).getName()
+                }
+//TODO this doesn't even work with posts yet
+
+                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name,true))
+                //      navHostFragment.navController.navigateUp()
+            }
         }
 
 

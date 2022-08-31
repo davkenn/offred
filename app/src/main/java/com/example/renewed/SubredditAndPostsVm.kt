@@ -75,7 +75,7 @@ class SubredditsAndPostsVM @Inject constructor(
             a.mergeAll()
         } }
 
-
+//TODO now there is a bug in if I add multiple of same
 
     private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
 
@@ -127,7 +127,8 @@ class SubredditsAndPostsVM @Inject constructor(
                     repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
                         .map { MyViewState.T5ListForRV(it)  }//.subscribeOn(Schedulers.io())
-                        .startWith(repository.updateSubreddits(it.srList,false)
+                        .startWith(repository.updateSubreddits(it.srList, isDisplayed = false,shouldDelete = false,
+                            shouldUpdateDisplayed =false )
                                               .andThen(prefetch()).subscribeOn(Schedulers.io()))
                      }
         )
@@ -147,7 +148,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
         return flatMap {
             repository.updateSubreddits(if (it.name==null) listOf() else listOf(it.name),
-                                                                    true, it.shouldDelete)
+                                                                    false, it.shouldDelete,true)
                 .subscribeOn(Schedulers.io())
                 .andThen(Observable.just(MyViewState.NavigateBack))}
 
@@ -157,7 +158,7 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
     return Observable.merge(
                 flatMapSingle {
-                    repository.updateSubreddits(listOf(it.name),true)
+                    repository.updateSubreddits(listOf(it.name),true,false,true)
                         .subscribeOn(Schedulers.io())
                         .andThen(repository.getPosts(it.name)
                               .map { list -> list.map { x -> x.toViewState() }}
