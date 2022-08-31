@@ -96,6 +96,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
                             as SubredditFragment).getName()
                 }
+
+
 //TODO this doesn't even work with posts yet
 
                 subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name,true))
@@ -115,6 +117,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                                      R.id.postFragment, bundleOf("key" to it.t3.name)) }
 
                     x.latestEvent5?.let {
+
                         navHostFragment.navController.navigate(
                                      R.id.subredditFragment, bundleOf("key" to it.t5.name))}
 
