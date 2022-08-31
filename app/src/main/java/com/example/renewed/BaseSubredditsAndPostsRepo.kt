@@ -22,7 +22,4 @@ interface BaseSubredditsAndPostsRepo {
 
     fun updateSubreddits(srList: List<String>,isDisplayed: Boolean,shouldDelete:Boolean =false): Completable
 
-//    fun setViewed(name: String,isDisplayed:Boolean): Completable
-
-
 }

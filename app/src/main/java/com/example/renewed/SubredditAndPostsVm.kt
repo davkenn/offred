@@ -122,14 +122,14 @@ class SubredditsAndPostsVM @Inject constructor(
         return Observable.merge(
 
             flatMap{ _ -> Observable.just(MyViewState.T3ListForRV(null))},
-//TODO i had got this down to one subscribeon now its back up to 2
+//TODO i had got this down to one subscribeon now its back up to 2 when added to observable and changed rx method
             flatMap{
-                    repository.getSubreddits().toObservable()
+                    repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
-                        .map { MyViewState.T5ListForRV(it)  }.subscribeOn(Schedulers.io())
-                        .startWith( repository
-                                    .updateSubreddits(it.srList,false).andThen(prefetch())
-                            .subscribeOn(Schedulers.io()))
+                        .map { MyViewState.T5ListForRV(it)  }//.subscribeOn(Schedulers.io())
+                        .startWith( repository.updateSubreddits(it.srList,false)
+                                              .andThen(prefetch()).subscribeOn(Schedulers.io()))
+
                      }
         )
 
