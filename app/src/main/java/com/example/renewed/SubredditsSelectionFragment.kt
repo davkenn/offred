@@ -2,6 +2,8 @@ package com.example.renewed
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.IdRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -10,6 +12,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
 import com.example.renewed.models.MyEvent
+import com.example.renewed.models.MyViewState
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -42,13 +46,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
 
+    private lateinit var navHostFragment: NavHostFragment
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Timber.d("onViewCreated in home Fragment")
 
-        val navHostFragment = childFragmentManager
+        navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
 
         val adapter2 = PostsAdapter { x ->
@@ -110,31 +116,41 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 //TODO i fixed the bug by making it so you cant add again
                 x.latestEvent3?.let { t3 ->
                     //       if (navHostFragment.childFragmentManager.findFragmentByTag())
-
-                    var b = navHostFragment.navController.backQueue
-                        .any { t3.t3.name == it.arguments?.get("key") ?: "NOMATCH" }
-                    if (!b) navHostFragment.navController.navigate(
-                            R.id.postFragment, bundleOf("key" to t3.t3.name))
+                    sdfs(R.id.postFragment,t3, binding)
 
                 }
                 x.latestEvent5?.let { t5 ->
-                                var b = navHostFragment.navController.backQueue
-                                .any { t5.t5.name == it.arguments?.get("key") ?: "NOMATCH" }
-                           if (!b) navHostFragment.navController.navigate(
-                                  R.id.subredditFragment, bundleOf("key" to t5.t5.name))
+                    sdfs(R.id.subredditFragment,t5, binding)
 
-                //    navHostFragment.navController.navigate(
-                  //                           R.id.subredditFragment, bundleOf("key" to t5.t5.name))
+
                 }
 //TODO WHAT THE HECK
                        if (x.eventProcessed) navHostFragment.navController.navigateUp()
+
                 },
 
                 { Timber.e("error fetching vs: ${it.localizedMessage}") }).addTo(disposables)
         }
 
+    private fun sdfs(
+        @IdRes resId: Int,
+        t5: MyViewState,
+        binding: FragmentSubredditsSelectionBinding,
 
-            override fun onStart() {
+        ) {
+
+        var b = navHostFragment.navController.backQueue
+            .any { t5.name == it.arguments?.get("key") ?: "NOMATCH" }
+        if (!b) navHostFragment.navController.navigate(resId, bundleOf("key" to t5.name)
+        )
+        else Snackbar.make(
+            binding.root, "Already in Stack. Press back to find it...",
+            Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
+
+    override fun onStart() {
                 super.onStart()
                 Timber.d("onStart in home Fragment")
 
@@ -170,5 +186,22 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 super.onDestroy()
             }
 
-        }
+     fun displayAlertDialog() =
+
+            AlertDialog.Builder(requireContext().applicationContext).
+                setTitle("AlertDialogExample")
+                .setMessage("Do you want to close this application ?")
+                .setCancelable(false)
+
+                .create()
+                .show()
+
+    }
+
+
+
+
+
+
+
 

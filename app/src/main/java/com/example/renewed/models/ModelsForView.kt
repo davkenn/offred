@@ -14,14 +14,14 @@ data class FullViewState(
 
 )
 
-sealed class MyViewState{
+sealed class MyViewState(val name: String?){
     //TODO make it on a superclass and consolidate?
 
-    data class T5ListForRV(val vsT5: List<ViewStateT5>): MyViewState()
-    data class T3ListForRV(val vsT3: List<ViewStateT3>?): MyViewState()
-    data class T3ForViewing(val t3 : ViewStateT3): MyViewState()
-    data class T5ForViewing(val t5 : ViewStateT5): MyViewState()
-    object NavigateBack:MyViewState()
+    data class T5ListForRV(val vsT5: List<ViewStateT5>): MyViewState("T3List")
+    data class T3ListForRV(val vsT3: List<ViewStateT3>?): MyViewState("T5List")
+    data class T3ForViewing(val t3 : ViewStateT3): MyViewState(t3.name)
+    data class T5ForViewing(val t5 : ViewStateT5): MyViewState(t5.name)
+    object NavigateBack:MyViewState("NavigateEvent")
 
 }
 data class ViewStateT5(
