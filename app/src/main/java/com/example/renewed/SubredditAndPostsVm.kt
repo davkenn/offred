@@ -127,9 +127,8 @@ class SubredditsAndPostsVM @Inject constructor(
                     repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
                         .map { list -> list.map { it.toViewState() } }
                         .map { MyViewState.T5ListForRV(it)  }//.subscribeOn(Schedulers.io())
-                        .startWith( repository.updateSubreddits(it.srList,false)
+                        .startWith(repository.updateSubreddits(it.srList,false)
                                               .andThen(prefetch()).subscribeOn(Schedulers.io()))
-
                      }
         )
 
@@ -148,7 +147,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
         return flatMap {
             repository.updateSubreddits(if (it.name==null) listOf() else listOf(it.name),
-                                                                    false, it.shouldDelete)
+                                                                    true, it.shouldDelete)
                 .subscribeOn(Schedulers.io())
                 .andThen(Observable.just(MyViewState.NavigateBack))}
 

@@ -81,16 +81,24 @@ class SubredditsAndPostsRepository(private val api : API,
     }
 
 
-    override fun updateSubreddits(srList: List<String>, isDisplayed:Boolean, shouldDelete:Boolean,): Completable {
+
+
+    override fun updateSubreddits(srList: List<String>, changeDisplayedStatus:Boolean,
+                                                            shouldDelete:Boolean,): Completable {
+
 
         return Observable.fromIterable(srList)
-                         .flatMapSingle {t5Dao.getSubreddit(it)}
-                             .doOnError { Timber.e("----error fetching subreddit for update ") }
-                         .concatMapCompletable {
-                             if (shouldDelete) t5Dao.delete(it.displayName)
-                             else t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
-                                 totalViews= if (isDisplayed) it.totalViews else it.totalViews+1,
-                                 isDisplayed = isDisplayed.compareTo(false))) }
+                    .flatMapSingle {t5Dao.getSubreddit(it)}
+                    .doOnError { Timber.e("----error fetching subreddit for update ") }
+                //if this shoulddelete didnt short circuit my logic would be gone
+
+            //TODO also what if i delete in main view but still in normnal view.would need observsasble
+
+                    .concatMapCompletable {
+                        if (shouldDelete) t5Dao.delete(it.displayName)
+                        else t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
+                            totalViews= if (changeDisplayedStatus) it.totalViews else it.totalViews+1,
+                                isDisplayed =  if (changeDisplayedStatus)  (it.isDisplayed+1) %2 else it.isDisplayed)) }
 
     }
 
