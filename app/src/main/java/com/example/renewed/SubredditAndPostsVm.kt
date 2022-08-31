@@ -13,6 +13,7 @@ import io.reactivex.rxjava3.core.Observable
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.kotlin.mergeAll
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import timber.log.Timber
@@ -69,16 +70,20 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
     private fun Observable<MyEvent>.eventToResult(): Observable<MyViewState> {
-        return publish { o ->
-            Observable.merge(
-                //TODO should I rename this to explain what caused it
 
+        return publish { o ->
+            var a = Observable.fromArray(
                 o.ofType(MyEvent.ScreenLoadEvent::class.java).onScreenLoad(),
                 o.ofType(MyEvent.ClickOnT5ViewEvent::class.java).onClickT5(),
-        //       o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
+                o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
                 o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
                 o.ofType(MyEvent.BackOrDeletePressedEvent::class.java).onBackDeletePressed()
-            ) }}
+            )
+            a.mergeAll()
+        }
+
+
+    }
 
 
 
@@ -149,6 +154,7 @@ class SubredditsAndPostsVM @Inject constructor(
                 if (it.name==null) listOf() else listOf(it.name), false, it.shouldDelete)
                 .subscribeOn(Schedulers.io())
                 .andThen(Observable.just(MyViewState.NavigateBack))}
+
         }
 
 
