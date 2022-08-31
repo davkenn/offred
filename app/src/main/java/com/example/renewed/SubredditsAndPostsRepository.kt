@@ -83,23 +83,21 @@ class SubredditsAndPostsRepository(private val api : API,
                          .toObservable()
     }
 
-    override fun updateSubreddits(srList: List<String>): Completable {
+
+    override fun updateSubreddits(srList: List<String>,willDisplay:Boolean,shouldDelete:Boolean,): Completable {
 
         return Observable.fromIterable(srList)
                          .flatMapSingle {t5Dao.getSubreddit(it)}
                              .doOnError { Timber.e("----error fetching subreddit for update ") }
                          .concatMapCompletable {
-                             t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
-                                                        totalViews= it.totalViews+1)) }
+                             if (shouldDelete) t5Dao.delete(it.displayName)
+                             else t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
+                                 totalViews= if (willDisplay) it.totalViews else it.totalViews+1,
+                                 isDisplayed = willDisplay.compareTo(false))) }
 
     }
 
 
 
-    override fun setViewed(name: String,setDisplayed:Boolean): Completable {
-
-        return t5Dao.setViewedState(name, setDisplayed.compareTo(false),
-                                    Instant.now(),setDisplayed.compareTo(false))
-    }
 
 }

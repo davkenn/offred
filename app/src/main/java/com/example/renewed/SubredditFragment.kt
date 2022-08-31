@@ -20,12 +20,10 @@ class SubredditFragment : Fragment() {
     private val subVM: SubVM by viewModels()
     private var subBinding: SubViewBinding? = null
 
-
-    fun setNotDisplayed(){
-        //TODO clean this up so its trackable
-        subVM.setNotViewed().subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe()
+    fun getName() : String {
+       return subVM.name
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

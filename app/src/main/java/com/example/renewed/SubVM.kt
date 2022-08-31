@@ -20,11 +20,7 @@ class SubVM @Inject constructor(
         repository.getSubreddit(n).map { MyViewState.T5ForViewing(it.toViewState() )}
             .also { name = n }
 
-    //TODO but what its doing is adding it to the front of the list again
-    fun setNotViewed(): Completable{
 
-             return  repository.setViewed(name, false)
-    }
 
 
 }

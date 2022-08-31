@@ -71,11 +71,16 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun Observable<MyEvent>.eventToResult(): Observable<MyViewState> {
         return publish { o ->
             Observable.merge(
+                //TODO should I rename this to explain what caused it
+
                 o.ofType(MyEvent.ScreenLoadEvent::class.java).onScreenLoad(),
                 o.ofType(MyEvent.ClickOnT5ViewEvent::class.java).onClickT5(),
-                o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
-                o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList()
+        //       o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
+                o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
+                o.ofType(MyEvent.BackOrDeletePressedEvent::class.java).onBackDeletePressed()
             ) }}
+
+
 
 
     private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
@@ -86,6 +91,7 @@ class SubredditsAndPostsVM @Inject constructor(
                 is MyViewState.T3ListForRV -> state.copy(t3ListForRV = event,latestEvent5 = null,latestEvent3 = null)
                 is MyViewState.T5ForViewing -> state.copy(latestEvent5= event,latestEvent3 = null)
                 is MyViewState.T3ForViewing -> state.copy(latestEvent3 = event,latestEvent5 = null)
+                is MyViewState.NavigateBack -> state.copy(latestEvent3 = null, latestEvent5 = null, )
             }
 //this makes it so cant click same view twice, but still can click on another then this one
         }.distinctUntilChanged()}
@@ -108,6 +114,8 @@ class SubredditsAndPostsVM @Inject constructor(
 
             }
 
+    //TODO bug where isDisplayed is true for some items not in the display list do I need to catch
+    //deletes when process dies or just clear when start app?
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<MyViewState> {
 
         return Observable.merge(
@@ -118,7 +126,8 @@ class SubredditsAndPostsVM @Inject constructor(
                     repository.getSubreddits()
                         .map { list -> list.map { it.toViewState() } }
                         .map { MyViewState.T5ListForRV(it)  }
-                        .startWith( repository.updateSubreddits(it.srList).andThen(prefetch()))
+                        .startWith( repository
+                                    .updateSubreddits(it.srList,false).andThen(prefetch()))
                         .subscribeOn(Schedulers.io())}
         )
 
@@ -133,11 +142,35 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
 
+    private fun Observable<MyEvent.BackOrDeletePressedEvent>.onBackDeletePressed(): Observable<MyViewState> {
+/**
+        flatMap {
+            repository.updateSubreddits(
+                if (it.name == null) listOf() else listOf(it.name),
+                false, it.shouldDelete)
+                .subscribeOn(Schedulers.io())}.andThen(Observable.just(MyViewState.NavigateBack))
+        //TODO this is assuming that I don't want to do anything here on return
+        //then id have to repeat the back logic for delete
+
+**/
+
+        return flatMapCompletable {
+            repository.updateSubreddits(
+                if (it.name == null) listOf() else listOf(it.name), false, it.shouldDelete)
+                .subscribeOn(Schedulers.io())}.
+                andThen(Observable.just(MyViewState.NavigateBack))
+                //TODO this is assuming that I don't want to do anything here on return
+                //then id have to repeat the back logic for delete
+
+
+        }
+
 
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
     return Observable.merge(
                 flatMapSingle {
-                    repository.setViewed(it.name,true).subscribeOn(Schedulers.io())
+                    repository.updateSubreddits(listOf(it.name),true)
+                        .subscribeOn(Schedulers.io())
                         .andThen(repository.getPosts(it.name)
                               .map { list -> list.map { x -> x.toViewState() }}
                               .map { x -> MyViewState.T3ListForRV(x) })},

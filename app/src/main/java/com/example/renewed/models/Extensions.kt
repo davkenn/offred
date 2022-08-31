@@ -18,12 +18,12 @@ fun T5.toDbModel() : RoomT5 {
     return RoomT5(
                 name = name,
                 displayName = display_name,
-                description=fullDescription,
-                thumbnail=thumbnail,
-                banner_img=banner_img?:"",
+                description =fullDescription,
+                thumbnail =thumbnail,
+                banner_img =banner_img?:"",
                 created_utc = Instant.ofEpochSecond(created_utc),
                 timeLastAccessed = Instant.now(),
-                subscribers= subscribers,
+                subscribers = subscribers,
                 isSaved = 0,
                 totalViews = 0)
 

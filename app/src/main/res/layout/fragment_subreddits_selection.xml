@@ -35,7 +35,7 @@
             app:layout_constraintBottom_toTopOf="@id/subreddits_rv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guideline2"
-            android:id="@+id/button1"
+            android:id="@+id/refresh_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="refresh"
@@ -49,7 +49,7 @@
             app:layout_constraintEnd_toStartOf="@id/guideline2"
 
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button1" />
+            app:layout_constraintTop_toBottomOf="@id/refresh_button" />
 
 
     <androidx.constraintlayout.widget.Guideline

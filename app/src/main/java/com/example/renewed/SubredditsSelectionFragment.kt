@@ -70,7 +70,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditsRv.layoutManager = LinearLayoutManager(requireContext())
             subredditsRv.adapter = adapter
 
-            button1.setOnClickListener {
+            refreshButton.setOnClickListener {
                 selectedSubreddit=null
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name })
@@ -79,13 +79,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
             backButton.setOnClickListener {
-
+                var name: String? = null
                 if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
-                    Timber.e("ITS A SUB FRAG")
+                    name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
+                            as SubredditFragment).getName()
 
-                    (navHostFragment.childFragmentManager.fragments.reversed()[0]
-                            as SubredditFragment).setNotDisplayed() }
 
+                }
+
+                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name,false))
                 navHostFragment.navController.navigateUp()
             }
         }
