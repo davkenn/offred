@@ -12,7 +12,7 @@ interface BaseSubredditsAndPostsRepo {
     fun prefetchPosts(): Completable
 
     fun getSubreddit(name: String): Single<RoomT5>
-    fun getSubreddits(): Observable<List<RoomT5>>
+    fun getSubreddits(): Single<List<RoomT5>>
 
     fun getPost(name: String): Single<RoomT3>
     fun getPosts(name: String): Single<List<RoomT3>>

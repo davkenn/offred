@@ -3,11 +3,9 @@ package com.example.renewed
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
-import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.lang.Integer.max
 import java.lang.Integer.min
@@ -55,10 +53,9 @@ class SubredditsAndPostsRepository(private val api : API,
         t5Dao.getSubreddit(name)
 
 
-    override fun getSubreddits() : Observable<List<RoomT5>> =
-
+    override fun getSubreddits() : Single<List<RoomT5>> =
         t5Dao.getSubredditsFromTable()
-            .distinctUntilChanged()
+
 
     override fun getPost(name:String) : Single<RoomT3> {
         return  t3Dao.getPost(name)
@@ -84,7 +81,7 @@ class SubredditsAndPostsRepository(private val api : API,
     }
 
 
-    override fun updateSubreddits(srList: List<String>,willDisplay:Boolean,shouldDelete:Boolean,): Completable {
+    override fun updateSubreddits(srList: List<String>, isDisplayed:Boolean, shouldDelete:Boolean,): Completable {
 
         return Observable.fromIterable(srList)
                          .flatMapSingle {t5Dao.getSubreddit(it)}
@@ -92,8 +89,8 @@ class SubredditsAndPostsRepository(private val api : API,
                          .concatMapCompletable {
                              if (shouldDelete) t5Dao.delete(it.displayName)
                              else t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
-                                 totalViews= if (willDisplay) it.totalViews else it.totalViews+1,
-                                 isDisplayed = willDisplay.compareTo(false))) }
+                                 totalViews= if (isDisplayed) it.totalViews else it.totalViews+1,
+                                 isDisplayed = isDisplayed.compareTo(false))) }
 
     }
 

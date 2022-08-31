@@ -20,16 +20,10 @@ interface T5DAO {
 
         @Query("SELECT * FROM RoomT5" +
                 "        WHERE isSaved=0 and isDisplayed=0 ORDER BY timeLastAccessed ASC LIMIT 20")
-        fun getSubredditsFromTable(): Observable<List<RoomT5>>
+        fun getSubredditsFromTable(): Single<List<RoomT5>>
 
         @Query("SELECT * FROM RoomT5 WHERE RoomT5.name like :name")
         fun getSubreddit(name: String) : Single<RoomT5>
-
-
-
-        @Query("UPDATE RoomT5 SET isDisplayed = :isDisplayed,timeLastAccessed=:time," +
-                "totalViews=totalViews+:totalViewsIncrement WHERE RoomT5.name like :name" )
-        fun setViewedState(name:String,isDisplayed:Int,time:Instant,totalViewsIncrement:Int): Completable
 
         //get subreddits yet to have any posts loaded for it
         @Query("SELECT roomT5.displayName FROM roomT5  LEFT JOIN roomT3  ON roomT5.name = subredditId  " +

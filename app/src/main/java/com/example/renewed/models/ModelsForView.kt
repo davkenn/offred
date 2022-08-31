@@ -32,8 +32,9 @@ data class ViewStateT5(
     val bannerImg: String,
     val subscribers: Int,
     val created: String,
-    val timeLastAccessed: Instant
-)
+    val timeLastAccessed: Instant) {
+    override fun toString(): String = "ViewStateT5($name) "
+}
 
 data class ViewStateT3(
     val name: String,
@@ -42,4 +43,6 @@ data class ViewStateT3(
     val url: String,
     val thumbnail: String,
     val created: String
-)
+){
+    override fun toString(): String = "ViewStateT3($name) "
+}

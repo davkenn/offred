@@ -88,7 +88,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 }
 
                 subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name,false))
-                navHostFragment.navController.navigateUp()
+          //      navHostFragment.navController.navigateUp()
             }
         }
 
@@ -101,13 +101,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                     x.latestEvent3?.let {
                         navHostFragment.navController.navigate(
-                            R.id.postFragment,
-                            bundleOf("key" to it.t3.name)) }
+                                     R.id.postFragment, bundleOf("key" to it.t3.name)) }
 
                     x.latestEvent5?.let {
                         navHostFragment.navController.navigate(
-                            R.id.subredditFragment,
-                            bundleOf("key" to it.t5.name))}
+                                     R.id.subredditFragment, bundleOf("key" to it.t5.name))}
+
+                    if (x.eventProcessed) navHostFragment.navController.navigateUp()
                 },
 
                 { Timber.e("error fetching vs: ${it.localizedMessage}") }).addTo(disposables)
@@ -118,8 +118,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 super.onStart()
                 Timber.d("onStart in home Fragment")
 //TODO should this be here or in the viewmodel?
-              //  subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
-                //    selectedSubreddit))
                 disposable = subsAndPostsVM.prefetch()
                    .concatWith{subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
                     selectedSubreddit))}.subscribe(
