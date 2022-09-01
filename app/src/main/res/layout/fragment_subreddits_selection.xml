@@ -93,13 +93,13 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@drawable/ic_baseline_save_24"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/delete_button"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
-        app:layout_constraintTop_toBottomOf="@id/back_button"  />
+        app:layout_constraintHorizontal_bias="0.0"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/back_button"
+        app:layout_constraintVertical_bias="1.0" />
     <Button
         android:id="@+id/delete_button"
 
@@ -107,10 +107,10 @@
         android:layout_height="24dp"
         android:background="@drawable/ic_sharp_delete_24"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
 
         app:layout_constraintBottom_toTopOf="@id/guideline3"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
-        app:layout_constraintTop_toBottomOf="@id/save_button"  />
+        app:layout_constraintTop_toTopOf="parent"  />
 </androidx.constraintlayout.widget.ConstraintLayout>

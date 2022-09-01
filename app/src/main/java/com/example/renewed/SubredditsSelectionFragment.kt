@@ -3,7 +3,6 @@ package com.example.renewed
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
