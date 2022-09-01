@@ -31,6 +31,9 @@ class PostFragment : Fragment() {
     private val postsVM: PostVM by viewModels()
     private var postBinding: PostViewBinding? = null
 
+    fun getName() : String {
+        return postsVM.name
+    }
 
 
     override fun onCreateView(
@@ -56,9 +59,9 @@ class PostFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val name = arguments?.getString("key") ?: "NONE"
+        postsVM.setPost(name)
+            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-
-        postsVM.setFullname(name).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
             .subscribe { x ->
 
                 postBinding!!.fullImg.visibility= GONE

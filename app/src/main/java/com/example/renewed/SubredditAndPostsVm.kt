@@ -141,6 +141,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private fun Observable<MyEvent.BackOrDeletePressedEvent>.onBackDeletePressed(): Observable<MyViewState> {
 
+
         return flatMap {
             repository.updateSubreddits(if (it.name==null) listOf() else listOf(it.name),
                                                                     false, it.shouldDelete,true)

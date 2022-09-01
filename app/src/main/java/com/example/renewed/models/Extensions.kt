@@ -39,7 +39,7 @@ fun T5.toDbModel() : RoomT5 {
 //TODO selftext is optional here
 fun T3.toDbModel() : RoomT3 =
     RoomT3(
-        name = name, subredditId = subreddit_id, created_utc =Instant.ofEpochSecond(created_utc),
+        name = name, subredditId = subreddit_id, created_utc =Instant.ofEpochSecond(created_utc),  timeLastAccessed = Instant.now(),
         title =title, selftext =selftext, url =url, permalink =permalink, thumbnail =thumbnail)
 
 

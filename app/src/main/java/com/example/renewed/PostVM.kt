@@ -14,8 +14,11 @@ class PostVM @Inject constructor(
 private val repository: BaseSubredditsAndPostsRepo
 ): ViewModel() {
 
-    fun setFullname(n: String) : Single<MyViewState.T3ForViewing> =
-        repository.getPost(n).map { MyViewState.T3ForViewing(it.toViewState() )}
+    lateinit var name: String
+        private set
+
+    fun setPost(n: String) : Single<MyViewState.T3ForViewing> =
+        repository.getPost(n).map { MyViewState.T3ForViewing(it.toViewState() )}.also { name = n }
 
 
 

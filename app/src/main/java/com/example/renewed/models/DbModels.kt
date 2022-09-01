@@ -48,6 +48,7 @@ data class RoomT3(
     @ColumnInfo(index = true)
     val subredditId: String,
     val created_utc: Instant,//todo fix
+    val timeLastAccessed: Instant,
     val title: String,
     val selftext: String,
     val url: String,

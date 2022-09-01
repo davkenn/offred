@@ -80,30 +80,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             }
 
             backButton.setOnClickListener {
-                var name: String? = null
-                if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
-                    name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
-                            as SubredditFragment).getName()
-                }
-
-                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name, false))
-                //      navHostFragment.navController.navigateUp()
+                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(getSubredditNameOrNull(), false))
             }
+
             saveButton.setOnClickListener {
-                var name: String? = null
-                if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
-                    name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
-                            as SubredditFragment).getName()
-                }
-
-
-//TODO this doesn't even work with posts yet
-
-                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name, true))
-                //      navHostFragment.navController.navigateUp()
+                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(getSubredditNameOrNull(), false))
             }
-        }
 
+            //TODO none of these work with t3 yet figure out how to do this here or in vm
+            deleteButton.setOnClickListener {
+                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(getSubredditNameOrNull(), true))
+            }
+
+        }
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
             { x ->
@@ -120,10 +109,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 }
 
                 if (x.eventProcessed) navHostFragment.navController.navigateUp()
-
             },
 
-            { Timber.e("error fetching vs: ${it.localizedMessage}") }).addTo(disposables)
+            { Timber.e("error fetching vs: ${it.localizedMessage}") }   )
+                                                                .addTo(disposables) }
+
+
+    private fun getSubredditNameOrNull(): String? {
+        var name: String? = null
+        if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
+            name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
+                    as SubredditFragment).getName()
+        }
+        return name
     }
 
     private fun navigateToPostOrSubreddit(

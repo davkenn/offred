@@ -87,7 +87,7 @@ class SubredditsAndPostsRepository(private val api : API,
                                   shouldDelete:Boolean, shouldUpdateDisplayed:Boolean): Completable {
 
 
-        return Observable.fromIterable(srList)
+    return Observable.fromIterable(srList)
                     .flatMapSingle {t5Dao.getSubreddit(it)}
                     .doOnError { Timber.e("----error fetching subreddit for update ") }
                 //if this shoulddelete didnt short circuit my logic would be gone
@@ -101,6 +101,7 @@ class SubredditsAndPostsRepository(private val api : API,
                             totalViews= if (shouldUpdateDisplayed) it.totalViews else it.totalViews+1,
                                 isDisplayed =  if (!shouldUpdateDisplayed) it.isDisplayed
                                                     else changeDisplayedStatus.compareTo(false)))  }
+
 
     }
 
