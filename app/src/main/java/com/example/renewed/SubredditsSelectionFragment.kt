@@ -7,7 +7,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavArgument
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
@@ -24,19 +23,21 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
-    //    private val postClick: PublishSubject<String> = PublishSubject.create()
+
     private val disposables = CompositeDisposable()
     private var disposable: Disposable? = null
+
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
-
-
     private var selectedSubreddit: String? = null
 
+    private lateinit var navHostFragment: NavHostFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        selectedSubreddit= savedInstanceState?.getString("SELECTED_SUB")
+        selectedSubreddit = savedInstanceState?.getString("SELECTED_SUB")
         super.onCreate(savedInstanceState)
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
@@ -44,9 +45,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
         super.onSaveInstanceState(outState)
     }
-
-
-    private lateinit var navHostFragment: NavHostFragment
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +61,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         val adapter = SubredditsAdapter { x ->
 
-            selectedSubreddit =x.name
+            selectedSubreddit = x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
 
         }
@@ -76,7 +74,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditsRv.adapter = adapter
 
             refreshButton.setOnClickListener {
-                selectedSubreddit=null
+                selectedSubreddit = null
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name })
                 )
@@ -89,8 +87,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                             as SubredditFragment).getName()
                 }
 
-                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name,false))
-          //      navHostFragment.navController.navigateUp()
+                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name, false))
+                //      navHostFragment.navController.navigateUp()
             }
             saveButton.setOnClickListener {
                 var name: String? = null
@@ -102,7 +100,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 //TODO this doesn't even work with posts yet
 
-                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name,true))
+                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(name, true))
                 //      navHostFragment.navController.navigateUp()
             }
         }
@@ -113,36 +111,32 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 x.t5ListForRV?.let { adapter.submitList(it.vsT5) }
 
                 adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
-//TODO i fixed the bug by making it so you cant add again
+
                 x.latestEvent3?.let { t3 ->
-                    //       if (navHostFragment.childFragmentManager.findFragmentByTag())
-                    sdfs(R.id.postFragment,t3, binding)
-
+                    navigateToPostOrSubreddit(R.id.postFragment, t3, binding)
                 }
+
                 x.latestEvent5?.let { t5 ->
-                    sdfs(R.id.subredditFragment,t5, binding)
-
-
+                    navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
                 }
-//TODO WHAT THE HECK
-                       if (x.eventProcessed) navHostFragment.navController.navigateUp()
 
-                },
+                if (x.eventProcessed) navHostFragment.navController.navigateUp()
 
-                { Timber.e("error fetching vs: ${it.localizedMessage}") }).addTo(disposables)
-        }
+            },
 
-    private fun sdfs(
+            { Timber.e("error fetching vs: ${it.localizedMessage}") }).addTo(disposables)
+    }
+
+    private fun navigateToPostOrSubreddit(
         @IdRes resId: Int,
         t5: MyViewState,
         binding: FragmentSubredditsSelectionBinding,
 
         ) {
-
         var b = navHostFragment.navController.backQueue
             .any { t5.name == it.arguments?.get("key") ?: "NOMATCH" }
-        if (!b) navHostFragment.navController.navigate(resId, bundleOf("key" to t5.name)
-        )
+
+        if (!b) navHostFragment.navController.navigate(resId, bundleOf("key" to t5.name))
         else Snackbar.make(
             binding.root, "Already in Stack. Press back to find it...",
             Snackbar.LENGTH_SHORT
@@ -151,52 +145,46 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
     override fun onStart() {
-                super.onStart()
-                Timber.d("onStart in home Fragment")
+        super.onStart()
+        Timber.d("onStart in home Fragment")
 
-                disposable = subsAndPostsVM.prefetch()
-                   .concatWith{subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent(
-                    selectedSubreddit))}.subscribe(
-                    { Timber.d("----done fetching both ") },
-                    { Timber.e("----error fetching is ${it.localizedMessage}") })
+        disposable = subsAndPostsVM.prefetch()
+            .concatWith {
+                subsAndPostsVM.processInput(
+                    MyEvent.ScreenLoadEvent(
+                        selectedSubreddit
+                    )
+                )
+            }.subscribe(
+                { Timber.d("----done fetching both ") },
+                { Timber.e("----error fetching is ${it.localizedMessage}") })
 
-
-
-            }
-
-            override fun onResume() {
-                Timber.d("onResume in home Fragment")
-                //subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent)
-                super.onResume()
-            }
-
-            override fun onPause() {
-                super.onPause()
-            }
-
-            override fun onDestroyView() {
-                fragmentSelectionBinding = null
-                disposables.clear()
-                super.onDestroyView()
-
-            }
-
-            override fun onDestroy() {
-                disposable?.dispose()
-                super.onDestroy()
-            }
-
-     fun displayAlertDialog() =
-
-            AlertDialog.Builder(requireContext().applicationContext).
-                setTitle("AlertDialogExample")
-                .setMessage("Do you want to close this application ?")
-                .setCancelable(false)
-
-                .create()
-                .show()
 
     }
+
+    override fun onResume() {
+        Timber.d("onResume in home Fragment")
+        //subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent)
+        super.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onDestroyView() {
+        fragmentSelectionBinding = null
+        disposables.clear()
+        super.onDestroyView()
+
+    }
+
+    override fun onDestroy() {
+        disposable?.dispose()
+        super.onDestroy()
+    }
+}
+
 
 
 

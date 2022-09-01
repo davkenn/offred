@@ -40,8 +40,12 @@ class SubredditsAndPostsVM @Inject constructor(
         .autoConnect(1)
         {upstream -> upstream.addTo(disposables) }
 
-    fun prefetch(): Completable =
 
+
+    fun processInput(name: MyEvent) {
+        inputEvents.accept(name)
+    }
+    fun prefetch(): Completable =
 
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
@@ -53,13 +57,6 @@ class SubredditsAndPostsVM @Inject constructor(
 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-
-
-    fun processInput(name: MyEvent) {
-        inputEvents.accept(name)
-    }
-
-
 
 
 
@@ -75,7 +72,6 @@ class SubredditsAndPostsVM @Inject constructor(
             a.mergeAll()
         } }
 
-//TODO now there is a bug in if I add multiple of same
 
     private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
 
@@ -128,8 +124,7 @@ class SubredditsAndPostsVM @Inject constructor(
                         .map { list -> list.map { it.toViewState() } }
                         .map { MyViewState.T5ListForRV(it)  }//.subscribeOn(Schedulers.io())
                         .startWith(repository.updateSubreddits(it.srList, isDisplayed = false,shouldDelete = false,
-                            shouldUpdateDisplayed =false )
-                                              .andThen(prefetch()).subscribeOn(Schedulers.io()))
+                            shouldUpdateDisplayed =false ).andThen(prefetch()).subscribeOn(Schedulers.io()))
                      }
         )
 
