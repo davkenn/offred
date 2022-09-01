@@ -41,8 +41,15 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
         TODO("Not yet implemented")
     }
 
-    override fun updateSubreddits(srList: List<String>,isDisplayed: Boolean,shouldDelete:Boolean): Completable {
+    override fun updateSubreddits(
+        srList: List<String>,
+        isDisplayed: Boolean,
+        shouldDelete: Boolean,
+        shouldUpdateDisplayed: Boolean
+    ): Completable {
         TODO("Not yet implemented")
     }
+
+
 
 }

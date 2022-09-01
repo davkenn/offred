@@ -93,7 +93,7 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<MyViewState> {
-
+//TODO i need to start if its null by clearing the displayed status
          return        Observable.merge(
                     flatMapSingle {
                        repository.getSubreddits()

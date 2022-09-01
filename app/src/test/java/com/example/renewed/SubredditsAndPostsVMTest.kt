@@ -9,9 +9,11 @@ import org.junit.Test
 
 class SubredditsAndPostsVMTest {
     private lateinit var viewModel: SubredditsAndPostsVM
+    private lateinit var fakerepo: FakeRepo2
     @Before
     public fun setUp() {
-        viewModel = SubredditsAndPostsVM(FakeRepo2())
+        fakerepo = FakeRepo2()
+        viewModel = SubredditsAndPostsVM(fakerepo)
 
       //    viewModel = SubredditsAndPostsVM(SubredditsAndPostsRepository(API., null,null))
     }
@@ -23,7 +25,7 @@ class SubredditsAndPostsVMTest {
 
     @Test
     fun prefetch() {
-        FakeRepo2().prefetchSubreddits()
+        fakerepo.prefetchSubreddits()
     }
 
     @Test

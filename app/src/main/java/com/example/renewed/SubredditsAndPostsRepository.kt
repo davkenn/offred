@@ -81,9 +81,10 @@ class SubredditsAndPostsRepository(private val api : API,
     }
 
 
+
 //TODO break this back up into setviewed and delete
 
-    override fun updateSubreddits(srList: List<String>, changeDisplayedStatus:Boolean,
+    override fun updateSubreddits(srList: List<String>, isDisplayedFlagSet:Boolean,
                                   shouldDelete:Boolean, shouldUpdateDisplayed:Boolean): Completable {
 
 
@@ -100,7 +101,7 @@ class SubredditsAndPostsRepository(private val api : API,
                         else t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
                             totalViews= if (shouldUpdateDisplayed) it.totalViews else it.totalViews+1,
                                 isDisplayed =  if (!shouldUpdateDisplayed) it.isDisplayed
-                                                    else changeDisplayedStatus.compareTo(false)))  }
+                                                    else isDisplayedFlagSet.compareTo(false)))  }
 
 
     }

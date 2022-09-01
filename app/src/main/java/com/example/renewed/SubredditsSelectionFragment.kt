@@ -109,6 +109,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 }
 
                 if (x.eventProcessed) navHostFragment.navController.navigateUp()
+
             },
 
             { Timber.e("error fetching vs: ${it.localizedMessage}") }   )
