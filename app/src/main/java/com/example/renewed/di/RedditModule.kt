@@ -29,12 +29,11 @@ object RedditModule {
     private const val BASE_URL = "https://www.reddit.com/"
 
 
-
-
     @Singleton
     @Provides
     fun provideAPICallInterface(retrofit: Retrofit): API =
         retrofit.create(API::class.java)
+
 
 
 
@@ -44,7 +43,7 @@ object RedditModule {
         .client(okHttpClient)
         .addConverterFactory(MoshiConverterFactory.create(mosh))
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .baseUrl(BASE_URL)
+        .baseUrl(RedditModule.BASE_URL)
         .build()
 
 
@@ -52,13 +51,16 @@ object RedditModule {
     @Provides
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor,redirect: RedirectInterceptor):
             OkHttpClient = OkHttpClient
-                .Builder()
-                .followRedirects(false)
-                .followSslRedirects(false)
-//TODO dont think this approach will work unless I handle all redirects
-                .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(redirect)
-                .build()
+        .Builder()
+        .followRedirects(false)
+        .followSslRedirects(false)
+        .addInterceptor(httpLoggingInterceptor)
+        .addInterceptor(redirect)
+        .build()
+
+
+
+
 
     @Singleton
     @Provides
@@ -89,17 +91,15 @@ object RedditModule {
         retrofit.create(LoginAPI::class.java)
 }
 
-@Module
+
 @InstallIn(SingletonComponent::class)
+@Module
 object RepoModule {
 
     @Singleton
     @Provides
-    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO) :
-            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api,t5Dao,t3Dao)
-
-
-
+    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO):
+            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao)
 
 }
 

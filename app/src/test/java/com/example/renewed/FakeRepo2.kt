@@ -1,8 +1,6 @@
 package com.example.renewed
 
 
-import com.example.renewed.models.RoomT3
-import com.example.renewed.models.RoomT5
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -12,49 +10,63 @@ import okio.source
 import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
-class FakeRepo2  @Inject constructor() : BaseSubredditsAndPostsRepo {
+
+import com.example.renewed.Room.T3DAO
+import com.example.renewed.Room.T5DAO
+import com.example.renewed.models.*
+
+import okio.BufferedSource
+import okio.buffer
+import okio.source
+import java.time.Instant
+
+
+class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
+    private var res : String? = null
+
 
     override fun prefetchSubreddits(): Completable {
-     //   val a: MockWebServer = MockWebServer()
-       // a.enqueueResponse("",200)
 
-       // return Completable.complete()
-
-        val inputStream = this.javaClass.classLoader!!.getResource("hundredcomments.json")
-            .openStream()
+         val inputStream = this.javaClass.classLoader!!.getResource("Berserk.json")
+        .openStream()
         val source = inputStream?.let { inputStream.source().buffer() }
-        var res = source?.let{it.readString(StandardCharsets.UTF_8)}
+        res = source?.let{it.readString(StandardCharsets.UTF_8)}
 
         return Completable.complete()
     }
 
     override fun prefetchPosts(): Completable {
-        TODO("Not yet implemented")
+        return Completable.complete()
     }
 
     override fun getSubreddit(name: String): Single<RoomT5> {
-        TODO("Not yet implemented")
+        return Single.error(Exception())
     }
 
     override fun getSubreddits(): Single<List<RoomT5>> {
-        TODO("Not yet implemented")
+
+return  apiService.getRandomSubreddit().map{(it as T5).toDbModel()}
+    .map{it-> var b = mutableListOf<RoomT5>(it);b}
+
+
 
     }
 
     override fun getPost(name: String): Single<RoomT3> {
-        TODO("Not yet implemented")
+        return Single.error { Exception() }
     }
 
     override fun getPosts(name: String): Single<List<RoomT3>> {
-        TODO("Not yet implemented")
+        return Single.just(listOf(RoomT3("aaa","aaa", Instant.now(),Instant.now(),"aaa",
+            "aaa","aaa","per", "aaa")))
     }
 
     override fun deleteSubreddits(names: List<String>): Observable<Unit> {
-        TODO("Not yet implemented")
+        return Observable.empty()
     }
 
     override fun deleteUninterestingSubreddits(): Completable {
-        TODO("Not yet implemented")
+        return Completable.complete()
     }
 
     override fun updateSubreddits(
@@ -63,12 +75,9 @@ class FakeRepo2  @Inject constructor() : BaseSubredditsAndPostsRepo {
         shouldDelete: Boolean,
         shouldUpdateDisplayed: Boolean
     ): Completable {
-        TODO("Not yet implemented")
+        return Completable.complete()
     }
 
 
 
- //   override fun setViewed(name: String, isDisplayed: Boolean): Completable {
-   //     TODO("Not yet implemented")
-   // }
 }
