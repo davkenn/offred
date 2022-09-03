@@ -65,12 +65,14 @@ class SubredditsAndPostsVMTest {
         var end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
 
-      //  fakerepo.prefetchSubreddits()
-     //   var b = fakerepo.getSubreddits()
-        var n = viewModel.vs.subscribe()
+
+        //var b = fakerepo.getSubreddits()
+
         var res = viewModel.vs.test()
+        fakerepo.prefetchSubreddits()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
-       //   var c = b.blockingGet()
+      //    var c = b.blockingGet()
+
 
 
         assertThat("Is there a subscrier?",res.hasSubscription())
@@ -92,6 +94,8 @@ class SubredditsAndPostsVMTest {
     //        l.setHeadersDelay(10,TimeUnit.SECONDS)
       //  l.setBodyDelay(10,TimeUnit.SECONDS)
         mockWebServer.enqueue(l)
+
+        var res = viewModel.vs.test()
         fakerepo.prefetchSubreddits()
 
 
@@ -99,7 +103,7 @@ class SubredditsAndPostsVMTest {
 //var c = a.blockingGet()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
 
-        var res = viewModel.vs.test()
+
 res.assertNoErrors()
      //   res.assertError(IOException::class.java)
 

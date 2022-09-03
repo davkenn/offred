@@ -144,7 +144,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
         return flatMap {
             repository.updateSubreddits(if (it.name==null) listOf() else listOf(it.name),
-                                                                    false, it.shouldDelete,true)
+                false, it.shouldDelete,true)
                 .subscribeOn(Schedulers.io())
                 .andThen(Observable.just(MyViewState.NavigateBack))}
 

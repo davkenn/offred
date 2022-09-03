@@ -101,6 +101,8 @@ class SubredditsAndPostsRepository(private val api : API,
                     .concatMapCompletable {
                         if (shouldDelete) t5Dao.delete(it.displayName)
                         else t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
+                            //so as not to double count a view, its sense of how many times its
+                            //been viewed is only updated when its sent back to the system
                             totalViews= if (shouldUpdateDisplayed) it.totalViews else it.totalViews+1,
                                 isDisplayed =  if (!shouldUpdateDisplayed) it.isDisplayed
                                                     else isDisplayedFlagSet.compareTo(false)))  }
