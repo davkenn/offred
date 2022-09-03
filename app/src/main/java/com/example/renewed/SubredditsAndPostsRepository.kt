@@ -1,9 +1,11 @@
 package com.example.renewed
 
+import androidx.room.rxjava3.EmptyResultSetException
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import timber.log.Timber
@@ -50,9 +52,28 @@ class SubredditsAndPostsRepository(private val api : API,
             .map { (it as T5).toDbModel() }
             .flatMapCompletable { roomT5 -> t5Dao.insertT5(roomT5)}
 
-
+/**
     override fun getSubreddit(name: String): Single<RoomT5> =
-        t5Dao.getSubreddit(name)
+        try{t5Dao.getSubreddit("")}catch (e: EmptyResultSetException){ Single.just(  RoomT5(
+            "ERROR",
+            "ERROR",
+            "${e.message}",
+            "",
+            "",
+            Instant.now(),
+            1,
+            Instant.now(),
+            false) )}
+**/
+    override fun getSubreddit(name: String): Single<RoomT5> =
+        t5Dao.getSubreddit("")/**.onErrorResumeWith(Single.just(
+            RoomT5(
+                "ERROR",
+                "ERROR",
+                "",
+                "",
+                "", Instant.now(),0, Instant.now())**/
+
 
 
     override fun getSubreddits() : Single<List<RoomT5>> =

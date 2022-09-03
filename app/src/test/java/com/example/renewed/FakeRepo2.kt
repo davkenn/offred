@@ -71,10 +71,13 @@ return  apiService.getRandomSubreddit().map{(it as T5).toDbModel()}
         return Completable.complete()
     }
 
+    override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
+        return Completable.complete()
+    }
+
     override fun updateSubreddits(
         srList: List<String>,
         isDisplayed: Boolean,
-        shouldDelete: Boolean,
         shouldUpdateDisplayed: Boolean
     ): Completable {
         return Completable.complete()

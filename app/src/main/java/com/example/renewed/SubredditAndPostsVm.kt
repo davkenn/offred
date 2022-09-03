@@ -1,6 +1,8 @@
 package com.example.renewed
 
 import androidx.lifecycle.ViewModel
+import androidx.room.Room
+import androidx.room.rxjava3.EmptyResultSetException
 import com.example.renewed.models.*
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
@@ -10,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -17,6 +20,7 @@ import io.reactivex.rxjava3.kotlin.mergeAll
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import timber.log.Timber
+import java.time.Instant
 import javax.inject.Inject
 
 
@@ -188,6 +192,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
+
     return Observable.merge(
                 flatMapSingle {
                     repository.updateSubreddits(listOf(it.name),true,true)
@@ -195,10 +200,22 @@ class SubredditsAndPostsVM @Inject constructor(
                         .andThen(repository.getPosts(it.name)
                               .map { list -> list.map { x -> x.toViewState() }}
                               .map { x -> MyViewState.T3ListForRV(x) })},
-                flatMapSingle {
-                    repository.getSubreddit(it.name).subscribeOn(Schedulers.io())
-                              .map { x -> MyViewState.T5ForViewing(x.toViewState()) }
-            })
+                flatMapSingle{
+
+                    repository.getSubreddit(it.name).onErrorResumeWith(Single.just(RoomT5(
+                        "ERROR",
+                        "ll",
+                        "",
+                        "",
+"",Instant.now(),0, Instant.now())).retry(10)
+
+
+                        )
+
+                        .subscribeOn(Schedulers.io())
+
+                        .map { x -> MyViewState.T5ForViewing(x.toViewState()) }})
+
         }
 
 
