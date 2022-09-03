@@ -35,8 +35,6 @@ object RedditModule {
         retrofit.create(API::class.java)
 
 
-
-
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient, mosh: Moshi): Retrofit = Retrofit.Builder()
@@ -59,9 +57,6 @@ object RedditModule {
         .build()
 
 
-
-
-
     @Singleton
     @Provides
     fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor()
@@ -77,8 +72,6 @@ object RedditModule {
     @Singleton
     @Provides
     fun provideMoshi() = Moshi.Builder()
-
-        //TODO does order matter here?
         .add(RedditPostAdapter())
         .add(RedditHolderAdapter())
         .add(DescriptionAdapter())

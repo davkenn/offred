@@ -33,7 +33,6 @@ class SubredditsAndPostsVM @Inject constructor(
     val vs: Observable<FullViewState> = inputEvents
         .doOnNext { Timber.d("---- Event is $it")}
         .eventToResult()
-        //     .share()
         .doOnNext { Timber.d("---- Result is $it")}
         .combineResults()
         .replay(1)

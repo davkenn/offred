@@ -18,6 +18,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -25,6 +26,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private val disposables = CompositeDisposable()
     private var disposable: Disposable? = null
+
 
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
