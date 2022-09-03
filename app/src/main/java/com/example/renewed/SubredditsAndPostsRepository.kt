@@ -74,7 +74,16 @@ class SubredditsAndPostsRepository(private val api : API,
         return  t5Dao.deleteUnwanted(3)
     }
 
-//TODO if im going to delete i have to remove from back stack
+    override fun deleteOrSaveSubreddit(name: String, shouldDelete: Boolean): Completable {
+        return if (name.isNullOrBlank()) Completable.complete()
+        else t5Dao.getSubreddit(name).concatMapCompletable {
+                t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
+                isSaved = !shouldDelete, totalViews = if (shouldDelete)  40000 else it.totalViews+1)).andThen() }
+    }
+
+
+
+    //TODO if im going to delete i have to remove from back stack
     override fun deleteSubreddits(names:List<String>): Observable<Unit> {
 
         return Observable.fromIterable(names)
@@ -87,20 +96,14 @@ class SubredditsAndPostsRepository(private val api : API,
 //TODO break this back up into setviewed and delete
 
     override fun updateSubreddits(srList: List<String>, isDisplayedFlagSet:Boolean,
-                                  shouldDelete:Boolean, shouldUpdateDisplayed:Boolean): Completable {
+                                shouldUpdateDisplayed:Boolean): Completable {
 
 
     return Observable.fromIterable(srList)
                     .flatMapSingle {t5Dao.getSubreddit(it)}
                     .doOnError { Timber.e("----error fetching subreddit for update ") }
-                //if this shoulddelete didnt short circuit my logic would be gone
-
-            //TODO also what if i delete in main view but still in
-            // normnal view.would need observsasble
-
                     .concatMapCompletable {
-                        if (shouldDelete) t5Dao.delete(it.displayName)
-                        else t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
+                        t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
                             //so as not to double count a view, its sense of how many times its
                             //been viewed is only updated when its sent back to the system
                             totalViews= if (shouldUpdateDisplayed) it.totalViews else it.totalViews+1,

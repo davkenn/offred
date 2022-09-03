@@ -24,7 +24,7 @@ fun T5.toDbModel() : RoomT5 {
                 created_utc = Instant.ofEpochSecond(created_utc),
                 timeLastAccessed = Instant.now(),
                 subscribers = subscribers,
-                isSaved = 0,
+                isSaved = false,
                 totalViews = 0)
 
 }

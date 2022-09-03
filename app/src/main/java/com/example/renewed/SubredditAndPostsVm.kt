@@ -26,24 +26,23 @@ class SubredditsAndPostsVM @Inject constructor(
 ): ViewModel() {
 
 
-
     private val disposables: CompositeDisposable = CompositeDisposable()
     private val inputEvents: PublishRelay<MyEvent> = PublishRelay.create()
 
     val vs: Observable<FullViewState> = inputEvents
-        .doOnNext { Timber.d("---- Event is $it")}
+        .doOnNext { Timber.d("---- Event is $it") }
         .eventToResult()
-        .doOnNext { Timber.d("---- Result is $it")}
+        .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
         .replay(1)
         .autoConnect(1)
-        {upstream -> upstream.addTo(disposables) }
-
+        { upstream -> upstream.addTo(disposables) }
 
 
     fun processInput(name: MyEvent) {
         inputEvents.accept(name)
     }
+
     fun prefetch(): Completable =
 
         repository.deleteUninterestingSubreddits()
@@ -52,12 +51,11 @@ class SubredditsAndPostsVM @Inject constructor(
 
                 .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
             .andThen(repository.prefetchPosts())
-                .doOnError { Timber.e("----error getting posts") }
-                .doOnComplete { Timber.d("---- done fetching posts") }
+            .doOnError { Timber.e("----error getting posts") }
+            .doOnComplete { Timber.d("---- done fetching posts") }
 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-
 
 
     private fun Observable<MyEvent>.eventToResult(): Observable<MyViewState> {
@@ -68,25 +66,39 @@ class SubredditsAndPostsVM @Inject constructor(
                 o.ofType(MyEvent.ClickOnT5ViewEvent::class.java).onClickT5(),
                 o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
                 o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
-                o.ofType(MyEvent.BackOrDeletePressedEvent::class.java).onBackDeletePressed())
+                o.ofType(MyEvent.UpdateViewingState::class.java).updateViewingState() ,
+                o.ofType(MyEvent.SaveOrDeleteEvent::class.java).onSaveOrDelete()
+            )
+
             a.mergeAll()
-        } }
+        }
+    }
 
 
     private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
 
         return scan(FullViewState()) { state, event ->
             when (event) {
-                is MyViewState.T5ListForRV -> state.copy(t5ListForRV = event,latestEvent5 = null,
-                                                    latestEvent3 = null, eventProcessed = false)
-                is MyViewState.T3ListForRV -> state.copy(t3ListForRV = event,latestEvent5 = null,
-                                                    latestEvent3 = null, eventProcessed = false)
-                is MyViewState.T5ForViewing -> state.copy(latestEvent5= event,latestEvent3 = null,
-                                                                            eventProcessed = false)
-                is MyViewState.T3ForViewing -> state.copy(latestEvent3 = event,latestEvent5 = null,
-                                                                            eventProcessed = false)
-                is MyViewState.NavigateBack -> state.copy(latestEvent3 = null, latestEvent5 = null,
-                                                                            eventProcessed = true )
+                is MyViewState.T5ListForRV -> state.copy(
+                    t5ListForRV = event, latestEvent5 = null,
+                    latestEvent3 = null, eventProcessed = false
+                )
+                is MyViewState.T3ListForRV -> state.copy(
+                    t3ListForRV = event, latestEvent5 = null,
+                    latestEvent3 = null, eventProcessed = false
+                )
+                is MyViewState.T5ForViewing -> state.copy(
+                    latestEvent5 = event, latestEvent3 = null,
+                    eventProcessed = false
+                )
+                is MyViewState.T3ForViewing -> state.copy(
+                    latestEvent3 = event, latestEvent5 = null,
+                    eventProcessed = false
+                )
+                is MyViewState.NavigateBack -> state.copy(
+                    latestEvent3 = null, latestEvent5 = null,
+                    eventProcessed = true
+                )
             }
 //this makes it so cant click same view twice, but still can click on another then this one
         }//.distinctUntilChanged()
@@ -94,22 +106,22 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<MyViewState> {
 //TODO i need to start if its null by clearing the displayed status
-         return        Observable.merge(
-                    flatMapSingle {
-                       repository.getSubreddits()
-                           .subscribeOn(Schedulers.io())
-                           .map { list -> list.map { it.toViewState() } }
-                           .map { MyViewState.T5ListForRV(it) }
-                },
+        return Observable.merge(
+            flatMapSingle {
+                repository.getSubreddits()
+                    .subscribeOn(Schedulers.io())
+                    .map { list -> list.map { it.toViewState() } }
+                    .map { MyViewState.T5ListForRV(it) }
+            },
 
-                    flatMapSingle {
-                        repository.getPosts(it.name ?: "")
-                            .subscribeOn(Schedulers.io())
-                            .map { list -> list.map { x -> x.toViewState() } }
-                            .map { x -> MyViewState.T3ListForRV(x) }
-                    })
+            flatMapSingle {
+                repository.getPosts(it.name ?: "")
+                    .subscribeOn(Schedulers.io())
+                    .map { list -> list.map { x -> x.toViewState() } }
+                    .map { x -> MyViewState.T3ListForRV(x) }
+            })
 
-            }
+    }
 
     //TODO bug where isDisplayed is true for some items not in the display list do I need to catch
     //deletes when process dies or just clear when start app?
@@ -117,15 +129,19 @@ class SubredditsAndPostsVM @Inject constructor(
 
         return Observable.merge(
 
-            flatMap{ _ -> Observable.just(MyViewState.T3ListForRV(null))},
+            flatMap { _ -> Observable.just(MyViewState.T3ListForRV(null)) },
 //TODO i had got this down to one subscribeon now its back up to 2 when added to observable and changed rx method
-            flatMap{
-                    repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
-                        .map { list -> list.map { it.toViewState() } }
-                        .map { MyViewState.T5ListForRV(it)  }//.subscribeOn(Schedulers.io())
-                        .startWith(repository.updateSubreddits(it.srList, isDisplayed = false,shouldDelete = false,
-                            shouldUpdateDisplayed =false ).andThen(prefetch()).subscribeOn(Schedulers.io()))
-                     }
+            flatMap {
+                repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
+                    .map { list -> list.map { it.toViewState() } }
+                    .map { MyViewState.T5ListForRV(it) }//.subscribeOn(Schedulers.io())
+                    .startWith(
+                        repository.updateSubreddits(
+                            it.srList, isDisplayedFlagSet = false,
+                            shouldUpdateDisplayed = false
+                        ).andThen(prefetch()).subscribeOn(Schedulers.io())
+                    )
+            }
         )
 
 
@@ -133,28 +149,78 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private fun Observable<MyEvent.ClickOnT3ViewEvent>.onClickT3(): Observable<MyViewState> {
 
-        return flatMapSingle{repository.getPost(it.name)
-            .subscribeOn(Schedulers.io())
-            .map {  x -> MyViewState.T3ForViewing(x.toViewState())}   }
+        return flatMapSingle {
+            repository.getPost(it.name)
+                .subscribeOn(Schedulers.io())
+                .map { x -> MyViewState.T3ForViewing(x.toViewState()) }
+        }
     }
 
 
-    private fun Observable<MyEvent.BackOrDeletePressedEvent>.onBackDeletePressed(): Observable<MyViewState> {
+    private fun Observable<MyEvent.UpdateViewingState>.updateViewingState(): Observable<MyViewState> {
 
 
         return flatMap {
-            repository.updateSubreddits(if (it.name==null) listOf() else listOf(it.name),
-                false, it.shouldDelete,true)
+            repository.updateSubreddits(
+                if (it.name == null) listOf() else listOf(it.name),
+                false, true
+            )
                 .subscribeOn(Schedulers.io())
-                .andThen(Observable.just(MyViewState.NavigateBack))}
-
+                .andThen(Observable.just(MyViewState.NavigateBack))
         }
+
+    }
+
+
+    private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<MyViewState> {
+
+         return  flatMap{  repository.deleteOrSaveSubreddit( it.subredditNameOrNull?: "",
+                  it.shouldDelete).subscribeOn(Schedulers.io())
+             .andThen(if (it.selectedSubreddit != null && it.selectedSubreddit == it.subredditNameOrNull)
+                     Observable.just(MyViewState.T3ListForRV(null)) else Observable.empty())}
+
+    }
+    //.andThen(prefetch())
+    //     .andThen(  Observable.just(MyViewState.T3ListForRV(null)))
+
+
+
+      //  flatMap{    it-> if(it.selectedSubreddit != null &&
+        //        it.selectedSubreddit == it.subredditNameOrNull) Observable.just(MyViewState.T3ListForRV(null)) else
+          //                                                          Observable.empty()}
+    //     return Observable.merge(
+      //    flatMap { Observable.just(MyViewState.T3ListForRV(null))},
+
+           //    it.selectedSubreddit?.run{Observable.just(MyViewState.T3ListForRV(null))}},
+
+        //     flatMap { repository.deleteOrSaveSubreddit( it.subredditNameOrNull!!,
+          //       it.shouldDelete).subscribeOn(Schedulers.io()).andThen(prefetch())
+            //     .andThen(  Observable.just(MyViewState.T3ListForRV(null)))
+             //})
+
+
+         //     it.selectedSubreddit != null && it.selectedSubreddit == it.subredditNameOrNull)
+           //      Observable.just(MyViewState.T3ListForRV(null))}
+
+
+     //       it.run{
+       //     repository.deleteOrSaveSubreddit(
+         //       it.subredditNameOrNull!!,
+           //     it.shouldDelete
+            //).concatWith {this@onSaveOrDelete.} }
+       // }
+         //   .andThen(prefetch()).andThen{ ()->if }
+
+
+
+
+
 
 
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
     return Observable.merge(
                 flatMapSingle {
-                    repository.updateSubreddits(listOf(it.name),true,false,true)
+                    repository.updateSubreddits(listOf(it.name),true,true)
                         .subscribeOn(Schedulers.io())
                         .andThen(repository.getPosts(it.name)
                               .map { list -> list.map { x -> x.toViewState() }}
@@ -168,9 +234,11 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
 
+
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()
         }
 }
+
 

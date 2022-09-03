@@ -82,16 +82,24 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             }
 
             backButton.setOnClickListener {
-                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(getSubredditNameOrNull(), false))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
 
             saveButton.setOnClickListener {
-                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(getSubredditNameOrNull(), false))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),selectedSubreddit,
+                    false))
+
             }
 
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
-                subsAndPostsVM.processInput(MyEvent.BackOrDeletePressedEvent(getSubredditNameOrNull(), true))
+
+
+
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),selectedSubreddit,
+                    true))
             }
 
         }
