@@ -20,7 +20,7 @@ interface BaseSubredditsAndPostsRepo {
     fun deleteSubreddits(names: List<String>): Observable<Unit>
     fun deleteUninterestingSubreddits(): Completable
 
-    fun deleteOrSaveSubreddit(name:String,shouldDelete:Boolean):Completable
+    fun deleteOrSaveSubreddit(name:String?,shouldDelete:Boolean):Completable
 
     fun updateSubreddits(
         srList: List<String>,

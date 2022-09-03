@@ -86,7 +86,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             }
 
             saveButton.setOnClickListener {
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(selectedSubreddit ))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),selectedSubreddit,
                     false))
 
@@ -97,16 +97,18 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
 
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(selectedSubreddit ))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),selectedSubreddit,
                     true))
+           //     subsAndPostsVM.processInput(MyEvent.RemoveAllSubreddits(listOf(selectedSubreddit!!)))
             }
 
         }
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
             { x ->
-                x.t5ListForRV?.let { adapter.submitList(it.vsT5) }
+                x.t5ListForRV?.let { adapter.submitList(it.vsT5)
+                }
 
                 adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
 
@@ -118,8 +120,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
                 }
 
-                if (x.eventProcessed) navHostFragment.navController.navigateUp()
-
+                if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
+                navHostFragment.navController.popBackStack()
+                navHostFragment.navController.popBackStack(R.id.subredditFragment,false)
+                    selectedSubreddit = getSubredditNameOrNull()}
             },
 
             { Timber.e("error fetching vs: ${it.localizedMessage}") }   )
@@ -132,6 +136,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
                     as SubredditFragment).getName()
         }
+
         return name
     }
 

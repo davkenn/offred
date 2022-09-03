@@ -19,7 +19,7 @@ interface T5DAO {
         fun deleteUnwanted(maxViews: Int): Completable
 
         @Query("SELECT * FROM RoomT5" +
-                "        WHERE isSaved=0 and isDisplayed=0 ORDER BY timeLastAccessed ASC LIMIT 20")
+                "        WHERE isSaved=0 and isDisplayed=0 ORDER BY totalViews ASC LIMIT 20")
         fun getSubredditsFromTable(): Single<List<RoomT5>>
 
         @Query("SELECT * FROM RoomT5 WHERE RoomT5.name like :name")

@@ -74,11 +74,11 @@ class SubredditsAndPostsRepository(private val api : API,
         return  t5Dao.deleteUnwanted(3)
     }
 
-    override fun deleteOrSaveSubreddit(name: String, shouldDelete: Boolean): Completable {
+    override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
         return if (name.isNullOrBlank()) Completable.complete()
         else t5Dao.getSubreddit(name).concatMapCompletable {
-                t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
-                isSaved = !shouldDelete, totalViews = if (shouldDelete)  40000 else it.totalViews+1)).andThen() }
+                t5Dao.updateT5(it.copy(isDisplayed = 0,
+                isSaved = !shouldDelete, totalViews = if (shouldDelete)  40000 else it.totalViews)) }
     }
 
 
@@ -101,7 +101,9 @@ class SubredditsAndPostsRepository(private val api : API,
 
     return Observable.fromIterable(srList)
                     .flatMapSingle {t5Dao.getSubreddit(it)}
-                    .doOnError { Timber.e("----error fetching subreddit for update ") }
+                    .doOnError { Timber.e("----error fetching subreddit for update" +
+                            "${it.stackTraceToString()} ") }
+
                     .concatMapCompletable {
                         t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
                             //so as not to double count a view, its sense of how many times its

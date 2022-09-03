@@ -138,14 +138,14 @@ class SubredditsAndPostsVM @Inject constructor(
                     .startWith(
                         repository.updateSubreddits(
                             it.srList, isDisplayedFlagSet = false,
-                            shouldUpdateDisplayed = false
-                        ).andThen(prefetch()).subscribeOn(Schedulers.io())
-                    )
+                           shouldUpdateDisplayed = false).subscribeOn(Schedulers.io()).andThen(
+                        prefetch().subscribeOn(Schedulers.io())))})
+
             }
-        )
 
 
-    }
+
+
 
     private fun Observable<MyEvent.ClickOnT3ViewEvent>.onClickT3(): Observable<MyViewState> {
 
@@ -174,42 +174,12 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<MyViewState> {
 
-         return  flatMap{  repository.deleteOrSaveSubreddit( it.subredditNameOrNull?: "",
+
+         return  flatMap{  repository.deleteOrSaveSubreddit( it.selectedSubreddit,
                   it.shouldDelete).subscribeOn(Schedulers.io())
-             .andThen(if (it.selectedSubreddit != null && it.selectedSubreddit == it.subredditNameOrNull)
-                     Observable.just(MyViewState.T3ListForRV(null)) else Observable.empty())}
-
-    }
-    //.andThen(prefetch())
-    //     .andThen(  Observable.just(MyViewState.T3ListForRV(null)))
-
-
-
-      //  flatMap{    it-> if(it.selectedSubreddit != null &&
-        //        it.selectedSubreddit == it.subredditNameOrNull) Observable.just(MyViewState.T3ListForRV(null)) else
-          //                                                          Observable.empty()}
-    //     return Observable.merge(
-      //    flatMap { Observable.just(MyViewState.T3ListForRV(null))},
-
-           //    it.selectedSubreddit?.run{Observable.just(MyViewState.T3ListForRV(null))}},
-
-        //     flatMap { repository.deleteOrSaveSubreddit( it.subredditNameOrNull!!,
-          //       it.shouldDelete).subscribeOn(Schedulers.io()).andThen(prefetch())
-            //     .andThen(  Observable.just(MyViewState.T3ListForRV(null)))
-             //})
-
-
-         //     it.selectedSubreddit != null && it.selectedSubreddit == it.subredditNameOrNull)
-           //      Observable.just(MyViewState.T3ListForRV(null))}
-
-
-     //       it.run{
-       //     repository.deleteOrSaveSubreddit(
-         //       it.subredditNameOrNull!!,
-           //     it.shouldDelete
-            //).concatWith {this@onSaveOrDelete.} }
-       // }
-         //   .andThen(prefetch()).andThen{ ()->if }
+             .andThen(
+                   Observable.just(MyViewState.T3ListForRV(null)) )
+         }}
 
 
 
@@ -238,7 +208,7 @@ class SubredditsAndPostsVM @Inject constructor(
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()
-        }
-}
+        }}
+
 
 
