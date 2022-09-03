@@ -14,8 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-
 import com.example.renewed.databinding.PostViewBinding
+
+
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.android.AndroidEntryPoint

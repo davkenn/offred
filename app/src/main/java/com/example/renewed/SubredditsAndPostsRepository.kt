@@ -46,7 +46,7 @@ class SubredditsAndPostsRepository(private val api : API,
     //https://stackoverflow.com/questions/42161293/rxjava-flatmap-how-to-skip-errors
     private fun loadSubredditsDb(needed: Int): Completable =
         Observable.fromIterable(List(needed){0})
-            .flatMap ( {  api.getRandomSubreddit().toObservable() } , 6)
+            .flatMap ( {  api.getRandomSubreddit().toObservable()} , 6)
             .map { (it as T5).toDbModel() }
             .flatMapCompletable { roomT5 -> t5Dao.insertT5(roomT5)}
 

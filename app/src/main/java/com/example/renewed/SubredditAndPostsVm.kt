@@ -49,6 +49,7 @@ class SubredditsAndPostsVM @Inject constructor(
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
                 .doOnComplete { Timber.d("---- done fetching subreddits") }
+
                 .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
             .andThen(repository.prefetchPosts())
                 .doOnError { Timber.e("----error getting posts") }

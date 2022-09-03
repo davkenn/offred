@@ -19,6 +19,7 @@ import okio.BufferedSource
 import okio.buffer
 import okio.source
 import java.time.Instant
+import kotlin.random.Random
 
 
 class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
@@ -44,6 +45,7 @@ class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
     }
 
     override fun getSubreddits(): Single<List<RoomT5>> {
+
 
 return  apiService.getRandomSubreddit().map{(it as T5).toDbModel()}
     .map{it-> var b = mutableListOf<RoomT5>(it);b}

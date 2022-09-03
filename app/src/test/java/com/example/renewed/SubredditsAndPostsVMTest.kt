@@ -1,5 +1,6 @@
 package com.example.renewed
 
+import android.util.Log
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
 import com.example.renewed.moshiadapters.DescriptionAdapter
@@ -10,8 +11,11 @@ import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 
 import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.SocketPolicy
 import okio.buffer
 import okio.source
+import org.hamcrest.MatcherAssert.assertThat
+
 
 import org.junit.After
 import org.junit.Before
@@ -19,7 +23,9 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.io.IOException
 import java.nio.charset.StandardCharsets
+import java.util.concurrent.TimeUnit
 
 
 class SubredditsAndPostsVMTest {
@@ -27,39 +33,20 @@ class SubredditsAndPostsVMTest {
     private lateinit var fakerepo: FakeRepo2
     private lateinit var mockWebServer: MockWebServer
     private lateinit var okHttpClient: OkHttpClient
+    private lateinit var apiService: API
     @Before
     public fun setUp() {
+        mockWebServer = MockWebServer()
 
-        mockWebServer= MockWebServer()
-        var mosh =Moshi.Builder()
 
-            //TODO does order matter here?
-            .add(RedditPostAdapter())
-            .add(RedditHolderAdapter())
-            .add(DescriptionAdapter())
-            .build()
-okHttpClient=     OkHttpClient.Builder()
-
-            .build()
-        var apiService = Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/"))
-
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(mosh))
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-            .create(API::class.java)
+        apiService =setupTestRetrofit(mockWebServer,true)
         fakerepo = FakeRepo2(apiService)
         viewModel = SubredditsAndPostsVM(fakerepo)
 
-        val inputStream = this.javaClass.classLoader!!.getResource("Berserk.json")
-            .openStream()
-        val source = inputStream?.let { inputStream.source().buffer() }
-        var res = source?.let{it.readString(StandardCharsets.UTF_8)}
-
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(res!!))
         //    viewModel = SubredditsAndPostsVM(SubredditsAndPostsRepository(API., null,null))
     }
+
+
 
     @After
     public fun tearDown() {
@@ -73,16 +60,61 @@ okHttpClient=     OkHttpClient.Builder()
 
     @Test
     fun processInput() {
+
+
+        var end = loadJsonResponse("Berserk.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+
+      //  fakerepo.prefetchSubreddits()
+     //   var b = fakerepo.getSubreddits()
+        var n = viewModel.vs.subscribe()
         var res = viewModel.vs.test()
-        fakerepo.prefetchSubreddits()
-      //  var b = fakerepo.getSubreddits()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
-      //    var c = b.blockingGet()
+       //   var c = b.blockingGet()
+
+
+        assertThat("Is there a subscrier?",res.hasSubscription())
         res.assertNotComplete()
         res.assertNoErrors()
-        res.hasSubscription()
-        res.assertValueCount(4)
 
+        res.assertValueCount(3)
+
+    }
+
+
+    @Test
+    fun processNetworkError() {
+
+        var end = loadJsonResponse("Berserk.json")
+
+        var l = MockResponse().setResponseCode(403)
+        l.socketPolicy=SocketPolicy.DISCONNECT_AT_START
+    //        l.setHeadersDelay(10,TimeUnit.SECONDS)
+      //  l.setBodyDelay(10,TimeUnit.SECONDS)
+        mockWebServer.enqueue(l)
+        fakerepo.prefetchSubreddits()
+
+
+   //    var a =  fakerepo.getSubreddits()
+//var c = a.blockingGet()
+        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+
+        var res = viewModel.vs.test()
+res.assertNoErrors()
+     //   res.assertError(IOException::class.java)
+
+        res.assertValueCount(1)
+
+    }
+
+    fun loadJsonResponse(e:String): String? {
+
+        val inputStream = this.javaClass.classLoader!!.getResource(e)
+            .openStream()
+        val source = inputStream?.let { inputStream.source().buffer() }
+        var res = source?.let { it.readString(StandardCharsets.UTF_8) }
+        res
+        return res
     }
 
     @Test
@@ -95,6 +127,6 @@ okHttpClient=     OkHttpClient.Builder()
     }
 
     @Test
-    fun getVs() {
+    fun ExceptionThrown() {
     }
 }
