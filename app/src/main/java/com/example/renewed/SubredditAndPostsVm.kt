@@ -39,10 +39,12 @@ class SubredditsAndPostsVM @Inject constructor(
 
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
+            //using share instead of replay prevents event retriggers on rotates
+            //but maybe it also makes it so the t3list is gone on rotate
         .share()
-        //.replay(1)
-   //     .autoConnect(1)
-     //   { upstream -> upstream.addTo(disposables) }
+  //      .replay(1)
+    //    .autoConnect(1)
+      //  { upstream -> upstream.addTo(disposables) }
 
 
     fun processInput(name: MyEvent) {
@@ -136,7 +138,7 @@ class SubredditsAndPostsVM @Inject constructor(
         return Observable.merge(
 
             flatMap { _ -> Observable.just(MyViewState.T3ListForRV(null)) },
-//TODO i had got this down to one subscribeon now its back up to 2 when added to observable and changed rx method
+
             flatMap {
                 repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }

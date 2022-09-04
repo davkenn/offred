@@ -22,6 +22,4 @@ private val repository: BaseSubredditsAndPostsRepo
             .doOnEvent{x,y->name =  x.subredditId}
             .map { MyViewState.T3ForViewing(it.toViewState() )}
 
-
-
 }

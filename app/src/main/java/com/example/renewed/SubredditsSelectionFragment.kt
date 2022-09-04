@@ -37,14 +37,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        selectedSubreddit = savedInstanceState?.getString("key")
+        selectedSubreddit = savedInstanceState?.getString("key1")
         super.onCreate(savedInstanceState)
     }
 
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
-            putString("key", selectedSubreddit)
+            putString("key1", selectedSubreddit)
         }
         super.onSaveInstanceState(outState)
     }
@@ -64,7 +64,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         val adapter = SubredditsAdapter { x ->
 
-            //selectedSubreddit = x.name
+            selectedSubreddit = x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
 
         }
@@ -141,10 +141,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         var t = navHostFragment.childFragmentManager.primaryNavigationFragment
 
-
         t.let { if (t is SubredditFragment) name = t.getName()
                 else if (t is PostFragment) name = t.getName()}
-
 
         return name
 
@@ -161,6 +159,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .any { t5.name == it.arguments?.get("key") ?: "NOMATCH" }
 
         if (!b) navHostFragment.navController.navigate(resId, bundleOf("key" to t5.name))
+
         else Snackbar.make(
             binding.root, "Already in Stack. Press back to find it...",
             Snackbar.LENGTH_SHORT
