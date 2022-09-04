@@ -14,6 +14,20 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.nio.charset.StandardCharsets
 
+
+class TestTools {
+    companion object {
+        fun loadJsonResponse( e: String): String? {
+
+            val inputStream = this.javaClass.classLoader!!.getResource(e)
+                .openStream()
+            val source = inputStream?.let { inputStream.source().buffer() }
+            var res = source?.let { it.readString(StandardCharsets.UTF_8) }
+            res
+            return res
+        }
+    }
+}
 fun MockWebServer.enqueueResponse(fileName: String, code: Int) {
 
     val inputStream = this.javaClass.classLoader!!.getResource("Berserk1.json")

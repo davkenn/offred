@@ -1,33 +1,20 @@
 package com.example.renewed
 
-import android.util.Log
+import com.example.renewed.TestTools.Companion.loadJsonResponse
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
-import com.example.renewed.moshiadapters.DescriptionAdapter
-import com.example.renewed.moshiadapters.RedditHolderAdapter
-import com.example.renewed.moshiadapters.RedditPostAdapter
-import com.squareup.moshi.Moshi
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.internal.schedulers.TrampolineScheduler
-import io.reactivex.rxjava3.subscribers.TestSubscriber
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.SocketPolicy
-import okio.buffer
-import okio.source
 import org.hamcrest.MatcherAssert.assertThat
 
 
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.IOException
-import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
 
 
@@ -39,7 +26,7 @@ class SubredditsAndPostsVMTest {
     private lateinit var apiService: API
     @Before
     public fun setUp() {
-  /**      mockWebServer = MockWebServer()
+        mockWebServer = MockWebServer()
 
         var end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
@@ -47,7 +34,7 @@ class SubredditsAndPostsVMTest {
         apiService =setupTestRetrofit(mockWebServer,true)
         fakerepo = FakeRepo2(apiService)
         viewModel = SubredditsAndPostsVM(fakerepo)
-**/
+
 
         //    viewModel = SubredditsAndPostsVM(SubredditsAndPostsRepository(API., null,null))
     }
@@ -70,11 +57,8 @@ class SubredditsAndPostsVMTest {
 
 
         var res = viewModel.vs.test()
-
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
-      //    var c = b.blockingGet()
         var l = res.await(1,TimeUnit.SECONDS)
-
 
         assertThat("Is there a subscrier?",res.hasSubscription())
         res.assertNotComplete()
@@ -88,10 +72,6 @@ class SubredditsAndPostsVMTest {
     @Test
     fun getRandomSubreddit() {
 
-
-      //  fakerepo.prefetchSubreddits().test()
-    //   var res =  fakerepo.getSubreddits().blockingGet()
-      //  var l = res.get(0)
 
         var r = fakerepo.getSubreddits()
         var t = r.test()
@@ -108,7 +88,7 @@ class SubredditsAndPostsVMTest {
     fun processNetworkError() {
         mockWebServer = MockWebServer()
 
-        var end = loadJsonResponse("Berserk.json")
+        var end = TestTools.loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
                 setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
         mockWebServer.start()
@@ -127,15 +107,7 @@ class SubredditsAndPostsVMTest {
 
     }
 
-    fun loadJsonResponse(e:String): String? {
 
-        val inputStream = this.javaClass.classLoader!!.getResource(e)
-            .openStream()
-        val source = inputStream?.let { inputStream.source().buffer() }
-        var res = source?.let { it.readString(StandardCharsets.UTF_8) }
-        res
-        return res
-    }
 
     @Test
     fun processRefreshEvent() {

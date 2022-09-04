@@ -50,8 +50,6 @@ var a = apiService.getRandomSubreddit()
 return  a.map{(it as T5).toDbModel()}
     .map{it-> var b = mutableListOf<RoomT5>(it);b}
 
-
-
     }
 
     override fun getPost(name: String): Single<RoomT3> {
