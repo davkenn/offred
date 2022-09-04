@@ -18,8 +18,9 @@ interface T5DAO {
         @Query("DELETE FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0 AND totalViews >= :maxViews")
         fun deleteUnwanted(maxViews: Int): Completable
 
+        //TODO is this good or bad to just centralize it like this
         @Query("SELECT * FROM RoomT5" +
-                "        WHERE isSaved=0 and isDisplayed=0 ORDER BY totalViews ASC LIMIT 20")
+                "        WHERE isSaved=0 and totalViews < 3  ORDER BY displayName LIMIT 20")
         fun getSubredditsFromTable(): Single<List<RoomT5>>
 
         @Query("SELECT * FROM RoomT5 WHERE RoomT5.name like :name")

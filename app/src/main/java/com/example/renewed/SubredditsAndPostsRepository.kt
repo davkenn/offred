@@ -66,7 +66,7 @@ class SubredditsAndPostsRepository(private val api : API,
             false) )}
 **/
     override fun getSubreddit(name: String): Single<RoomT5> =
-        t5Dao.getSubreddit("")/**.onErrorResumeWith(Single.just(
+        t5Dao.getSubreddit(name)/**.onErrorResumeWith(Single.just(
             RoomT5(
                 "ERROR",
                 "ERROR",
@@ -130,13 +130,12 @@ class SubredditsAndPostsRepository(private val api : API,
                             //so as not to double count a view, its sense of how many times its
                             //been viewed is only updated when its sent back to the system
                             totalViews= if (shouldUpdateDisplayed) it.totalViews else it.totalViews+1,
-                                isDisplayed =  if (!shouldUpdateDisplayed) it.isDisplayed
-                                                    else isDisplayedFlagSet.compareTo(false)))  }
-
+                                isDisplayed =  if (shouldUpdateDisplayed) isDisplayedFlagSet.compareTo(false)
+                                                                        else it.isDisplayed))
 
     }
 
 
 
 
-}
+}}

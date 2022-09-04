@@ -7,6 +7,8 @@ import com.example.renewed.moshiadapters.DescriptionAdapter
 import com.example.renewed.moshiadapters.RedditHolderAdapter
 import com.example.renewed.moshiadapters.RedditPostAdapter
 import com.squareup.moshi.Moshi
+import io.reactivex.rxjava3.internal.schedulers.TrampolineScheduler
+import io.reactivex.rxjava3.subscribers.TestSubscriber
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 
@@ -59,17 +61,31 @@ class SubredditsAndPostsVMTest {
     }
 
     @Test
+
     fun processInput() {
 
+        var t:TestSubscriber<FullViewState> = TestSubscriber()
+        var end = loadJsonResponse("Berserk.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+        fakerepo.prefetchSubreddits().blockingAwait()
+        viewModel.vs.subscribe{t}
+        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
 
+
+
+        t.assertNoErrors()
+        t.assertNotComplete()
+        var e =t.values()
+/**
         var end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
 
 
-        //var b = fakerepo.getSubreddits()
+        //var b = fakerepo.getSubreddits() .subscribeOn(TrampolineScheduler.instance())
+        var res = viewModel.vs.subscribeOn(TrampolineScheduler.instance())
+            .test()
 
-        var res = viewModel.vs.test()
-        fakerepo.prefetchSubreddits()
+        fakerepo.prefetchSubreddits().subscribeOn(TrampolineScheduler.instance()).subscribe()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
       //    var c = b.blockingGet()
 
@@ -80,6 +96,8 @@ class SubredditsAndPostsVMTest {
         res.assertNoErrors()
 
         res.assertValueCount(3)
+**/
+
 
     }
 
@@ -95,7 +113,7 @@ class SubredditsAndPostsVMTest {
       //  l.setBodyDelay(10,TimeUnit.SECONDS)
         mockWebServer.enqueue(l)
 
-        var res = viewModel.vs.test()
+        var res = viewModel.vs.test().await()
         fakerepo.prefetchSubreddits()
 
 

@@ -12,6 +12,12 @@
         <argument
             android:name="key"
             app:argType="string" />
+        <action
+            android:id="@+id/action_postFragment_to_subredditFragment"
+            app:destination="@id/subredditFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
 <!--        tools:layout="@layout/post_view" -->
 
@@ -25,6 +31,12 @@
         <argument
             android:name="key"
             app:argType="string" />
+        <action
+            android:id="@+id/action_subredditFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_subredditFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
      <!--   tools:layout="@layout/sub_view"-->
 
@@ -32,7 +44,14 @@
     <fragment
         android:id="@+id/blankFragment"
         android:name="com.example.renewed.BlankFragment"
-        android:label="Blank"/>
+        android:label="Blank">
+        <action
+            android:id="@+id/action_blankFragment_to_subredditFragment"
+            app:destination="@id/subredditFragment" />
+        <action
+            android:id="@+id/action_blankFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
 <!--        tools:layout="@layout/blank_view"-->
 
 

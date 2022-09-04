@@ -30,19 +30,21 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
-    private var selectedSubreddit: String? = null
+
+
+    private var selectedSubreddit: String? by atomicNullable(null)
 
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        selectedSubreddit = savedInstanceState?.getString("SELECTED_SUB")
+        selectedSubreddit = savedInstanceState?.getString("key")
         super.onCreate(savedInstanceState)
     }
 
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
-            putString("SELECTED_SUB", selectedSubreddit)
+            putString("key", selectedSubreddit)
         }
         super.onSaveInstanceState(outState)
     }
@@ -62,7 +64,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         val adapter = SubredditsAdapter { x ->
 
-            selectedSubreddit = x.name
+            //selectedSubreddit = x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
 
         }
@@ -75,7 +77,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditsRv.adapter = adapter
 
             refreshButton.setOnClickListener {
-                selectedSubreddit = null
+      //          selectedSubreddit = null
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name })
                 )
@@ -86,7 +88,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             }
 
             saveButton.setOnClickListener {
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(selectedSubreddit ))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),selectedSubreddit,
                     false))
 
@@ -95,12 +97,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
 
-
-
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(selectedSubreddit ))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),selectedSubreddit,
                     true))
-           //     subsAndPostsVM.processInput(MyEvent.RemoveAllSubreddits(listOf(selectedSubreddit!!)))
+
             }
 
         }
@@ -121,8 +121,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 }
 
                 if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
-                navHostFragment.navController.popBackStack()
+
                 navHostFragment.navController.popBackStack(R.id.subredditFragment,false)
+                    navHostFragment.navController.popBackStack()
                     selectedSubreddit = getSubredditNameOrNull()}
             },
 
@@ -132,12 +133,18 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun getSubredditNameOrNull(): String? {
         var name: String? = null
-        if (navHostFragment.childFragmentManager.fragments.reversed()[0] is SubredditFragment) {
-            name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
-                    as SubredditFragment).getName()
-        }
+
+        var t = navHostFragment.childFragmentManager.primaryNavigationFragment
+
+        t.let { if (t is SubredditFragment) name = t.getName()  }
+   //     var f = navHostFragment.childFragmentManager.fragments
+     //   if (f.reversed()[0]is SubredditFragment) {
+       //     name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
+         //           as SubredditFragment).getName()
+      //  }
 
         return name
+
     }
 
     private fun navigateToPostOrSubreddit(
@@ -146,6 +153,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         binding: FragmentSubredditsSelectionBinding,
 
         ) {
+
         var b = navHostFragment.navController.backQueue
             .any { t5.name == it.arguments?.get("key") ?: "NOMATCH" }
 

@@ -34,6 +34,14 @@ data class ViewStateT5(
     val created: String,
     val timeLastAccessed: Instant) {
     override fun toString(): String = "ViewStateT5($name) "
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as ViewStateT5
+        return displayName == other.displayName
+
+
+    }
 }
 
 data class ViewStateT3(

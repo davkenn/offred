@@ -17,7 +17,6 @@ class PostsAdapter(private val onClick: (ViewStateT3) -> Unit) :
 
         fun bind(sr: ViewStateT3, onClickFunction: (ViewStateT3) -> Unit) {
             postsBinding.postTitle.text =sr.displayName
-
             //TODO change this and the other to the virewgroup
             postsBinding.postTitle.setOnClickListener { onClickFunction.invoke(sr) }
         }

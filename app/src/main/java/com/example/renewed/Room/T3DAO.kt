@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface T3DAO {
-    //TODO what is conflict strat?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(t3s: List<RoomT3>): Completable
 

@@ -38,9 +38,10 @@ class SubredditsAndPostsVM @Inject constructor(
         .eventToResult()
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
-        .replay(1)
-        .autoConnect(1)
-        { upstream -> upstream.addTo(disposables) }
+        .share()
+        //.replay(1)
+   //     .autoConnect(1)
+     //   { upstream -> upstream.addTo(disposables) }
 
 
     fun processInput(name: MyEvent) {
@@ -138,7 +139,7 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMap {
                 repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }
-                    .map { MyViewState.T5ListForRV(it) }//.subscribeOn(Schedulers.io())
+                    .map { MyViewState.T5ListForRV(it) }
                     .startWith(
                         repository.updateSubreddits(
                             it.srList, isDisplayedFlagSet = false,

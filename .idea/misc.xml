@@ -6,8 +6,10 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2595" />
         <entry key="app/src/main/res/drawable/d.xml" value="0.2595" />
         <entry key="app/src/main/res/drawable/ic_baseline_navigate_before_24.xml" value="0.2595" />
+        <entry key="app/src/main/res/drawable/ic_baseline_navigate_before_36.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_save_24.xml" value="0.2595" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2595" />
+        <entry key="app/src/main/res/drawable/ic_sharp_delete_36.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/blank_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_favorites_list.xml" value="0.18" />
