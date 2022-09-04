@@ -35,7 +35,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var selectedSubreddit: String? by atomicNullable(null)
 
     private lateinit var navHostFragment: NavHostFragment
-
+//TODO oncreate is called on rotation but only start when you click a frag in the menu
+    //maybe need to somehow move to on start
     override fun onCreate(savedInstanceState: Bundle?) {
         selectedSubreddit = savedInstanceState?.getString("key1")
         super.onCreate(savedInstanceState)
@@ -89,7 +90,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             saveButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),selectedSubreddit,
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),getSubredditNameOrNull(),
                     false))
 
             }
@@ -98,7 +99,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             deleteButton.setOnClickListener {
 
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),selectedSubreddit,
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),getSubredditNameOrNull(),
                     true))
 
             }
@@ -124,13 +125,21 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     if (navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
                         navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
                         navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
+
                     }
                     else{
                         navHostFragment.navController.popBackStack(R.id.subredditFragment,false)
                     }
                  //   navHostFragment.navController.popBackStack()
-                    selectedSubreddit = getSubredditNameOrNull()}
-            },
+                  //TODO this is the parent before the navigation
+                    //If i need this to work so it pops off the top and shows the next screen
+                    //I need to be able to get the thing itself annd not the parent
+                    //TODO also seems to work without this disadvantage of without
+                    //though is it sets up a race condition where the one just taken off
+                    //the stack is deleted immediately and it crashes trying to bring back
+                    //up. once go back in stack maybe the thing should be gone
+             //       selectedSubreddit = getSubredditNameOrNull()}
+            }},
 
             { Timber.e("error fetching vs: ${it.localizedMessage}") }   )
                                                                 .addTo(disposables) }
