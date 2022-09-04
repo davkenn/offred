@@ -72,6 +72,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val binding = FragmentSubredditsSelectionBinding.bind(view)
 
         fragmentSelectionBinding = binding.apply {
+
             subredditsRv2.layoutManager = LinearLayoutManager(requireContext())
             subredditsRv2.adapter = adapter2
             subredditsRv.layoutManager = LinearLayoutManager(requireContext())

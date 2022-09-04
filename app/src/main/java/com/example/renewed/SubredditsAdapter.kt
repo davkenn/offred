@@ -3,6 +3,7 @@ package com.example.renewed
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -11,24 +12,34 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-
-import com.example.renewed.models.ViewStateT5
 import com.example.renewed.databinding.RvSubredditElemBinding
 
+import com.example.renewed.models.ViewStateT5
+
+
+private var selected = -1
+private var previousSelected :View? = null
 
 //https://stackoverflow.com/questions/60423596/how-to-use-viewbinding-in-a-recyclerview-adapter
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 //    RecyclerView.Adapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
 
-    class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
-        RecyclerView.ViewHolder(elementBinding.root) {
 
-        fun bind(sr: ViewStateT5, onClickFunction: (ViewStateT5) -> Unit){
+
+    class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
+        RecyclerView.ViewHolder(elementBinding.root){
+
+
+        fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit,
+                                                        adapterContextClosure: (Int) -> Unit,){
+
             elementBinding.displayName.text = sr.displayName
             elementBinding.root.setOnClickListener {
-
-                onClickFunction.invoke(sr); //elementBinding.root.setBackgroundColor(Color.BLUE)
+                adapterContextClosure.invoke(selected)
+                selected = layoutPosition
+                adapterContextClosure.invoke(selected)
+                fragmentContextClosure.invoke(sr); //elementBinding.root.setBackgroundColor(Color.BLUE)
             }
 
             if (sr.displayName.length > 18) {
@@ -56,23 +67,53 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
             }
 
 
-        }
+
+
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubredditViewHolder {
         val elementBinding = RvSubredditElemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val holder = SubredditViewHolder(elementBinding)
+
+
+
+
         return SubredditViewHolder(elementBinding)
     }
 
+    override fun onViewRecycled(holder: SubredditViewHolder) {
+        if (selected == holder.adapterPosition) selected = -1
+
+        super.onViewRecycled(holder)
+    }
+
+
+
+
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
 
-        holder.bind(getItem(position),onClick)
+           var closur = { x:Int ->
+            notifyItemChanged(x);
+            selected = holder.adapterPosition;
+            notifyItemChanged(x);
+        }
+        holder.bind(getItem(position),onClick,closur)
 
-
-        //TODO this is a dead end
-//        if (position == 0) holder.itemView.performClick()
-
-
+        if (position == selected){
+            if (previousSelected != null) {
+                previousSelected!!.isSelected = false
+            }
+            holder.itemView.isSelected=true
+            previousSelected = holder.itemView
+        };
+        else{
+            holder.itemView.isSelected=false
+        }
+      //  holder.itemView.isSelected = selected == holder.adapterPosition
     }
+
+
 
 }
 
@@ -83,15 +124,6 @@ object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
 
     override fun areContentsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem.timeLastAccessed == newItem.timeLastAccessed
-
-
-
-
-
-
-
-
-
 
 
 
