@@ -7,6 +7,7 @@ import com.example.renewed.moshiadapters.DescriptionAdapter
 import com.example.renewed.moshiadapters.RedditHolderAdapter
 import com.example.renewed.moshiadapters.RedditPostAdapter
 import com.squareup.moshi.Moshi
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.internal.schedulers.TrampolineScheduler
 import io.reactivex.rxjava3.subscribers.TestSubscriber
 import okhttp3.OkHttpClient
@@ -38,12 +39,15 @@ class SubredditsAndPostsVMTest {
     private lateinit var apiService: API
     @Before
     public fun setUp() {
-        mockWebServer = MockWebServer()
+  /**      mockWebServer = MockWebServer()
 
-
+        var end = loadJsonResponse("Berserk.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+        mockWebServer.start()
         apiService =setupTestRetrofit(mockWebServer,true)
         fakerepo = FakeRepo2(apiService)
         viewModel = SubredditsAndPostsVM(fakerepo)
+**/
 
         //    viewModel = SubredditsAndPostsVM(SubredditsAndPostsRepository(API., null,null))
     }
@@ -64,31 +68,12 @@ class SubredditsAndPostsVMTest {
 
     fun processInput() {
 
-        var t:TestSubscriber<FullViewState> = TestSubscriber()
-        var end = loadJsonResponse("Berserk.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
-        fakerepo.prefetchSubreddits().blockingAwait()
-        viewModel.vs.subscribe{t}
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
 
+        var res = viewModel.vs.test()
 
-
-        t.assertNoErrors()
-        t.assertNotComplete()
-        var e =t.values()
-/**
-        var end = loadJsonResponse("Berserk.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
-
-
-        //var b = fakerepo.getSubreddits() .subscribeOn(TrampolineScheduler.instance())
-        var res = viewModel.vs.subscribeOn(TrampolineScheduler.instance())
-            .test()
-
-        fakerepo.prefetchSubreddits().subscribeOn(TrampolineScheduler.instance()).subscribe()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
       //    var c = b.blockingGet()
-
+        var l = res.await(1,TimeUnit.SECONDS)
 
 
         assertThat("Is there a subscrier?",res.hasSubscription())
@@ -96,36 +81,49 @@ class SubredditsAndPostsVMTest {
         res.assertNoErrors()
 
         res.assertValueCount(3)
-**/
+
+
+
+    }
+    @Test
+    fun getRandomSubreddit() {
+
+
+      //  fakerepo.prefetchSubreddits().test()
+    //   var res =  fakerepo.getSubreddits().blockingGet()
+      //  var l = res.get(0)
+
+        var r = fakerepo.getSubreddits()
+        var t = r.test()
+
+
+           var l = t.await(1,TimeUnit.SECONDS)
+        t.assertValueCount(1)
+        t.assertComplete()
 
 
     }
 
-
     @Test
     fun processNetworkError() {
+        mockWebServer = MockWebServer()
 
         var end = loadJsonResponse("Berserk.json")
-
-        var l = MockResponse().setResponseCode(403)
-        l.socketPolicy=SocketPolicy.DISCONNECT_AT_START
-    //        l.setHeadersDelay(10,TimeUnit.SECONDS)
-      //  l.setBodyDelay(10,TimeUnit.SECONDS)
-        mockWebServer.enqueue(l)
-
-        var res = viewModel.vs.test().await()
-        fakerepo.prefetchSubreddits()
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
+                setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
+        mockWebServer.start()
+        apiService =setupTestRetrofit(mockWebServer,true)
+        fakerepo = FakeRepo2(apiService)
+        viewModel = SubredditsAndPostsVM(fakerepo)
 
 
-   //    var a =  fakerepo.getSubreddits()
-//var c = a.blockingGet()
+        var res = viewModel.vs.test()
+
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
 
+        var n = res.await(1,TimeUnit.SECONDS)
 
-res.assertNoErrors()
-     //   res.assertError(IOException::class.java)
-
-        res.assertValueCount(1)
+        res.assertError(IOException::class.java)
 
     }
 

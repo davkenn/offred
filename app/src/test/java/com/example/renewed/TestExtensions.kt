@@ -43,6 +43,8 @@ fun MockWebServer.enqueueResponse(fileName: String, code: Int) {
         var apiService = Retrofit.Builder()
             .baseUrl(mockWebServer.url("/"))
 
+
+
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(mosh))
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
