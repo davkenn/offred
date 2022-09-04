@@ -27,6 +27,7 @@ sealed class MyViewState(val name: String?){
 data class ViewStateT5(
     val name: String,
     val displayName: String,
+
     val description: String,
     val thumbnail: String,
     val bannerImg: String,
@@ -47,10 +48,12 @@ data class ViewStateT5(
 data class ViewStateT3(
     val name: String,
     val displayName: String,
+    val subredditId: String,
     val selftext: String,
     val url: String,
     val thumbnail: String,
-    val created: String
+    val created: String,
+
 ){
     override fun toString(): String = "ViewStateT3($name) "
 }

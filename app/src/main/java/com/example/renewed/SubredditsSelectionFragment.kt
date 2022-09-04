@@ -121,9 +121,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 }
 
                 if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
-
-                navHostFragment.navController.popBackStack(R.id.subredditFragment,false)
-                    navHostFragment.navController.popBackStack()
+                    if (navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
+                        navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
+                        navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
+                    }
+                    else{
+                        navHostFragment.navController.popBackStack(R.id.subredditFragment,false)
+                    }
+                 //   navHostFragment.navController.popBackStack()
                     selectedSubreddit = getSubredditNameOrNull()}
             },
 
@@ -136,12 +141,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         var t = navHostFragment.childFragmentManager.primaryNavigationFragment
 
-        t.let { if (t is SubredditFragment) name = t.getName()  }
-   //     var f = navHostFragment.childFragmentManager.fragments
-     //   if (f.reversed()[0]is SubredditFragment) {
-       //     name = (navHostFragment.childFragmentManager.fragments.reversed()[0]
-         //           as SubredditFragment).getName()
-      //  }
+
+        t.let { if (t is SubredditFragment) name = t.getName()
+                else if (t is PostFragment) name = t.getName()}
+
 
         return name
 

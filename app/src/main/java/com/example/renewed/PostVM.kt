@@ -18,7 +18,9 @@ private val repository: BaseSubredditsAndPostsRepo
         private set
 
     fun setPost(n: String) : Single<MyViewState.T3ForViewing> =
-        repository.getPost(n).map { MyViewState.T3ForViewing(it.toViewState() )}.also { name = n }
+        repository.getPost(n)
+            .doOnEvent{x,y->name =  x.subredditId}
+            .map { MyViewState.T3ForViewing(it.toViewState() )}
 
 
 

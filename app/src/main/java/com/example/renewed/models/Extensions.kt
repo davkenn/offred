@@ -54,14 +54,15 @@ fun T3.toDbModel() : RoomT3 =
             subscribers = subscribers,
            created= created_utc.instantToDateString(),
         timeLastAccessed=timeLastAccessed
+        )
 
-)
 
 fun RoomT3.toViewState(): ViewStateT3 =
 
     ViewStateT3(
         name = this.name,
         displayName = this.title,
+        subredditId = this.subredditId,
         selftext = this.selftext,
         thumbnail = this.thumbnail,
         url = this.url,
