@@ -102,7 +102,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
         if (position == selected){
             if (previousSelected != null) {
-                previousSelected!!.isSelected = false
+                previousSelected?.isSelected = false
             }
             holder.itemView.isSelected=true
             previousSelected = holder.itemView
@@ -124,14 +124,6 @@ object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
 
     override fun areContentsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem.timeLastAccessed == newItem.timeLastAccessed
-
-
-
-
-
-
-
-
 
 
 

@@ -135,11 +135,8 @@ class SubredditsAndPostsVM @Inject constructor(
     //deletes when process dies or just clear when start app?
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<MyViewState> {
 
-        return Observable.merge(
 
-            flatMap { _ -> Observable.just(MyViewState.T3ListForRV(null)) },
-
-            flatMap {
+           return flatMap {
                 repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }
                     .map { MyViewState.T5ListForRV(it) }
@@ -147,7 +144,7 @@ class SubredditsAndPostsVM @Inject constructor(
                         repository.updateSubreddits(
                             it.srList, isDisplayedFlagSet = false,
                            shouldUpdateDisplayed = false).subscribeOn(Schedulers.io()).andThen(
-                        prefetch().subscribeOn(Schedulers.io())))})
+                        prefetch().subscribeOn(Schedulers.io())))}
 
             }
 
@@ -166,19 +163,23 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
     private fun Observable<MyEvent.UpdateViewingState>.updateViewingState(): Observable<MyViewState> {
+        return Observable.merge(
+
+            flatMap { _ -> Observable.just(MyViewState.T3ListForRV(null)) },
 
 
-        return flatMap {
+
+        flatMap {
             repository.updateSubreddits(
                 if (it.name == null) listOf() else listOf(it.name),
                 false, true
             )
                 .subscribeOn(Schedulers.io())
                 .andThen(Observable.just(MyViewState.NavigateBack))
-        }
+        })
+
 
     }
-
 
     private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<MyViewState> {
 

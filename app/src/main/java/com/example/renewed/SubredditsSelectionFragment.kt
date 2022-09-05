@@ -79,7 +79,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditsRv.adapter = adapter
 
             refreshButton.setOnClickListener {
-      //          selectedSubreddit = null
+
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name })
                 )
@@ -129,8 +129,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                     }
                     else{
+                        //TODO
+                        //This first line is the case of a post being on the stack but no subreddit behind it
+            //            navHostFragment.navController.popBackStack()
                         navHostFragment.navController.popBackStack(R.id.subredditFragment,false)
+          //              if (resul==false) navHostFragment.navController.popBackStack()
                     }
+
+
                  //   navHostFragment.navController.popBackStack()
                   //TODO this is the parent before the navigation
                     //If i need this to work so it pops off the top and shows the next screen
