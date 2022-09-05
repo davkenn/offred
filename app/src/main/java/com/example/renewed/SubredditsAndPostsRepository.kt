@@ -22,9 +22,7 @@ class SubredditsAndPostsRepository(private val api : API,
 ): BaseSubredditsAndPostsRepo {
 
 
-
     override fun prefetchPosts(): Completable {
-
 
         return t5Dao.getSubredditIDsNeedingPosts()
             .flattenAsObservable { it }
@@ -43,7 +41,6 @@ class SubredditsAndPostsRepository(private val api : API,
                                                           min(80, 80-n.toInt())
                                                                                       )
                                                                                         )}
-
 
     //https://stackoverflow.com/questions/42161293/rxjava-flatmap-how-to-skip-errors
     private fun loadSubredditsDb(needed: Int): Completable =
@@ -103,7 +100,6 @@ class SubredditsAndPostsRepository(private val api : API,
     }
 
 
-
     //TODO if im going to delete i have to remove from back stack
     override fun deleteSubreddits(names:List<String>): Observable<Unit> {
 
@@ -112,13 +108,8 @@ class SubredditsAndPostsRepository(private val api : API,
                          .toObservable()
     }
 
-
-
-//TODO break this back up into setviewed and delete
-
     override fun updateSubreddits(srList: List<String>, isDisplayedFlagSet:Boolean,
                                 shouldUpdateDisplayed:Boolean): Completable {
-
 
     return Observable.fromIterable(srList)
                     .flatMapSingle {t5Dao.getSubreddit(it)}
@@ -134,8 +125,4 @@ class SubredditsAndPostsRepository(private val api : API,
                                                                         else it.isDisplayed))
 
     }
-
-
-
-
 }}

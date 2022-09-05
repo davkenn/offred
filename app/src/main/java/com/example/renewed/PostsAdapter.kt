@@ -32,14 +32,8 @@ class PostsAdapter(private val onClick: (ViewStateT3) -> Unit) :
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(getItem(position),onClick )
 
-
-
     }
 }
-
-
-//val text = resources.openRawResource(R.raw.your_text_file)
-  //                               .bufferedReader().use { it.readText() }
 
 object PostDiffCallback : DiffUtil.ItemCallback<ViewStateT3>() {
     override fun areItemsTheSame(oldItem: ViewStateT3, newItem: ViewStateT3): Boolean {

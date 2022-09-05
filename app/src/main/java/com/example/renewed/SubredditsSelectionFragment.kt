@@ -18,7 +18,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -42,14 +41,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onCreate(savedInstanceState)
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         outState.run {
             putString("key1", selectedSubreddit)
         }
         super.onSaveInstanceState(outState)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,20 +88,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             saveButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),getSubredditNameOrNull(),
-                    false))
-
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),
+                                                getSubredditNameOrNull(), false))
             }
 
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
-
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),getSubredditNameOrNull(),
-                    true))
-
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),
+                                                getSubredditNameOrNull(), true))
             }
-
         }
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -123,28 +116,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 }
 
                 if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
-                    if (navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
-                        navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
-                        navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
+                    val currentDisplayedFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
+                    val navController = navHostFragment.navController
+                    if ( currentDisplayedFragment is SubredditFragment) {
+                //TODO here I want to submit the list but without the selected elem
+//                      x.let{adapter2.submitList(it.t5ListForRV.vsT5.indexOf(it.))}
+                        navController.popBackStack(R.id.subredditFragment, true)
+                        navController.popBackStack(R.id.subredditFragment, false)
 
                     }
                     else{
-                        //TODO
-                        //This first line is the case of a post being on the stack but no subreddit behind it
-            //            navHostFragment.navController.popBackStack()
-                        navHostFragment.navController.popBackStack(R.id.subredditFragment,false)
-          //              if (resul==false) navHostFragment.navController.popBackStack()
+                        navController.popBackStack(R.id.subredditFragment,false)
                     }
 
 
-                 //   navHostFragment.navController.popBackStack()
-                  //TODO this is the parent before the navigation
-                    //If i need this to work so it pops off the top and shows the next screen
-                    //I need to be able to get the thing itself annd not the parent
-                    //TODO also seems to work without this disadvantage of without
-                    //though is it sets up a race condition where the one just taken off
-                    //the stack is deleted immediately and it crashes trying to bring back
-                    //up. once go back in stack maybe the thing should be gone
              //       selectedSubreddit = getSubredditNameOrNull()}
             }},
 
@@ -154,9 +139,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun getSubredditNameOrNull(): String? {
         var name: String? = null
-
         var t = navHostFragment.childFragmentManager.primaryNavigationFragment
-
         t.let { if (t is SubredditFragment) name = t.getName()
                 else if (t is PostFragment) name = t.getName()}
 
@@ -164,18 +147,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     }
 
-    private fun navigateToPostOrSubreddit(
-        @IdRes resId: Int,
-        t5: MyViewState,
-        binding: FragmentSubredditsSelectionBinding,
-
-        ) {
+    private fun navigateToPostOrSubreddit(@IdRes resId: Int,
+        t5: MyViewState, binding: FragmentSubredditsSelectionBinding, ) {
 
         var b = navHostFragment.navController.backQueue
             .any { t5.name == it.arguments?.get("key") ?: "NOMATCH" }
-
-        if (!b) navHostFragment.navController.navigate(resId, bundleOf("key" to t5.name))
-
+        if (!b) navHostFragment.navController.navigate(
+                                    resId, bundleOf("key" to t5.name))
         else Snackbar.make(
             binding.root, "Already in Stack. Press back to find it...",
             Snackbar.LENGTH_SHORT
@@ -186,19 +164,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onStart() {
         super.onStart()
         Timber.d("onStart in home Fragment")
-
         disposable = subsAndPostsVM.prefetch()
             .concatWith {
                 subsAndPostsVM.processInput(
                     MyEvent.ScreenLoadEvent(
-                        selectedSubreddit
-                    )
-                )
-            }.subscribe(
-                { Timber.d("----done fetching both ") },
-                { Timber.e("----error fetching is ${it.localizedMessage}") })
-
-
+                        selectedSubreddit))
+                    }.subscribe({ Timber.d("----done fetching both ") },
+                { Timber.e("----error fetching is ${it.localizedMessage}")
+                })
     }
 
     override fun onResume() {
@@ -215,7 +188,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         fragmentSelectionBinding = null
         disposables.clear()
         super.onDestroyView()
-
     }
 
     override fun onDestroy() {

@@ -20,16 +20,12 @@ import com.example.renewed.models.ViewStateT5
 private var selected = -1
 private var previousSelected :View? = null
 
-//https://stackoverflow.com/questions/60423596/how-to-use-viewbinding-in-a-recyclerview-adapter
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
-//    RecyclerView.Adapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
-
 
 
     class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
         RecyclerView.ViewHolder(elementBinding.root){
-
 
         fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit,
                                                         adapterContextClosure: (Int) -> Unit,){
@@ -43,8 +39,8 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
             }
 
             if (sr.displayName.length > 18) {
-            //TODO now that ive taken out center crop fixed some bad looks but messed up the ones that are too small
-
+            //TODO now that ive taken out center crop fixed some bad looks but messed up the ones
+                // that are too small
                 elementBinding.detailImage.visibility=GONE
                 return
             }
@@ -63,41 +59,28 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
                         .error(ColorDrawable(Color.RED))
                   .fallback(ColorDrawable(Color.YELLOW))
                         .into(elementBinding.detailImage)
-
             }
-
-
-
-
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubredditViewHolder {
         val elementBinding = RvSubredditElemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val holder = SubredditViewHolder(elementBinding)
-
-
-
-
         return SubredditViewHolder(elementBinding)
     }
 
     override fun onViewRecycled(holder: SubredditViewHolder) {
         if (selected == holder.adapterPosition) selected = -1
-
         super.onViewRecycled(holder)
     }
 
 
-
-
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
 
-           var closur = { x:Int ->
+        var closur = { x:Int ->
             notifyItemChanged(x);
             selected = holder.adapterPosition;
-            notifyItemChanged(x);
-        }
+            notifyItemChanged(x); }
+
         holder.bind(getItem(position),onClick,closur)
 
         if (position == selected){
@@ -112,9 +95,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         }
       //  holder.itemView.isSelected = selected == holder.adapterPosition
     }
-
-
-
 }
 
 object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
@@ -124,8 +104,5 @@ object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
 
     override fun areContentsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem.timeLastAccessed == newItem.timeLastAccessed
-
-
-
     }
 }

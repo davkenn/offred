@@ -6,13 +6,11 @@ import java.time.format.DateTimeFormatter
 
 fun T5.toDbModel() : RoomT5 {
 
-    //add let in here somewhere
-    var fullDescription = combineDescriptions(this.description,this.public_description)
 
+    var fullDescription = combineDescriptions(this.description,this.public_description)
     var thumb1 = icon_img?: ""
     var thumb2 = header_img?:""
     var thumb3 = community_icon?:""
-
     val thumbnail = thumb1.ifBlank { thumb3.substringBeforeLast("?")}.ifBlank { thumb2 }
 
     return RoomT5(
@@ -26,15 +24,7 @@ fun T5.toDbModel() : RoomT5 {
                 subscribers = subscribers,
                 isSaved = false,
                 totalViews = 0)
-
 }
-
-
-//fun RoomT5.toViewState(): ViewStateT5 =
-  //  ViewStateT5(
-    //        displayName = this.displayName,
-      //      timeLastAccessed= DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()).format(timeLastAccessed),
-        //    created_utc = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()).format(created_utc))
 
 //TODO selftext is optional here
 fun T3.toDbModel() : RoomT3 =

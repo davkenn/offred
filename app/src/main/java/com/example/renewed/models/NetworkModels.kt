@@ -20,13 +20,8 @@ data class RedditListing(val children: List<Holder>, val before: String?, val af
 @JsonClass(generateAdapter = true)
 data class Listing(  val data: RedditListing)
 
-
-
-
-
 @JsonClass(generateAdapter = true)
 data class T5 (
-
     override val name: String,
     val display_name: String,
     val icon_img: String?,
@@ -47,10 +42,8 @@ data class T5 (
 
 @JsonClass(generateAdapter = true)
 data class T3(
-
-     override val name: String,
+    override val name: String,
     val author: String,
-
     val ups: Int,
     val downs: Int,
     val num_comments: Int,

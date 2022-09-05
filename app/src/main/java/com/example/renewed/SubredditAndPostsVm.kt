@@ -36,15 +36,9 @@ class SubredditsAndPostsVM @Inject constructor(
     val vs: Observable<FullViewState> = inputEvents
         .doOnNext { Timber.d("---- Event is $it") }
         .eventToResult()
-
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
-            //using share instead of replay prevents event retriggers on rotates
-            //but maybe it also makes it so the t3list is gone on rotate
         .share()
-  //      .replay(1)
-    //    .autoConnect(1)
-      //  { upstream -> upstream.addTo(disposables) }
 
 
     fun processInput(name: MyEvent) {
@@ -121,14 +115,12 @@ class SubredditsAndPostsVM @Inject constructor(
                     .map { list -> list.map { it.toViewState() } }
                     .map { MyViewState.T5ListForRV(it) }
             },
-
             flatMapSingle {
                 repository.getPosts(it.name ?: "")
                     .subscribeOn(Schedulers.io())
                     .map { list -> list.map { x -> x.toViewState() } }
                     .map { x -> MyViewState.T3ListForRV(x) }
             })
-
     }
 
     //TODO bug where isDisplayed is true for some items not in the display list do I need to catch
@@ -145,11 +137,7 @@ class SubredditsAndPostsVM @Inject constructor(
                             it.srList, isDisplayedFlagSet = false,
                            shouldUpdateDisplayed = false).subscribeOn(Schedulers.io()).andThen(
                         prefetch().subscribeOn(Schedulers.io())))}
-
             }
-
-
-
 
 
     private fun Observable<MyEvent.ClickOnT3ViewEvent>.onClickT3(): Observable<MyViewState> {
@@ -161,28 +149,19 @@ class SubredditsAndPostsVM @Inject constructor(
         }
     }
 
-
     private fun Observable<MyEvent.UpdateViewingState>.updateViewingState(): Observable<MyViewState> {
         return Observable.merge(
-
             flatMap { _ -> Observable.just(MyViewState.T3ListForRV(null)) },
-
-
-
-        flatMap {
-            repository.updateSubreddits(
-                if (it.name == null) listOf() else listOf(it.name),
-                false, true
-            )
+            flatMap {
+                repository.updateSubreddits(
+                    if (it.name == null) listOf() else listOf(it.name),
+                        false, true)
                 .subscribeOn(Schedulers.io())
                 .andThen(Observable.just(MyViewState.NavigateBack))
         })
-
-
     }
 
     private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<MyViewState> {
-
 
          return  flatMap{  repository.deleteOrSaveSubreddit( it.selectedSubreddit,
                   it.shouldDelete).subscribeOn(Schedulers.io())
@@ -191,40 +170,24 @@ class SubredditsAndPostsVM @Inject constructor(
          }}
 
 
-
-
-
-
-
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
 
     return Observable.merge(
-                flatMapSingle {
-                    repository.updateSubreddits(listOf(it.name),true,true)
-                        .subscribeOn(Schedulers.io())
-                        .andThen(repository.getPosts(it.name)
-                              .map { list -> list.map { x -> x.toViewState() }}
-                              .map { x -> MyViewState.T3ListForRV(x) })},
-                flatMapSingle{
-
-                    repository.getSubreddit(it.name).onErrorResumeWith(Single.just(RoomT5(
-                        "ERROR",
-                        "ll",
-                        "",
-                        "",
-"",Instant.now(),0, Instant.now())).retry(10)
-
-
-                        )
-
-                        .subscribeOn(Schedulers.io())
-
-                        .map { x -> MyViewState.T5ForViewing(x.toViewState()) }})
-
+        flatMapSingle {
+            repository.updateSubreddits(listOf(it.name),true,true)
+                .subscribeOn(Schedulers.io())
+                .andThen(repository.getPosts(it.name)
+                    .map { list -> list.map { x -> x.toViewState() }}
+                    .map { x -> MyViewState.T3ListForRV(x) })},
+        flatMapSingle{
+            repository.getSubreddit(it.name).onErrorResumeWith(Single.just(
+                RoomT5("Oops! Somehow there's an error...", "ll", "Either" +
+                        " you have no internet connection or the site you seek no longer exists",
+                            "", "",Instant.now(),-1, Instant.now()))
+                .retry(10))
+                .subscribeOn(Schedulers.io())
+                .map { x -> MyViewState.T5ForViewing(x.toViewState()) }})
         }
-
-
-
 
 
         override fun onCleared() {
