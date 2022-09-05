@@ -129,12 +129,13 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
            return flatMap {
-                repository.getSubreddits().toObservable().subscribeOn(Schedulers.io())
+               //TODO isn't last good enough because I assume they are in order?
+                repository.getSubreddits(it.srList.last().second).toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }
                     .map { MyViewState.T5ListForRV(it) }
                     .startWith(
                         repository.updateSubreddits(
-                            it.srList, isDisplayedFlagSet = false,
+                            it.srList.map { it.first }, isDisplayedFlagSet = false,
                            shouldUpdateDisplayed = false).subscribeOn(Schedulers.io()).andThen(
                         prefetch().subscribeOn(Schedulers.io())))}
             }

@@ -77,14 +77,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             refreshButton.setOnClickListener {
                 subsAndPostsVM.processInput(
-                    MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name })
+                    //todo is displayname ok here
+                    MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name to it.displayName})
                 )
             }
-
             backButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
-
             saveButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),

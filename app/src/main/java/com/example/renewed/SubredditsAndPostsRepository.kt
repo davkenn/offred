@@ -73,8 +73,8 @@ class SubredditsAndPostsRepository(private val api : API,
 
 
 
-    override fun getSubreddits() : Single<List<RoomT5>> =
-        t5Dao.getSubredditsFromTable()
+    override fun getSubreddits(after: String?) : Single<List<RoomT5>> =
+        t5Dao.getSubredditsFromTable(after?:"")
 
 
     override fun getPost(name:String) : Single<RoomT3> {
