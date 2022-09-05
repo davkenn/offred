@@ -4,11 +4,7 @@ import com.example.renewed.models.ViewStateT5
 
 sealed class SubredditsStreamEvent{
     object OnCreateEvent : SubredditsStreamEvent()
-
-
 }
-
-
 
 sealed class PostsAndSubredditsListItem(val viewType: Int) {
     object EmptyListItem : PostsAndSubredditsListItem(0)

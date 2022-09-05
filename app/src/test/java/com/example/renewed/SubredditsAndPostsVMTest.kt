@@ -27,10 +27,6 @@ class SubredditsAndPostsVMTest {
     @Before
     public fun setUp() {
         mockWebServer = MockWebServer()
-
-        var end = loadJsonResponse("Berserk.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
-        mockWebServer.start()
         apiService =setupTestRetrofit(mockWebServer,true)
         fakerepo = FakeRepo2(apiService)
         viewModel = SubredditsAndPostsVM(fakerepo)
@@ -54,16 +50,20 @@ class SubredditsAndPostsVMTest {
     @Test
 
     fun processInput() {
+        //GIVEN
+        var end = loadJsonResponse("Berserk.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+     //   mockWebServer.start()
 
-
+        //WHEN
         var res = viewModel.vs.test()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         var l = res.await(1,TimeUnit.SECONDS)
 
+        //THEN
         assertThat("Is there a subscrier?",res.hasSubscription())
         res.assertNotComplete()
         res.assertNoErrors()
-
         res.assertValueCount(3)
 
 
@@ -71,15 +71,30 @@ class SubredditsAndPostsVMTest {
     }
     @Test
     fun getRandomSubreddit() {
+        //GIVEN
+        var end = loadJsonResponse("Berserk.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+        mockWebServer.start()
 
-
+        //WHEN
         var r = fakerepo.getSubreddits()
         var t = r.test()
+        var l = t.await(1,TimeUnit.SECONDS)
 
-
-           var l = t.await(1,TimeUnit.SECONDS)
+        //THEN
         t.assertValueCount(1)
         t.assertComplete()
+
+
+    }
+
+    @Test
+    fun processNonExistingSubredditError(){
+        var emptySubreddit = loadJsonResponse("handleUrlNotPointingToSubreddit.json")
+
+        mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody(emptySubreddit!!))
+
+
 
 
     }
@@ -98,11 +113,8 @@ class SubredditsAndPostsVMTest {
 
 
         var res = viewModel.vs.test()
-
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
-
         var n = res.await(1,TimeUnit.SECONDS)
-
         res.assertError(IOException::class.java)
 
     }

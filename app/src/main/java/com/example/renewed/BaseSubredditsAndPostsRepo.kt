@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Single
 
 interface BaseSubredditsAndPostsRepo {
 
-    fun prefetchSubreddits(): Completable//will prefetch posts for things not yet in db or having posts
+    fun prefetchSubreddits(): Completable
     fun prefetchPosts(): Completable
 
     fun getSubreddit(name: String): Single<RoomT5>
@@ -19,7 +19,6 @@ interface BaseSubredditsAndPostsRepo {
 
     fun deleteSubreddits(names: List<String>): Observable<Unit>
     fun deleteUninterestingSubreddits(): Completable
-
     fun deleteOrSaveSubreddit(name:String?,shouldDelete:Boolean):Completable
 
     fun updateSubreddits(

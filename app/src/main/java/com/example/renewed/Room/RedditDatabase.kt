@@ -16,8 +16,6 @@ import com.example.renewed.models.RoomT5
 
         abstract fun subredditDao(): T5DAO
         abstract fun postsDao(): T3DAO
-
-
     }
 
 

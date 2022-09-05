@@ -14,9 +14,7 @@ class BlankFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        lateinit var view: View
-        view = inflater.inflate(R.layout.blank_view, container, false)
+        var view: View = inflater.inflate(R.layout.blank_view, container, false)
         return view
     }
 }

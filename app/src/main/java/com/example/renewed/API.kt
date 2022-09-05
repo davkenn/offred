@@ -16,7 +16,7 @@ interface API {
     fun getRandomSubreddit(): Single<RedditPostType>
 
 
-    //TODO is it an error to have both before and after? Where store before and after?
+    //TODO is it an error to have both before and after?
 
     @GET("r/{subName}/new.json")
     fun getPostsInDateRange(@Path("subName") subName:String,

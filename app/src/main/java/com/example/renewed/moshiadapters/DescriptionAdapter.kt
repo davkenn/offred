@@ -23,8 +23,6 @@ class DescriptionAdapter {
     //TODO make sure order right I think it is
     @FromJson @SubredditDescription
     fun fromJson(descriptionFromJson: String): String {
-
-
         return descriptionFromJson
                 //combine these in one regex?
             .replace("\n"," ")
@@ -34,12 +32,9 @@ class DescriptionAdapter {
 
             .filter{it !in "|-[]()#*"}
             .replace("\\s+", " ")
-
-
             //also this includes _ which I may need also may need amp and # in urls
       //      .replace(regex) {"${it.value[0]} ${it.value.drop(1)}"}
 //            .replace("\\s+".toRegex(), " ")
     }
-
 
 }

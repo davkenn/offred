@@ -27,7 +27,6 @@ class DbModule {
         ).build()
     }
 
-
     @Provides
     @Singleton
     fun provideT5DAO(db: RedditDatabase) : T5DAO = db.subredditDao()

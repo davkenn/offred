@@ -14,9 +14,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 @AndroidEntryPoint
 class SubredditFragment : Fragment() {
-//TODO i absolutely need to save the info here because it could
-  //  be deleted from the app if I dont just delete at the very
-  //beginning
+
     private val subVM: SubVM by viewModels()
     private var subBinding: SubViewBinding? = null
 

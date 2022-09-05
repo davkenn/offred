@@ -76,7 +76,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditsRv.adapter = adapter
 
             refreshButton.setOnClickListener {
-
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name })
                 )
