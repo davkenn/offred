@@ -53,15 +53,15 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
             Glide.with(this.itemView.context).load(sr.thumbnail)
                 .apply(
                     RequestOptions().override(50, 50))
-                   //     .centerCrop()
                         .placeholder(ColorDrawable(Color.BLACK))
                         .error(ColorDrawable(Color.RED))
-                  .fallback(ColorDrawable(Color.YELLOW))
+                        .fallback(ColorDrawable(Color.YELLOW))
                         .into(elementBinding.detailImage)
             }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubredditViewHolder {
+
         val elementBinding = RvSubredditElemBinding.inflate(LayoutInflater.from(parent.context),
                                                                     parent, false)
         return SubredditViewHolder(elementBinding)
@@ -83,16 +83,13 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         holder.bind(getItem(position),onClick,closur)
 
         if (position == selected){
-            if (previousSelected != null) {
-                previousSelected?.isSelected = false
-            }
+            previousSelected?.let{it.isSelected=false}
             holder.itemView.isSelected=true
             previousSelected = holder.itemView
-        };
+        }
         else{
             holder.itemView.isSelected=false
         }
-
     }
 }
 
