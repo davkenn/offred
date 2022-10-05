@@ -39,8 +39,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
             }
 
             if (sr.displayName.length > 18) {
-            //TODO now that ive taken out center crop fixed some bad looks but messed up the ones
-                // that are too small
+
                 elementBinding.detailImage.visibility=GONE
                 return
             }
@@ -63,8 +62,8 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubredditViewHolder {
-        val elementBinding = RvSubredditElemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val holder = SubredditViewHolder(elementBinding)
+        val elementBinding = RvSubredditElemBinding.inflate(LayoutInflater.from(parent.context),
+                                                                    parent, false)
         return SubredditViewHolder(elementBinding)
     }
 
@@ -93,7 +92,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         else{
             holder.itemView.isSelected=false
         }
-      //  holder.itemView.isSelected = selected == holder.adapterPosition
+
     }
 }
 

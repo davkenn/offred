@@ -100,6 +100,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
             { x ->
+
                 x.t5ListForRV?.let { adapter.submitList(it.vsT5)
                 }
 

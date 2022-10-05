@@ -128,7 +128,9 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<MyViewState> {
 
 
-           return flatMap {
+        return Observable.merge(
+            flatMap{_-> Observable.just(MyViewState.T3ListForRV(null))},
+           flatMap {
                //TODO isn't last good enough because I assume they are in order?
                 repository.getSubreddits(it.srList.last().second).toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }
@@ -137,7 +139,8 @@ class SubredditsAndPostsVM @Inject constructor(
                         repository.updateSubreddits(
                             it.srList.map { it.first }, isDisplayedFlagSet = false,
                            shouldUpdateDisplayed = false).subscribeOn(Schedulers.io()).andThen(
-                        prefetch().subscribeOn(Schedulers.io())))}
+
+                        prefetch().subscribeOn(Schedulers.io())))})
             }
 
 
@@ -166,6 +169,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
          return  flatMap{  repository.deleteOrSaveSubreddit( it.selectedSubreddit,
                   it.shouldDelete).subscribeOn(Schedulers.io())
+
              .andThen(
                    Observable.just(MyViewState.T3ListForRV(null)) )
          }}
