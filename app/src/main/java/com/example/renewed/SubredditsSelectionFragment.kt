@@ -87,13 +87,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             saveButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),
-                                                getSubredditNameOrNull(), false))
+                                                false))
             }
 
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(
                                                 getSubredditNameOrNull(), true))
             }
         }
@@ -139,11 +139,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private fun getSubredditNameOrNull(): String? {
         var name: String? = null
         var t = navHostFragment.childFragmentManager.primaryNavigationFragment
-        t.let { if (t is SubredditFragment) name = t.getName()
-                else if (t is PostFragment) name = t.getName()}
-
+        t.let { name = (t as ContentFragment).getName() }
         return name
-
     }
 
     private fun navigateToPostOrSubreddit(@IdRes resId: Int,

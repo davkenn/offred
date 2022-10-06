@@ -28,11 +28,11 @@ import javax.inject.Singleton
 
 
 @AndroidEntryPoint
-class PostFragment : Fragment() {
+class PostFragment : ContentFragment() {
     private val postsVM: PostVM by viewModels()
     private var postBinding: PostViewBinding? = null
 
-    fun getName() : String = postsVM.name
+    override fun getName() : String = postsVM.name
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

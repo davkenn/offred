@@ -6,8 +6,7 @@ sealed class MyEvent{
     data class ClickOnT3ViewEvent(val name: String): MyEvent()
     data class RemoveAllSubreddits(val srList:List<Pair<String,String>>): MyEvent()
    data class UpdateViewingState(val name: String?): MyEvent()
-    data class SaveOrDeleteEvent(val subredditNameOrNull: String?,
-                                 val selectedSubreddit: String?,val shouldDelete:Boolean) : MyEvent() {
+    data class SaveOrDeleteEvent(val selectedSubreddit: String?,val shouldDelete:Boolean) : MyEvent() {
 
     }
 

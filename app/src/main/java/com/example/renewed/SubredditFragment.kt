@@ -13,12 +13,12 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 @AndroidEntryPoint
-class SubredditFragment : Fragment() {
+class SubredditFragment : ContentFragment() {
 
     private val subVM: SubVM by viewModels()
     private var subBinding: SubViewBinding? = null
 
-    fun getName() : String {
+    override fun getName() : String {
        return subVM.name
     }
 
