@@ -138,8 +138,9 @@ class SubredditsAndPostsVM @Inject constructor(
                     .startWith(
                         repository.updateSubreddits(
                             it.srList.map { it.first }, isDisplayedFlagSet = false,
-                           shouldUpdateDisplayed = false).subscribeOn(Schedulers.io()).andThen(
-
+                           shouldUpdateDisplayed = false)
+                            .subscribeOn(Schedulers.io())
+                    .andThen(
                         prefetch().subscribeOn(Schedulers.io())))})
             }
 

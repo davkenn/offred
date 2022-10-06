@@ -77,8 +77,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditsRv.adapter = adapter
 
             refreshButton.setOnClickListener {
+                selectedSubreddit=null
                 subsAndPostsVM.processInput(
                     //todo is displayname ok here
+
                     MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name to it.displayName})
                 )
             }
@@ -117,25 +119,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
                 }
 
-               /** x.eventProcessed?.let{
-                    val currentDisplayedFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
-                    val navController = navHostFragment.navController
-                    if ( currentDisplayedFragment is SubredditFragment) {
-                        navController.popBackStack(R.id.subredditFragment, true)
-                        navController.popBackStack(R.id.subredditFragment, false)
-                    }
-                    else{
-                        navController.popBackStack(R.id.subredditFragment,false)
-                    }
-                    if (it==EventType.DELETE_OR_SAVE){
 
-                    }
-
-
-                }**/
 
 
                 if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
+                    selectedSubreddit=null
                     val currentDisplayedFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
                     val navController = navHostFragment.navController
                     if ( currentDisplayedFragment is SubredditFragment) {
