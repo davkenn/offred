@@ -2,6 +2,8 @@ package com.example.renewed
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -92,26 +94,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             backButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
+
             saveButton.setOnClickListener {
 
 
-                val currentDisplayedFragment =
-                    navHostFragment.childFragmentManager.primaryNavigationFragment
-
-                //     if (getSubredditNameOrNull() != "BlankFragment") {
-
-                if (currentDisplayedFragment is SubredditFragment) {
+                if (navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
                     subsAndPostsVM.processInput(
                         MyEvent.UpdateViewingState(
                             getSubredditNameOrNull()
-                        )
-                    )
+                        ))
                     subsAndPostsVM.processInput(
                         MyEvent.SaveOrDeleteEvent(
                             getSubredditNameOrNull(),
                             false
-                        )
-                    )
+                        ))
 
                 }
             }
@@ -119,29 +115,17 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
 
-                val currentDisplayedFragment =
-                    navHostFragment.childFragmentManager.primaryNavigationFragment
 
-                if (getSubredditNameOrNull() != "BlankFragment") {
-
-                    if (currentDisplayedFragment is SubredditFragment) {
-                        subsAndPostsVM.processInput(
-                            MyEvent.UpdateViewingState(
-                                getSubredditNameOrNull()
-                            )
-                        )
-                        subsAndPostsVM.processInput(
-                            MyEvent.SaveOrDeleteEvent(
-                                getSubredditNameOrNull(),
-                                true
-                            )
-                        )
-                    }
-//                    subsAndPostsVM.processInput(
-                    //                      MyEvent.SaveOrDeleteEvent(
-                    //                        getSubredditNameOrNull(), true
-                    //                  )
-                    //            )
+                if ( navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
+                    subsAndPostsVM.processInput(
+                        MyEvent.UpdateViewingState(
+                            getSubredditNameOrNull()
+                        ))
+                    subsAndPostsVM.processInput(
+                        MyEvent.SaveOrDeleteEvent(
+                            getSubredditNameOrNull(),
+                            true
+                        ))
                 }
             }
         }
@@ -166,24 +150,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
 
-
                 if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
-                    selectedSubreddit = null //????
+
                     val navController = navHostFragment.navController
                     val currentDisplayedFragment =
                         navHostFragment.childFragmentManager.primaryNavigationFragment
                     var n = getSubredditNameOrNull()
                     if (currentDisplayedFragment is PostFragment) {
-
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
 
-                    //TODO fix bug on the last thing
                     else if (currentDisplayedFragment is SubredditFragment) {
                         navController.popBackStack(R.id.subredditFragment, true)
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
-
 
                     var pt = adapter.currentList
                     var ls = adapter.currentList.filter { it.name != n }
