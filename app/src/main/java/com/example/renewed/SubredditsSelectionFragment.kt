@@ -24,6 +24,8 @@ import timber.log.Timber
 @AndroidEntryPoint
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
+    private lateinit var adapter: SubredditsAdapter
+    private lateinit var adapter2: PostsAdapter
     private val disposables = CompositeDisposable()
     private var disposable: Disposable? = null
 
@@ -36,15 +38,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private lateinit var navHostFragment: NavHostFragment
 //TODO oncreate is called on rotation but only start when you click a frag in the menu
-    //maybe need to somehow move to on start
+
     override fun onCreate(savedInstanceState: Bundle?) {
         selectedSubreddit = savedInstanceState?.getString("key1")
+
+
         super.onCreate(savedInstanceState)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+
         outState.run {
             putString("key1", selectedSubreddit)
+
         }
         super.onSaveInstanceState(outState)
     }
@@ -57,11 +63,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
 
-        val adapter2 = PostsAdapter { x ->
+        adapter2 = PostsAdapter { x ->
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
 
-        val adapter = SubredditsAdapter { x ->
+        adapter = SubredditsAdapter { x ->
 
             selectedSubreddit = x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
@@ -72,52 +78,80 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         fragmentSelectionBinding = binding.apply {
 
             subredditsRv2.layoutManager = LinearLayoutManager(requireContext())
-             subredditsRv2.adapter = adapter2
+            subredditsRv2.adapter = adapter2
             subredditsRv.layoutManager = LinearLayoutManager(requireContext())
             subredditsRv.adapter = adapter
 
             refreshButton.setOnClickListener {
-                selectedSubreddit=null;//?? need this line?
+                selectedSubreddit = null//?? need this line?
                 adapter.clearSelected()
                 subsAndPostsVM.processInput(
-                    MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name to it.displayName})
+                    MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name to it.displayName })
                 )
             }
             backButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
             saveButton.setOnClickListener {
-                if (getSubredditNameOrNull() != "BlankFragment") {
-                    subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
 
+
+                val currentDisplayedFragment =
+                    navHostFragment.childFragmentManager.primaryNavigationFragment
+
+                //     if (getSubredditNameOrNull() != "BlankFragment") {
+
+                if (currentDisplayedFragment is SubredditFragment) {
+                    subsAndPostsVM.processInput(
+                        MyEvent.UpdateViewingState(
+                            getSubredditNameOrNull()
+                        )
+                    )
                     subsAndPostsVM.processInput(
                         MyEvent.SaveOrDeleteEvent(
                             getSubredditNameOrNull(),
                             false
                         )
                     )
+
                 }
             }
 
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
 
+                val currentDisplayedFragment =
+                    navHostFragment.childFragmentManager.primaryNavigationFragment
+
                 if (getSubredditNameOrNull() != "BlankFragment") {
-                    subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                    subsAndPostsVM.processInput(
-                        MyEvent.SaveOrDeleteEvent(
-                            getSubredditNameOrNull(), true
+
+                    if (currentDisplayedFragment is SubredditFragment) {
+                        subsAndPostsVM.processInput(
+                            MyEvent.UpdateViewingState(
+                                getSubredditNameOrNull()
+                            )
                         )
-                    )
+                        subsAndPostsVM.processInput(
+                            MyEvent.SaveOrDeleteEvent(
+                                getSubredditNameOrNull(),
+                                true
+                            )
+                        )
+                    }
+//                    subsAndPostsVM.processInput(
+                    //                      MyEvent.SaveOrDeleteEvent(
+                    //                        getSubredditNameOrNull(), true
+                    //                  )
+                    //            )
                 }
             }
-            }
+        }
 
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
             { x ->
 
-                x.t5ListForRV?.let { adapter.submitList(it.vsT5)
+                x.t5ListForRV?.let {
+                    adapter.submitList(it.vsT5)
                 }
 
                 adapter2.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
@@ -134,18 +168,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
                 if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
-                    selectedSubreddit=null //????
-                    val currentDisplayedFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
-                    var n = ( currentDisplayedFragment as ContentFragment).getName()
+                    selectedSubreddit = null //????
                     val navController = navHostFragment.navController
- //TODO fix bug on the last thing
-                    if ( currentDisplayedFragment is SubredditFragment) {
-                        navController.popBackStack(R.id.subredditFragment, true)
+                    val currentDisplayedFragment =
+                        navHostFragment.childFragmentManager.primaryNavigationFragment
+                    var n = getSubredditNameOrNull()
+                    if (currentDisplayedFragment is PostFragment) {
+
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
-                    else if (currentDisplayedFragment is PostFragment){
 
-                        navController.popBackStack(R.id.subredditFragment,false)
+                    //TODO fix bug on the last thing
+                    else if (currentDisplayedFragment is SubredditFragment) {
+                        navController.popBackStack(R.id.subredditFragment, true)
+                        navController.popBackStack(R.id.subredditFragment, false)
                     }
 
 
@@ -153,13 +189,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     var ls = adapter.currentList.filter { it.name != n }
 
                     adapter.submitList(ls)
+                    adapter.notifyDataSetChanged()
 
 
+                }
+            },
 
-                }},
-
-            { Timber.e("error fetching vs: ${it.localizedMessage}") }   )
-                                                                .addTo(disposables) }
+            { Timber.e("error fetching vs: ${it.localizedMessage}") })
+            .addTo(disposables)
+    }
 
 
     private fun getSubredditNameOrNull(): String? {
@@ -169,13 +207,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         return name
     }
 
-    private fun navigateToPostOrSubreddit(@IdRes resId: Int,
-        t5: MyViewState, binding: FragmentSubredditsSelectionBinding, ) {
+    private fun navigateToPostOrSubreddit(
+        @IdRes resId: Int,
+        t5: MyViewState, binding: FragmentSubredditsSelectionBinding,
+    ) {
 
         var b = navHostFragment.navController.backQueue
             .any { t5.name == it.arguments?.get("key") ?: "NOMATCH" }
         if (!b) navHostFragment.navController.navigate(
-                                    resId, bundleOf("key" to t5.name))
+            resId, bundleOf("key" to t5.name)
+        )
         else Snackbar.make(
             binding.root, "Already in Stack. Press back to find it...",
             Snackbar.LENGTH_SHORT
@@ -185,20 +226,31 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onStart() {
         super.onStart()
+
         Timber.d("onStart in home Fragment")
         disposable = subsAndPostsVM.prefetch()
             .concatWith {
                 subsAndPostsVM.processInput(
                     MyEvent.ScreenLoadEvent(
-                        selectedSubreddit))
-                    }.subscribe({ Timber.d("----done fetching both ") },
-                { Timber.e("----error fetching is ${it.localizedMessage}")
+                        selectedSubreddit
+                    )
+                )
+            }
+            .subscribe({ Timber.d("----done fetching both ") },
+                {
+                    Timber.e("----error fetching is ${it.localizedMessage}")
                 })
     }
 
     override fun onResume() {
+
+        //    selectedSubreddit?.let {
+        //      var ind = adapter.currentList.indexOfFirst {it.name==selectedSubreddit}
+//)
+        //      adapter.setSelected(ind)
+
         Timber.d("onResume in home Fragment")
-        //subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent)
+
 
 
         super.onResume()
