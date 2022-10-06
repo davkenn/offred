@@ -106,12 +106,15 @@ class SubredditsAndPostsRepository(private val api : API,
         l: RoomT5,
         shouldDelete: Boolean
     )  :Completable {
-    //    if (!shouldDelete) {
-      //      savedDao.saveSubreddit(l.toSavableDao()).subscribe()
-   //     }
+   /**  return   if (!shouldDelete) {
+            savedDao.saveSubreddit(l.toSavableDao())}
 
+
+
+                .andThen {  t5Dao.delete(l.name)}
+
+**/
         return t5Dao.delete(l.name)
-
     }
 
     //TODO if im going to delete i have to remove from back stack
@@ -126,9 +129,8 @@ class SubredditsAndPostsRepository(private val api : API,
                                 shouldUpdateDisplayed:Boolean): Completable {
 
     return Observable.fromIterable(srList)
-                    .flatMapSingle {t5Dao.getSubreddit(it)}
-                    .doOnError { Timber.e("----error fetching subreddit for update" +
-                            "${it.stackTraceToString()} ") }
+            //TODO im just swallowing the error here, change back from maybe to see prob
+                    .flatMapMaybe {t5Dao.getSubreddit(it).onErrorComplete()}
 
                     .concatMapCompletable {
                         t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),

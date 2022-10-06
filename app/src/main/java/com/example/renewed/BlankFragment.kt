@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import com.example.renewed.R
 
 
-class BlankFragment : Fragment() {
-
+class BlankFragment : ContentFragment() {
+    override fun getName():String = "BlankFragment"
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

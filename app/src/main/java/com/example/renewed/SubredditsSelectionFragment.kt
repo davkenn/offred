@@ -88,24 +88,30 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
             saveButton.setOnClickListener {
-                        subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+                if (getSubredditNameOrNull() != "BlankFragment") {
+                    subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
 
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),
-                    false))
-
+                    subsAndPostsVM.processInput(
+                        MyEvent.SaveOrDeleteEvent(
+                            getSubredditNameOrNull(),
+                            false
+                        )
+                    )
+                }
             }
 
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
 
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                subsAndPostsVM.processInput(
-                    MyEvent.SaveOrDeleteEvent(
-                        getSubredditNameOrNull(), true
+                if (getSubredditNameOrNull() != "BlankFragment") {
+                    subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+                    subsAndPostsVM.processInput(
+                        MyEvent.SaveOrDeleteEvent(
+                            getSubredditNameOrNull(), true
+                        )
                     )
-                )
+                }
             }
-
             }
 
 
@@ -138,7 +144,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         navController.popBackStack(R.id.subredditFragment, true)
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
-                    else{
+                    else if (currentDisplayedFragment is PostFragment){
+
                         navController.popBackStack(R.id.subredditFragment,false)
                     }
 
