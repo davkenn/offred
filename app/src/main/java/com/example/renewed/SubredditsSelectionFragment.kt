@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.Button
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -26,6 +27,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
+
     private lateinit var subredditAdapter: SubredditsAdapter
     private lateinit var postAdapter: PostsAdapter
     private val disposables = CompositeDisposable()
@@ -37,7 +39,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
     private var selectedSubreddit: String? by atomicNullable(null)
-
+    private lateinit var saveButton1: Button
+    private lateinit var deleteButton1: Button
     private lateinit var navHostFragment: NavHostFragment
 //TODO oncreate is called on rotation but only start when you click a frag in the menu
 
@@ -97,8 +100,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             saveButton.setOnClickListener {
 
-
-                if (navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
                     subsAndPostsVM.processInput(
                         MyEvent.UpdateViewingState(
                             getSubredditNameOrNull()
@@ -110,13 +111,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         ))
 
                 }
-            }
+
 
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
-
-
-                if ( navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
                     subsAndPostsVM.processInput(
                         MyEvent.UpdateViewingState(
                             getSubredditNameOrNull()
@@ -127,7 +125,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                             true
                         ))
                 }
-            }
+            saveButton1 = saveButton
+            deleteButton1 = deleteButton
+
         }
 
 
@@ -159,17 +159,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
 
-                    else if ( navHostFragment.childFragmentManager.primaryNavigationFragment  is SubredditFragment) {
+                    else if ( navHostFragment.childFragmentManager.primaryNavigationFragment
+                                                                     is SubredditFragment) {
                         navController.popBackStack(R.id.subredditFragment, true)
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
+     //               if navController.backQueue
 
-                    var pt = subredditAdapter.currentList
-                    var ls = subredditAdapter.currentList.filter { it.name != n }
 
-                    subredditAdapter.submitList(ls)
+                    enableButtons()
+
+
+
+                    subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
                     subredditAdapter.notifyDataSetChanged()
-
 
                 }
             },
@@ -188,21 +191,35 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun navigateToPostOrSubreddit(
         @IdRes resId: Int,
-        t5: MyViewState, binding: FragmentSubredditsSelectionBinding,
+        t3OrT5: MyViewState, binding: FragmentSubredditsSelectionBinding,
     ) {
-
         var b = navHostFragment.navController.backQueue
-            .any { t5.name == it.arguments?.get("key") ?: "NOMATCH" }
-        if (!b) {
-            navHostFragment.navController.navigate(resId, bundleOf("key" to t5.name))
-            binding.apply { if (t5 is MyViewState.T3ForViewing) deleteButton.visibility=INVISIBLE else
-            deleteButton.visibility= VISIBLE}
+            .any { t3OrT5.name == it.arguments?.get("key") ?: "NOMATCH" }
+        if (b){
+            Snackbar.make(
+                binding.root, "Already in Stack. Press back to find it...",
+                Snackbar.LENGTH_SHORT
+            ).show()
         }
+        else{
+            navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
 
-        else Snackbar.make(
-            binding.root, "Already in Stack. Press back to find it...",
-            Snackbar.LENGTH_SHORT
-        ).show()
+            if (t3OrT5 is MyViewState.T3ForViewing) disableButtons() else enableButtons()
+        }
+    }
+
+    private fun disableButtons() {
+        deleteButton1.visibility = INVISIBLE
+        deleteButton1.isClickable = false
+        saveButton1.visibility = INVISIBLE
+        saveButton1.isClickable = false
+    }
+
+    private fun enableButtons() {
+        deleteButton1.isClickable = true
+        deleteButton1.visibility = VISIBLE
+        saveButton1.visibility = VISIBLE
+        saveButton1.isClickable = true
     }
 
 

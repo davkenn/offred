@@ -90,6 +90,8 @@
     <Button
         android:id="@+id/save_button"
 
+        android:visibility="invisible"
+        android:clickable="false"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@drawable/ic_baseline_save_36"
@@ -102,7 +104,8 @@
         app:layout_constraintVertical_bias="1.0" />
     <Button
         android:id="@+id/delete_button"
-
+        android:visibility="invisible"
+        android:clickable="false"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@drawable/ic_sharp_delete_36"
