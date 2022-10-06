@@ -164,10 +164,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         navController.popBackStack(R.id.subredditFragment, true)
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
-     //               if navController.backQueue
-
-
-                    enableButtons()
+                    if (navController.backQueue.size > 2) enableButtons()
+                    else disableButtons()
 
 
 
