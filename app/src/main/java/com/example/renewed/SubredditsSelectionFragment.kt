@@ -88,20 +88,26 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
             saveButton.setOnClickListener {
+                        subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),
                     false))
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
 
             }
 
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(
-                    getSubredditNameOrNull(), true))
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
+
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+                subsAndPostsVM.processInput(
+                    MyEvent.SaveOrDeleteEvent(
+                        getSubredditNameOrNull(), true
+                    )
+                )
+            }
 
             }
-        }
+
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
             { x ->
@@ -123,9 +129,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
                 if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
-                    selectedSubreddit=null
+                    selectedSubreddit=null //????
                     val currentDisplayedFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
+                    var n = ( currentDisplayedFragment as ContentFragment).getName()
                     val navController = navHostFragment.navController
+ //TODO fix bug on the last thing
                     if ( currentDisplayedFragment is SubredditFragment) {
                         navController.popBackStack(R.id.subredditFragment, true)
                         navController.popBackStack(R.id.subredditFragment, false)
@@ -133,7 +141,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     else{
                         navController.popBackStack(R.id.subredditFragment,false)
                     }
-                    var n = ( currentDisplayedFragment as ContentFragment).getName()
+
 
                     var pt = adapter.currentList
                     var ls = adapter.currentList.filter { it.name != n }
@@ -185,6 +193,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         //subsAndPostsVM.processInput(MyEvent.ScreenLoadEvent)
+
+
         super.onResume()
     }
 

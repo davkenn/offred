@@ -1,6 +1,7 @@
 package com.example.renewed.di
 
 import com.example.renewed.*
+import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.SubredditsAndPostsRepository
@@ -91,8 +92,8 @@ object RepoModule {
 
     @Singleton
     @Provides
-    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO):
-            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao)
+    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO,savedSubredditsDAO: SavedSubredditsDAO):
+            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao,savedSubredditsDAO)
 
 }
 

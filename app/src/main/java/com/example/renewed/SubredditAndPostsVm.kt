@@ -1,8 +1,6 @@
 package com.example.renewed
 
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
-import androidx.room.rxjava3.EmptyResultSetException
 import com.example.renewed.models.*
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
@@ -15,10 +13,8 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.mergeAll
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 import timber.log.Timber
 import java.time.Instant
 import javax.inject.Inject
@@ -116,6 +112,7 @@ class SubredditsAndPostsVM @Inject constructor(
                     .map { MyViewState.T5ListForRV(it) }
             },
             flatMapSingle {
+
                 repository.getPosts(it.name ?: "")
                     .subscribeOn(Schedulers.io())
                     .map { list -> list.map { x -> x.toViewState() } }
@@ -169,13 +166,15 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<MyViewState> {
 
-         return  flatMap{  repository.deleteOrSaveSubreddit( it.selectedSubreddit,
-                  it.shouldDelete).subscribeOn(Schedulers.io())
+
+        return flatMap{
+                repository.deleteOrSaveSubreddit( it.targetedSubreddit, it.shouldDelete).subscribeOn(Schedulers.io())
+                    .andThen {prefetch().subscribeOn(Schedulers.io())}
+                    .andThen( Observable.just(MyViewState.T3ListForRV(null)) )}
+
 
                  //TODO really this has no place here bc im doing it elsewhere
-             .andThen(
-                   Observable.just(MyViewState.T3ListForRV(null)) )
-         }}
+         }
 
 
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {

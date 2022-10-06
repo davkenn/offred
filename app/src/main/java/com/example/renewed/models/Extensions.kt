@@ -1,5 +1,7 @@
 package com.example.renewed.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -60,6 +62,18 @@ fun RoomT3.toViewState(): ViewStateT3 =
             .instantToDateString().replaceFirst(" ","\n")
 
      )
+
+fun RoomT5.toSavableDao(): RoomT5BASE =
+    RoomT5BASE(
+    name = this.name,
+    displayName = this.displayName,
+    description=this.description,
+        thumbnail=this.thumbnail,
+     banner_img=this.banner_img,
+     timeLastAccessed=this.timeLastAccessed,
+     subscribers=this.subscribers,
+     created_utc=this.created_utc)
+
 
     private fun Instant.instantToDateString() =
         this.atZone(ZoneId.of("America/Los_Angeles"))

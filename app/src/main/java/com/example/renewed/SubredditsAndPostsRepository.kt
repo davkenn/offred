@@ -1,6 +1,7 @@
 package com.example.renewed
 
 import androidx.room.rxjava3.EmptyResultSetException
+import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
@@ -18,7 +19,8 @@ import java.time.Instant
 
 class SubredditsAndPostsRepository(private val api : API,
                                    val t5Dao: T5DAO,
-                                   val t3Dao: T3DAO
+                                   val t3Dao: T3DAO,
+                                   val savedDao: SavedSubredditsDAO
 ): BaseSubredditsAndPostsRepo {
 
 
@@ -94,11 +96,23 @@ class SubredditsAndPostsRepository(private val api : API,
 
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
 
-        return t5Dao.getSubreddit(name!!).concatMapCompletable {
-                t5Dao.updateT5(it.copy(isDisplayed = 0,
-                isSaved = !shouldDelete, totalViews = if (shouldDelete) 3000 else it.totalViews)) }
+        return Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}.concatMapCompletable{
+
+            callUpdate(it, shouldDelete)
+        }
     }
 
+    private fun callUpdate(
+        l: RoomT5,
+        shouldDelete: Boolean
+    )  :Completable {
+    //    if (!shouldDelete) {
+      //      savedDao.saveSubreddit(l.toSavableDao()).subscribe()
+   //     }
+
+        return t5Dao.delete(l.name)
+
+    }
 
     //TODO if im going to delete i have to remove from back stack
     override fun deleteSubreddits(names:List<String>): Observable<Unit> {

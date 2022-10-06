@@ -24,6 +24,19 @@ data class RoomT5(
     val isDisplayed: Int = 0
 )
 
+@Entity
+data class RoomT5BASE(
+    @PrimaryKey
+    val name: String,
+    val displayName: String,
+    val description: String,
+    val thumbnail: String,
+    val banner_img: String,
+    val timeLastAccessed: Instant,
+    val subscribers: Int,
+    val created_utc: Instant,
+)
+
 @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class,
     parentColumns = arrayOf("name"),
     childColumns = arrayOf("link_id"),

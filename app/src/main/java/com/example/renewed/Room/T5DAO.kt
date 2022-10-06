@@ -34,6 +34,7 @@ interface T5DAO {
         @Insert(onConflict = OnConflictStrategy.IGNORE)
         fun insertT5(t5: RoomT5): Completable
 
+
         @Update(onConflict = OnConflictStrategy.REPLACE)
         fun updateT5(t5: RoomT5): Completable
 
