@@ -17,12 +17,16 @@ import com.example.renewed.databinding.RvSubredditElemBinding
 import com.example.renewed.models.ViewStateT5
 
 
-private var selected = -1
-private var previousSelected :View? = null
+ var selected = -1
+ var previousSelected :View? = null
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
 
+     fun clearSelected() {
+        selected=-1
+        previousSelected=null
+    }
 
     class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
         RecyclerView.ViewHolder(elementBinding.root){

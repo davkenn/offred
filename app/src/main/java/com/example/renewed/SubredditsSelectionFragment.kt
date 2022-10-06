@@ -72,15 +72,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         fragmentSelectionBinding = binding.apply {
 
             subredditsRv2.layoutManager = LinearLayoutManager(requireContext())
-            subredditsRv2.adapter = adapter2
+             subredditsRv2.adapter = adapter2
             subredditsRv.layoutManager = LinearLayoutManager(requireContext())
             subredditsRv.adapter = adapter
 
             refreshButton.setOnClickListener {
-                selectedSubreddit=null
+                selectedSubreddit=null;//?? need this line?
+                adapter.clearSelected()
                 subsAndPostsVM.processInput(
-                    //todo is displayname ok here
-
                     MyEvent.RemoveAllSubreddits(adapter.currentList.map { it.name to it.displayName})
                 )
             }
