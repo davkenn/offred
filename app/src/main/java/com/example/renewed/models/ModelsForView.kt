@@ -11,9 +11,13 @@ data class FullViewState(
     val latestEvent5: MyViewState.T5ForViewing?=null,
     val latestEvent3: MyViewState.T3ForViewing?=null,
     val eventProcessed: Boolean = false
-
+   // val eventProcessed: EventType?= null
 )
-
+/**
+enum class EventType{
+    BACK_BUTTON(),DELETE_OR_SAVE
+}
+**/
 sealed class MyViewState(val name: String?){
     //TODO make it on a superclass and consolidate?
 

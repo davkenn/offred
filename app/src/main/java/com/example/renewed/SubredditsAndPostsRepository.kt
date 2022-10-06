@@ -93,10 +93,10 @@ class SubredditsAndPostsRepository(private val api : API,
     }
 
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
-        return if (name.isNullOrBlank()) Completable.complete()
-        else t5Dao.getSubreddit(name).concatMapCompletable {
+
+        return t5Dao.getSubreddit(name!!).concatMapCompletable {
                 t5Dao.updateT5(it.copy(isDisplayed = 0,
-                isSaved = !shouldDelete, totalViews = if (shouldDelete)  40000 else it.totalViews)) }
+                isSaved = !shouldDelete, totalViews = if (shouldDelete) 3000 else it.totalViews)) }
     }
 
 

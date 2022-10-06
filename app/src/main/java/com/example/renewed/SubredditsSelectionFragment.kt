@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
+
 import com.example.renewed.models.MyEvent
 import com.example.renewed.models.MyViewState
 import com.google.android.material.snackbar.Snackbar
@@ -85,16 +86,18 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
             saveButton.setOnClickListener {
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),
-                                                false))
+                    false))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+
             }
 
             //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
-                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(
-                                                getSubredditNameOrNull(), true))
+                    getSubredditNameOrNull(), true))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull() ))
+
             }
         }
 
@@ -114,23 +117,44 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
                 }
 
-                if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
+               /** x.eventProcessed?.let{
                     val currentDisplayedFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
                     val navController = navHostFragment.navController
                     if ( currentDisplayedFragment is SubredditFragment) {
-                //TODO here I want to submit the list but without the selected elem
-//                      x.let{adapter2.submitList(it.t5ListForRV.vsT5.indexOf(it.))}
                         navController.popBackStack(R.id.subredditFragment, true)
                         navController.popBackStack(R.id.subredditFragment, false)
-
                     }
                     else{
                         navController.popBackStack(R.id.subredditFragment,false)
                     }
+                    if (it==EventType.DELETE_OR_SAVE){
+
+                    }
 
 
-             //       selectedSubreddit = getSubredditNameOrNull()}
-            }},
+                }**/
+
+
+                if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
+                    val currentDisplayedFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
+                    val navController = navHostFragment.navController
+                    if ( currentDisplayedFragment is SubredditFragment) {
+                        navController.popBackStack(R.id.subredditFragment, true)
+                        navController.popBackStack(R.id.subredditFragment, false)
+                    }
+                    else{
+                        navController.popBackStack(R.id.subredditFragment,false)
+                    }
+                    var n = ( currentDisplayedFragment as ContentFragment).getName()
+
+                    var pt = adapter.currentList
+                    var ls = adapter.currentList.filter { it.name != n }
+
+                    adapter.submitList(ls)
+
+
+
+                }},
 
             { Timber.e("error fetching vs: ${it.localizedMessage}") }   )
                                                                 .addTo(disposables) }

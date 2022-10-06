@@ -161,6 +161,7 @@ class SubredditsAndPostsVM @Inject constructor(
                     if (it.name == null) listOf() else listOf(it.name),
                         false, true)
                 .subscribeOn(Schedulers.io())
+
                 .andThen(Observable.just(MyViewState.NavigateBack))
         })
     }
@@ -170,6 +171,7 @@ class SubredditsAndPostsVM @Inject constructor(
          return  flatMap{  repository.deleteOrSaveSubreddit( it.selectedSubreddit,
                   it.shouldDelete).subscribeOn(Schedulers.io())
 
+                 //TODO really this has no place here bc im doing it elsewhere
              .andThen(
                    Observable.just(MyViewState.T3ListForRV(null)) )
          }}
