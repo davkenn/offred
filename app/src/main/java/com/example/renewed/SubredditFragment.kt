@@ -25,7 +25,7 @@ class SubredditFragment : ContentFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         val binding = SubViewBinding.inflate(inflater,container,false)
         subBinding = binding

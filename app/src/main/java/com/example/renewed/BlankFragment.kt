@@ -13,7 +13,7 @@ class BlankFragment : ContentFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         var view: View = inflater.inflate(R.layout.blank_view, container, false)
         return view
     }

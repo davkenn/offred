@@ -44,6 +44,15 @@ data class ViewStateT5(
         other as ViewStateT5
         return displayName == other.displayName
     }
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + displayName.hashCode()
+        result = 31 * result + thumbnail.hashCode()
+        result = 31 * result + bannerImg.hashCode()
+        result = 31 * result + subscribers
+        result = 31 * result + created.hashCode()
+        return result
+    }
 }
 
 data class ViewStateT3(

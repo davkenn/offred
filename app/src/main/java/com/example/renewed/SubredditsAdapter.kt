@@ -45,7 +45,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
                 adapterContextClosure.invoke(selected)
                 selected = layoutPosition
                 adapterContextClosure.invoke(selected)
-                fragmentContextClosure.invoke(sr); //elementBinding.root.setBackgroundColor(Color.BLUE)
+                fragmentContextClosure.invoke(sr) //elementBinding.root.setBackgroundColor(Color.BLUE)
             }
 
             if (sr.displayName.length > 18) {
@@ -53,7 +53,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
                 elementBinding.detailImage.visibility=GONE
                 return
             }
-            if (sr.thumbnail.isNullOrBlank()){
+            if (sr.thumbnail.isBlank()){
                 elementBinding.detailImage.visibility= VISIBLE
                   elementBinding.detailImage.setImageResource(R.color.purple_500)
                   return
@@ -85,12 +85,12 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
 
-        var closur = { x:Int ->
-            notifyItemChanged(x);
-            selected = holder.adapterPosition;
-            notifyItemChanged(x); }
+        var closure = { x:Int ->
+            notifyItemChanged(x)
+            selected = holder.adapterPosition
+            notifyItemChanged(x) }
 
-        holder.bind(getItem(position),onClick,closur)
+        holder.bind(getItem(position),onClick,closure)
 
         if (position == selected){
             previousSelected?.let{it.isSelected=false}

@@ -51,7 +51,7 @@ class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
     fun getSubreddits(): Single<List<RoomT5>> {
         return apiService.getRandomSubreddit()
             .map{(it as T5).toDbModel()}
-            .map{it-> var b = mutableListOf<RoomT5>(it);b}
+            .map{ var b = mutableListOf<RoomT5>(it);b}
 
     }
 

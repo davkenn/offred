@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package com.example.renewed
 
 import android.os.Bundle
@@ -192,7 +194,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         t3OrT5: MyViewState, binding: FragmentSubredditsSelectionBinding,
     ) {
         var b = navHostFragment.navController.backQueue
-            .any { t3OrT5.name == it.arguments?.get("key") ?: "NOMATCH" }
+            .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
         if (b){
             Snackbar.make(
                 binding.root, "Already in Stack. Press back to find it...",

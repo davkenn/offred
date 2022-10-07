@@ -1,8 +1,10 @@
 package com.example.renewed.moshiadapters
 
 import com.example.renewed.models.*
-import com.example.renewed.models.*
-import com.squareup.moshi.*
+import com.squareup.moshi.FromJson
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.JsonReader
+import com.squareup.moshi.ToJson
 
 //TODO exact same adapter to strip this
 class RedditPostAdapter {
@@ -15,8 +17,7 @@ class RedditPostAdapter {
         t3Adapter: JsonAdapter<T3>
     ): Holder {
         val jsonObj = reader.readJsonValue() as Map<String, Any>
-        val type = jsonObj["kind"]
-        val data = when (type) {
+        val data = when (val type = jsonObj["kind"]) {
             "t5" -> t5Adapter.fromJsonValue(jsonObj["data"])!!
             "t3" -> t3Adapter.fromJsonValue(jsonObj["data"])!!
             "t1" -> t1Adapter.fromJsonValue(jsonObj["data"])!!

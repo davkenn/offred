@@ -59,7 +59,7 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun Observable<MyEvent>.eventToResult(): Observable<MyViewState> {
 
         return publish { o ->
-            var a = Observable.fromArray(
+            val a = Observable.fromArray(
                 o.ofType(MyEvent.ScreenLoadEvent::class.java).onScreenLoad(),
                 o.ofType(MyEvent.ClickOnT5ViewEvent::class.java).onClickT5(),
                 o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
@@ -125,7 +125,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
 
         return Observable.merge(
-            flatMap{_-> Observable.just(MyViewState.T3ListForRV(null))},
+            flatMap{ Observable.just(MyViewState.T3ListForRV(null))},
            flatMap {
                //TODO isn't last good enough because I assume they are in order?
                 repository.getSubreddits(it.srList.last().second).toObservable().subscribeOn(Schedulers.io())
@@ -152,7 +152,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private fun Observable<MyEvent.UpdateViewingState>.updateViewingState(): Observable<MyViewState> {
         return Observable.merge(
-            flatMap { _ -> Observable.just(MyViewState.T3ListForRV(null)) },
+            flatMap { Observable.just(MyViewState.T3ListForRV(null)) },
             flatMap {
                 repository.updateSubreddits(
                     if (it.name == null) listOf() else listOf(it.name),

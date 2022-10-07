@@ -37,7 +37,7 @@ class PostFragment : ContentFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
         return binding.root
@@ -61,7 +61,7 @@ class PostFragment : ContentFragment() {
                 postBinding!!.bodyText.text = x.t3.selftext
                 postBinding!!.url.text = x.t3.url
 
-                if (x.t3.thumbnail.isNullOrBlank() || x.t3.thumbnail == "self")
+                if (x.t3.thumbnail.isBlank() || x.t3.thumbnail == "self")
                     postBinding!!.thumb.visibility = GONE
                 else if (("i.redd.it" in x.t3.url)){
                  postBinding!!.thumb.visibility = GONE

@@ -12,7 +12,7 @@ class RetrofitAdapterTest {
     private lateinit var mockWebServer: MockWebServer
 
     @Before
-    public fun setUp() {
+    fun setUp() {
         mockWebServer = MockWebServer()
 
         var coinedResponse = loadJsonResponse("Berserk.json")
