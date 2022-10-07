@@ -21,9 +21,11 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
         TODO("Not yet implemented")
     }
 
-    override fun getSubreddits(): Single<List<RoomT5>> {
+    override fun getSubreddits(startFeedAfterThis: String?): Single<List<RoomT5>> {
         TODO("Not yet implemented")
     }
+
+
 
     override fun getPost(name: String): Single<RoomT3> {
         TODO("Not yet implemented")
@@ -41,15 +43,17 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
         TODO("Not yet implemented")
     }
 
+    override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
+        TODO("Not yet implemented")
+    }
+
     override fun updateSubreddits(
         srList: List<String>,
-        isDisplayed: Boolean,
-        shouldDelete: Boolean,
+        isDisplayedFlagSet: Boolean,
         shouldUpdateDisplayed: Boolean
     ): Completable {
         TODO("Not yet implemented")
     }
-
 
 
 }

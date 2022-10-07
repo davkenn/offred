@@ -74,10 +74,9 @@ class SubredditsAndPostsVMTest {
         //GIVEN
         var end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
-        mockWebServer.start()
 
         //WHEN
-        var r = fakerepo.getSubreddits()
+        var r = fakerepo.getSubreddits("aaa")
         var t = r.test()
         var l = t.await(1,TimeUnit.SECONDS)
 

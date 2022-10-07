@@ -5,7 +5,7 @@ sealed class MyEvent{
     data class ClickOnT5ViewEvent(val name: String): MyEvent() //this returns two things one a view state and one a view effect
     data class ClickOnT3ViewEvent(val name: String): MyEvent()
     data class RemoveAllSubreddits(val srList:List<Pair<String,String>>): MyEvent()
-   data class UpdateViewingState(val name: String?): MyEvent()
+    data class UpdateViewingState(val name: String?): MyEvent()
     data class SaveOrDeleteEvent(val targetedSubreddit: String?, val shouldDelete:Boolean) : MyEvent() {
 
     }

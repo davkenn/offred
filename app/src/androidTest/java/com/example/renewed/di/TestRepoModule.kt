@@ -2,6 +2,7 @@ package com.example.renewed.di
 
 import com.example.renewed.API
 import com.example.renewed.BaseSubredditsAndPostsRepo
+import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.SubredditsAndPostsRepository
@@ -22,8 +23,8 @@ abstract class TestRepoModule {
 
         @Singleton
         @Provides
-        fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO) :
-                BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api,t5Dao,t3Dao)
+        fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO,savedDao:SavedSubredditsDAO) :
+                BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api,t5Dao,t3Dao, savedDao)
 
     }
 }

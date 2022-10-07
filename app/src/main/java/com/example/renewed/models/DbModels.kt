@@ -19,8 +19,6 @@ data class RoomT5(
     val created_utc: Instant,
     val isSaved: Boolean = false,
     val totalViews: Int = 0,
-    //this will keep posts from being deleted if still active,
-    //but not be counted in reloads of db. can mess with stuff if on current screen
     val isDisplayed: Int = 0
 )
 

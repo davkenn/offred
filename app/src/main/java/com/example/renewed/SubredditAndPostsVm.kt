@@ -98,8 +98,7 @@ class SubredditsAndPostsVM @Inject constructor(
                     eventProcessed = true
                 )
             }
-//this makes it so cant click same view twice, but still can click on another then this one
-        }//.distinctUntilChanged()
+        }
     }
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<MyViewState> {
@@ -108,7 +107,7 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMapSingle {
                 repository.getSubreddits()
                     .subscribeOn(Schedulers.io())
-                    .map { list -> list.map { it.toViewState() } }
+                    .map { list -> list.map { x->x.toViewState() } }
                     .map { MyViewState.T5ListForRV(it) }
             },
             flatMapSingle {

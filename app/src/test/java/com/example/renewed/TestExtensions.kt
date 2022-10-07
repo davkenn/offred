@@ -23,7 +23,6 @@ class TestTools {
                 .openStream()
             val source = inputStream?.let { inputStream.source().buffer() }
             var res = source?.let { it.readString(StandardCharsets.UTF_8) }
-            res
             return res
         }
     }

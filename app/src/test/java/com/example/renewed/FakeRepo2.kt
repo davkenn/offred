@@ -44,11 +44,14 @@ class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
         return Single.error(Exception())
     }
 
-    override fun getSubreddits(): Single<List<RoomT5>> {
-var a = apiService.getRandomSubreddit()
+    override fun getSubreddits(startFeedAfterThis: String?): Single<List<RoomT5>> =
+        getSubreddits()
 
-return  a.map{(it as T5).toDbModel()}
-    .map{it-> var b = mutableListOf<RoomT5>(it);b}
+
+    fun getSubreddits(): Single<List<RoomT5>> {
+        return apiService.getRandomSubreddit()
+            .map{(it as T5).toDbModel()}
+            .map{it-> var b = mutableListOf<RoomT5>(it);b}
 
     }
 
