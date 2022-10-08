@@ -132,12 +132,7 @@ class SubredditsAndPostsVM @Inject constructor(
                     .map { list -> list.map { it.toViewState() } }
                     .map { MyViewState.T5ListForRV(it) }
                     .startWith(
-                        repository.updateSubreddits(
-                            it.srList.map { it.first }, isDisplayedFlagSet = false,
-                           shouldUpdateDisplayed = false)
-                            .subscribeOn(Schedulers.io())
-                    .andThen(
-                        prefetch().subscribeOn(Schedulers.io())))})
+                        prefetch().subscribeOn(Schedulers.io()))})
             }
 
 
@@ -156,7 +151,8 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMap {
                 repository.updateSubreddits(
                     if (it.name == null) listOf() else listOf(it.name),
-                        false, true)
+                    isDisplayedInAdapter = false, shouldToggleDisplayedColumnInDb = true
+                )
                 .subscribeOn(Schedulers.io())
 
                 .andThen(Observable.just(MyViewState.NavigateBack))
@@ -180,7 +176,11 @@ class SubredditsAndPostsVM @Inject constructor(
 
     return Observable.merge(
         flatMapSingle {
-            repository.updateSubreddits(listOf(it.name),true,true)
+            repository.updateSubreddits(
+                listOf(it.name),
+                isDisplayedInAdapter = false,
+                shouldToggleDisplayedColumnInDb = true
+            )
                 .subscribeOn(Schedulers.io())
                 .andThen(repository.getPosts(it.name)
                     .map { list -> list.map { x -> x.toViewState() }}

@@ -1,6 +1,7 @@
 package com.example.renewed
 
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -15,6 +16,9 @@ import javax.inject.Inject
 class LargeTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
 
     @Inject
@@ -36,7 +40,7 @@ class LargeTest {
         var l = vm.vs.test()
         vm.processInput(MyEvent.ScreenLoadEvent(""))
 
-        assertThat("hello",l.values().first().toString(), equalTo("Aaaa") )
+    //    assertThat("hello",l.values().first().toString(), equalTo("Aaaa") )
         assert(rep is SubredditsAndPostsRepository)
 
     }

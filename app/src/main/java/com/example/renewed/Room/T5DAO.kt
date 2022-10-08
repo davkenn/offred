@@ -20,7 +20,7 @@ interface T5DAO {
 
         //TODO is this good or bad to just centralize it like this
         @Query("SELECT * FROM RoomT5 WHERE isSaved=0 and totalViews < 3 "+
-                "ORDER by displayName < :startReturningAfter,  displayName LIMIT 20")
+                "ORDER by displayName <= :startReturningAfter,  displayName LIMIT 20")
         fun getSubredditsFromTable(startReturningAfter:String): Single<List<RoomT5>>
 
         @Query("SELECT * FROM RoomT5 WHERE RoomT5.name like :name")

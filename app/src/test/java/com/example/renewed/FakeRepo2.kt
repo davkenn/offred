@@ -4,22 +4,14 @@ package com.example.renewed
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import okhttp3.mockwebserver.MockWebServer
 import okio.buffer
 import okio.source
 import java.nio.charset.StandardCharsets
-import javax.inject.Inject
 
 
-import com.example.renewed.Room.T3DAO
-import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
 
-import okio.BufferedSource
-import okio.buffer
-import okio.source
 import java.time.Instant
-import kotlin.random.Random
 
 
 class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
@@ -79,7 +71,8 @@ class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
     override fun updateSubreddits(
         srList: List<String>,
         isDisplayed: Boolean,
-        shouldUpdateDisplayed: Boolean
+        shouldUpdateDisplayed: Boolean,
+        shouldToggleDisplayedColumnInDb: Boolean
     ): Completable {
         return Completable.complete()
     }

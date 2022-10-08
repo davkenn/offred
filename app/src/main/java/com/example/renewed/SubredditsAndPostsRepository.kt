@@ -1,15 +1,12 @@
 package com.example.renewed
 
-import androidx.room.rxjava3.EmptyResultSetException
 import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import timber.log.Timber
 import java.lang.Integer.max
 import java.lang.Integer.min
 import java.time.Instant
@@ -76,7 +73,10 @@ class SubredditsAndPostsRepository(private val api : API,
 
 
     override fun getSubreddits(after: String?) : Single<List<RoomT5>> =
-        t5Dao.getSubredditsFromTable(after?:"")
+        t5Dao.getSubredditsFromTable(after?:"").concatMap {
+            ls->updateSubreddits(ls.map{it.name},
+            true,false).subscribe();Single.just(ls)}
+
 
 
     override fun getPost(name:String) : Single<RoomT3> {
@@ -125,8 +125,10 @@ class SubredditsAndPostsRepository(private val api : API,
                          .toObservable()
     }
 
-    override fun updateSubreddits(srList: List<String>, isDisplayedFlagSet:Boolean,
-                                shouldUpdateDisplayed:Boolean): Completable {
+    override fun updateSubreddits(
+        srList: List<String>, isDisplayedInAdapter: Boolean,
+        shouldToggleDisplayedColumnInDb: Boolean
+    ): Completable {
 
     return Observable.fromIterable(srList)
             //TODO im just swallowing the error here, change back from maybe to see prob
@@ -135,10 +137,10 @@ class SubredditsAndPostsRepository(private val api : API,
                     .concatMapCompletable {
                         t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
                             //so as not to double count a view, its sense of how many times its
-                            //been viewed is only updated when its sent back to the system
-                            totalViews= if (shouldUpdateDisplayed) it.totalViews else it.totalViews+1,
-                                isDisplayed =  if (shouldUpdateDisplayed) isDisplayedFlagSet.compareTo(false)
-                                                                        else it.isDisplayed))
+                            //been viewed is only updated when sent onto adapter
+                            totalViews= if (isDisplayedInAdapter) it.totalViews+1  else it.totalViews,
+                                isDisplayed =  if (shouldToggleDisplayedColumnInDb) (it.isDisplayed+1) % 2
+                                                        else it.isDisplayed))
 
     }
 }}
