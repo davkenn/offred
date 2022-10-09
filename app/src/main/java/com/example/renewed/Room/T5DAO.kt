@@ -1,6 +1,7 @@
 package com.example.renewed.Room
 
 import androidx.room.*
+import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
 import io.reactivex.rxjava3.core.*
 import java.time.Instant
@@ -8,8 +9,11 @@ import java.time.Instant
 
 @Dao
 interface T5DAO {
+        //TODO this is
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        fun insertAll(t5s: List<RoomT5>): Completable
 
-        @Query("SELECT COUNT(*) FROM RoomT5 WHERE isSaved=0 and isDisplayed=0")
+        @Query("SELECT COUNT(*) FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0")
         fun howManySubredditsInDb(): Single<Long>
 
         @Query("DELETE FROM RoomT5 WHERE name = :name")
@@ -19,11 +23,11 @@ interface T5DAO {
         fun deleteUnwanted(maxViews: Int): Completable
 
         //TODO is this good or bad to just centralize it like this
-        @Query("SELECT * FROM RoomT5 WHERE isSaved=0 and totalViews < 3 "+
-                "ORDER by displayName <= :startReturningAfter,  displayName LIMIT 20")
+        @Query("SELECT * FROM RoomT5 WHERE isSaved= 0 AND totalViews < 3 "+
+                "ORDER BY displayName <= :startReturningAfter,  displayName LIMIT 20")
         fun getSubredditsFromTable(startReturningAfter:String): Single<List<RoomT5>>
 
-        @Query("SELECT * FROM RoomT5 WHERE RoomT5.name like :name")
+        @Query("SELECT * FROM RoomT5 WHERE RoomT5.name LIKE :name")
         fun getSubreddit(name: String) : Single<RoomT5>
 
         //get subreddits yet to have any posts loaded for it

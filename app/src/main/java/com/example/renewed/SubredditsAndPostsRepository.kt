@@ -1,5 +1,7 @@
 package com.example.renewed
 
+import com.example.renewed.DefaultDBContents.t3SampleList
+import com.example.renewed.DefaultDBContents.t5SampleList
 import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
@@ -32,6 +34,17 @@ class SubredditsAndPostsRepository(private val api : API,
             }
     }
 
+    override fun prefetchDefaultSubreddits():Completable =
+                    Single.just(t5SampleList)
+                          .flatMapCompletable{ x-> t5Dao.insertAll(x)}
+
+
+    override fun prefetchDefaultPosts(): Completable =
+        Single.just(t3SampleList)
+            .flatMapCompletable{ x-> t3Dao.insertAll(x)}
+
+
+
     override fun prefetchSubreddits() : Completable =
         t5Dao.howManySubredditsInDb()
              .toObservable()
@@ -41,42 +54,22 @@ class SubredditsAndPostsRepository(private val api : API,
                                                                                       )
                                                                                         )}
 
-    //https://stackoverflow.com/questions/42161293/rxjava-flatmap-how-to-skip-errors
     private fun loadSubredditsDb(needed: Int): Completable =
         Observable.fromIterable(List(needed){0})
             .flatMap ( {  api.getRandomSubreddit().toObservable()} , 6)
             .map { (it as T5).toDbModel() }
             .flatMapCompletable { roomT5 -> t5Dao.insertT5(roomT5)}
 
-/**
+
     override fun getSubreddit(name: String): Single<RoomT5> =
-        try{t5Dao.getSubreddit("")}catch (e: EmptyResultSetException){ Single.just(  RoomT5(
-            "ERROR",
-            "ERROR",
-            "${e.message}",
-            "",
-            "",
-            Instant.now(),
-            1,
-            Instant.now(),
-            false) )}
-**/
-    override fun getSubreddit(name: String): Single<RoomT5> =
-        t5Dao.getSubreddit(name)/**.onErrorResumeWith(Single.just(
-            RoomT5(
-                "ERROR",
-                "ERROR",
-                "",
-                "",
-                "", Instant.now(),0, Instant.now())**/
+        t5Dao.getSubreddit(name)
 
 
-
-    override fun getSubreddits(after: String?) : Single<List<RoomT5>> =
-        t5Dao.getSubredditsFromTable(after?:"").concatMap {
-            ls->updateSubreddits(ls.map{it.name},
-            true,false).subscribe();Single.just(ls)}
-
+    override fun getSubreddits(startFeedAfterThis: String?) : Single<List<RoomT5>> =
+        t5Dao.getSubredditsFromTable(startFeedAfterThis?:"")
+             .flatMap { it -> updateSubreddits(it.map{it.name}, isDisplayedInAdapter = true,
+                                                    shouldToggleDisplayedColumnInDb = false)
+                             .andThen(Single.just(it))}
 
 
     override fun getPost(name:String) : Single<RoomT3> {
@@ -117,30 +110,21 @@ class SubredditsAndPostsRepository(private val api : API,
         return t5Dao.delete(l.name)
     }
 
-    //TODO if im going to delete i have to remove from back stack
-    override fun deleteSubreddits(names:List<String>): Observable<Unit> {
-
-        return Observable.fromIterable(names)
-                         .flatMapCompletable {  t5Dao.delete(it) }
-                         .toObservable()
-    }
 
     override fun updateSubreddits(
         srList: List<String>, isDisplayedInAdapter: Boolean,
         shouldToggleDisplayedColumnInDb: Boolean
     ): Completable {
 
-    return Observable.fromIterable(srList)
+        return Observable.fromIterable(srList)
             //TODO im just swallowing the error here, change back from maybe to see prob
-                    .flatMapMaybe {t5Dao.getSubreddit(it).onErrorComplete()}
-
-                    .concatMapCompletable {
-                        t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
-                            //so as not to double count a view, its sense of how many times its
-                            //been viewed is only updated when sent onto adapter
-                            totalViews= if (isDisplayedInAdapter) it.totalViews+1  else it.totalViews,
+            .flatMapMaybe {t5Dao.getSubreddit(it).onErrorComplete()}
+            .concatMapCompletable {
+                t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
+                    //so as not to double count a view, views only updated when sent into adapter
+                                totalViews= if (isDisplayedInAdapter) it.totalViews+1  else it.totalViews,
                                 isDisplayed =  if (shouldToggleDisplayedColumnInDb) (it.isDisplayed+1) % 2
-                                                        else it.isDisplayed))
+                                                                            else it.isDisplayed))
 
     }
 }}

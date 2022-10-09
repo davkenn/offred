@@ -26,7 +26,6 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
     }
 
 
-
     override fun getPost(name: String): Single<RoomT3> {
         TODO("Not yet implemented")
     }
@@ -35,9 +34,6 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
         TODO("Not yet implemented")
     }
 
-    override fun deleteSubreddits(names: List<String>): Observable<Unit> {
-        TODO("Not yet implemented")
-    }
 
     override fun deleteUninterestingSubreddits(): Completable {
         TODO("Not yet implemented")
@@ -49,8 +45,7 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
 
     override fun updateSubreddits(
         srList: List<String>,
-        isDisplayedOnScreen: Boolean,
-        shouldUpdateDisplayed: Boolean,
+        isDisplayedInAdapter: Boolean,
         shouldToggleDisplayedColumnInDb: Boolean
     ): Completable {
         TODO("Not yet implemented")

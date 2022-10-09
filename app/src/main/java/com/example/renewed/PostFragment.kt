@@ -71,9 +71,9 @@ class PostFragment : ContentFragment() {
                 }
                 else{
                     postBinding!!.thumb.visibility = VISIBLE
-                    if (x.t3.thumbnail.equals("spoiler")) //rpg_gamers Expeditions
+                    if (x.t3.thumbnail == "spoiler") //rpg_gamers Expeditions
                         postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
-                    if (x.t3.thumbnail.equals("nsfw"))
+                    if (x.t3.thumbnail == "nsfw")
                         postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
                     Glide.with(this).load(x.t3.thumbnail)
                         .apply( RequestOptions().override(100, 100))

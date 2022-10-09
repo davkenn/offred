@@ -1,6 +1,7 @@
 package com.example.renewed
 
 import androidx.lifecycle.ViewModel
+import com.example.renewed.DefaultDBContents.t5SampleList
 import com.example.renewed.models.*
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
@@ -45,12 +46,15 @@ class SubredditsAndPostsVM @Inject constructor(
 
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
-                .doOnComplete { Timber.d("---- done fetching subreddits") }
-
-                .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
+                                .retry(3)
+                                .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
+                                .doOnComplete { Timber.d("---- done fetching subreddits") }
+                                .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
             .andThen(repository.prefetchPosts())
-            .doOnError { Timber.e("----error getting posts") }
-            .doOnComplete { Timber.d("---- done fetching posts") }
+            .retry(3)
+            .onErrorResumeNext {repository.prefetchDefaultPosts() }
+                                .doOnComplete { Timber.d("---- done fetching posts") }
+                                .doOnError { Timber.e("----error getting posts") }
 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -123,7 +127,6 @@ class SubredditsAndPostsVM @Inject constructor(
     //deletes when process dies or just clear when start app?
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<MyViewState> {
 
-
         return Observable.merge(
             flatMap{ Observable.just(MyViewState.T3ListForRV(null))},
            flatMap {
@@ -175,22 +178,21 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
 
     return Observable.merge(
+        flatMapSingle { clickOnT5Event ->
+              repository.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
+                                                            shouldToggleDisplayedColumnInDb = true)
+                        .subscribeOn(Schedulers.io())
+                        .andThen(repository.getPosts(clickOnT5Event.name)
+                        .map { list -> list.map { x -> x.toViewState() }}
+                        .map { x -> MyViewState.T3ListForRV(x) })},
         flatMapSingle {
-            repository.updateSubreddits(
-                listOf(it.name),
-                isDisplayedInAdapter = false,
-                shouldToggleDisplayedColumnInDb = true
-            )
-                .subscribeOn(Schedulers.io())
-                .andThen(repository.getPosts(it.name)
-                    .map { list -> list.map { x -> x.toViewState() }}
-                    .map { x -> MyViewState.T3ListForRV(x) })},
-        flatMapSingle{
-            repository.getSubreddit(it.name).onErrorResumeWith(Single.just(
-                RoomT5("Oops! Somehow there's an error...", "ll", "Either" +
-                        " you have no internet connection or the site you seek no longer exists",
-                            "", "",Instant.now(),-1, Instant.now()))
-                .retry(10))
+              repository.getSubreddit(it.name)
+                        .onErrorResumeWith(Single.just(RoomT5(name= "Oops! Somehow there's an error...",
+                                                        description = "Either you have no internet connection"  +
+                                                      "or the site you seek no longer exists", displayName="ll",
+                                                    created_utc = Instant.now(),timeLastAccessed = Instant.now(),
+                                                        thumbnail = "", banner_img = "", subscribers=5))
+                        .retry(5))
                 .subscribeOn(Schedulers.io())
                 .map { x -> MyViewState.T5ForViewing(x.toViewState()) }})
         }

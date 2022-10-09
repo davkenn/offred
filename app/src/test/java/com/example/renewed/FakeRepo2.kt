@@ -56,9 +56,6 @@ class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
             "aaa","aaa","per", "aaa")))
     }
 
-    override fun deleteSubreddits(names: List<String>): Observable<Unit> {
-        return Observable.empty()
-    }
 
     override fun deleteUninterestingSubreddits(): Completable {
         return Completable.complete()
@@ -70,8 +67,7 @@ class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
 
     override fun updateSubreddits(
         srList: List<String>,
-        isDisplayed: Boolean,
-        shouldUpdateDisplayed: Boolean,
+        isDisplayedInAdapter: Boolean,
         shouldToggleDisplayedColumnInDb: Boolean
     ): Completable {
         return Completable.complete()

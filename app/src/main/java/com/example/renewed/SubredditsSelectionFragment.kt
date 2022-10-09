@@ -48,8 +48,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onCreate(savedInstanceState: Bundle?) {
         selectedSubreddit = savedInstanceState?.getString("key1")
-
-
         super.onCreate(savedInstanceState)
     }
 
@@ -57,7 +55,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         outState.run {
             putString("key1", selectedSubreddit)
-
         }
         super.onSaveInstanceState(outState)
     }
@@ -75,11 +72,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
 
         subredditAdapter = SubredditsAdapter { x ->
-
             selectedSubreddit = x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
-
         }
+
         val binding = FragmentSubredditsSelectionBinding.bind(view)
 
         fragmentSelectionBinding = binding.apply {
@@ -101,32 +97,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             }
 
             saveButton.setOnClickListener {
-
-                    subsAndPostsVM.processInput(
-                        MyEvent.UpdateViewingState(
-                            getSubredditNameOrNull()
-                        ))
-                    subsAndPostsVM.processInput(
-                        MyEvent.SaveOrDeleteEvent(
-                            getSubredditNameOrNull(),
-                            false
-                        ))
-
-                }
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), false))
+            }
 
 
-            //TODO none of these work with t3 yet figure out how to do this here or in vm
             deleteButton.setOnClickListener {
-                    subsAndPostsVM.processInput(
-                        MyEvent.UpdateViewingState(
-                            getSubredditNameOrNull()
-                        ))
-                    subsAndPostsVM.processInput(
-                        MyEvent.SaveOrDeleteEvent(
-                            getSubredditNameOrNull(),
-                            true
-                        ))
-                }
+                    subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+                    subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
+            }
+
             saveButton1 = saveButton
             deleteButton1 = deleteButton
 
@@ -228,17 +208,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         Timber.d("onStart in home Fragment")
         disposable = subsAndPostsVM.prefetch()
-            .concatWith {
-                subsAndPostsVM.processInput(
-                    MyEvent.ScreenLoadEvent(
-                        selectedSubreddit
-                    )
-                )
-            }
-            .subscribe({ Timber.d("----done fetching both ") },
-                {
-                    Timber.e("----error fetching is ${it.localizedMessage}")
-                })
+                                    .concatWith { subsAndPostsVM.processInput(
+                                                            MyEvent.ScreenLoadEvent(selectedSubreddit))
+                                    }
+
+
+                                    .subscribe({ Timber.d("----done fetching both ") },
+                                    {
+                                        Timber.e("----error fetching is ${it.localizedMessage}")
+                                    })
     }
 
     override fun onResume() {
