@@ -3,7 +3,6 @@ package com.example.renewed
 import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 interface BaseSubredditsAndPostsRepo {

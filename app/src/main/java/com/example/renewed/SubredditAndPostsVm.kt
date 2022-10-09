@@ -1,18 +1,13 @@
 package com.example.renewed
 
 import androidx.lifecycle.ViewModel
-import com.example.renewed.DefaultDBContents.t5SampleList
 import com.example.renewed.models.*
-import com.example.renewed.models.FullViewState
-import com.example.renewed.models.MyEvent
-import com.example.renewed.models.MyViewState
 import com.jakewharton.rxrelay3.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.mergeAll
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -152,7 +147,7 @@ class SubredditsAndPostsVM @Inject constructor(
         return Observable.merge(
             flatMap { Observable.just(MyViewState.T3ListForRV(null)) },
             flatMap {
-                repository.updateSubreddits(
+                repository.updateSubreddits(srList=
                     if (it.name == null) listOf() else listOf(it.name),
                     isDisplayedInAdapter = false, shouldToggleDisplayedColumnInDb = true
                 )

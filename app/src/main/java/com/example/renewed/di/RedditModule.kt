@@ -1,20 +1,20 @@
 package com.example.renewed.di
 
-import com.example.renewed.*
+import com.example.renewed.API
+import com.example.renewed.BaseSubredditsAndPostsRepo
+import com.example.renewed.LoginAPI
 import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.SubredditsAndPostsRepository
+import com.example.renewed.moshiadapters.DescriptionAdapter
 import com.example.renewed.moshiadapters.RedditHolderAdapter
 import com.example.renewed.moshiadapters.RedditPostAdapter
-import com.example.renewed.moshiadapters.DescriptionAdapter
-
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -42,7 +42,7 @@ object RedditModule {
         .client(okHttpClient)
         .addConverterFactory(MoshiConverterFactory.create(mosh))
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .baseUrl(RedditModule.BASE_URL)
+        .baseUrl(BASE_URL)
         .build()
 
 
@@ -72,7 +72,7 @@ object RedditModule {
 
     @Singleton
     @Provides
-    fun provideMoshi() = Moshi.Builder()
+    fun provideMoshi(): Moshi = Moshi.Builder()
         .add(RedditPostAdapter())
         .add(RedditHolderAdapter())
         .add(DescriptionAdapter())
@@ -93,7 +93,7 @@ object RepoModule {
     @Singleton
     @Provides
     fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO,savedSubredditsDAO: SavedSubredditsDAO):
-            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao,savedSubredditsDAO)
+            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao)
 
 }
 

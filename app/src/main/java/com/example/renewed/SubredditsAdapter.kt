@@ -19,11 +19,22 @@ import com.example.renewed.models.ViewStateT5
 
  var selected = -1
  var previousSelected :View? = null
+ val stack = ArrayDeque<String>(listOf())
+
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
 
-     fun clearSelected() {
+    val stack = ArrayDeque<String>(listOf())
+    fun pushStack(name: String) : Unit {
+        stack.addLast(name)
+    }
+    fun popStack() = if (stack.size!=0) stack.removeLast() else null
+    fun clearStack() {
+        stack.clear()
+    }
+
+    fun clearSelected() {
         selected=-1
         previousSelected=null
     }
@@ -32,7 +43,9 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     fun setSelected(pos:Int) {
         selected=pos
         previousSelected=null
+
     }
+
 
     class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
         RecyclerView.ViewHolder(elementBinding.root){
@@ -45,7 +58,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
                 adapterContextClosure.invoke(selected)
                 selected = layoutPosition
                 adapterContextClosure.invoke(selected)
-                fragmentContextClosure.invoke(sr) //elementBinding.root.setBackgroundColor(Color.BLUE)
+                fragmentContextClosure.invoke(sr)
             }
 
             if (sr.displayName.length > 18) {
@@ -85,7 +98,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
 
-        var closure = { x:Int ->
+        val closure = { x:Int ->
             notifyItemChanged(x)
             selected = holder.adapterPosition
             notifyItemChanged(x) }
@@ -93,7 +106,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         holder.bind(getItem(position),onClick,closure)
 
         if (position == selected){
-            previousSelected?.let{it.isSelected=false}
+            previousSelected?.let{it.isSelected=false }
             holder.itemView.isSelected=true
             previousSelected = holder.itemView
         }

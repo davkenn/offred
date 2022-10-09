@@ -17,13 +17,12 @@ import java.nio.charset.StandardCharsets
 
 class TestTools {
     companion object {
-        fun loadJsonResponse( e: String): String? {
+        fun loadJsonResponse(e: String): String? {
 
             val inputStream = this.javaClass.classLoader!!.getResource(e)
                 .openStream()
             val source = inputStream?.let { inputStream.source().buffer() }
-            var res = source?.let { it.readString(StandardCharsets.UTF_8) }
-            return res
+            return source?.readString(StandardCharsets.UTF_8)
         }
     }
 }
@@ -41,28 +40,30 @@ fun MockWebServer.enqueueResponse(fileName: String, code: Int) {
     }}
 
 
-    fun setupTestRetrofit(mockWebServer: MockWebServer, attachRXAdapter: Boolean,isHostnameError:Boolean = false):API {
+fun setupTestRetrofit(
+    mockWebServer: MockWebServer,
+    attachRXAdapter: Boolean,
+    isHostnameError: Boolean = false
+): API {
 
-        var mosh = Moshi.Builder()
+    val mosh = Moshi.Builder()
 
-            //TODO does order matter here?
-            .add(RedditPostAdapter())
-            .add(RedditHolderAdapter())
-            .add(DescriptionAdapter())
-            .build()
-        var okHttpClient = OkHttpClient.Builder()
+        //TODO does order matter here?
+        .add(RedditPostAdapter())
+        .add(RedditHolderAdapter())
+        .add(DescriptionAdapter())
+        .build()
+    val okHttpClient = OkHttpClient.Builder()
 
-            .build()
-        var apiService = Retrofit.Builder()
-            .baseUrl(mockWebServer.url("/"))
+        .build()
+
+    return Retrofit.Builder()
+        .baseUrl(mockWebServer.url("/"))
 
 
-
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(mosh))
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .build()
-            .create(API::class.java)
-
-        return apiService
+        .client(okHttpClient)
+        .addConverterFactory(MoshiConverterFactory.create(mosh))
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+        .build()
+        .create(API::class.java)
 }

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
 
 import com.example.renewed.models.MyEvent
@@ -35,7 +36,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private val disposables = CompositeDisposable()
     private var disposable: Disposable? = null
 
-
+    private lateinit var subRV: RecyclerView
+    private lateinit var postRV: RecyclerView
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
@@ -80,10 +82,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         fragmentSelectionBinding = binding.apply {
 
-            subredditsRv2.layoutManager = LinearLayoutManager(requireContext())
-            subredditsRv2.adapter = postAdapter
+            postsRv.layoutManager = LinearLayoutManager(requireContext())
+            postsRv.adapter = postAdapter
             subredditsRv.layoutManager = LinearLayoutManager(requireContext())
             subredditsRv.adapter = subredditAdapter
+            subRV=subredditsRv
+            postRV=postsRv
+
 
             refreshButton.setOnClickListener {
                 selectedSubreddit = null//?? need this line?
@@ -124,10 +129,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                 x.latestEvent3?.let { t3 ->
                     navigateToPostOrSubreddit(R.id.postFragment, t3, binding)
+
                 }
 
                 x.latestEvent5?.let { t5 ->
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
+                    t5.name?.let{subredditAdapter.pushStack(it)}
                 }
 
 
@@ -136,7 +143,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                     val navController = navHostFragment.navController
 
-                    var n = getSubredditNameOrNull()
+                    val n = getSubredditNameOrNull()
                     if ( navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
@@ -153,6 +160,29 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
                     subredditAdapter.notifyDataSetChanged()
+                    var destination = subredditAdapter.popStack()
+                    if (destination != null) {
+                        // subredditAdapter.getItemId()
+                        var a = subredditAdapter.currentList.withIndex()
+                            .firstOrNull() { it.value.name == destination }?.index
+                        if (a != null) {
+                            var holder = subRV.findViewHolderForLayoutPosition(a)
+
+                            previousSelected?.let { it.isSelected = false }
+holder.
+                            previousSelected = holder?.itemView
+                            holder?.itemView?.isSelected = true
+                            selected = a
+
+
+                        }else{
+                            subredditAdapter.clearStack()
+                            subredditAdapter.clearSelected()
+                        }
+
+
+                        //if a is null its not in the adapter clear the queue
+                    }
 
                 }
             },
@@ -162,9 +192,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
 
+
+
     private fun getSubredditNameOrNull(): String? {
         var name: String? = null
-        var t = navHostFragment.childFragmentManager.primaryNavigationFragment
+        val t = navHostFragment.childFragmentManager.primaryNavigationFragment
         t.let { name = (t as ContentFragment).getName() }
         return name
     }
@@ -173,7 +205,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         @IdRes resId: Int,
         t3OrT5: MyViewState, binding: FragmentSubredditsSelectionBinding,
     ) {
-        var b = navHostFragment.navController.backQueue
+        val b = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
         if (b){
             Snackbar.make(
@@ -222,10 +254,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         super.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     override fun onDestroyView() {

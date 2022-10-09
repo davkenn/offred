@@ -1,20 +1,19 @@
 package com.example.renewed
 
 
+import com.example.renewed.models.RoomT3
+import com.example.renewed.models.RoomT5
+import com.example.renewed.models.T5
+import com.example.renewed.models.toDbModel
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import okio.buffer
 import okio.source
 import java.nio.charset.StandardCharsets
-
-
-import com.example.renewed.models.*
-
 import java.time.Instant
 
 
-class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
+class FakeRepo2(private val apiService: API) : BaseSubredditsAndPostsRepo {
     private var res : String? = null
 
 
@@ -23,7 +22,7 @@ class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
          val inputStream = this.javaClass.classLoader!!.getResource("Berserk.json")
         .openStream()
         val source = inputStream?.let { inputStream.source().buffer() }
-        res = source?.let{it.readString(StandardCharsets.UTF_8)}
+        res = source?.readString(StandardCharsets.UTF_8)
 
         return Completable.complete()
     }
@@ -40,10 +39,10 @@ class FakeRepo2(val apiService: API) : BaseSubredditsAndPostsRepo {
         getSubreddits()
 
 
-    fun getSubreddits(): Single<List<RoomT5>> {
+    private fun getSubreddits(): Single<List<RoomT5>> {
         return apiService.getRandomSubreddit()
             .map{(it as T5).toDbModel()}
-            .map{ var b = mutableListOf<RoomT5>(it);b}
+            .map{ val b = mutableListOf<RoomT5>(it);b}
 
     }
 

@@ -1,16 +1,13 @@
 package com.example.renewed
 
+
 import com.example.renewed.TestTools.Companion.loadJsonResponse
-import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
-
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.SocketPolicy
 import org.hamcrest.MatcherAssert.assertThat
-
-
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -24,8 +21,9 @@ class SubredditsAndPostsVMTest {
     private lateinit var mockWebServer: MockWebServer
     private lateinit var okHttpClient: OkHttpClient
     private lateinit var apiService: API
+
     @Before
-    public fun setUp() {
+    fun setUp() {
         mockWebServer = MockWebServer()
         apiService =setupTestRetrofit(mockWebServer,true)
         fakerepo = FakeRepo2(apiService)
@@ -38,7 +36,7 @@ class SubredditsAndPostsVMTest {
 
 
     @After
-    public fun tearDown() {
+    fun tearDown() {
         mockWebServer.shutdown()
     }
 
@@ -51,12 +49,12 @@ class SubredditsAndPostsVMTest {
 
     fun processInput() {
         //GIVEN
-        var end = loadJsonResponse("Berserk.json")
+        val end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
      //   mockWebServer.start()
 
         //WHEN
-        var res = viewModel.vs.test()
+        val res = viewModel.vs.test()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         var l = res.await(1,TimeUnit.SECONDS)
 
@@ -72,12 +70,12 @@ class SubredditsAndPostsVMTest {
     @Test
     fun getRandomSubreddit() {
         //GIVEN
-        var end = loadJsonResponse("Berserk.json")
+        val end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
 
         //WHEN
-        var r = fakerepo.getSubreddits("aaa")
-        var t = r.test()
+        val r = fakerepo.getSubreddits("aaa")
+        val t = r.test()
         var l = t.await(1,TimeUnit.SECONDS)
 
         //THEN
@@ -89,7 +87,7 @@ class SubredditsAndPostsVMTest {
 
     @Test
     fun processNonExistingSubredditError(){
-        var emptySubreddit = loadJsonResponse("handleUrlNotPointingToSubreddit.json")
+        val emptySubreddit = loadJsonResponse("handleUrlNotPointingToSubreddit.json")
 
         mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody(emptySubreddit!!))
 
@@ -102,7 +100,7 @@ class SubredditsAndPostsVMTest {
     fun processNetworkError() {
         mockWebServer = MockWebServer()
 
-        var end = TestTools.loadJsonResponse("Berserk.json")
+        val end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
                 setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
         mockWebServer.start()
@@ -111,7 +109,7 @@ class SubredditsAndPostsVMTest {
         viewModel = SubredditsAndPostsVM(fakerepo)
 
 
-        var res = viewModel.vs.test()
+        val res = viewModel.vs.test()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         var n = res.await(1,TimeUnit.SECONDS)
         res.assertError(IOException::class.java)
@@ -130,6 +128,6 @@ class SubredditsAndPostsVMTest {
     }
 **/
     @Test
-    fun ExceptionThrown() {
+    fun exceptionThrown() {
     }
 }

@@ -1,15 +1,12 @@
 package com.example.renewed
 
-import android.util.Log
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
-
 import retrofit2.Retrofit
-
-
 import retrofit2.http.GET
-import retrofit2.http.Query
+
 interface LoginAPI {
 
 

@@ -35,22 +35,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     //    super.onRestart()
    // }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-    override fun onPause() {
-        super.onPause()
-
-    }
-
-    override fun onDestroy() {
-
-        super.onDestroy()
-
-    }
-
-
-
 
 }

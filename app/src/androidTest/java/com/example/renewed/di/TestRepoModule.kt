@@ -6,7 +6,6 @@ import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.SubredditsAndPostsRepository
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -24,7 +23,7 @@ abstract class TestRepoModule {
         @Singleton
         @Provides
         fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO,savedDao:SavedSubredditsDAO) :
-                BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api,t5Dao,t3Dao, savedDao)
+                BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao)
 
     }
 }

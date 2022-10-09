@@ -20,7 +20,7 @@ fun <T>atomicNullable(tIn: T? = null): ReadWriteProperty<Any?, T?> {
 
 fun <T>atomic(tIn: T): ReadWriteProperty<Any?, T> {
     return object : ReadWriteProperty<Any?, T> {
-        val t = AtomicReference<T>(tIn)
+        val t = AtomicReference(tIn)
         override fun getValue(thisRef: Any?, property: KProperty<*>): T {
             return t.get()
         }

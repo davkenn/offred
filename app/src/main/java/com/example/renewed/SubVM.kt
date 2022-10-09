@@ -5,7 +5,6 @@ import com.example.renewed.models.MyViewState
 import com.example.renewed.models.RoomT5
 import com.example.renewed.models.toViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import java.time.Instant
 import javax.inject.Inject

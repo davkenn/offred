@@ -1,7 +1,5 @@
 package com.example.renewed.models
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -9,10 +7,10 @@ import java.time.format.DateTimeFormatter
 fun T5.toDbModel() : RoomT5 {
 
 
-    var fullDescription = combineDescriptions(this.description,this.public_description)
-    var thumb1 = icon_img?: ""
-    var thumb2 = header_img?:""
-    var thumb3 = community_icon?:""
+    val fullDescription = combineDescriptions(this.description,this.public_description)
+    val thumb1 = icon_img?: ""
+    val thumb2 = header_img?:""
+    val thumb3 = community_icon?:""
     val thumbnail = thumb1.ifBlank { thumb3.substringBeforeLast("?")}.ifBlank { thumb2 }
 
     return RoomT5(

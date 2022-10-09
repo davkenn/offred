@@ -1,10 +1,9 @@
 package com.example.renewed.Room
 
 import androidx.room.*
-import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
-import io.reactivex.rxjava3.core.*
-import java.time.Instant
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 
 @Dao
@@ -42,6 +41,8 @@ interface T5DAO {
         @Update(onConflict = OnConflictStrategy.REPLACE)
         fun updateT5(t5: RoomT5): Completable
 
+        @Query("UPDATE RoomT5 SET isSaved=1 WHERE RoomT5.name LIKE :name")
+        fun saveSubreddit(name: String): Completable
 
 
 }

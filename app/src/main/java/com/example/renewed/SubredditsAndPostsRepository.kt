@@ -16,10 +16,8 @@ import java.time.Instant
 
 
 
-class SubredditsAndPostsRepository(private val api : API,
-                                   val t5Dao: T5DAO,
-                                   val t3Dao: T3DAO,
-                                   val savedDao: SavedSubredditsDAO
+class SubredditsAndPostsRepository(
+    private val api: API, val t5Dao: T5DAO, val t3Dao: T3DAO
 ): BaseSubredditsAndPostsRepo {
 
 
@@ -89,32 +87,21 @@ class SubredditsAndPostsRepository(private val api : API,
 
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
 
-        return Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}.concatMapCompletable{
+        return Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
+            .concatMapCompletable{
 
             callUpdate(it, shouldDelete)
         }
     }
 
-    private fun callUpdate(
-        l: RoomT5,
-        shouldDelete: Boolean
-    )  :Completable {
-   /**  return   if (!shouldDelete) {
-            savedDao.saveSubreddit(l.toSavableDao())}
-
-
-
-                .andThen {  t5Dao.delete(l.name)}
-
-**/
-        return t5Dao.delete(l.name)
+    private fun callUpdate(l: RoomT5, shouldDelete: Boolean)  :Completable {
+          return if (!shouldDelete)    t5Dao.saveSubreddit(l.name)
+                 else                  t5Dao.delete(l.name)
     }
 
 
-    override fun updateSubreddits(
-        srList: List<String>, isDisplayedInAdapter: Boolean,
-        shouldToggleDisplayedColumnInDb: Boolean
-    ): Completable {
+    override fun updateSubreddits(srList: List<String>, isDisplayedInAdapter: Boolean,
+                                    shouldToggleDisplayedColumnInDb: Boolean): Completable {
 
         return Observable.fromIterable(srList)
             //TODO im just swallowing the error here, change back from maybe to see prob

@@ -1,12 +1,9 @@
 package com.example.renewed
 
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

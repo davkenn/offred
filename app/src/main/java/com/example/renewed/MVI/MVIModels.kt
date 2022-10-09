@@ -6,9 +6,9 @@ sealed class SubredditsStreamEvent{
     object OnCreateEvent : SubredditsStreamEvent()
 }
 
-sealed class PostsAndSubredditsListItem(val viewType: Int) {
-    object EmptyListItem : PostsAndSubredditsListItem(0)
-    data class HeaderListItem(val title: String) : PostsAndSubredditsListItem(1)
-    data class ListItemT5(val post: ViewStateT5) : PostsAndSubredditsListItem(2)
+sealed class PostsAndSubredditsListItem {
+    object EmptyListItem : PostsAndSubredditsListItem()
+    data class HeaderListItem(val title: String) : PostsAndSubredditsListItem()
+    data class ListItemT5(val post: ViewStateT5) : PostsAndSubredditsListItem()
 }
 

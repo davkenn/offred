@@ -1,10 +1,8 @@
 package com.example.renewed
 
 import androidx.lifecycle.ViewModel
-import com.example.renewed.models.MyEvent
 import com.example.renewed.models.MyViewState
 import com.example.renewed.models.toViewState
-import com.jakewharton.rxrelay3.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
