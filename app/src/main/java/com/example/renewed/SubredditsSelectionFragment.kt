@@ -22,6 +22,7 @@ import com.example.renewed.models.MyViewState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -50,8 +51,18 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 //TODO oncreate is called on rotation but only start when you click a frag in the menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        selectedSubreddit = savedInstanceState?.getString("key1")
         super.onCreate(savedInstanceState)
+        selectedSubreddit = savedInstanceState?.getString("key1")
+        postAdapter = PostsAdapter { x ->
+            subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
+        }
+
+        //passed down to viewholder and called from there
+        subredditAdapter = SubredditsAdapter { x ->
+            selectedSubreddit = x.name
+            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
+        }
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -70,15 +81,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
 
-        postAdapter = PostsAdapter { x ->
-            subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
-        }
 
-        //passed down to viewholder and called from there
-        subredditAdapter = SubredditsAdapter { x ->
-            selectedSubreddit = x.name
-            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
-        }
 
         val binding = FragmentSubredditsSelectionBinding.bind(view)
 
@@ -86,7 +89,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             postsRv.layoutManager = LinearLayoutManager(requireContext())
             postsRv.adapter = postAdapter
-            subredditsRv.layoutManager = LinearLayoutManager(requireContext())
+            subredditsRv.layoutManager = SaveStateLayoutManager(requireContext())
             subredditsRv.adapter = subredditAdapter
             subRV=subredditsRv
             postRV=postsRv
@@ -100,16 +103,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 )
             }
             backButton.setOnClickListener {
+                selectedSubreddit=null
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
 
             saveButton.setOnClickListener {
+                selectedSubreddit=null
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), false))
             }
 
 
             deleteButton.setOnClickListener {
+                    selectedSubreddit=null
                     subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                     subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
             }
@@ -214,9 +220,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onStart()
 
         Timber.d("onStart in home Fragment")
+        if (selectedSubreddit!=null) return
         disposable = subsAndPostsVM.prefetch()
-                                    .concatWith { subsAndPostsVM.processInput(
+                                    .concatWith {
+                                                    subsAndPostsVM.processInput(
                                                             MyEvent.ScreenLoadEvent(selectedSubreddit))
+
+
                                     }
 
 

@@ -102,8 +102,10 @@ class SubredditsAndPostsVM @Inject constructor(
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<MyViewState> {
 //TODO i need to start if its null by clearing the displayed status
-        return Observable.merge(
+
+      return  Observable.merge(
             flatMapSingle {
+
                 repository.getSubreddits()
                     .subscribeOn(Schedulers.io())
                     .map { list -> list.map { x->x.toViewState() } }
@@ -115,7 +117,7 @@ class SubredditsAndPostsVM @Inject constructor(
                     .subscribeOn(Schedulers.io())
                     .map { list -> list.map { x -> x.toViewState() } }
                     .map { x -> MyViewState.T3ListForRV(x) }
-            })
+    })
     }
 
     //TODO bug where isDisplayed is true for some items not in the display list do I need to catch
@@ -126,7 +128,7 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMap{ Observable.just(MyViewState.T3ListForRV(null))},
            flatMap {
                //TODO isn't last good enough because I assume they are in order?
-                repository.getSubreddits(it.srList.last()).toObservable().subscribeOn(Schedulers.io())
+                repository.getSubreddits(it.srList.lastOrNull()).toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }
                     .map { MyViewState.T5ListForRV(it) }
                     .startWith(
