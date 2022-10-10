@@ -1,5 +1,6 @@
 package com.example.renewed
 
+import androidx.core.os.bundleOf
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.example.renewed.models.MyEvent
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -14,8 +15,8 @@ class LargeTest {
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
-    @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+  //  @get:Rule
+   // val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
 
     @Inject
@@ -41,5 +42,14 @@ class LargeTest {
         assert(rep is SubredditsAndPostsRepository)
 
     }
+
+    @Test
+    fun loadFragment(){
+       val fragArgs = bundleOf()
+  //      val scenario = launchFragmentInContainer<SubredditsSelectionFragment>(fragArgs)
+
+    }
+
+
 
 }

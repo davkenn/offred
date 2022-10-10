@@ -92,7 +92,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             refreshButton.setOnClickListener {
                 selectedSubreddit = null//?? need this line?
-                subredditAdapter.clearSelected()
+         //       subredditAdapter.clearSelected()
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(subredditAdapter.currentList.map { it.name to it.displayName })
                 )
@@ -134,7 +134,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                 x.latestEvent5?.let { t5 ->
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
-                    t5.name?.let{subredditAdapter.pushStack(it)}
                 }
 
 
@@ -156,35 +155,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     if (navController.backQueue.size > 2) enableButtons()
                     else disableButtons()
 
-
-
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
                     subredditAdapter.notifyDataSetChanged()
-                    var destination = subredditAdapter.popStack()
-                    if (destination != null) {
-                        // subredditAdapter.getItemId()
-                        var a = subredditAdapter.currentList.withIndex()
-                            .firstOrNull() { it.value.name == destination }?.index
-                        if (a != null) {
-                            var holder = subRV.findViewHolderForLayoutPosition(a)
-
-                            previousSelected?.let { it.isSelected = false }
-holder.
-                            previousSelected = holder?.itemView
-                            holder?.itemView?.isSelected = true
-                            selected = a
-
-
-                        }else{
-                            subredditAdapter.clearStack()
-                            subredditAdapter.clearSelected()
-                        }
-
-
-                        //if a is null its not in the adapter clear the queue
                     }
-
-                }
             },
 
             { Timber.e("error fetching vs: ${it.localizedMessage}") })

@@ -16,6 +16,14 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
         TODO("Not yet implemented")
     }
 
+    override fun prefetchDefaultSubreddits(): Completable {
+        TODO("Not yet implemented")
+    }
+
+    override fun prefetchDefaultPosts(): Completable {
+        TODO("Not yet implemented")
+    }
+
     override fun getSubreddit(name: String): Single<RoomT5> {
         TODO("Not yet implemented")
     }

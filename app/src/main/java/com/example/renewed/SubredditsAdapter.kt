@@ -25,26 +25,12 @@ import com.example.renewed.models.ViewStateT5
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
 
-    val stack = ArrayDeque<String>(listOf())
-    fun pushStack(name: String) : Unit {
-        stack.addLast(name)
-    }
-    fun popStack() = if (stack.size!=0) stack.removeLast() else null
-    fun clearStack() {
-        stack.clear()
-    }
-
     fun clearSelected() {
         selected=-1
         previousSelected=null
     }
 
 
-    fun setSelected(pos:Int) {
-        selected=pos
-        previousSelected=null
-
-    }
 
 
     class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
