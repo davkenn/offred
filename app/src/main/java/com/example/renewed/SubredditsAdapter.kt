@@ -41,7 +41,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
             elementBinding.displayName.text = sr.displayName
             elementBinding.root.setOnClickListener {
-                adapterContextClosure.invoke(selected)
+
                 selected = layoutPosition
                 adapterContextClosure.invoke(selected)
                 fragmentContextClosure.invoke(sr)
@@ -84,12 +84,12 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
 
-        val closure = { x:Int ->
+        val onClickSetSelected = { x:Int ->
             notifyItemChanged(x)
             selected = holder.adapterPosition
             notifyItemChanged(x) }
 
-        holder.bind(getItem(position),onClick,closure)
+        holder.bind(getItem(position),onClick,onClickSetSelected)
 
         if (position == selected){
             previousSelected?.let{it.isSelected=false }
@@ -108,6 +108,6 @@ object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
     }
 
     override fun areContentsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
-        return oldItem.timeLastAccessed == newItem.timeLastAccessed
+        return oldItem == newItem
     }
 }

@@ -77,7 +77,7 @@ dependencies {
     //noinspection GradleDependency
     implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$rootProject.hiltVersion"
-
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation 'androidx.fragment:fragment-ktx:1.5.2'
 
     implementation "androidx.activity:activity-ktx:1.4.0"

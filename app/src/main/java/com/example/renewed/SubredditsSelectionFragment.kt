@@ -11,6 +11,7 @@ import android.widget.Button
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,26 +53,21 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         selectedSubreddit = savedInstanceState?.getString("key1")
-        postAdapter = PostsAdapter { x ->
-            subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
-        }
 
-        //passed down to viewholder and called from there
-        subredditAdapter = SubredditsAdapter { x ->
-            selectedSubreddit = x.name
-            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
-        }
 
-    }
+        }
 
     override fun onSaveInstanceState(outState: Bundle) {
-
+        super.onSaveInstanceState(outState)
         outState.run {
             putString("key1", selectedSubreddit)
         }
-        super.onSaveInstanceState(outState)
+
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,12 +80,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
         val binding = FragmentSubredditsSelectionBinding.bind(view)
+        postAdapter =  PostsAdapter { x ->
+            subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
+        }
+        subredditAdapter= SubredditsAdapter { x ->
+            selectedSubreddit = x.name
+            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))}
 
-        fragmentSelectionBinding = binding.apply {
+
+            fragmentSelectionBinding = binding.apply {
 
             postsRv.layoutManager = LinearLayoutManager(requireContext())
             postsRv.adapter = postAdapter
-            subredditsRv.layoutManager = SaveStateLayoutManager(requireContext())
+
+            subredditsRv.layoutManager = LinearLayoutManager(requireContext())
             subredditsRv.adapter = subredditAdapter
             subRV=subredditsRv
             postRV=postsRv
@@ -164,7 +168,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     else disableButtons()
 
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
-           //         subredditAdapter.notifyDataSetChanged()
+
                     }
             },
 
@@ -220,20 +224,23 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onStart()
 
         Timber.d("onStart in home Fragment")
+/**
         if (selectedSubreddit!=null) return
         disposable = subsAndPostsVM.prefetch()
-                                    .concatWith {
-                                                    subsAndPostsVM.processInput(
-                                                            MyEvent.ScreenLoadEvent(selectedSubreddit))
+            .concatWith {
+                subsAndPostsVM.processInput(
+                    MyEvent.ScreenLoadEvent(selectedSubreddit))
 
 
-                                    }
+            }
 
 
-                                    .subscribe({ Timber.d("----done fetching both ") },
-                                    {
-                                        Timber.e("----error fetching is ${it.localizedMessage}")
-                                    })
+            .subscribe({ Timber.d("----done fetching both ") },
+                {
+                    Timber.e("----error fetching is ${it.localizedMessage}")
+
+                })
+**/
     }
 //TODO its fucked up that im not pausing the disposable here I think FIX THISSS
 
