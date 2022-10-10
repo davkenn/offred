@@ -43,7 +43,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
                 selected = layoutPosition
                 bindingAdapter?.notifyItemChanged(selected)
-
                 fragmentContextClosure.invoke(sr)
             }
 

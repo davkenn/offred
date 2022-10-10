@@ -46,6 +46,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
 
+    private var buttonStatus:Boolean? by atomicNullable(null)
     private var selectedSubreddit: String? by atomicNullable(null)
     private lateinit var saveButton1: Button
     private lateinit var deleteButton1: Button
@@ -56,6 +57,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onCreate(savedInstanceState)
 
         selectedSubreddit = savedInstanceState?.getString("key1")
+         buttonStatus = savedInstanceState?.getBoolean("button_enabled")
 
 
         }
@@ -64,6 +66,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onSaveInstanceState(outState)
         outState.run {
             putString("key1", selectedSubreddit)
+            buttonStatus?.let { putBoolean("button_enabled", it) }
         }
 
     }
@@ -88,12 +91,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             selectedSubreddit = x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))}
 
-
             fragmentSelectionBinding = binding.apply {
 
             postsRv.layoutManager = LinearLayoutManager(requireContext())
             postsRv.adapter = postAdapter
-
             subredditsRv.layoutManager = LinearLayoutManager(requireContext())
             subredditsRv.adapter = subredditAdapter
             subRV=subredditsRv
@@ -125,10 +126,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
             }
 
+
             saveButton1 = saveButton
             deleteButton1 = deleteButton
                 backButton1 = backButton
-
+                if (buttonStatus==true)enableButtons()
             }
 
 
@@ -152,7 +154,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
 
-                if (x.eventProcessed) {//navHostFragment.navController.navigateUp()
+                if (x.eventProcessed) {
 
                     val navController = navHostFragment.navController
 
@@ -216,6 +218,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         backButton1.isClickable=false
         saveButton1.visibility = INVISIBLE
         saveButton1.isClickable = false
+        buttonStatus=false
     }
 
     private fun enableButtons() {
@@ -225,6 +228,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         backButton1.isClickable=true
         saveButton1.visibility = VISIBLE
         saveButton1.isClickable = true
+        buttonStatus=true
 
     }
 
