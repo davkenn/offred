@@ -96,7 +96,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 selectedSubreddit = null// need this line?
            //             subredditAdapter.clearSelected()
                 subsAndPostsVM.processInput(
-                    MyEvent.RemoveAllSubreddits(subredditAdapter.currentList.map { it.name to it.displayName })
+                    MyEvent.RemoveAllSubreddits(subredditAdapter.currentList.map { it.displayName })
                 )
             }
             backButton.setOnClickListener {
