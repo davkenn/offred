@@ -16,8 +16,8 @@ val t5SampleList = listOf(
         isSaved = false,
         totalViews = 88),
     RoomT5(
-        name = "t5_tuhj3",
-        displayName = "Funwithses",
+        name = "t5_t7yh",
+        displayName = "aaaa",
         description ="A great site",
         thumbnail ="",
         banner_img ="",
@@ -52,7 +52,7 @@ totalViews = 1),
         totalViews = 0),
     RoomT5(
         name = "t5_tyuj3",
-        displayName = "Funwithses",
+        displayName = "A good one",
         description ="A great site",
         thumbnail ="",
         banner_img ="",
@@ -86,7 +86,7 @@ totalViews = 1),
         isSaved = false,
         totalViews = 60),
     RoomT5(
-        name = "t5_t9i9i",
+        name = "t5_tuhj3",
         displayName = "Funwithses",
         description ="A great site",
         thumbnail ="",
@@ -283,11 +283,6 @@ totalViews = 1),
         subscribers = 8,
         isSaved = false,
         totalViews = 0)
-
-
-
-
-
 
 )
 

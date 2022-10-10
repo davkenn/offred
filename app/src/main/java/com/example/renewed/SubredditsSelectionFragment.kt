@@ -67,6 +67,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         outState.run {
             putString("key1", selectedSubreddit)
             buttonStatus?.let { putBoolean("button_enabled", it) }
+
         }
 
     }
@@ -237,8 +238,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onStart()
 
         Timber.d("onStart in home Fragment")
-/**
-        if (selectedSubreddit!=null) return
+//this is to check if its the first time being loaded and only loads it then
+        if (buttonStatus!= null) return
         disposable = subsAndPostsVM.prefetch()
             .concatWith {
                 subsAndPostsVM.processInput(
@@ -253,7 +254,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     Timber.e("----error fetching is ${it.localizedMessage}")
 
                 })
-**/
+
     }
 //TODO its fucked up that im not pausing the disposable here I think FIX THISSS
 

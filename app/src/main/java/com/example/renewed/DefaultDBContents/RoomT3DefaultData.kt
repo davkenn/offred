@@ -6,4 +6,6 @@ import java.time.Instant
 val t3SampleList = listOf(
 RoomT3(name = "t3_hjojh", subredditId = "t5_tuhj3", created_utc = Instant.now(),
          timeLastAccessed = Instant.now(), title ="this sucjd",url ="", permalink ="",
-                                     thumbnail ="",selftext=""))
+                                     thumbnail ="",selftext="clicked on it"),RoomT3(name = "t3_hjogg", subredditId = "t5_tuhj3", created_utc = Instant.now(),
+        timeLastAccessed = Instant.now(), title ="this sffd",url ="", permalink ="",
+        thumbnail ="",selftext="yay"))

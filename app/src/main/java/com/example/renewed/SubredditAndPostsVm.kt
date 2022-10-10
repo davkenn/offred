@@ -30,7 +30,11 @@ class SubredditsAndPostsVM @Inject constructor(
         .eventToResult()
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
-        .share()
+        .replay(1)
+        .autoConnect(1)
+
+        //.share()
+
 
 
     fun processInput(name: MyEvent) {
