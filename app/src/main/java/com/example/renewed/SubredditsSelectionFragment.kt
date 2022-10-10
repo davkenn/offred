@@ -221,8 +221,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private fun enableButtons() {
         deleteButton1.isClickable = true
         deleteButton1.visibility = VISIBLE
-        backButton1.visibility= INVISIBLE
-        backButton1.isClickable=false
+        backButton1.visibility= VISIBLE
+        backButton1.isClickable=true
         saveButton1.visibility = VISIBLE
         saveButton1.isClickable = true
 

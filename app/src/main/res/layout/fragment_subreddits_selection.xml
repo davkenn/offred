@@ -74,7 +74,8 @@
 
     <Button
         android:id="@+id/back_button"
-
+        android:clickable="false"
+        android:visibility="invisible"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@drawable/ic_baseline_navigate_before_36"
