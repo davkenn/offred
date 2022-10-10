@@ -41,16 +41,16 @@ class SubredditsAndPostsVM @Inject constructor(
 
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
-                                .retry(3)
-                                .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
-                                .doOnComplete { Timber.d("---- done fetching subreddits") }
-                                .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
+        //                        .retry(3)
+          //                      .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
+                 //               .doOnComplete { Timber.d("---- done fetching subreddits") }
+                   //             .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
             .andThen(repository.prefetchPosts())
-            .retry(3)
-            .onErrorResumeNext {repository.prefetchDefaultPosts() }
-                                .doOnComplete { Timber.d("---- done fetching posts") }
-                                .doOnError { Timber.e("----error getting posts") }
-
+            //.retry(3)
+           // .onErrorResumeNext {repository.prefetchDefaultPosts() }
+             //                   .doOnComplete { Timber.d("---- done fetching posts") }
+               //                 .doOnError { Timber.e("----error getting posts") }
+            )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -187,7 +187,7 @@ class SubredditsAndPostsVM @Inject constructor(
                                                       "or the site you seek no longer exists", displayName="ll",
                                                     created_utc = Instant.now(),timeLastAccessed = Instant.now(),
                                                         thumbnail = "", banner_img = "", subscribers=5))
-                        .retry(5))
+                        .retry(1))
                 .subscribeOn(Schedulers.io())
                 .map { x -> MyViewState.T5ForViewing(x.toViewState()) }})
         }
@@ -196,7 +196,7 @@ class SubredditsAndPostsVM @Inject constructor(
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()
-        }}
+                }
 
-
+}
 

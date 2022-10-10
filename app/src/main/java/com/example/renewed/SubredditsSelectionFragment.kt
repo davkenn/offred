@@ -3,6 +3,7 @@
 package com.example.renewed
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -73,6 +74,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
 
+        //passed down to viewholder and called from there
         subredditAdapter = SubredditsAdapter { x ->
             selectedSubreddit = x.name
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
@@ -91,8 +93,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
             refreshButton.setOnClickListener {
-                selectedSubreddit = null//?? need this line?
-         //       subredditAdapter.clearSelected()
+                selectedSubreddit = null// need this line?
+           //             subredditAdapter.clearSelected()
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(subredditAdapter.currentList.map { it.name to it.displayName })
                 )
@@ -156,7 +158,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     else disableButtons()
 
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
-                    subredditAdapter.notifyDataSetChanged()
+           //         subredditAdapter.notifyDataSetChanged()
                     }
             },
 
@@ -223,10 +225,18 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                                         Timber.e("----error fetching is ${it.localizedMessage}")
                                     })
     }
+//TODO its fucked up that im not pausing the disposable here I think FIX THISSS
 
+    override fun onPause() {
+
+        Timber.d("onResume in home Fragment")
+//        subRV.layoutManager?.onSaveInstanceState()
+        super.onPause()
+    }
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         super.onResume()
+  //      subRV.layoutManager?.onRestoreInstanceState()
     }
 
     override fun onDestroyView() {
