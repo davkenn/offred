@@ -34,6 +34,7 @@ import timber.log.Timber
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
 
+    private lateinit var backButton1: Button
     private lateinit var subredditAdapter: SubredditsAdapter
     private lateinit var postAdapter: PostsAdapter
     private val disposables = CompositeDisposable()
@@ -126,8 +127,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             saveButton1 = saveButton
             deleteButton1 = deleteButton
+                backButton1 = backButton
 
-        }
+            }
 
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -183,6 +185,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         var name: String? = null
         val t = navHostFragment.childFragmentManager.primaryNavigationFragment
         t.let { name = (t as ContentFragment).getName() }
+        //hacky fix this
+ //       if (name == "BlankFragment") return null
         return name
     }
 
@@ -208,6 +212,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private fun disableButtons() {
         deleteButton1.visibility = INVISIBLE
         deleteButton1.isClickable = false
+        backButton1.visibility= INVISIBLE
+        backButton1.isClickable=false
         saveButton1.visibility = INVISIBLE
         saveButton1.isClickable = false
     }
@@ -215,8 +221,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private fun enableButtons() {
         deleteButton1.isClickable = true
         deleteButton1.visibility = VISIBLE
+        backButton1.visibility= INVISIBLE
+        backButton1.isClickable=false
         saveButton1.visibility = VISIBLE
         saveButton1.isClickable = true
+
     }
 
 

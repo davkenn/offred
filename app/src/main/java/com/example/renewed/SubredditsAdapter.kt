@@ -36,14 +36,14 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
         RecyclerView.ViewHolder(elementBinding.root){
 
-        fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit,
-                                                        adapterContextClosure: (Int) -> Unit,){
+        fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit){
 
             elementBinding.displayName.text = sr.displayName
             elementBinding.root.setOnClickListener {
 
                 selected = layoutPosition
-                adapterContextClosure.invoke(selected)
+                bindingAdapter?.notifyItemChanged(selected)
+
                 fragmentContextClosure.invoke(sr)
             }
 
@@ -84,12 +84,9 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
 
-        val onClickSetSelected = { x:Int ->
-            notifyItemChanged(x)
-            selected = holder.adapterPosition
-            notifyItemChanged(x) }
 
-        holder.bind(getItem(position),onClick,onClickSetSelected)
+
+        holder.bind(getItem(position), onClick)
 
         if (position == selected){
             previousSelected?.let{it.isSelected=false }
