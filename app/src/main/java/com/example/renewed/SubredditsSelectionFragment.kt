@@ -3,7 +3,6 @@
 package com.example.renewed
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -11,7 +10,6 @@ import android.widget.Button
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +21,6 @@ import com.example.renewed.models.MyViewState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -32,6 +29,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
+
 
 
     private lateinit var backButton1: Button
@@ -45,9 +43,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
-
+    private var selectPos:Int? by atomicNullable(null)
     private var buttonStatus:Boolean? by atomicNullable(null)
-    private var selectedSubreddit: String? by atomicNullable(null)
+
     private lateinit var saveButton1: Button
     private lateinit var deleteButton1: Button
     private lateinit var navHostFragment: NavHostFragment
@@ -55,8 +53,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        selectedSubreddit = savedInstanceState?.getString("key1")
+
+
+
          buttonStatus = savedInstanceState?.getBoolean("button_enabled")
+        selectPos= savedInstanceState?.getInt("selected_pos")
+
+
 
 
         }
@@ -64,8 +67,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.run {
-            putString("key1", selectedSubreddit)
+
             buttonStatus?.let { putBoolean("button_enabled", it) }
+            selectPos?.let { putInt("selected_pos", it) }
 
         }
 
@@ -88,8 +92,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
         subredditAdapter= SubredditsAdapter { x ->
-            selectedSubreddit = x.name
-            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))}
+  //          selectPos = this.subredditAdapter._selected
+            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
+        }
 
             fragmentSelectionBinding = binding.apply {
 
@@ -102,20 +107,23 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
             refreshButton.setOnClickListener {
-                selectedSubreddit = null// need this line?
-           //             subredditAdapter.clearSelected()
+                subredditAdapter.clearSelected()
+                selectPos=null
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(subredditAdapter.currentList.map { it.displayName })
                 )
             }
             backButton.setOnClickListener {
-                selectedSubreddit=null
+       //         selectPos=null
+
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
 
             }
 
             saveButton.setOnClickListener {
-                selectedSubreddit=null
+
+             //   selectPos=null
+
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), false))
 
@@ -123,7 +131,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
             deleteButton.setOnClickListener {
-                    selectedSubreddit=null
+                selectPos=null
                     subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                     subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
 
@@ -172,6 +180,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     }
                     if (navController.backQueue.size > 2) enableButtons()
                     else disableButtons()
+
+                    subredditAdapter.clearSelected()
 
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
 
@@ -246,10 +256,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 //this is to check if its the first time being loaded and only loads it then
         if (buttonStatus!= null) return
+        //{
+           // selectPos?.let { subredditAdapter.setSelect(it,subRV.findViewHolderForAdapterPosition(it)) }
+                                   // return}
         disposable = subsAndPostsVM.prefetch()
             .concatWith {
                 subsAndPostsVM.processInput(
-                    MyEvent.ScreenLoadEvent(selectedSubreddit))
+                    MyEvent.ScreenLoadEvent(""))
 
 
             }

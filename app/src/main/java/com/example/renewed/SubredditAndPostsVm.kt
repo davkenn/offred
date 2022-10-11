@@ -140,7 +140,7 @@ class SubredditsAndPostsVM @Inject constructor(
         return Observable.merge(
             flatMap{ Observable.just(MyViewState.T3ListForRV(null))},
            flatMap {
-               //TODO isn't last good enough because I assume they are in order?
+
                 repository.getSubreddits(it.srList.lastOrNull()).toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }
                     .map { MyViewState.T5ListForRV(it) }
