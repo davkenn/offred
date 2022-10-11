@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.mergeAll
+import io.reactivex.rxjava3.kotlin.ofType
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.time.Instant
@@ -30,8 +31,9 @@ class SubredditsAndPostsVM @Inject constructor(
         .eventToResult()
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
+        .doOnNext { Timber.d("----Combined is $it") }
         .replay(1)
-        .autoConnect(1)
+        .autoConnect(1){disposables.add(it)}
 
         //.share()
 
@@ -68,14 +70,16 @@ class SubredditsAndPostsVM @Inject constructor(
                 o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
                 o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
                 o.ofType(MyEvent.UpdateViewingState::class.java).updateViewingState() ,
-                o.ofType(MyEvent.SaveOrDeleteEvent::class.java).onSaveOrDelete()
+                o.ofType(MyEvent.SaveOrDeleteEvent::class.java).onSaveOrDelete(),
+            o.ofType(MyEvent.ClearEffectEvent::class.java).onClear()
             )
 
             a.mergeAll()
         }
     }
-
-
+    private fun Observable<MyEvent.ClearEffectEvent>.onClear(): Observable<MyViewState> {
+        return flatMap{Observable.just(MyViewState.ClearEffectState)}
+    }
     private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
 
         return scan(FullViewState()) { state, event ->
@@ -98,7 +102,12 @@ class SubredditsAndPostsVM @Inject constructor(
                 )
                 is MyViewState.NavigateBack -> state.copy(
                     latestEvent3 = null, latestEvent5 = null,
-                    eventProcessed = true
+                    eventProcessed = true)
+
+
+                is MyViewState.ClearEffectState -> state.copy(
+                eventProcessed = false
+
                 )
             }
         }

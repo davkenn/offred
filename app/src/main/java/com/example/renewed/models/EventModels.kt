@@ -8,5 +8,7 @@ sealed class MyEvent{
     data class UpdateViewingState(val name: String?): MyEvent()
     data class SaveOrDeleteEvent(val targetedSubreddit: String?, val shouldDelete:Boolean) : MyEvent()
 
+    object ClearEffectEvent:MyEvent()
+
 }
 

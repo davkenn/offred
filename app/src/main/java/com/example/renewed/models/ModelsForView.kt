@@ -25,6 +25,7 @@ sealed class MyViewState(val name: String?){
     data class T3ForViewing(val t3 : ViewStateT3): MyViewState(t3.name)
     data class T5ForViewing(val t5 : ViewStateT5): MyViewState(t5.name)
     object NavigateBack:MyViewState("NavigateEvent")
+    object ClearEffectState:MyViewState("ClearState")
 
 }
 data class ViewStateT5(

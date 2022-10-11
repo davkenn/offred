@@ -45,7 +45,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
-
+  //  private var eventDone:Boolean by atomic(false)
     private var buttonStatus:Boolean? by atomicNullable(null)
     private var selectedSubreddit: String? by atomicNullable(null)
     private lateinit var saveButton1: Button
@@ -112,12 +112,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             backButton.setOnClickListener {
                 selectedSubreddit=null
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+
             }
 
             saveButton.setOnClickListener {
                 selectedSubreddit=null
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), false))
+
             }
 
 
@@ -125,6 +127,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     selectedSubreddit=null
                     subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                     subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
+
             }
 
 
@@ -149,14 +152,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                 }
 
+
                 x.latestEvent5?.let { t5 ->
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
                 }
 
 
 
-                if (x.eventProcessed) {
+    //            if (x.eventProcessed&& !eventDone) {
 
+                if (x.eventProcessed) {
                     val navController = navHostFragment.navController
 
                     val n = getSubredditNameOrNull()
@@ -173,8 +178,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     else disableButtons()
 
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
-
+                    subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
+                //    eventDone = true
                     }
+               // if (eventDone){
+                 //   subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
+                   // eventDone=false
+
+               // }
+
+
             },
 
             { Timber.e("error fetching vs: ${it.localizedMessage}") })
@@ -238,6 +251,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onStart()
 
         Timber.d("onStart in home Fragment")
+
 //this is to check if its the first time being loaded and only loads it then
         if (buttonStatus!= null) return
         disposable = subsAndPostsVM.prefetch()
