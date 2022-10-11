@@ -108,8 +108,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subRV=subredditsRv
             postRV=postsRv
 
-
-
             refreshButton.setOnClickListener {
                 subredditAdapter.clearSelected()
                 selectPos=-1
@@ -117,34 +115,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     MyEvent.RemoveAllSubreddits(subredditAdapter.currentList.map { it.displayName })
                 )
             }
+
             backButton.setOnClickListener {
-
-                subredditAdapter.clearSelected()
-                selectPos=-1
-
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-
             }
 
             saveButton.setOnClickListener {
-
-
-                subredditAdapter.clearSelected()
-                selectPos=-1
-
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), false))
-
             }
 
-
             deleteButton.setOnClickListener {
-
-                subredditAdapter.clearSelected()
-                selectPos=-1
                     subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                     subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
-
             }
 
 
@@ -173,8 +156,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
                 }
 
-
-
                 if (x.eventProcessed) {
                     val navController = navHostFragment.navController
 
@@ -183,11 +164,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
 
-                    else if ( navHostFragment.childFragmentManager.primaryNavigationFragment
-                                                                     is SubredditFragment) {
+                    else if ( navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
                         navController.popBackStack(R.id.subredditFragment, true)
                         navController.popBackStack(R.id.subredditFragment, false)
                     }
+
                     if (navController.backQueue.size > 2) enableButtons()
                     else disableButtons()
 
@@ -195,9 +176,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                     //Clear the effect in case process is recreated so we don't repeat it
                     subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
+                    subredditAdapter.clearSelected()
+                    selectPos=-1
+
                 }
-
-
             },
 
             { Timber.e("error fetching vs: ${it.localizedMessage}") })
@@ -205,13 +187,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
 
-
-
     private fun getSubredditNameOrNull(): String? {
         var name: String? = null
         val t = navHostFragment.childFragmentManager.primaryNavigationFragment
         t.let { name = (t as ContentFragment).getName() }
-        //hacky fix this
         if (name == "BlankFragment") return null
         return name
     }
@@ -263,39 +242,32 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Timber.d("onStart in home Fragment")
 
 //this is to check if its the first time being loaded and only loads it then
-        if (buttonStatus!= null)  {selectPos?.let { subredditAdapter.setSelect(it,subRV.findViewHolderForAdapterPosition(it)) }
-                                                            return}
-        //{
+        if (buttonStatus!=null)  {
+            subredditAdapter.setSelect(selectPos,subRV.findViewHolderForAdapterPosition(selectPos))
+            return
+        }
 
-                                   // return}
         disposable = subsAndPostsVM.prefetch()
             .concatWith {
                 subsAndPostsVM.processInput(
                     MyEvent.ScreenLoadEvent(""))
-
-
             }
-
-
             .subscribe({ Timber.d("----done fetching both ") },
                 {
                     Timber.e("----error fetching is ${it.localizedMessage}")
 
                 })
-
     }
 //TODO its fucked up that im not pausing the disposable here I think FIX THISSS
 
     override fun onPause() {
-
         Timber.d("onResume in home Fragment")
-//        subRV.layoutManager?.onSaveInstanceState()
         super.onPause()
     }
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         super.onResume()
-  //      subRV.layoutManager?.onRestoreInstanceState()
+
     }
 
     override fun onDestroyView() {
