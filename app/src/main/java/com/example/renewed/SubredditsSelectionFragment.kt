@@ -67,10 +67,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.run {
-
             buttonStatus?.let { putBoolean("button_enabled", it) }
             selectPos?.let { putInt("selected_pos", it) }
-
         }
 
     }
@@ -92,7 +90,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
         subredditAdapter= SubredditsAdapter { x ->
-  //          selectPos = this.subredditAdapter._selected
+            selectPos = subredditAdapter._selected
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
         }
 
@@ -106,6 +104,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             postRV=postsRv
 
 
+
             refreshButton.setOnClickListener {
                 subredditAdapter.clearSelected()
                 selectPos=null
@@ -114,7 +113,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 )
             }
             backButton.setOnClickListener {
-       //         selectPos=null
+                selectPos=null
 
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
 
@@ -122,7 +121,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             saveButton.setOnClickListener {
 
-             //   selectPos=null
+                selectPos=null
 
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), false))
@@ -255,9 +254,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Timber.d("onStart in home Fragment")
 
 //this is to check if its the first time being loaded and only loads it then
-        if (buttonStatus!= null) return
+        if (buttonStatus!= null)  {selectPos?.let { subredditAdapter.setSelect(it,subRV.findViewHolderForAdapterPosition(it)) }
+                                                            return}
         //{
-           // selectPos?.let { subredditAdapter.setSelect(it,subRV.findViewHolderForAdapterPosition(it)) }
+
                                    // return}
         disposable = subsAndPostsVM.prefetch()
             .concatWith {

@@ -34,8 +34,8 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
     fun setSelect(num: Int, adapterForPos: RecyclerView.ViewHolder?) {
         selected= num
-        previousSelected?.let{it.isSelected=false }
-                adapterForPos?.itemView?.isSelected= true
+ //       previousSelected?.let{it.isSelected=false }
+        adapterForPos?.itemView?.isSelected= true
         previousSelected = adapterForPos?.itemView
    //     notifyItemChanged(selected)
         }
