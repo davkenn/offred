@@ -15,9 +15,6 @@ interface API {
     @GET("/r/random.json")//
     fun getRandomSubreddit(): Single<RedditPostType>
 
-
-    //TODO is it an error to have both before and after?
-
     @GET("r/{subName}/new.json")
     fun getPostsInDateRange(@Path("subName") subName:String,
                             @Query("limit")limit:String="10",
@@ -25,14 +22,10 @@ interface API {
                             @Query("after") after:String?=null): Single<Listing>
 
 
-
     @GET("r/{subName}/comments.json")
     fun getCommentsInDateRange(@Path("subName") subName:String,
                             @Query("limit")limit:String="100",
                             @Query("before") before:String?=null,
                             @Query("after") after:String?=null): Single<Listing>
-
-
-
 
 }

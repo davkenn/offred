@@ -14,9 +14,7 @@ import com.example.renewed.models.RoomT5BASE
     abstract class RedditDatabase : RoomDatabase() {
 
         abstract fun subredditDao(): T5DAO
-        abstract fun savedSubredditsDao(): SavedSubredditsDAO
         abstract fun postsDao(): T3DAO
-
     }
 
 

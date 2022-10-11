@@ -22,7 +22,7 @@ abstract class TestRepoModule {
 
         @Singleton
         @Provides
-        fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO,savedDao:SavedSubredditsDAO) :
+        fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO) :
                 BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao)
 
     }

@@ -6,9 +6,8 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.ToJson
 
-//TODO exact same adapter to strip this
-class RedditPostAdapter {
 
+class RedditPostAdapter {
     @FromJson
     fun parse(
         reader: JsonReader,

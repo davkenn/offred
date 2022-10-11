@@ -89,11 +89,10 @@ object RedditModule {
 @InstallIn(SingletonComponent::class)
 @Module
 object RepoModule {
-
     @Singleton
     @Provides
-    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO,savedSubredditsDAO: SavedSubredditsDAO):
-            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao)
+    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO): BaseSubredditsAndPostsRepo =
+                        SubredditsAndPostsRepository(api, t5Dao, t3Dao)
 
 }
 

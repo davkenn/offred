@@ -36,10 +36,5 @@ class DbModule {
     @Singleton
     fun provideT3DAO(db: RedditDatabase) : T3DAO = db.postsDao()
 
-    @Provides
-    @Singleton
-    fun provideSavedSubredditDAO(db: RedditDatabase) : SavedSubredditsDAO = db.savedSubredditsDao()
-
-
 
 }
