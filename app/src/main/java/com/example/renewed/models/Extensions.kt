@@ -58,19 +58,7 @@ fun RoomT3.toViewState(): ViewStateT3 =
         url = this.url,
         created= this.created_utc
             .instantToDateString().replaceFirst(" ","\n")
-
      )
-
-fun RoomT5.toSavableDao(): RoomT5BASE =
-    RoomT5BASE(
-    name = this.name,
-    displayName = this.displayName,
-    description=this.description,
-        thumbnail=this.thumbnail,
-     banner_img=this.banner_img,
-     timeLastAccessed=this.timeLastAccessed,
-     subscribers=this.subscribers,
-     created_utc=this.created_utc)
 
 
     private fun Instant.instantToDateString() =

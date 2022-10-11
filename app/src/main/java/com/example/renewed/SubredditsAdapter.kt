@@ -29,23 +29,16 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         previousSelected?.let{it.isSelected=false}
         selected=-1
         previousSelected=null
-
     }
 
     fun setSelect(num: Int, adapterForPos: RecyclerView.ViewHolder?) {
         selected= num
- //       previousSelected?.let{it.isSelected=false }
         adapterForPos?.itemView?.isSelected= true
         previousSelected = adapterForPos?.itemView
-   //     notifyItemChanged(selected)
-        }
+    }
+
     val _selected : Int
         get() = selected
-
-
-
-
-
 
     class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
         RecyclerView.ViewHolder(elementBinding.root){
@@ -61,10 +54,10 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
             }
 
             if (sr.displayName.length > 18) {
-
                 elementBinding.detailImage.visibility=GONE
                 return
             }
+
             if (sr.thumbnail.isBlank()){
                 elementBinding.detailImage.visibility= VISIBLE
                   elementBinding.detailImage.setImageResource(R.color.purple_500)
@@ -92,17 +85,12 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
     override fun onViewRecycled(holder: SubredditViewHolder) {
         if (selected == holder.adapterPosition) selected = -1
-
         super.onViewRecycled(holder)
     }
 
 
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
-
-
-
         holder.bind(getItem(position), onClick)
-
         if (position == selected){
             previousSelected?.let{it.isSelected=false }
             holder.itemView.isSelected=true
@@ -113,7 +101,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         }
     }
 }
-
+//TODO should this be nested
 object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
     override fun areItemsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem.name == newItem.name

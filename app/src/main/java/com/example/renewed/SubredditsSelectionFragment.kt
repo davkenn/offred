@@ -52,19 +52,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-
-
-         buttonStatus = savedInstanceState?.getBoolean("button_enabled")
-
-
+        buttonStatus = savedInstanceState?.getBoolean("button_enabled")
         selectPos= savedInstanceState?.getInt("selected_pos")?:-1
-
-
-
-
-        }
+    }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -72,12 +62,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
            //TODO do i need to fix button status too like selectedpos
             buttonStatus?.let { putBoolean("button_enabled", it) }
             putInt("selected_pos",selectPos )
-
         }
-
     }
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -86,8 +72,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
-
-
 
         val binding = FragmentSubredditsSelectionBinding.bind(view)
         postAdapter =  PostsAdapter { x ->
@@ -100,13 +84,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
 
             fragmentSelectionBinding = binding.apply {
-
-            postsRv.layoutManager = LinearLayoutManager(requireContext())
-            postsRv.adapter = postAdapter
-            subredditsRv.layoutManager = LinearLayoutManager(requireContext())
-            subredditsRv.adapter = subredditAdapter
-            subRV=subredditsRv
-            postRV=postsRv
+                postsRv.layoutManager = LinearLayoutManager(requireContext())
+                postsRv.adapter = postAdapter
+                subredditsRv.layoutManager = LinearLayoutManager(requireContext())
+                subredditsRv.adapter = subredditAdapter
+                subRV=subredditsRv
+                postRV=postsRv
 
             refreshButton.setOnClickListener {
                 subredditAdapter.clearSelected()
@@ -126,8 +109,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             }
 
             deleteButton.setOnClickListener {
-                    subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                    subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
+                subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
             }
 
 
@@ -178,7 +161,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
                     subredditAdapter.clearSelected()
                     selectPos=-1
-
                 }
             },
 
@@ -232,15 +214,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         saveButton1.visibility = VISIBLE
         saveButton1.isClickable = true
         buttonStatus=true
-
     }
-
 
     override fun onStart() {
         super.onStart()
-
         Timber.d("onStart in home Fragment")
-
 //this is to check if its the first time being loaded and only loads it then
         if (buttonStatus!=null)  {
             subredditAdapter.setSelect(selectPos,subRV.findViewHolderForAdapterPosition(selectPos))
@@ -255,7 +233,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .subscribe({ Timber.d("----done fetching both ") },
                 {
                     Timber.e("----error fetching is ${it.localizedMessage}")
-
                 })
     }
 //TODO its fucked up that im not pausing the disposable here I think FIX THISSS
@@ -264,10 +241,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Timber.d("onResume in home Fragment")
         super.onPause()
     }
+
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         super.onResume()
-
     }
 
     override fun onDestroyView() {

@@ -22,7 +22,6 @@ class SubredditsAndPostsVM @Inject constructor(
     private val repository: BaseSubredditsAndPostsRepo
 ): ViewModel() {
 
-
     private val disposables: CompositeDisposable = CompositeDisposable()
     private val inputEvents: PublishRelay<MyEvent> = PublishRelay.create()
 
@@ -35,16 +34,11 @@ class SubredditsAndPostsVM @Inject constructor(
         .replay(1)
         .autoConnect(1){disposables.add(it)}
 
-        //.share()
-
-
-
     fun processInput(name: MyEvent) {
         inputEvents.accept(name)
     }
 
     fun prefetch(): Completable =
-
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
                                 .retry(0)
@@ -54,15 +48,13 @@ class SubredditsAndPostsVM @Inject constructor(
             .andThen(repository.prefetchPosts())
             .retry(0)
             .onErrorResumeNext {repository.prefetchDefaultPosts() }
-                                .doOnComplete { Timber.d("---- done fetching posts") }
-                                .doOnError { Timber.e("----error getting posts") }
-
+                                          .doOnComplete { Timber.d("---- done fetching posts") }
+                                          .doOnError { Timber.e("----error getting posts") }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
 
     private fun Observable<MyEvent>.eventToResult(): Observable<MyViewState> {
-
         return publish { o ->
             val a = Observable.fromArray(
                 o.ofType(MyEvent.ScreenLoadEvent::class.java).onScreenLoad(),
@@ -71,15 +63,16 @@ class SubredditsAndPostsVM @Inject constructor(
                 o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
                 o.ofType(MyEvent.UpdateViewingState::class.java).updateViewingState() ,
                 o.ofType(MyEvent.SaveOrDeleteEvent::class.java).onSaveOrDelete(),
-            o.ofType(MyEvent.ClearEffectEvent::class.java).onClear()
+                o.ofType(MyEvent.ClearEffectEvent::class.java).onClear()
             )
-
             a.mergeAll()
         }
     }
+
     private fun Observable<MyEvent.ClearEffectEvent>.onClear(): Observable<MyViewState> {
         return flatMap{Observable.just(MyViewState.ClearEffectState)}
     }
+
     private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
 
         return scan(FullViewState()) { state, event ->
@@ -104,10 +97,8 @@ class SubredditsAndPostsVM @Inject constructor(
                     latestEvent3 = null, latestEvent5 = null,
                     eventProcessed = true)
 
-
                 is MyViewState.ClearEffectState -> state.copy(
                 eventProcessed = false
-
                 )
             }
         }
@@ -173,30 +164,25 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
     private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<MyViewState> {
-
-
         return flatMap{
                 repository.deleteOrSaveSubreddit( it.targetedSubreddit, it.shouldDelete).subscribeOn(Schedulers.io())
                     .andThen {prefetch().subscribeOn(Schedulers.io())}
                     .andThen( Observable.just(MyViewState.T3ListForRV(null)) )}
-
-
                  //TODO really this has no place here bc im doing it elsewhere
-         }
-
+    }
 
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
 
-    return Observable.merge(
-        flatMapSingle { clickOnT5Event ->
-              repository.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
+        return Observable.merge(
+            flatMapSingle { clickOnT5Event ->
+                  repository.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
                                                             shouldToggleDisplayedColumnInDb = true)
                         .subscribeOn(Schedulers.io())
                         .andThen(repository.getPosts(clickOnT5Event.name)
                         .map { list -> list.map { x -> x.toViewState() }}
                         .map { x -> MyViewState.T3ListForRV(x) })},
-        flatMapSingle {
-              repository.getSubreddit(it.name)
+            flatMapSingle {
+                  repository.getSubreddit(it.name)
                         .onErrorResumeWith(Single.just(RoomT5(name= "Oops! Somehow there's an error...",
                                                         description = "Either you have no internet connection"  +
                                                       "or the site you seek no longer exists", displayName="ll",
@@ -207,11 +193,9 @@ class SubredditsAndPostsVM @Inject constructor(
                 .map { x -> MyViewState.T5ForViewing(x.toViewState()) }})
         }
 
-
-        override fun onCleared() {
-            super.onCleared()
-            disposables.dispose()
-                }
-
+    override fun onCleared() {
+        super.onCleared()
+        disposables.dispose()
+    }
 }
 
