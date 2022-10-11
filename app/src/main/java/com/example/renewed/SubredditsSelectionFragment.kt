@@ -45,13 +45,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
-  //  private var eventDone:Boolean by atomic(false)
+
     private var buttonStatus:Boolean? by atomicNullable(null)
     private var selectedSubreddit: String? by atomicNullable(null)
     private lateinit var saveButton1: Button
     private lateinit var deleteButton1: Button
     private lateinit var navHostFragment: NavHostFragment
-//TODO oncreate is called on rotation but only start when you click a frag in the menu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -152,14 +151,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
                 }
 
-
                 x.latestEvent5?.let { t5 ->
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
                 }
 
 
-
-    //            if (x.eventProcessed&& !eventDone) {
 
                 if (x.eventProcessed) {
                     val navController = navHostFragment.navController
@@ -178,14 +174,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     else disableButtons()
 
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
-                    subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
-                //    eventDone = true
-                    }
-               // if (eventDone){
-                 //   subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
-                   // eventDone=false
 
-               // }
+                    //Clear the effect in case process is recreated so we don't repeat it
+                    subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
+                }
 
 
             },
@@ -202,7 +194,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val t = navHostFragment.childFragmentManager.primaryNavigationFragment
         t.let { name = (t as ContentFragment).getName() }
         //hacky fix this
- //       if (name == "BlankFragment") return null
+        if (name == "BlankFragment") return null
         return name
     }
 
