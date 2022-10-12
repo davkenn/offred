@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
 
 import com.example.renewed.models.MyEvent
-import com.example.renewed.models.MyViewState
+import com.example.renewed.models.PartialViewState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -67,7 +67,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         Timber.d("onViewCreated in home Fragment")
 
         navHostFragment = childFragmentManager
@@ -104,6 +103,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             }
 
             saveButton.setOnClickListener {
+                //TODO be sure there are no timing connections between these two events
+                //seems like maybe there is bc i couldnt delete before I update viewing state
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
                 subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), false))
             }
@@ -139,22 +140,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
                 }
 
-                if (x.eventProcessed) {
-                    val navController = navHostFragment.navController
+                if (x.isEffect) {
 
-                    val n = getSubredditNameOrNull()
-                    if ( navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
-                        navController.popBackStack(R.id.subredditFragment, false)
-                    }
-
-                    else if ( navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
-                        navController.popBackStack(R.id.subredditFragment, true)
-                        navController.popBackStack(R.id.subredditFragment, false)
-                    }
-
-                    if (navController.backQueue.size > 2) enableButtons()
-                    else disableButtons()
-
+                    val n = removeNavTop()
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
 
                     //Clear the effect in case process is recreated so we don't repeat it
@@ -168,6 +156,26 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .addTo(disposables)
     }
 
+    private fun removeNavTop(): String? {
+        val previousTop = getSubredditNameOrNull()
+
+        if (navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
+
+            navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
+
+        } else if (navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
+
+            navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
+            navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
+        }
+
+        if (navHostFragment.navController.backQueue.size > 2) enableButtons()
+
+        else disableButtons(true)
+
+        return previousTop
+    }
+
 
     private fun getSubredditNameOrNull(): String? {
         var name: String? = null
@@ -179,7 +187,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun navigateToPostOrSubreddit(
         @IdRes resId: Int,
-        t3OrT5: MyViewState, binding: FragmentSubredditsSelectionBinding,
+        t3OrT5: PartialViewState, binding: FragmentSubredditsSelectionBinding,
     ) {
         val b = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
@@ -192,17 +200,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         else{
             navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
 
-            if (t3OrT5 is MyViewState.T3ForViewing) disableButtons() else enableButtons()
+            if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(false) else enableButtons()
         }
     }
 
-    private fun disableButtons() {
+    private fun disableButtons(includingBack:Boolean) {
+        if (includingBack){
+            backButton1.visibility= INVISIBLE
+            backButton1.isClickable=false
+        }
         deleteButton1.visibility = INVISIBLE
         deleteButton1.isClickable = false
-        backButton1.visibility= INVISIBLE
-        backButton1.isClickable=false
         saveButton1.visibility = INVISIBLE
         saveButton1.isClickable = false
+        //TODO is this not working anymore im using this in a messy way
         buttonStatus=false
     }
 

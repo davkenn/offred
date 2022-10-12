@@ -1,7 +1,7 @@
 package com.example.renewed
 
 import androidx.lifecycle.ViewModel
-import com.example.renewed.models.MyViewState
+import com.example.renewed.models.PartialViewState
 import com.example.renewed.models.RoomT5
 import com.example.renewed.models.toViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ class SubVM @Inject constructor(
         private set
 
 
-    fun setSub(n: String) : Single<MyViewState.T5ForViewing> =
+    fun setSub(n: String) : Single<PartialViewState.T5ForViewing> =
         repository.getSubreddit(n).onErrorResumeWith(Single.just(
             RoomT5(
             "ERROR",
@@ -27,7 +27,7 @@ class SubVM @Inject constructor(
             "", Instant.now(),0, Instant.now())).retry(10))
 
 
-        .map { MyViewState.T5ForViewing(it.toViewState() )}
+        .map { PartialViewState.T5ForViewing(it.toViewState() )}
             .also { name = n }
 
 

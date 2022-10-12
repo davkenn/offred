@@ -5,30 +5,30 @@ import java.time.Instant
 //data class ViewStateT5(val displayName:String, val timeLastAccessed: String,val created_utc:String)
 
 data class FullViewState(
-    val t3ListForRV: MyViewState.T3ListForRV?=null,
-    val t5ListForRV: MyViewState.T5ListForRV?=null,
-    val latestEvent5: MyViewState.T5ForViewing?=null,
-    val latestEvent3: MyViewState.T3ForViewing?=null,
-    val eventProcessed: Boolean = false
-   // val eventProcessed: EventType?= null
+    val t3ListForRV: PartialViewState.T3ListForRV?=null,
+    val t5ListForRV: PartialViewState.T5ListForRV?=null,
+    val latestEvent5: PartialViewState.T5ForViewing?=null,
+    val latestEvent3: PartialViewState.T3ForViewing?=null,
+    val isEffect: Boolean = false
 )
 /**
 enum class EventType{
     BACK_BUTTON(),DELETE_OR_SAVE
 }
 **/
-sealed class MyViewState(val name: String?){
-    //TODO make it on a superclass and consolidate?
 
-    data class T5ListForRV(val vsT5: List<ViewStateT5>): MyViewState("T3List")
-    data class T3ListForRV(val vsT3: List<ViewStateT3>?): MyViewState("T5List")
-    data class T3ForViewing(val t3 : ViewStateT3): MyViewState(t3.name)
-    data class T5ForViewing(val t5 : ViewStateT5): MyViewState(t5.name)
-    object NavigateBack:MyViewState("NavigateEvent")
-    object ClearEffectState:MyViewState("ClearState")
+sealed class PartialViewState(val name: String?){
 
+    data class T5ListForRV(val vsT5: List<ViewStateT5>): PartialViewState("T3List")
+    data class T3ListForRV(val vsT3: List<ViewStateT3>?): PartialViewState("T5List")
+    data class T3ForViewing(val t3 : ViewStateT3): PartialViewState(t3.name)
+    data class T5ForViewing(val t5 : ViewStateT5): PartialViewState(t5.name)
+    object NavigateBackEffect:PartialViewState("NavigateEvent")
+    object ClearEffectEffect:PartialViewState("ClearState")
 }
+
 data class ViewStateT5(
+
     val name: String,
     val displayName: String,
     val description: String,

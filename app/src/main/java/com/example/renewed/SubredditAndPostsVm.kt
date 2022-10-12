@@ -10,7 +10,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.mergeAll
-import io.reactivex.rxjava3.kotlin.ofType
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.time.Instant
@@ -41,20 +40,20 @@ class SubredditsAndPostsVM @Inject constructor(
     fun prefetch(): Completable =
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
-                                .retry(0)
-                                .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
+      //                          .retry(0)
+        //                        .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
                                 .doOnComplete { Timber.d("---- done fetching subreddits") }
                                 .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
             .andThen(repository.prefetchPosts())
             .retry(0)
-            .onErrorResumeNext {repository.prefetchDefaultPosts() }
+         //   .onErrorResumeNext {repository.prefetchDefaultPosts() }
                                           .doOnComplete { Timber.d("---- done fetching posts") }
                                           .doOnError { Timber.e("----error getting posts") }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
 
-    private fun Observable<MyEvent>.eventToResult(): Observable<MyViewState> {
+    private fun Observable<MyEvent>.eventToResult(): Observable<PartialViewState> {
         return publish { o ->
             val a = Observable.fromArray(
                 o.ofType(MyEvent.ScreenLoadEvent::class.java).onScreenLoad(),
@@ -69,42 +68,42 @@ class SubredditsAndPostsVM @Inject constructor(
         }
     }
 
-    private fun Observable<MyEvent.ClearEffectEvent>.onClear(): Observable<MyViewState> {
-        return flatMap{Observable.just(MyViewState.ClearEffectState)}
+    private fun Observable<MyEvent.ClearEffectEvent>.onClear(): Observable<PartialViewState> {
+        return flatMap{Observable.just(PartialViewState.ClearEffectEffect)}
     }
 
-    private fun Observable<MyViewState>.combineResults(): Observable<FullViewState> {
+    private fun Observable<PartialViewState>.combineResults(): Observable<FullViewState> {
 
         return scan(FullViewState()) { state, event ->
             when (event) {
-                is MyViewState.T5ListForRV -> state.copy(
+                is PartialViewState.T5ListForRV -> state.copy(
                     t5ListForRV = event, latestEvent5 = null,
-                    latestEvent3 = null, eventProcessed = false
+                    latestEvent3 = null, isEffect = false
                 )
-                is MyViewState.T3ListForRV -> state.copy(
+                is PartialViewState.T3ListForRV -> state.copy(
                     t3ListForRV = event, latestEvent5 = null,
-                    latestEvent3 = null, eventProcessed = false
+                    latestEvent3 = null, isEffect = false
                 )
-                is MyViewState.T5ForViewing -> state.copy(
+                is PartialViewState.T5ForViewing -> state.copy(
                     latestEvent5 = event, latestEvent3 = null,
-                    eventProcessed = false
+                    isEffect = false
                 )
-                is MyViewState.T3ForViewing -> state.copy(
+                is PartialViewState.T3ForViewing -> state.copy(
                     latestEvent3 = event, latestEvent5 = null,
-                    eventProcessed = false
+                    isEffect = false
                 )
-                is MyViewState.NavigateBack -> state.copy(
-                    latestEvent3 = null, latestEvent5 = null,
-                    eventProcessed = true)
+                is PartialViewState.NavigateBackEffect -> state.copy(
+                    latestEvent3= null, latestEvent5 = null,
+                    isEffect = true)
 
-                is MyViewState.ClearEffectState -> state.copy(
-                eventProcessed = false
+                is PartialViewState.ClearEffectEffect -> state.copy(
+                isEffect = false
                 )
             }
         }
     }
 
-    private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<MyViewState> {
+    private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewState> {
 //TODO i need to start if its null by clearing the displayed status
 
       return  Observable.merge(
@@ -113,45 +112,45 @@ class SubredditsAndPostsVM @Inject constructor(
                 repository.getSubreddits()
                     .subscribeOn(Schedulers.io())
                     .map { list -> list.map { x->x.toViewState() } }
-                    .map { MyViewState.T5ListForRV(it) }
+                    .map { PartialViewState.T5ListForRV(it) }
             },
             flatMapSingle {
 
                 repository.getPosts(it.name ?: "")
                     .subscribeOn(Schedulers.io())
                     .map { list -> list.map { x -> x.toViewState() } }
-                    .map { x -> MyViewState.T3ListForRV(x) }
+                    .map { x -> PartialViewState.T3ListForRV(x) }
     })
     }
 
     //TODO bug where isDisplayed is true for some items not in the display list do I need to catch
     //deletes when process dies or just clear when start app?
-    private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<MyViewState> {
+    private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewState> {
 
         return Observable.merge(
-            flatMap{ Observable.just(MyViewState.T3ListForRV(null))},
+            flatMap{ Observable.just(PartialViewState.T3ListForRV(null))},
            flatMap {
 
                 repository.getSubreddits(it.srList.lastOrNull()).toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }
-                    .map { MyViewState.T5ListForRV(it) }
+                    .map { PartialViewState.T5ListForRV(it) }
                     .startWith(
                         prefetch().subscribeOn(Schedulers.io()))})
             }
 
 
-    private fun Observable<MyEvent.ClickOnT3ViewEvent>.onClickT3(): Observable<MyViewState> {
+    private fun Observable<MyEvent.ClickOnT3ViewEvent>.onClickT3(): Observable<PartialViewState> {
 
         return flatMapSingle {
             repository.getPost(it.name)
                 .subscribeOn(Schedulers.io())
-                .map { x -> MyViewState.T3ForViewing(x.toViewState()) }
+                .map { x -> PartialViewState.T3ForViewing(x.toViewState()) }
         }
     }
 
-    private fun Observable<MyEvent.UpdateViewingState>.updateViewingState(): Observable<MyViewState> {
+    private fun Observable<MyEvent.UpdateViewingState>.updateViewingState(): Observable<PartialViewState> {
         return Observable.merge(
-            flatMap { Observable.just(MyViewState.T3ListForRV(null)) },
+            flatMap { Observable.just(PartialViewState.T3ListForRV(null)) },
             flatMap {
                 repository.updateSubreddits(srList=
                     if (it.name == null) listOf() else listOf(it.name),
@@ -159,19 +158,19 @@ class SubredditsAndPostsVM @Inject constructor(
                 )
                 .subscribeOn(Schedulers.io())
 
-                .andThen(Observable.just(MyViewState.NavigateBack))
+                .andThen(Observable.just(PartialViewState.NavigateBackEffect))
         })
     }
 
-    private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<MyViewState> {
+    private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<PartialViewState> {
         return flatMap{
                 repository.deleteOrSaveSubreddit( it.targetedSubreddit, it.shouldDelete).subscribeOn(Schedulers.io())
                     .andThen {prefetch().subscribeOn(Schedulers.io())}
-                    .andThen( Observable.just(MyViewState.T3ListForRV(null)) )}
+                    .andThen( Observable.just(PartialViewState.T3ListForRV(null)) )}
                  //TODO really this has no place here bc im doing it elsewhere
     }
 
-    private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<MyViewState> {
+    private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<PartialViewState> {
 
         return Observable.merge(
             flatMapSingle { clickOnT5Event ->
@@ -180,7 +179,7 @@ class SubredditsAndPostsVM @Inject constructor(
                         .subscribeOn(Schedulers.io())
                         .andThen(repository.getPosts(clickOnT5Event.name)
                         .map { list -> list.map { x -> x.toViewState() }}
-                        .map { x -> MyViewState.T3ListForRV(x) })},
+                        .map { x -> PartialViewState.T3ListForRV(x) })},
             flatMapSingle {
                   repository.getSubreddit(it.name)
                         .onErrorResumeWith(Single.just(RoomT5(name= "Oops! Somehow there's an error...",
@@ -190,7 +189,7 @@ class SubredditsAndPostsVM @Inject constructor(
                                                         thumbnail = "", banner_img = "", subscribers=5))
                         .retry(1))
                 .subscribeOn(Schedulers.io())
-                .map { x -> MyViewState.T5ForViewing(x.toViewState()) }})
+                .map { x -> PartialViewState.T5ForViewing(x.toViewState()) }})
         }
 
     override fun onCleared() {

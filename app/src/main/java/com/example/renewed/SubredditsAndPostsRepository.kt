@@ -48,7 +48,7 @@ class SubredditsAndPostsRepository(
              .toObservable()
              .flatMapCompletable {  n-> loadSubredditsDb(
                                                       max(0,
-                                                          min(80, 80-n.toInt())
+                                                          min(160, 160-n.toInt())
                                                                                       )
                                                                                         )}
 
@@ -87,7 +87,7 @@ class SubredditsAndPostsRepository(
     //TODO if this is seven it will repeat the ones with the lowest vals, fix the alg or leave it at thre
     override fun deleteUninterestingSubreddits(): Completable{
 
-        return  t5Dao.deleteUnwanted(3)
+        return  t5Dao.deleteUnwanted(50)
     }
 
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
