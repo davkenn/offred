@@ -104,14 +104,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             saveButton.setOnClickListener {
                 //TODO be sure there are no timing connections between these two events
-                //seems like maybe there is bc i couldnt delete before I update viewing state
+                //seems like maybe there is bc i couldnt delete before I update viewing statev
+
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), false))
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),subredditAdapter.currentList, false))
             }
 
             deleteButton.setOnClickListener {
+
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), true))
+                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), subredditAdapter.currentList,true))
             }
 
 
@@ -141,17 +143,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 }
 
                 if (x.isEffect) {
-
-                    val n = removeNavTop()
-                    subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
-
+                    popTopViewerElement()
                     //Clear the effect in case process is recreated so we don't repeat it
-
-                    subredditAdapter.clearSelected()
-                    selectPos=-1
-
-
                     subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
+                    subredditAdapter.clearSelected()
+                    selectPos = -1
                 }
             },
 
@@ -159,9 +155,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .addTo(disposables)
     }
 
-    private fun removeNavTop(): String? {
-        val previousTop = getSubredditNameOrNull()
-
+    private fun popTopViewerElement() {
         if (navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
 
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
@@ -171,12 +165,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
         }
-
         if (navHostFragment.navController.backQueue.size > 2) enableButtons()
-
         else disableButtons(true)
-
-        return previousTop
     }
 
 

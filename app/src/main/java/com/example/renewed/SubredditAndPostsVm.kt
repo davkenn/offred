@@ -40,13 +40,13 @@ class SubredditsAndPostsVM @Inject constructor(
     fun prefetch(): Completable =
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
-      //                          .retry(0)
-        //                        .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
+                                .retry(0)
+                                .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
                                 .doOnComplete { Timber.d("---- done fetching subreddits") }
                                 .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
             .andThen(repository.prefetchPosts())
             .retry(0)
-         //   .onErrorResumeNext {repository.prefetchDefaultPosts() }
+            .onErrorResumeNext {repository.prefetchDefaultPosts() }
                                           .doOnComplete { Timber.d("---- done fetching posts") }
                                           .doOnError { Timber.e("----error getting posts") }
             .subscribeOn(Schedulers.io())
@@ -130,7 +130,6 @@ class SubredditsAndPostsVM @Inject constructor(
         return Observable.merge(
             flatMap{ Observable.just(PartialViewState.T3ListForRV(null))},
            flatMap {
-
                 repository.getSubreddits(it.srList.lastOrNull()).toObservable().subscribeOn(Schedulers.io())
                     .map { list -> list.map { it.toViewState() } }
                     .map { PartialViewState.T5ListForRV(it) }
@@ -163,12 +162,16 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
     private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<PartialViewState> {
-        return flatMap{
-                repository.deleteOrSaveSubreddit( it.targetedSubreddit, it.shouldDelete).subscribeOn(Schedulers.io())
-                    .andThen {prefetch().subscribeOn(Schedulers.io())}
-                    .andThen( Observable.just(PartialViewState.T3ListForRV(null)) )}
-                 //TODO really this has no place here bc im doing it elsewhere
-    }
+        return flatMap {
+            Observable.just(
+                PartialViewState.T5ListForRV(
+                            it.previousState.filter { x->x.name != it.targetedSubreddit }))
+            .startWith(repository.deleteOrSaveSubreddit(it.targetedSubreddit, it.shouldDelete)
+                                                        .subscribeOn(Schedulers.io()))
+              //          .flatMap {         prefetch().subscribeOn(Schedulers.io()) }
+            }}
+
+
 
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<PartialViewState> {
 
