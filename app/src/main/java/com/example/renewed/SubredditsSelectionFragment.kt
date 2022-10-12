@@ -146,9 +146,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     subredditAdapter.submitList( subredditAdapter.currentList.filter { it.name != n })
 
                     //Clear the effect in case process is recreated so we don't repeat it
-                    subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
+
                     subredditAdapter.clearSelected()
                     selectPos=-1
+
+
+                    subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
                 }
             },
 
