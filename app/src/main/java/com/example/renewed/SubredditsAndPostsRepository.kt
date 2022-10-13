@@ -48,7 +48,7 @@ class SubredditsAndPostsRepository(
              .toObservable()
              .flatMapCompletable {  n-> loadSubredditsDb(
                                                       max(0,
-                                                          min(160, 160-n.toInt())
+                                                          min(80, 80-n.toInt())
                                                                                       )
                                                                                         )}
 

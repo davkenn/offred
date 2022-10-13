@@ -41,12 +41,12 @@ class SubredditsAndPostsVM @Inject constructor(
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
                                 .retry(0)
-                                .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
+                     //           .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
                                 .doOnComplete { Timber.d("---- done fetching subreddits") }
                                 .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
             .andThen(repository.prefetchPosts())
             .retry(0)
-            .onErrorResumeNext {repository.prefetchDefaultPosts() }
+         //   .onErrorResumeNext {repository.prefetchDefaultPosts() }
                                           .doOnComplete { Timber.d("---- done fetching posts") }
                                           .doOnError { Timber.e("----error getting posts") }
             .subscribeOn(Schedulers.io())

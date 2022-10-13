@@ -12,6 +12,7 @@ import com.example.renewed.models.MyEvent
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.hasItem
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -36,24 +37,14 @@ class LargeTest {
     @Before
     fun init() {
         hiltRule.inject()
-      //   vm = SubredditsAndPostsVM(rep)
-        //vm.prefetch().subscribe()
+
         val fragArgs = bundleOf()
 
         launchFragmentInHiltContainer<SubredditsSelectionFragment>()
 
     }
 
-    @Test
-    fun get_this(){
-        var l = vm.vs.test()
-        vm.processInput(MyEvent.ScreenLoadEvent(""))
 
-    //    assertThat("hello",l.values().first().toString(), equalTo("Aaaa") )
-        assert(rep is SubredditsAndPostsRepository)
-
-
-    }
 
     @Test
     fun testAllDisplayedDBColumnsAreZeroOnRecreate(){
@@ -62,16 +53,39 @@ class LargeTest {
     }
 
     @Test
-    fun loadFragment(){
+    fun testIfButtonClickSelectsButton(){
         try {
-            Thread.sleep(2000)
+            Thread.sleep(6000)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
         onView(withId(R.id.subreddits_rv))
-            .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
+     //       .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
+    //    onView(withId(R.id.subreddits_rv))
+
+            .perform(RecyclerViewActions.actionOnItemAtPosition
+            <SubredditsAdapter.SubredditViewHolder>(10,click()))
         onView(withId(R.id.subreddits_rv))
-       //     .perform(RecyclerViewActions.)
+            .check(matches(withChild(isSelected())))
+
+
+
+        //   .check(matches(isDisplayed()))
+        //  .check(matches(hasDescendant(withText("TexttoMatch"))))
+        //      val scenario = launchFragmentInContainer<SubredditsSelectionFragment>(fragArgs)
+
+    }
+
+    @Test
+    fun loadFragment(){
+        try {
+            Thread.sleep(40000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+     //   onView(withId(R.id.subreddits_rv))
+   //         .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
+        onView(withId(R.id.subreddits_rv))
             .perform(RecyclerViewActions.actionOnItemAtPosition
             <SubredditsAdapter.SubredditViewHolder>(10,click()))
 
