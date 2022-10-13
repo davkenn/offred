@@ -20,8 +20,9 @@ import javax.inject.Inject
 
 @HiltAndroidTest
 class LargeTest {
-    @get:Rule
+    @get:Rule()
     var hiltRule = HiltAndroidRule(this)
+
 
 
   // @get:Rule
@@ -37,6 +38,7 @@ class LargeTest {
     @Before
     fun init() {
         hiltRule.inject()
+
 
         val fragArgs = bundleOf()
 
@@ -54,11 +56,7 @@ class LargeTest {
 
     @Test
     fun testIfButtonClickSelectsButton(){
-       try {
-            Thread.sleep(2000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+
         onView(withId(R.id.subreddits_rv))
      //       .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
     //    onView(withId(R.id.subreddits_rv))
@@ -77,22 +75,14 @@ class LargeTest {
     }
 
     @Test
-    fun loadFragment(){
-        try {
-            Thread.sleep(40000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-     //   onView(withId(R.id.subreddits_rv))
-   //         .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
+    fun clickPostThenVerifyPostsLoaded(){
+        onView(withId(R.id.subreddits_rv))
+           .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
         onView(withId(R.id.subreddits_rv))
             .perform(RecyclerViewActions.actionOnItemAtPosition
             <SubredditsAdapter.SubredditViewHolder>(10,click()))
-
         onView(allOf(withId(R.id.posts_rv))).check(matches(hasMinimumChildCount(5)))
-         //   .check(matches(isDisplayed()))
-          //  .check(matches(hasDescendant(withText("TexttoMatch"))))
-  //      val scenario = launchFragmentInContainer<SubredditsSelectionFragment>(fragArgs)
+
 
     }
 

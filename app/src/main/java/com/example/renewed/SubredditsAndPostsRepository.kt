@@ -88,6 +88,7 @@ class SubredditsAndPostsRepository(
     override fun deleteUninterestingSubreddits(): Completable{
 
         return  t5Dao.deleteUnwanted(50)
+
     }
 
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {

@@ -42,13 +42,19 @@ class SubredditsAndPostsVM @Inject constructor(
             .andThen(repository.prefetchSubreddits()
                                 .retry(0)
                      //           .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
-                                .doOnComplete { Timber.d("---- done fetching subreddits") }
-                                .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") })
-            .andThen(repository.prefetchPosts())
+
+
+                                .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") }
+                .onErrorComplete()
+                .doOnComplete { Timber.d("---- done fetching subreddits") })
+            .andThen(repository.prefetchPosts()
             .retry(0)
          //   .onErrorResumeNext {repository.prefetchDefaultPosts() }
                                           .doOnComplete { Timber.d("---- done fetching posts") }
+
                                           .doOnError { Timber.e("----error getting posts") }
+           //Swallow errors
+    .onErrorComplete())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
@@ -130,11 +136,14 @@ class SubredditsAndPostsVM @Inject constructor(
         return Observable.merge(
             flatMap{ Observable.just(PartialViewState.T3ListForRV(null))},
            flatMap {
-                repository.getSubreddits(it.srList.lastOrNull()).toObservable().subscribeOn(Schedulers.io())
-                    .map { list -> list.map { it.toViewState() } }
-                    .map { PartialViewState.T5ListForRV(it) }
-                    .startWith(
-                        prefetch().subscribeOn(Schedulers.io()))})
+               repository.getSubreddits(it.srList.lastOrNull()).toObservable()
+                   .subscribeOn(Schedulers.io())
+                   .map { list -> list.map { it.toViewState() } }
+                   .map { PartialViewState.T5ListForRV(it) }
+                   .startWith(
+                     prefetch().subscribeOn(Schedulers.io()))}
+        )
+
             }
 
 
@@ -199,5 +208,5 @@ class SubredditsAndPostsVM @Inject constructor(
         super.onCleared()
         disposables.dispose()
     }
-}
 
+}

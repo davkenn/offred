@@ -26,7 +26,7 @@
             android:ellipsize="end"
             android:maxLines="4"
             android:text="yes thats it"
-            android:textAlignment="viewStart"
+            android:gravity="start"
 
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toEndOf="parent"
