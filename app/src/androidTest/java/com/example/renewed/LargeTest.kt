@@ -54,8 +54,8 @@ class LargeTest {
 
     @Test
     fun testIfButtonClickSelectsButton(){
-        try {
-            Thread.sleep(6000)
+       try {
+            Thread.sleep(2000)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
