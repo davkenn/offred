@@ -7,7 +7,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.offred"
@@ -49,6 +49,11 @@ android {
 
 
 dependencies {
+    implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    debugImplementation("androidx.fragment:fragment-testing:1.6.0-alpha03")
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
 
@@ -78,10 +83,10 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$rootProject.hiltVersion"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation 'androidx.fragment:fragment-ktx:1.5.2'
+    implementation 'androidx.fragment:fragment-ktx:1.5.3'
 
-    implementation "androidx.activity:activity-ktx:1.4.0"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
+    implementation "androidx.activity:activity-ktx:1.6.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.2"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
     //do I need this?
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.lifecycleVersion"

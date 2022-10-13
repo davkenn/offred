@@ -22,9 +22,6 @@ class PostsAdapter(private val onClick: (ViewStateT3) -> Unit) :
             postsBinding.postTitle.setOnClickListener { onClickFunction.invoke(sr) }
         }
     }
-    //TODO it makes sense to have an infinite list for whats in the db in the viewpager part.
-    //I can use a circular linked list and when I do a refresh event I can pass in the last part
-    //of the previous list. this may end up missing some if new was addedbut I think itll all work out
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val postBinding = RvPostElemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

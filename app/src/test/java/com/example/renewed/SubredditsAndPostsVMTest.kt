@@ -116,6 +116,26 @@ class SubredditsAndPostsVMTest {
 
     }
 
+    @Test
+    fun getVideoSubreddit() {
+        mockWebServer = MockWebServer()
+
+        val end = loadJsonResponse("handlevideoembed.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
+        setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
+        mockWebServer.start()
+        apiService =setupTestRetrofit(mockWebServer,true)
+        fakerepo = FakeRepo2(apiService)
+        viewModel = SubredditsAndPostsVM(fakerepo)
+
+
+        val res = viewModel.vs.test()
+        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        var n = res.await(1,TimeUnit.SECONDS)
+        res.assertError(IOException::class.java)
+
+    }
+
 
 /**
     @Test
