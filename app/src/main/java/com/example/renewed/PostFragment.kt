@@ -11,10 +11,12 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.databinding.PostViewBinding
+import com.example.renewed.models.PartialViewState
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -46,42 +48,62 @@ class PostFragment : ContentFragment() {
 
         val name = arguments?.getString("key") ?: "NONE"
         postsVM.setPost(name)
-            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-            .subscribe { x ->
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { t3ViewState ->
                 postBinding!!.fullImg.visibility= GONE
-                postBinding!!.postName.text = x.t3.displayName
-                postBinding!!.timeCreated.text = x.t3.created + ": "
-                postBinding!!.bodyText.text = x.t3.selftext
-                postBinding!!.url.text = x.t3.url
+                postBinding!!.postName.text = t3ViewState.t3.displayName
+                postBinding!!.timeCreated.text = t3ViewState.t3.created + ": "
+                postBinding!!.bodyText.text = t3ViewState.t3.selftext
+                postBinding!!.url.text = t3ViewState.t3.url
+//could it also be a text post that this is signalling?
+                if (hasNoThumbnail(t3ViewState))  postBinding!!.thumb.visibility = GONE
+                else if (isImagePost(t3ViewState))  loadImage(t3ViewState)
+                else loadThumbNail(t3ViewState)
 
-                if (x.t3.thumbnail.isBlank() || x.t3.thumbnail == "self")
-                    postBinding!!.thumb.visibility = GONE
-                else if (("i.redd.it" in x.t3.url)){
-                 postBinding!!.thumb.visibility = GONE
-                    postBinding!!.fullImg.visibility=VISIBLE
-                    Glide.with(this).load(x.t3.url)
-                        .into(postBinding!!.fullImg)
-                }
-                else{
-                    postBinding!!.thumb.visibility = VISIBLE
-                    if (x.t3.thumbnail == "spoiler") //rpg_gamers Expeditions
-                        postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
-                    if (x.t3.thumbnail == "nsfw")
-                        postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
-                    Glide.with(this).load(x.t3.thumbnail)
-                        .apply( RequestOptions().override(100, 100))
-                        .placeholder(ColorDrawable(Color.BLACK))
-                        .error(ColorDrawable(Color.RED))
-                        .fallback(ColorDrawable(Color.YELLOW))
-                        .into(postBinding!!.thumb)
-                    }
-                    if ((x.t3.url.startsWith("http")// && "com" in x.t3.url
-                                && "reddit" !in x.t3.url  && "redd.it" !in x.t3.url) ||
-                                   "reddit" in x.t3.url && "gallery" in x.t3.url ){
-                                postBinding!!.url.setOnClickListener {
-                                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(x.t3.url))
-                                    startActivity(browserIntent)}
+                if (isUrlPost(t3ViewState)) loadUrlClickListener(t3ViewState)
+
                     }
             }
-        }
-}
+
+    private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
+        t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self"
+
+
+    private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing):Unit {
+        postBinding!!.url.setOnClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.t3.url))
+            startActivity(browserIntent)
+    }}
+    private fun loadImage(t3ViewState: PartialViewState.T3ForViewing) {
+        postBinding!!.thumb.visibility = GONE
+        postBinding!!.fullImg.visibility = VISIBLE
+        Glide.with(this).load(t3ViewState.t3.url)
+            .into(postBinding!!.fullImg)
+    }
+
+    private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
+        t3ViewState.t3.url.startsWith("http")// && "com" in x.t3.url
+                && ("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url) ||
+    (("reddit" in t3ViewState.t3.url) && ("gallery" in t3ViewState.t3.url))
+
+    private fun isImagePost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
+        "i.redd.it" in t3ViewState.t3.url
+
+    private fun loadThumbNail(viewState: PartialViewState.T3ForViewing):Unit     {
+        postBinding!!.thumb.visibility = VISIBLE
+        if (viewState.t3.thumbnail == "spoiler") //rpg_gamers Expeditions
+            postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
+        if (viewState.t3.thumbnail == "nsfw")
+            postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
+        Glide.with(this).load(viewState.t3.thumbnail)
+            .apply( RequestOptions().override(100, 100))
+            .placeholder(ColorDrawable(Color.BLACK))
+            .error(ColorDrawable(Color.RED))
+            .fallback(ColorDrawable(Color.YELLOW))
+            .into(postBinding!!.thumb)
+    }
+
+
+    }
+
