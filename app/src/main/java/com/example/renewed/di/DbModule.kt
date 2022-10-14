@@ -24,7 +24,7 @@ class DbModule {
             ctxt,
             RedditDatabase::class.java,
             "RedditDBProduction"
-        )//.createFromAsset("RedditDB")
+        ).createFromAsset("RedditDB")
             .build()
     }
 

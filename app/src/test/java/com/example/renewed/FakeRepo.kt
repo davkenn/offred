@@ -1,19 +1,31 @@
 package com.example.renewed
 
+import com.example.renewed.DefaultDBContents.t3SampleList
 import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
+import com.example.renewed.DefaultDBContents.t5SampleList
+import com.example.renewed.DefaultDBContents.t3SampleList
+import com.example.renewed.Room.T3DAO
+import com.example.renewed.Room.T5DAO
 
 
 class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
+    private  val res:List<RoomT5> = t5SampleList
+    private val res2 : List<RoomT3> = t3SampleList
+
+
     override fun prefetchSubreddits(): Completable {
-        TODO("Not yet implemented")
+
+        return   return Completable.complete()
     }
 
     override fun prefetchPosts(): Completable {
-        TODO("Not yet implemented")
+
+           return Completable.complete()
+
     }
 
     override fun prefetchDefaultSubreddits(): Completable {
@@ -25,20 +37,20 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
     }
 
     override fun getSubreddit(name: String): Single<RoomT5> {
-        TODO("Not yet implemented")
+        return Single.just(res[0])
     }
 
     override fun getSubreddits(startFeedAfterThis: String?): Single<List<RoomT5>> {
-        TODO("Not yet implemented")
+        return Single.just(res.toList())
     }
 
 
     override fun getPost(name: String): Single<RoomT3> {
-        TODO("Not yet implemented")
+        return Single.just(res2[0])
     }
 
     override fun getPosts(name: String): Single<List<RoomT3>> {
-        TODO("Not yet implemented")
+        return Single.just(res2.toList())
     }
 
 

@@ -59,18 +59,21 @@ class PostFragment : ContentFragment() {
                 postBinding!!.url.text = t3ViewState.t3.url
 
                 if (isUrlPost(t3ViewState)) loadUrlClickListener(t3ViewState)
+                if (isImagePost(t3ViewState))  loadImage(t3ViewState)
 
 //could it also be a text post that this is signalling?
                 if (hasNoThumbnail(t3ViewState))  postBinding!!.thumb.visibility = GONE
-                else if (isImagePost(t3ViewState))  loadImage(t3ViewState)
+
                 else loadThumbNail(t3ViewState)
+
+
 
 
                     }
             }
 
     private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
-        t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self"
+        t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self"|| isImagePost(t3ViewState)
 
 
     private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing):Unit {
@@ -87,8 +90,8 @@ class PostFragment : ContentFragment() {
 
     private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         t3ViewState.t3.url.startsWith("http")// && "com" in x.t3.url
-                && ("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url) ||
-    (("reddit" in t3ViewState.t3.url) && ("gallery" in t3ViewState.t3.url))
+                && (("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url) ||
+    (("reddit" in t3ViewState.t3.url) && ("gallery" in t3ViewState.t3.url)))
 
     private fun isImagePost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         "i.redd.it" in t3ViewState.t3.url

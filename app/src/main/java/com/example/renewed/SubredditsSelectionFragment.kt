@@ -32,7 +32,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
 
-    private lateinit var backButton1: Button
     private lateinit var subredditAdapter: SubredditsAdapter
     private lateinit var postAdapter: PostsAdapter
     private val disposables = CompositeDisposable()
@@ -46,14 +45,23 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var selectPos:Int by atomic(-1)
     private var buttonStatus:Boolean? by atomicNullable(null)
 
+    private var saveEnabled:Boolean? by atomic(null)
     private lateinit var saveButton1: Button
+
+    private var deleteEnabled:Boolean? by atomic(null)
     private lateinit var deleteButton1: Button
+    private var backEnabled:Boolean? by atomic(null)
+
+    private lateinit var backButton1: Button
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         buttonStatus = savedInstanceState?.getBoolean("button_enabled")
         selectPos= savedInstanceState?.getInt("selected_pos")?:-1
+        buttonStatus=savedInstanceState?.getBoolean("save_enabled")
+        buttonStatus=savedInstanceState?.getBoolean("delete_enabled")
+        buttonStatus=savedInstanceState?.getBoolean("back_enabled")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -61,6 +69,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         outState.run {
            //TODO do i need to fix button status too like selectedpos
             buttonStatus?.let { putBoolean("button_enabled", it) }
+            saveEnabled?.let{putBoolean("save_enabled",it)}
+            deleteEnabled?.let{putBoolean("delete_enabled",it)}
+            backEnabled?.let{putBoolean("back_enabled",it)}
             putInt("selected_pos",selectPos )
         }
     }
@@ -98,6 +109,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 )
             }
 
+         //       backEnabled?.let{if (it) backButton.visibility= VISIBLE else INVISIBLE}
+           //     saveEnabled?.let{if (it) saveButton.visibility= VISIBLE else INVISIBLE}
+             //   deleteEnabled?.let{if (it) deleteButton.visibility= VISIBLE else INVISIBLE}
             backButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
@@ -120,8 +134,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             saveButton1 = saveButton
             deleteButton1 = deleteButton
                 backButton1 = backButton
-                if (buttonStatus==true)enableButtons()
-            }
+                deleteEnabled?.let{if (it) enableButtons(onlyBack = false)
+                                        else if (backEnabled!=null && backEnabled as Boolean)
+                                                                    enableButtons(onlyBack = true)
+                                        else disableButtons(true)}}
+
+
 
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -165,7 +183,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
         }
-        if (navHostFragment.navController.backQueue.size > 2) enableButtons()
+        if (navHostFragment.navController.backQueue.size > 2) enableButtons(onlyBack = false)
         else disableButtons(true)
     }
 
@@ -193,7 +211,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         else{
             navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
 
-            if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(false) else enableButtons()
+            if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(includingBack = false)
+                                                            else enableButtons(onlyBack = false)
         }
     }
 
@@ -201,22 +220,33 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         if (includingBack){
             backButton1.visibility= INVISIBLE
             backButton1.isClickable=false
+            backEnabled=false
         }
         deleteButton1.visibility = INVISIBLE
         deleteButton1.isClickable = false
+        deleteEnabled=false
         saveButton1.visibility = INVISIBLE
         saveButton1.isClickable = false
+        saveEnabled=false
         //TODO is this not working anymore im using this in a messy way
         buttonStatus=false
     }
 
-    private fun enableButtons() {
+    private fun enableButtons(onlyBack:Boolean) {
+
+            backButton1.visibility= VISIBLE
+            backButton1.isClickable=true
+            backEnabled=true
+
+        if (onlyBack) return
+
         deleteButton1.isClickable = true
         deleteButton1.visibility = VISIBLE
-        backButton1.visibility= VISIBLE
-        backButton1.isClickable=true
+        deleteEnabled=true
+
         saveButton1.visibility = VISIBLE
         saveButton1.isClickable = true
+        saveEnabled=true
         buttonStatus=true
     }
 

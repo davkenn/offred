@@ -1,7 +1,5 @@
 package com.example.renewed
 
-import com.example.renewed.DefaultDBContents.t3SampleList
-import com.example.renewed.DefaultDBContents.t5SampleList
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
@@ -32,14 +30,15 @@ class SubredditsAndPostsRepository(
     }
 //TODO here you need to check if db is empty first otherwise this wont work
     override fun prefetchDefaultSubreddits():Completable =
-                    Single.just(t5SampleList)
-                          .flatMapCompletable{ x-> t5Dao.insertAll(x)}
+        //            Single.just(com.example.renewed.DefaultDBContents.t5SampleList)
+       //                   .flatMapCompletable{ x-> t5Dao.insertAll(x)}
+        Completable.complete()
 
 
     override fun prefetchDefaultPosts(): Completable =
-        Single.just(t3SampleList)
-            .flatMapCompletable{ x-> t3Dao.insertAll(x)}
-
+   //     Single.just(com.example.renewed.DefaultDBContents.t3SampleList)
+     //       .flatMapCompletable{ x-> t3Dao.insertAll(x)}
+Completable.complete()
 
 
     override fun prefetchSubreddits() : Completable =

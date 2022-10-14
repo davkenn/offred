@@ -101,7 +101,7 @@ class LargeTest {
         onView(withId(R.id.posts_rv))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition
-                <SubredditsAdapter.SubredditViewHolder>(0, click())
+                <PostsAdapter.PostViewHolder>(0, click())
             )
         onView(allOf(withId(R.id.subscreen_nav_container)))
             .check(matches(hasDescendant(withId(R.id.post_name))))
@@ -133,6 +133,21 @@ class LargeTest {
                     )
                 )
             )
+
+
+
+            onView(withId(R.id.refresh_button)).perform(click())
+
+
+            onView(withId(R.id.subreddits_rv))
+                .check(
+                    matches(
+                        allOf(
+                            not(hasDescendant(isSelected())),
+                            not(hasDescendant(withText("AZURE")))
+                        )
+                    )
+                )
 
 //        @Test
   //      fun testIfFourRefreshesWithNothingClickedBringsBackInitial() {
