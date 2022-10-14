@@ -59,8 +59,8 @@ class LargeTest {
     fun testIfButtonClickSelectsButton(){
 
         onView(withId(R.id.subreddits_rv))
-     //       .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
-    //    onView(withId(R.id.subreddits_rv))
+            .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
+        onView(withId(R.id.subreddits_rv))
 
             .perform(RecyclerViewActions.actionOnItemAtPosition
             <SubredditsAdapter.SubredditViewHolder>(10,click()))

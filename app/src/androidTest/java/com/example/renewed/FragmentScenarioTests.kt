@@ -3,6 +3,11 @@ package com.example.renewed
 import androidx.core.os.bundleOf
 import androidx.fragment.app.testing.launchFragment
 import androidx.lifecycle.Lifecycle
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -35,7 +40,7 @@ class FragmentScenarioTests {
     @Before
     fun init() {
         hiltRule.inject()
-        activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
+  //      activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
 
         fragmentRule.launchFragment(R.style.Theme_Renewed)
 
@@ -47,7 +52,15 @@ class FragmentScenarioTests {
 
 
         fragmentRule.fragmentScenario?.moveToState(Lifecycle.State.RESUMED)
+
+        Espresso.onView(ViewMatchers.withId(R.id.subreddits_rv))
+
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition
+            <SubredditsAdapter.SubredditViewHolder>(0, ViewActions.click()))
         fragmentRule.fragmentScenario?.recreate()
+        Espresso.onView(ViewMatchers.withId(R.id.subreddits_rv))
+            .check(ViewAssertions.matches(ViewMatchers.withChild(ViewMatchers.isSelected())))
 
 
       //  fragmentRule.fragmentScenario?.activityScenario?.moveToState(Lifecycle.State.DESTROYED)

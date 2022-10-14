@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HiltTestActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         val themeRes = intent.getIntExtra(THEME_EXTRAS_BUNDLE_KEY, 0)
-        require(themeRes != 0) { "No theme configured for ${this.javaClass}" }
+   //     require(themeRes != 0) { "No theme configured for ${this.javaClass}" }
         setTheme(themeRes)
         super.onCreate(savedInstanceState)
     }

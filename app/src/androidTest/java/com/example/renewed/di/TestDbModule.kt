@@ -31,7 +31,7 @@ import javax.inject.Singleton
                 return Room.databaseBuilder(
                     ctxt,
                     RedditDatabase::class.java,
-                    "RedditDB"
+                    "RedditDBTest"
                 ).createFromAsset("RedditDB")
                     .build()
             }
