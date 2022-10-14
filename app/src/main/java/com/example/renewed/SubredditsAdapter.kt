@@ -17,13 +17,13 @@ import com.example.renewed.databinding.RvSubredditElemBinding
 import com.example.renewed.models.ViewStateT5
 
 
- var selected = -1
- var previousSelected :View? = null
- val stack = ArrayDeque<String>(listOf())
 
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
+    var selected = -1
+    var previousSelected :View? = null
+    val stack = ArrayDeque<String>(listOf())
 
     fun clearSelected() {
         previousSelected?.let{it.isSelected=false}
@@ -40,7 +40,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     val _selected : Int
         get() = selected
 
-    class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
+    inner class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
         RecyclerView.ViewHolder(elementBinding.root){
 
         fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit){

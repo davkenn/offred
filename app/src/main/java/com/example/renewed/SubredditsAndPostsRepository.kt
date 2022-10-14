@@ -2,7 +2,6 @@ package com.example.renewed
 
 import com.example.renewed.DefaultDBContents.t3SampleList
 import com.example.renewed.DefaultDBContents.t5SampleList
-import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*

@@ -2,7 +2,6 @@ package com.example.renewed.di
 
 import com.example.renewed.API
 import com.example.renewed.BaseSubredditsAndPostsRepo
-import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.SubredditsAndPostsRepository

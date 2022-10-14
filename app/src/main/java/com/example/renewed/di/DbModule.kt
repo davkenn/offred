@@ -3,7 +3,6 @@ package com.example.renewed.di
 import android.content.Context
 import androidx.room.Room
 import com.example.renewed.Room.RedditDatabase
-import com.example.renewed.Room.SavedSubredditsDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import dagger.Module

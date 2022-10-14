@@ -20,7 +20,7 @@ import java.util.function.Predicate.not
 
 class SubredditsAndPostsVMTest {
     private lateinit var viewModel: SubredditsAndPostsVM
-    private lateinit var fakerepo: FakeRepo2
+    private lateinit var fakerepo: BaseSubredditsAndPostsRepo
     private lateinit var mockWebServer: MockWebServer
     private lateinit var okHttpClient: OkHttpClient
     private lateinit var apiService: API
@@ -49,7 +49,6 @@ class SubredditsAndPostsVMTest {
     }
 
     @Test
-
     fun processInput() {
         //GIVEN
         val end = loadJsonResponse("Berserk.json")
@@ -65,9 +64,8 @@ class SubredditsAndPostsVMTest {
         assertThat("Is there a subscrier?",res.hasSubscription())
         res.assertNotComplete()
         res.assertNoErrors()
-        res.assertValueCount(3)
+        res.assertValueCount(2)
 
-        res.assertValueAt(2,FullViewState())
 
 
 
@@ -132,8 +130,6 @@ class SubredditsAndPostsVMTest {
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
 
-  //  res.assertValueCount(2)
-        res.assertValueAt(0, FullViewState())
     }
 
     @Test
@@ -165,21 +161,6 @@ class SubredditsAndPostsVMTest {
 
 }
 
-
-    fun ifUpdateEventResposeDelayedDeleteEventDoesNotFinishFirst(){
-        val end = loadJsonResponse("Berserk.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
-
-        //WHEN
-        val r = fakerepo.getSubreddits("aaa")
-        val t = r.test()
-        var l = t.await(1,TimeUnit.SECONDS)
-
-        //THEN
-        t.assertValueCount(1)
-        t.assertComplete()
-
-    }
     @Test
     fun doNotFirstReturnEmptyViewState() {
         val end = loadJsonResponse("Berserk.json")
