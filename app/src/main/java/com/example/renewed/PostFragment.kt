@@ -53,15 +53,18 @@ class PostFragment : ContentFragment() {
             .subscribe { t3ViewState ->
                 postBinding!!.fullImg.visibility= GONE
                 postBinding!!.postName.text = t3ViewState.t3.displayName
-                postBinding!!.timeCreated.text = t3ViewState.t3.created + ": "
+                val text = t3ViewState.t3.created + ": "
+                postBinding!!.timeCreated.text = text
                 postBinding!!.bodyText.text = t3ViewState.t3.selftext
                 postBinding!!.url.text = t3ViewState.t3.url
+
+                if (isUrlPost(t3ViewState)) loadUrlClickListener(t3ViewState)
+
 //could it also be a text post that this is signalling?
                 if (hasNoThumbnail(t3ViewState))  postBinding!!.thumb.visibility = GONE
                 else if (isImagePost(t3ViewState))  loadImage(t3ViewState)
                 else loadThumbNail(t3ViewState)
 
-                if (isUrlPost(t3ViewState)) loadUrlClickListener(t3ViewState)
 
                     }
             }

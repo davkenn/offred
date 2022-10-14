@@ -19,6 +19,7 @@ buildscript {
         gradleVersion = '7.0.2'
         hiltVersion = '2.43.2'
         junitVersion = '4.12'
+ //       junitVersion = '4.13' update to this
         kotlinVersion = '1.4.30'
         ktlintVersion = '0.38.1'
         ktxVersion = '1.0.2'

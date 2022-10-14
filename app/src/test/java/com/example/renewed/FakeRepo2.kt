@@ -59,8 +59,9 @@ class FakeRepo2(private val apiService: API) : BaseSubredditsAndPostsRepo {
     }
 
     override fun getPosts(name: String): Single<List<RoomT3>> {
-        return Single.just(listOf(RoomT3("aaa","aaa", Instant.now(),Instant.now(),"aaa",
-            "aaa","aaa","per", "aaa")))
+   //     return Single.just(listOf(RoomT3("aaa","aaa", Instant.now(),Instant.now(),"aaa",
+     //       "aaa","aaa","per", "aaa")))
+        return Single.just(listOf())
     }
 
 

@@ -46,8 +46,6 @@ class SubVMTest {
         //RETURNS A DISPLAYABLE VIEW FROM A NETWORK ERROR, JUST DISPLAY IT LIKE ANY OTHER
         tester.assertValue { it.name=="ERROR" }
         tester.assertValue{it is PartialViewState.T5ForViewing}
-
-
     }
-
 }
+

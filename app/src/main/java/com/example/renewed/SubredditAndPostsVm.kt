@@ -106,7 +106,7 @@ class SubredditsAndPostsVM @Inject constructor(
                 isEffect = false
                 )
             }
-        }
+        }.skip(1)
     }
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewState> {

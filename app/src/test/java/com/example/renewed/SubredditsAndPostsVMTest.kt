@@ -2,6 +2,7 @@ package com.example.renewed
 
 
 import com.example.renewed.TestTools.Companion.loadJsonResponse
+import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
@@ -13,6 +14,8 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import java.util.function.Predicate.isEqual
+import java.util.function.Predicate.not
 
 
 class SubredditsAndPostsVMTest {
@@ -64,6 +67,12 @@ class SubredditsAndPostsVMTest {
         res.assertNoErrors()
         res.assertValueCount(3)
 
+        res.assertValueAt(2,FullViewState())
+
+
+
+
+
 
 
     }
@@ -80,6 +89,7 @@ class SubredditsAndPostsVMTest {
 
         //THEN
         t.assertValueCount(1)
+        t.assertValue { it.size==1 }
         t.assertComplete()
 
 
@@ -98,16 +108,11 @@ class SubredditsAndPostsVMTest {
 
     @Test
     fun processNetworkError() {
-        mockWebServer = MockWebServer()
+//        mockWebServer = MockWebServer()
 
         val end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
                 setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
-        mockWebServer.start()
-        apiService =setupTestRetrofit(mockWebServer,true)
-        fakerepo = FakeRepo2(apiService)
-        viewModel = SubredditsAndPostsVM(fakerepo)
-
 
         val res = viewModel.vs.test()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
@@ -118,24 +123,31 @@ class SubredditsAndPostsVMTest {
 
     @Test
     fun getVideoSubreddit() {
-        mockWebServer = MockWebServer()
+  //      mockWebServer = MockWebServer()
 
         val end = loadJsonResponse("handlevideoembed.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
-        setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
-        mockWebServer.start()
-        apiService =setupTestRetrofit(mockWebServer,true)
-        fakerepo = FakeRepo2(apiService)
-        viewModel = SubredditsAndPostsVM(fakerepo)
-
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
 
         val res = viewModel.vs.test()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
-        var n = res.await(1,TimeUnit.SECONDS)
-        res.assertError(IOException::class.java)
+        res.await(1,TimeUnit.SECONDS)
 
+  //  res.assertValueCount(2)
+        res.assertValueAt(0, FullViewState())
     }
 
+    @Test
+    fun getRidOfEmptyFullViewStateAsFirstEmission()
+    {
+        val end = loadJsonResponse("Berserk.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+        val res = viewModel.vs.test()
+        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        var n = res.await(1,TimeUnit.SECONDS)
+
+        res.assertValueAt(0) { it != FullViewState() }
+
+    }
 
 /**
     @Test
@@ -149,5 +161,32 @@ class SubredditsAndPostsVMTest {
 **/
     @Test
     fun exceptionThrown() {
+
+
+}
+
+
+    fun ifUpdateEventResposeDelayedDeleteEventDoesNotFinishFirst(){
+        val end = loadJsonResponse("Berserk.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+
+        //WHEN
+        val r = fakerepo.getSubreddits("aaa")
+        val t = r.test()
+        var l = t.await(1,TimeUnit.SECONDS)
+
+        //THEN
+        t.assertValueCount(1)
+        t.assertComplete()
+
     }
+    @Test
+    fun doNotFirstReturnEmptyViewState() {
+        val end = loadJsonResponse("Berserk.json")
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+
+
+
+    }
+
 }
