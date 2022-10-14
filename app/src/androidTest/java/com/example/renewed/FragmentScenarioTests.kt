@@ -24,17 +24,17 @@ import javax.inject.Inject
 class FragmentScenarioTests {
 
 
-    @Inject
-    lateinit var rep:BaseSubredditsAndPostsRepo
+//    @Inject
+  //  lateinit var rep:BaseSubredditsAndPostsRepo
 
     @get:Rule(order=0)
     var hiltRule = HiltAndroidRule(this)
 
 
-     @get:Rule(order=1)
-     val activityRule = ActivityScenarioRule(MainActivity::class.java)
+   //  @get:Rule(order=1)
+    // val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-    @get:Rule(order=2)
+    @get:Rule(order=1)
     val fragmentRule = HiltFragmentScenarioRule(SubredditsSelectionFragment::class)
 
     @Before

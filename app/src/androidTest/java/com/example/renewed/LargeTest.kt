@@ -13,8 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.renewed.models.MyEvent
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.hasItem
+import org.hamcrest.CoreMatchers.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,45 +27,34 @@ class LargeTest {
     var hiltRule = HiltAndroidRule(this)
 
 
-
-
-    @Inject
-    lateinit var rep:BaseSubredditsAndPostsRepo
-
-    lateinit var vm :SubredditsAndPostsVM
-
-
     @Before
     fun init() {
         hiltRule.inject()
-
-
         val fragArgs = bundleOf()
-
         launchFragmentInHiltContainer<SubredditsSelectionFragment>()
 
     }
 
 
-
     @Test
-    fun testAllDisplayedDBColumnsAreZeroOnRecreate(){
+    fun testAllDisplayedDBColumnsAreZeroOnRecreate() {
         val scenario = launchFragmentInHiltContainer<SubredditsSelectionFragment>()
 
     }
 
     @Test
-    fun testIfButtonClickSelectsButton(){
+    fun testIfButtonClickSelectsButton() {
 
         onView(withId(R.id.subreddits_rv))
             .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
         onView(withId(R.id.subreddits_rv))
 
-            .perform(RecyclerViewActions.actionOnItemAtPosition
-            <SubredditsAdapter.SubredditViewHolder>(10,click()))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition
+                <SubredditsAdapter.SubredditViewHolder>(10, click())
+            )
         onView(withId(R.id.subreddits_rv))
             .check(matches(withChild(isSelected())))
-
 
 
         //   .check(matches(isDisplayed()))
@@ -76,24 +64,29 @@ class LargeTest {
     }
 
     @Test
-    fun clickSubredditThenVerifyPostsLoaded(){
-        onView(withId(R.id.subreddits_rv))
-           .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
-        onView(withId(R.id.subreddits_rv))
-            .perform(RecyclerViewActions.actionOnItemAtPosition
-            <SubredditsAdapter.SubredditViewHolder>(10,click()))
-        onView(allOf(withId(R.id.posts_rv))).check(matches(hasMinimumChildCount(5)))
-    }
-@Test
-    fun clickSubredditThenVerifySubredditViewLoaded(){
+    fun clickSubredditThenVerifyPostsLoaded() {
         onView(withId(R.id.subreddits_rv))
             .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
         onView(withId(R.id.subreddits_rv))
-            .perform(RecyclerViewActions.actionOnItemAtPosition
-            <SubredditsAdapter.SubredditViewHolder>(10,click()))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition
+                <SubredditsAdapter.SubredditViewHolder>(10, click())
+            )
+        onView(allOf(withId(R.id.posts_rv))).check(matches(hasMinimumChildCount(5)))
+    }
+
+    @Test
+    fun clickSubredditThenVerifySubredditViewLoaded() {
+        onView(withId(R.id.subreddits_rv))
+            .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
+        onView(withId(R.id.subreddits_rv))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition
+                <SubredditsAdapter.SubredditViewHolder>(10, click())
+            )
 
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
-    onView(withId(R.id.subname)).check(matches(withText("CompanyOfHeroes")))
+        onView(withId(R.id.subname)).check(matches(withText("CompanyOfHeroes")))
     }
 
     @Test
@@ -114,15 +107,61 @@ class LargeTest {
             .check(matches(hasDescendant(withId(R.id.post_name))))
         onView(withId(R.id.post_name))
             .check(matches(withText("German U boat going through Lyon canal 1944 recolorized")))
-
-
     }
+
     @Test
-    fun getActivity(){
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+    fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
 
+        onView(withId(R.id.subreddits_rv))
+            .perform(
+                RecyclerViewActions.actionOnItemAtPosition
+                <SubredditsAdapter.SubredditViewHolder>(0, click())
+            )
+        onView(withId(R.id.subreddits_rv))
+            .check(matches(allOf(hasDescendant(isSelected()), hasDescendant(withText("AZURE")))))
+
+
+        onView(withId(R.id.refresh_button)).perform(click())
+
+
+        onView(withId(R.id.subreddits_rv))
+            .check(
+                matches(
+                    allOf(
+                        not(hasDescendant(isSelected())),
+                        not(hasDescendant(withText("AZURE")))
+                    )
+                )
+            )
+
+//        @Test
+  //      fun testIfFourRefreshesWithNothingClickedBringsBackInitial() {
+    //    }
+
+            /**   onView(withId(R.id.subreddits_rv))
+            .perform(
+            RecyclerViewActions.actionOnItemAtPosition
+            <SubredditsAdapter.SubredditViewHolder>(0, click())
+            )
+            onView(withId(R.id.subreddits_rv))
+            .check(matches(allOf(withChild(isSelected()), withChild(withText("Anarchism")))))
+             **/
+
+            //   onView(withId(R.id.subreddits_rv))
+            //     .check(matches()
+
+
+            //   .check(matches(isDisplayed()))
+            //  .check(matches(hasDescendant(withText("TexttoMatch"))))
+            //      val scenario = launchFragmentInContainer<SubredditsSelectionFragment>(fragArgs)
+
+        }
+
+
+        @Test
+        fun getActivity() {
+            val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+
+        }
     }
 
-
-
-}
