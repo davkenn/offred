@@ -9,13 +9,14 @@ data class FullViewState(
     val t5ListForRV: PartialViewState.T5ListForRV?=null,
     val latestEvent5: PartialViewState.T5ForViewing?=null,
     val latestEvent3: PartialViewState.T3ForViewing?=null,
-    val isEffect: Boolean = false
+    val effect: EffectType?=null
+
 )
-/**
-enum class EventType{
-    BACK_BUTTON(),DELETE_OR_SAVE
+
+enum class EffectType{
+    DELETE_OR_SAVE,SNACKBAR
 }
-**/
+
 
 sealed class PartialViewState(val name: String?){
 
@@ -23,8 +24,9 @@ sealed class PartialViewState(val name: String?){
     data class T3ListForRV(val vsT3: List<ViewStateT3>?): PartialViewState("T5List")
     data class T3ForViewing(val t3 : ViewStateT3): PartialViewState(t3.name)
     data class T5ForViewing(val t5 : ViewStateT5): PartialViewState(t5.name)
-    object NavigateBackEffect:PartialViewState("NavigateEvent")
+    object NavigateBackEffect:PartialViewState("NavigateEffect")
     object ClearEffectEffect:PartialViewState("ClearState")
+    object SnackbarEffect:PartialViewState("SnackbarEffect")
 }
 
 data class ViewStateT5(

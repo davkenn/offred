@@ -68,7 +68,8 @@ class SubredditsAndPostsVM @Inject constructor(
                 o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
                 o.ofType(MyEvent.UpdateViewingState::class.java).updateViewingState() ,
                 o.ofType(MyEvent.SaveOrDeleteEvent::class.java).onSaveOrDelete(),
-                o.ofType(MyEvent.ClearEffectEvent::class.java).onClear()
+                o.ofType(MyEvent.ClearEffectEvent::class.java).onClear(),
+            o.ofType(MyEvent.MakeSnackBarEffect::class.java).onSnackbar()
             )
             a.mergeAll()
         }
@@ -84,27 +85,29 @@ class SubredditsAndPostsVM @Inject constructor(
             when (event) {
                 is PartialViewState.T5ListForRV -> state.copy(
                     t5ListForRV = event, latestEvent5 = null,
-                    latestEvent3 = null, isEffect = false
+                    latestEvent3 = null, effect = null
                 )
                 is PartialViewState.T3ListForRV -> state.copy(
                     t3ListForRV = event, latestEvent5 = null,
-                    latestEvent3 = null, isEffect = false
+                    latestEvent3 = null, effect = null
                 )
                 is PartialViewState.T5ForViewing -> state.copy(
                     latestEvent5 = event, latestEvent3 = null,
-                    isEffect = false
+                    effect = null
                 )
                 is PartialViewState.T3ForViewing -> state.copy(
                     latestEvent3 = event, latestEvent5 = null,
-                    isEffect = false
+                    effect = null
                 )
                 is PartialViewState.NavigateBackEffect -> state.copy(
                     latestEvent3= null, latestEvent5 = null,
-                    isEffect = true)
+                    effect = EffectType.DELETE_OR_SAVE
+                )
 
                 is PartialViewState.ClearEffectEffect -> state.copy(
-                isEffect = false
+                effect = null
                 )
+                is PartialViewState.SnackbarEffect->state.copy(effect=EffectType.SNACKBAR, latestEvent3 = null,latestEvent5=null)
             }
         }.skip(1)
     }
@@ -209,4 +212,9 @@ class SubredditsAndPostsVM @Inject constructor(
         disposables.dispose()
     }
 
+
+
+private fun Observable<MyEvent.MakeSnackBarEffect>.onSnackbar(): Observable<PartialViewState> {
+    return flatMap{Observable.just(PartialViewState.SnackbarEffect)}
+}
 }

@@ -2,6 +2,7 @@
 
 package com.example.renewed
 
+import android.media.effect.Effect
 import android.os.Bundle
 import android.view.View
 import android.view.View.INVISIBLE
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
+import com.example.renewed.models.EffectType
 
 import com.example.renewed.models.MyEvent
 import com.example.renewed.models.PartialViewState
@@ -31,7 +33,6 @@ import timber.log.Timber
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
 
-
     private lateinit var subredditAdapter: SubredditsAdapter
     private lateinit var postAdapter: PostsAdapter
     private val disposables = CompositeDisposable()
@@ -42,15 +43,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
-    private var selectPos:Int by atomic(-1)
-    private var buttonStatus:Boolean? by atomicNullable(null)
+    private var selectPos: Int by atomic(-1)
+    private var buttonStatus: Boolean? by atomicNullable(null)
 
-    private var saveEnabled:Boolean? by atomic(null)
+    private var saveEnabled: Boolean? by atomic(null)
     private lateinit var saveButton1: Button
 
-    private var deleteEnabled:Boolean? by atomic(null)
+    private var deleteEnabled: Boolean? by atomic(null)
     private lateinit var deleteButton1: Button
-    private var backEnabled:Boolean? by atomic(null)
+    private var backEnabled: Boolean? by atomic(null)
 
     private lateinit var backButton1: Button
     private lateinit var navHostFragment: NavHostFragment
@@ -58,23 +59,25 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         buttonStatus = savedInstanceState?.getBoolean("button_enabled")
-        selectPos= savedInstanceState?.getInt("selected_pos")?:-1
-        buttonStatus=savedInstanceState?.getBoolean("save_enabled")
-        buttonStatus=savedInstanceState?.getBoolean("delete_enabled")
-        buttonStatus=savedInstanceState?.getBoolean("back_enabled")
+        selectPos = savedInstanceState?.getInt("selected_pos") ?: -1
+        saveEnabled = savedInstanceState?.getBoolean("save_enabled")
+        deleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
+        backEnabled = savedInstanceState?.getBoolean("back_enabled")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.run {
-           //TODO do i need to fix button status too like selectedpos
+            //TODO do i need to fix button status too like selectedpos
             buttonStatus?.let { putBoolean("button_enabled", it) }
-            saveEnabled?.let{putBoolean("save_enabled",it)}
-            deleteEnabled?.let{putBoolean("delete_enabled",it)}
-            backEnabled?.let{putBoolean("back_enabled",it)}
-            putInt("selected_pos",selectPos )
+            saveEnabled?.let { putBoolean("save_enabled", it) }
+            deleteEnabled?.let { putBoolean("delete_enabled", it) }
+            backEnabled?.let { putBoolean("back_enabled", it) }
+            putInt("selected_pos", selectPos)
         }
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -84,34 +87,32 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
 
         val binding = FragmentSubredditsSelectionBinding.bind(view)
-        postAdapter =  PostsAdapter { x ->
+        postAdapter = PostsAdapter { x ->
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
-        subredditAdapter= SubredditsAdapter { x ->
+        subredditAdapter = SubredditsAdapter { x ->
 
             selectPos = subredditAdapter._selected
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
         }
 
-            fragmentSelectionBinding = binding.apply {
-                postsRv.layoutManager = LinearLayoutManager(requireContext())
-                postsRv.adapter = postAdapter
-                subredditsRv.layoutManager = LinearLayoutManager(requireContext())
-                subredditsRv.adapter = subredditAdapter
-                subRV=subredditsRv
-                postRV=postsRv
+        fragmentSelectionBinding = binding.apply {
+            postsRv.layoutManager = LinearLayoutManager(requireContext())
+            postsRv.adapter = postAdapter
+            subredditsRv.layoutManager = LinearLayoutManager(requireContext())
+            subredditsRv.adapter = subredditAdapter
+            subRV = subredditsRv
+            postRV = postsRv
 
             refreshButton.setOnClickListener {
                 subredditAdapter.clearSelected()
-                selectPos=-1
+                selectPos = -1
                 subsAndPostsVM.processInput(
                     MyEvent.RemoveAllSubreddits(subredditAdapter.currentList.map { it.displayName })
                 )
             }
 
-         //       backEnabled?.let{if (it) backButton.visibility= VISIBLE else INVISIBLE}
-           //     saveEnabled?.let{if (it) saveButton.visibility= VISIBLE else INVISIBLE}
-             //   deleteEnabled?.let{if (it) deleteButton.visibility= VISIBLE else INVISIBLE}
+
             backButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
@@ -121,56 +122,72 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 //seems like maybe there is bc i couldnt delete before I update viewing statev
 
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(),subredditAdapter.currentList, false))
+                subsAndPostsVM.processInput(
+                    MyEvent.SaveOrDeleteEvent(
+                        getSubredditNameOrNull(),
+                        subredditAdapter.currentList,
+                        false
+                    )
+                )
             }
 
             deleteButton.setOnClickListener {
 
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
-                subsAndPostsVM.processInput(MyEvent.SaveOrDeleteEvent(getSubredditNameOrNull(), subredditAdapter.currentList,true))
+                subsAndPostsVM.processInput(
+                    MyEvent.SaveOrDeleteEvent(
+                        getSubredditNameOrNull(),
+                        subredditAdapter.currentList,
+                        true
+                    )
+                )
             }
 
 
             saveButton1 = saveButton
             deleteButton1 = deleteButton
-                backButton1 = backButton
-                deleteEnabled?.let{if (it) enableButtons(onlyBack = false)
-                                        else if (backEnabled!=null && backEnabled as Boolean)
-                                                                    enableButtons(onlyBack = true)
-                                        else disableButtons(true)}}
+            backButton1 = backButton
 
 
+        }
 
+            subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
+                { x ->
 
-        subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
-            { x ->
+                    x.t5ListForRV?.let {
+                        subredditAdapter.submitList(it.vsT5)
+                    }
 
-                x.t5ListForRV?.let {
-                    subredditAdapter.submitList(it.vsT5)
-                }
+                    postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
 
-                postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
+                    x.latestEvent3?.let { t3 ->
+                        navigateToPostOrSubreddit(R.id.postFragment, t3, binding)
 
-                x.latestEvent3?.let { t3 ->
-                    navigateToPostOrSubreddit(R.id.postFragment, t3, binding)
+                    }
 
-                }
+                    x.latestEvent5?.let { t5 ->
+                        navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
+                    }
 
-                x.latestEvent5?.let { t5 ->
-                    navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
-                }
+                    if (x.effect != null){
+                    when (x.effect) {
+                        EffectType.DELETE_OR_SAVE -> {popTopViewerElement()
+                            subredditAdapter.clearSelected()
+                            selectPos = -1}
+                        EffectType.SNACKBAR -> Snackbar.make(
+                            binding.root, "Already in Stack. Press back to find it...",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
 
-                if (x.isEffect) {
-                    popTopViewerElement()
-                    //Clear the effect in case process is recreated so we don't repeat it
-                    subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
-                    subredditAdapter.clearSelected()
-                    selectPos = -1
-                }
-            },
+                    }
+                        //Clear the effect in case process is recreated so we don't repeat it
+                        subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
 
-            { Timber.e("error fetching vs: ${it.localizedMessage}") })
-            .addTo(disposables)
+                    }
+                },
+
+                { Timber.e("error fetching vs: ${it.localizedMessage}") })
+                .addTo(disposables)
     }
 
     private fun popTopViewerElement() {
@@ -203,10 +220,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val b = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
         if (b){
-            Snackbar.make(
-                binding.root, "Already in Stack. Press back to find it...",
-                Snackbar.LENGTH_SHORT
-            ).show()
+            subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
+
         }
         else{
             navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
@@ -273,13 +288,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onPause() {
         Timber.d("onResume in home Fragment")
+
         super.onPause()
+
     }
 
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         super.onResume()
-    }
+        deleteEnabled?.let {
+            if (it)enableButtons(onlyBack = false)
+            else if (backEnabled != null && backEnabled as Boolean)
+                enableButtons(onlyBack = true)
+            else disableButtons(true)
+    }}
 
     override fun onDestroyView() {
         fragmentSelectionBinding = null
@@ -290,8 +312,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onDestroy() {
         disposable?.dispose()
         super.onDestroy()
-    }
-}
+    }}
+
 
 
 
