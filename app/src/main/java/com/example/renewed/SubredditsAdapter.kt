@@ -2,6 +2,7 @@ package com.example.renewed
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -15,18 +16,19 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.databinding.RvSubredditElemBinding
 
 import com.example.renewed.models.ViewStateT5
-
-
+import com.jakewharton.rxbinding4.recyclerview.dataChanges
+import timber.log.Timber
 
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
     var selected = -1
-    var previousSelected :View? = null
+    var previousSelected :RecyclerView.ViewHolder? = null
     val stack = ArrayDeque<String>(listOf())
 
+
     fun clearSelected() {
-        previousSelected?.let{it.isSelected=false}
+        previousSelected?.let{it.itemView.isSelected=false}
         selected=-1
         previousSelected=null
     }
@@ -34,7 +36,8 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     fun setSelect(num: Int, adapterForPos: RecyclerView.ViewHolder?) {
         selected= num
         adapterForPos?.itemView?.isSelected= true
-        previousSelected = adapterForPos?.itemView
+
+        previousSelected = adapterForPos
     }
 
     val _selected : Int
@@ -50,7 +53,10 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
                 selected = layoutPosition
                 bindingAdapter?.notifyItemChanged(selected)
+                bindingAdapter?.dataChanges()?.subscribe{itemView-> Timber.d(itemView.toString()
+                .toString())}
                 fragmentContextClosure.invoke(sr)
+
             }
 
             if (sr.displayName.length > 18) {
@@ -92,13 +98,14 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
         holder.bind(getItem(position), onClick)
         if (position == selected){
-            previousSelected?.let{it.isSelected=false }
+            previousSelected?.let{it.itemView.isSelected =false }
             holder.itemView.isSelected=true
-            previousSelected = holder.itemView
+            previousSelected = holder
         }
         else{
             holder.itemView.isSelected=false
         }
+
     }
 }
 //TODO should this be nested

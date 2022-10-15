@@ -184,28 +184,28 @@ class SubredditsAndPostsVM @Inject constructor(
             }}
 
 
-
     private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<PartialViewState> {
+
 
         return Observable.merge(
             flatMapSingle { clickOnT5Event ->
-                  repository.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
-                                                            shouldToggleDisplayedColumnInDb = true)
-                        .subscribeOn(Schedulers.io())
-                        .andThen(repository.getPosts(clickOnT5Event.name)
+                repository.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
+                    shouldToggleDisplayedColumnInDb = true)
+                    .subscribeOn(Schedulers.io())
+                    .andThen(repository.getPosts(clickOnT5Event.name)
                         .map { list -> list.map { x -> x.toViewState() }}
                         .map { x -> PartialViewState.T3ListForRV(x) })},
             flatMapSingle {
-                  repository.getSubreddit(it.name)
-                        .onErrorResumeWith(Single.just(RoomT5(name= "Oops! Somehow there's an error...",
-                                                        description = "Either you have no internet connection"  +
-                                                      "or the site you seek no longer exists", displayName="ll",
-                                                    created_utc = Instant.now(),timeLastAccessed = Instant.now(),
-                                                        thumbnail = "", banner_img = "", subscribers=5))
+                repository.getSubreddit(it.name)
+                    .onErrorResumeWith(Single.just(RoomT5(name= "Oops! Somehow there's an error...",
+                        description = "Either you have no internet connection"  +
+                                "or the site you seek no longer exists", displayName="ll",
+                        created_utc = Instant.now(),timeLastAccessed = Instant.now(),
+                        thumbnail = "", banner_img = "", subscribers=5))
                         .retry(1))
-                .subscribeOn(Schedulers.io())
-                .map { x -> PartialViewState.T5ForViewing(x.toViewState()) }})
-        }
+                    .subscribeOn(Schedulers.io())
+                    .map { x -> PartialViewState.T5ForViewing(x.toViewState()) }})
+    }
 
     override fun onCleared() {
         super.onCleared()

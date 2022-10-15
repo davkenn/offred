@@ -4,6 +4,7 @@ package com.example.renewed
 
 import android.media.effect.Effect
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -21,6 +22,7 @@ import com.example.renewed.models.EffectType
 import com.example.renewed.models.MyEvent
 import com.example.renewed.models.PartialViewState
 import com.google.android.material.snackbar.Snackbar
+import com.jakewharton.rxbinding4.recyclerview.dataChanges
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -147,6 +149,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             saveButton1 = saveButton
             deleteButton1 = deleteButton
             backButton1 = backButton
+
 
 
         }
@@ -296,6 +299,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         super.onResume()
+//subredditAdapter.dataChanges().subscribe{it->Timber.d("here1",it.currentList)}
+     //   subredditAdapter.dataChanges().subscribe{}
         deleteEnabled?.let {
             if (it)enableButtons(onlyBack = false)
             else if (backEnabled != null && backEnabled as Boolean)
