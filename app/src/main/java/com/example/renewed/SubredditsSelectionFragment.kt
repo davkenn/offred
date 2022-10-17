@@ -13,6 +13,7 @@ import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -93,7 +94,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
         subredditAdapter = SubredditsAdapter { x ->
-
+//should these be reversed?
             selectPos = subredditAdapter._selected
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
         }
@@ -223,6 +224,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val b = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
         if (b){
+            val ft = navHostFragment.parentFragmentManager.beginTransaction()
+
             subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
 
         }

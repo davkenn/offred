@@ -22,9 +22,8 @@ import timber.log.Timber
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
-    var selected = -1
+    private var selected = -1
     var previousSelected :RecyclerView.ViewHolder? = null
-    val stack = ArrayDeque<String>(listOf())
 
 
     fun clearSelected() {
