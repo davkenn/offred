@@ -22,17 +22,14 @@ data class RoomT5(
     val isDisplayed: Int = 0
 )
 
-@Entity
-data class RoomT5BASE(
+@Entity(foreignKeys = [ForeignKey(entity = RoomT3::class,
+    parentColumns = arrayOf("name"),
+    childColumns = arrayOf("postId"),
+    onDelete = ForeignKey.CASCADE,onUpdate = ForeignKey.CASCADE)])
+data class CurrentFavoritesList(
     @PrimaryKey
-    val name: String,
-    val displayName: String,
-    val description: String,
-    val thumbnail: String,
-    val banner_img: String,
-    val timeLastAccessed: Instant,
-    val subscribers: Int,
-    val created_utc: Instant,
+    val postId: String
+
 )
 
 @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class,

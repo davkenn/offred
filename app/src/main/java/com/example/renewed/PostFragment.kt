@@ -11,7 +11,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
+
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -24,6 +24,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
+    private var page:String?=null
     private val postsVM: PostVM by viewModels()
     private var postBinding: PostViewBinding? = null
 
@@ -47,6 +48,7 @@ class PostFragment : ContentFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val name = arguments?.getString("key") ?: "NONE"
+        page = arguments?.getString("pos")?: "NO PAGE"
         postsVM.setPost(name)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -76,7 +78,7 @@ class PostFragment : ContentFragment() {
         t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self"|| isImagePost(t3ViewState)
 
 
-    private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing):Unit {
+    private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing) {
         postBinding!!.url.setOnClickListener {
             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.t3.url))
             startActivity(browserIntent)
@@ -96,7 +98,7 @@ class PostFragment : ContentFragment() {
     private fun isImagePost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         "i.redd.it" in t3ViewState.t3.url
 
-    private fun loadThumbNail(viewState: PartialViewState.T3ForViewing):Unit     {
+    private fun loadThumbNail(viewState: PartialViewState.T3ForViewing)     {
         postBinding!!.thumb.visibility = VISIBLE
         if (viewState.t3.thumbnail == "spoiler") //rpg_gamers Expeditions
             postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)

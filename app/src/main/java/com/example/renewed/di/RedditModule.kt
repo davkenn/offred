@@ -1,11 +1,8 @@
 package com.example.renewed.di
 
-import com.example.renewed.API
-import com.example.renewed.BaseSubredditsAndPostsRepo
-import com.example.renewed.LoginAPI
+import com.example.renewed.*
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
-import com.example.renewed.SubredditsAndPostsRepository
 import com.example.renewed.moshiadapters.DescriptionAdapter
 import com.example.renewed.moshiadapters.RedditHolderAdapter
 import com.example.renewed.moshiadapters.RedditPostAdapter
@@ -95,3 +92,12 @@ object RepoModule {
 
 }
 
+@InstallIn(SingletonComponent::class)
+@Module
+object FavsRepoModule {
+    @Singleton
+    @Provides
+    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO): BaseFavoritesRepo =
+        FavoritesRepository(t5Dao, t3Dao)
+
+}

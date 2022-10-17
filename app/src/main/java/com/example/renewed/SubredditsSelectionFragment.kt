@@ -61,6 +61,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.d("onCreate in SubredditsSelectionFragment")
+
         buttonStatus = savedInstanceState?.getBoolean("button_enabled")
         selectPos = savedInstanceState?.getInt("selected_pos") ?: -1
         saveEnabled = savedInstanceState?.getBoolean("save_enabled")

@@ -18,7 +18,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/blank_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_favorites_list.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/fragment_subreddits_selection.xml" value="0.19101123595505617" />
+        <entry key="app/src/main/res/layout/fragment_subreddits_selection.xml" value="0.1" />
         <entry key="app/src/main/res/layout/post_view.xml" value="0.1" />
         <entry key="app/src/main/res/layout/rv_post_elem.xml" value="0.1" />
         <entry key="app/src/main/res/layout/rv_subreddit_elem.xml" value="0.18489583333333334" />

@@ -14,7 +14,7 @@ import java.time.Instant
 
 
 class SubredditsAndPostsRepository(
-    private val api: API, val t5Dao: T5DAO, val t3Dao: T3DAO
+    private val api: API,private val t5Dao: T5DAO, private val t3Dao: T3DAO
 ): BaseSubredditsAndPostsRepo {
 
 

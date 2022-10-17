@@ -3,7 +3,7 @@ package com.example.renewed.Room
 import androidx.room.Dao
 
 @Dao
-interface T3FeedDAO {
+interface FavoritesDAO {
 
  //   getPostsByWeekPeriod(weeksAgo:Int):Flowable
 

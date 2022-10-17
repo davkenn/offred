@@ -2,6 +2,7 @@ package com.example.renewed.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.RedditDatabase
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
@@ -35,6 +36,12 @@ class DbModule {
     @Provides
     @Singleton
     fun provideT3DAO(db: RedditDatabase) : T3DAO = db.postsDao()
+
+    @Provides
+    @Singleton
+    fun provideFavoritesDAO(db: RedditDatabase) : FavoritesDAO = db.favoritesDao()
+
+
 
 
 }
