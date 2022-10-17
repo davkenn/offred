@@ -32,7 +32,7 @@ import javax.inject.Singleton
                     ctxt,
                     RedditDatabase::class.java,
                     "RedditDBTest"
-                ).createFromAsset("RedditDB")
+                )//.createFromAsset("RedditDB")
                     .build()
             }
 

@@ -26,7 +26,7 @@ class SubredditsAndPostsVMTestPreloadedDb {
         val context = ApplicationProvider.getApplicationContext<Context>()
         var a=  Room.inMemoryDatabaseBuilder(context,
             RedditDatabase::class.java,
-        ).createFromAsset("RedditDB")
+        )//.createFromAsset("RedditDB")
             .build()
         mockWebServer = MockWebServer()
         apiService = setupTestRetrofit(mockWebServer,true)

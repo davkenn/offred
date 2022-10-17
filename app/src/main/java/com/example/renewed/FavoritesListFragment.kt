@@ -31,7 +31,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         binding.apply { pager.adapter = adapter2
         }
 
-            favoritesVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe{ it->Timber.d("FavoritesListVM::",it.toString())}
+        favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ Timber.d("FavoritesListVM::",it.toString())},{
+                Timber.e("FAVLISTERROR",it.stackTrace)})
 
 
     }
