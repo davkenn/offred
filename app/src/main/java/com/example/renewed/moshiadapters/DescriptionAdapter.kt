@@ -35,7 +35,7 @@ class DescriptionAdapter {
             .replace("\\s+", " ")
             //also this includes _ which I may need also may need amp and # in urls
        //     .replace(regex) {"${it.value[0]} ${it.value.drop(1)}"}
-            .replace(regex) {" $regex\n"}
+            .replace(regex) {" ${it.value}\n"}
 //            .replace("\\s+".toRegex(), " ")
     }
 
