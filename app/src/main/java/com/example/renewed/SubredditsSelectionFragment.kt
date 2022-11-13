@@ -167,12 +167,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                     postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
 
                     x.latestEvent3?.let { t3 ->
-                        navigateToPostOrSubreddit(R.id.postFragment, t3, binding)
+                        navigateToPostOrSubreddit(R.id.postFragment, t3)
 
                     }
 
                     x.latestEvent5?.let { t5 ->
-                        navigateToPostOrSubreddit(R.id.subredditFragment, t5, binding)
+                        navigateToPostOrSubreddit(R.id.subredditFragment, t5)
                     }
 
                     if (x.effect != null){
@@ -221,7 +221,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun navigateToPostOrSubreddit(
         @IdRes resId: Int,
-        t3OrT5: PartialViewState, binding: FragmentSubredditsSelectionBinding,
+        t3OrT5: PartialViewState
     ) {
         val b = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }

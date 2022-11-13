@@ -12,3 +12,11 @@ sealed class MyEvent{
 
 }
 
+
+sealed class MyFavsEvent{
+    data class UpdateDateRangeEvent(val name:String?): MyFavsEvent() // will lead to returning a list t5 viewstate
+    object UpdateCurrentSubreddits:MyFavsEvent()
+
+
+}
+

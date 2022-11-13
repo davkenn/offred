@@ -59,6 +59,7 @@ class SubredditsAndPostsVM @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
 
 
+
     private fun Observable<MyEvent>.eventToResult(): Observable<PartialViewState> {
         return publish { o ->
             val a = Observable.fromArray(

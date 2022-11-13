@@ -26,6 +26,11 @@ interface T5DAO {
                 "ORDER BY displayName <= :startReturningAfter,  displayName LIMIT 20")
         fun getSubredditsFromTable(startReturningAfter:String): Single<List<RoomT5>>
 
+        @Query("SELECT * FROM RoomT5 WHERE isSaved= 1 AND totalViews < 50 "+
+                "ORDER BY totalViews LIMIT :returnCount")
+        fun getNextFavoriteSubreddits(returnCount:Int): Single<List<RoomT5>>
+
+
         @Query("SELECT * FROM RoomT5 WHERE RoomT5.name LIKE :name")
         fun getSubreddit(name: String) : Single<RoomT5>
 
