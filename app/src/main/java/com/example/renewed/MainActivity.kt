@@ -9,6 +9,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -35,28 +36,37 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         bottomNavigationView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.feed) {
-                bottomNavigationView.visibility = View.GONE
+            toggleFullscreen(destination.id)
+        }
+    }
 
-                val ctrl = WindowCompat.getInsetsController(window,window.decorView.findViewById(R.id.favorites))
-                ctrl.hide(WindowInsetsCompat.Type.statusBars())
-                ctrl.systemBarsBehavior=WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+    private fun toggleFullscreen(id:Int) {
+        if (id == R.id.feed) {
+            bottomNavigationView.visibility = View.GONE
+
+            val ctrl = WindowCompat.getInsetsController(
+                window,
+                window.decorView.findViewById(R.id.favorites)
+            )
+            ctrl.hide(WindowInsetsCompat.Type.statusBars())
+            ctrl.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             ctrl.hide(WindowInsetsCompat.Type.systemBars())
 
+        } else {
+            bottomNavigationView.visibility = View.VISIBLE
 
+            val ctrl = WindowCompat.getInsetsController(
+                window,
+                window.decorView.findViewById(R.id.selection)
+            )
+            ctrl.show(WindowInsetsCompat.Type.statusBars())
+            ctrl.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            ctrl.show(WindowInsetsCompat.Type.systemBars())
 
-
-            } else {
-                bottomNavigationView.visibility = View.VISIBLE
-
-                val ctrl = WindowCompat.getInsetsController(window,window.decorView.findViewById(R.id.selection))
-                ctrl.show(WindowInsetsCompat.Type.statusBars())
-                ctrl.systemBarsBehavior=WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-                ctrl.show(WindowInsetsCompat.Type.systemBars())
-
-          //      WindowCompat.setDecorFitsSystemWindows(window, true)
+            //      WindowCompat.setDecorFitsSystemWindows(window, true)
             //    WindowInsetsControllerCompat(window,window.decorView.findViewById()).show(WindowInsetsCompat.Type.systemBars())
-            }
         }
     }
 //

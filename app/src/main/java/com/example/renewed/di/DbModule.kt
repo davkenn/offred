@@ -24,8 +24,8 @@ class DbModule {
         return Room.databaseBuilder(
             ctxt,
             RedditDatabase::class.java,
-            "RedditDBProduction"
-        ).createFromAsset("RedditDBProduction")
+            "RedditDBTest"
+        )//.createFromAsset("RedditDBProduction")
             .build()
     }
 
