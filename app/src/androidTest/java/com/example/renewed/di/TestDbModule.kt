@@ -21,6 +21,7 @@ import javax.inject.Singleton
     class TestRepoModule  {
 
 
+        //TODO this DB is fucked because it was using old code to parse make new db
             @Provides
             @Singleton
             fun provideDB(@ApplicationContext ctxt: Context) : RedditDatabase {
