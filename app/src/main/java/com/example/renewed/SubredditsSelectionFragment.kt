@@ -197,6 +197,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     private fun popTopViewerElement() {
+
         if (navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
 
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
@@ -223,20 +224,21 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         @IdRes resId: Int,
         t3OrT5: PartialViewState
     ) {
-        val b = navHostFragment.navController.backQueue
+        //TODO right now it is giving error if add again but bring up the posts
+        //is that right or wrong?
+
+        //ANOTHER GOOD OPTION IS TO JUST MOVE IT TO THE FRONT OF THE
+        val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
-        if (b){
-            val ft = navHostFragment.parentFragmentManager.beginTransaction()
 
-            subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
+        if (inBackStack) {subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
+                            return}
 
-        }
-        else{
-            navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
+        navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
 
-            if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(includingBack = false)
+        if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(includingBack = false)
                                                             else enableButtons(onlyBack = false)
-        }
+
     }
 
     private fun disableButtons(includingBack:Boolean) {
@@ -304,8 +306,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         super.onResume()
-//subredditAdapter.dataChanges().subscribe{it->Timber.d("here1",it.currentList)}
-     //   subredditAdapter.dataChanges().subscribe{}
+
         deleteEnabled?.let {
             if (it)enableButtons(onlyBack = false)
             else if (backEnabled != null && backEnabled as Boolean)
