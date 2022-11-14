@@ -80,6 +80,8 @@ Completable.complete()
 
     override fun getPosts(name:String) : Single<List<RoomT3>> {
       return  t3Dao.getPosts(name)
+      
+
     }
 
     //TODO if this is seven it will repeat the ones with the lowest vals, fix the alg or leave it at thre

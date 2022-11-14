@@ -19,6 +19,9 @@ interface T3DAO {
     @Query("SELECT * FROM RoomT3 WHERE RoomT3.subredditId like :name LIMIT 30")
     fun getPosts(name: String): Single<List<RoomT3>>
 
+    @Query("SELECT * FROM RoomT3 LIMIT 30")
+    fun getPosts2(): Single<List<RoomT3>>
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateT3(t5: RoomT5): Completable
 

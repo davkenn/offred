@@ -21,7 +21,7 @@ fun T5.toDbModel() : RoomT5 {
                 banner_img =banner_img?:"",
                 created_utc = Instant.ofEpochSecond(created_utc),
                 timeLastAccessed = Instant.now(),
-                subscribers = subscribers,
+        subscribers = subscribers,
                 isSaved = false,
                 totalViews = 0)
 }

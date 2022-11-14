@@ -23,6 +23,13 @@ package com.example.renewed
         private val repository: BaseFavoritesRepo
     ): ViewModel() {
 
+        init{
+            prefetch1().subscribe({
+                Timber.d("HERE",it.toString())},
+             //   processInput(MyFavsEvent.UpdateCurrentSubreddits)},
+                {Timber.e("FAVLISTERROR",it.stackTrace)})
+
+        }
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()
@@ -37,10 +44,6 @@ package com.example.renewed
         .replay(1)
         .autoConnect(2){disposables.add(it)}
 
-
-        val subs = prefetch1().subscribe{
-            Timber.d("HERE",it.toString())
-            processInput(MyFavsEvent.UpdateCurrentSubreddits)}
 
 
 
