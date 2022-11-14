@@ -47,7 +47,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
     private var selectPos: Int by atomic(-1)
-    private var buttonStatus: Boolean? by atomicNullable(null)
 
     private var saveEnabled: Boolean? by atomic(null)
     private lateinit var saveButton1: Button
@@ -63,7 +62,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
 
-        buttonStatus = savedInstanceState?.getBoolean("button_enabled")
         selectPos = savedInstanceState?.getInt("selected_pos") ?: -1
         saveEnabled = savedInstanceState?.getBoolean("save_enabled")
         deleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
@@ -74,7 +72,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onSaveInstanceState(outState)
         outState.run {
             //TODO do i need to fix button status too like selectedpos
-            buttonStatus?.let { putBoolean("button_enabled", it) }
+
             saveEnabled?.let { putBoolean("save_enabled", it) }
             deleteEnabled?.let { putBoolean("delete_enabled", it) }
             backEnabled?.let { putBoolean("back_enabled", it) }
@@ -157,12 +155,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         }
 
+        //TODO found a bug when click on t5 then t3 then rotate the snackbar repeates
+
             subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
                 { x ->
 
                     x.t5ListForRV?.let {
                         subredditAdapter.submitList(it.vsT5)
                     }
+
 
                     postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
 
@@ -253,15 +254,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         saveButton1.visibility = INVISIBLE
         saveButton1.isClickable = false
         saveEnabled=false
-        //TODO is this not working anymore im using this in a messy way
-        buttonStatus=false
+
     }
 
     private fun enableButtons(onlyBack:Boolean) {
 
-            backButton1.visibility= VISIBLE
-            backButton1.isClickable=true
-            backEnabled=true
+        backButton1.visibility= VISIBLE
+        backButton1.isClickable=true
+        backEnabled=true
 
         if (onlyBack) return
 
@@ -272,7 +272,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         saveButton1.visibility = VISIBLE
         saveButton1.isClickable = true
         saveEnabled=true
-        buttonStatus=true
+
     }
 
     override fun onStart() {
