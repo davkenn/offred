@@ -80,7 +80,8 @@ fun RoomT3.toViewState(): ViewStateT3 =
 
     private fun combineDescriptions(description : String="", publicDescription : String="") : String {
         return buildString {
-                        if (publicDescription.isNotBlank())  append("$publicDescription\n\n")
-                           if (description.isNotBlank()) append("$description\n\n")
+            if (!description.contains(publicDescription)) {
+                append("$publicDescription\n\n")}
+            append("$description\n\n")
         }
     }

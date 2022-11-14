@@ -1,6 +1,7 @@
 package com.example.renewed
 
 import android.os.Bundle
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.example.renewed.databinding.SubViewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+
 
 @AndroidEntryPoint
 class SubredditFragment : ContentFragment() {
@@ -43,6 +45,7 @@ class SubredditFragment : ContentFragment() {
                     subBinding!!.timeCreated.append(x.t5.created)
                     subBinding!!.subscribers.append(x.t5.subscribers.toString())
                     subBinding!!.description.text = x.t5.description
+                    Linkify.addLinks(subBinding!!.description, Linkify.WEB_URLS)
                 }
             }
     }

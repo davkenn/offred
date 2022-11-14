@@ -1,5 +1,7 @@
 package com.example.renewed.di
 
+import android.content.Context
+import androidx.media3.exoplayer.ExoPlayer
 import com.example.renewed.*
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
@@ -10,6 +12,7 @@ import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -91,6 +94,17 @@ object RepoModule {
                         SubredditsAndPostsRepository(api, t5Dao, t3Dao)
 
 }
+
+@InstallIn(SingletonComponent::class)
+@Module
+object ExoPlayerModule {
+    @Singleton
+    @Provides
+    fun provideExoplayer(@ApplicationContext ctx: Context): ExoPlayer =
+        ExoPlayer.Builder(ctx).build()
+
+}
+
 
 @InstallIn(SingletonComponent::class)
 @Module
