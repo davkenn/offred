@@ -24,19 +24,16 @@ class DescriptionAdapter {
     @FromJson @SubredditDescription
     fun fromJson(descriptionFromJson: String): String {
         return descriptionFromJson
-                //combine these in one regex?
-            .replace("\n"," ")
-            .replace("&gt;", " ")
-            .replace("&lt;", " ")
+
+            .replace("&gt;", "")
+            .replace("&lt;", "")
             .replace("&amp;", " and ")
 
-            .replace("""[\[\]()*]""".toRegex()," ")
-//            .filter{it !in "|-[]()#*"}
-            .replace("\\s+", " ")
-            //also this includes _ which I may need also may need amp and # in urls
-       //     .replace(regex) {"${it.value[0]} ${it.value.drop(1)}"}
+            .replace("""[\[\]()*]""".toRegex(),"")
+
+     //       .replace("\\s+", " ")
+
             .replace(regex) {"\n${it.value}\n"}
-//            .replace("\\s+".toRegex(), " ")
     }
 
 }
