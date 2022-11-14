@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavigationView.setupWithNavController(navController)
 
+
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             toggleFullscreen(destination.id)
         }
@@ -61,13 +63,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 window.decorView.findViewById(R.id.selection)
             )
             ctrl.show(WindowInsetsCompat.Type.statusBars())
-            ctrl.systemBarsBehavior =
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             ctrl.show(WindowInsetsCompat.Type.systemBars())
 
-            //      WindowCompat.setDecorFitsSystemWindows(window, true)
-            //    WindowInsetsControllerCompat(window,window.decorView.findViewById()).show(WindowInsetsCompat.Type.systemBars())
-        }
+         }
     }
 //
   //  override fun onRestart() {

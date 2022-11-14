@@ -12,7 +12,7 @@ class FavoritesListAdapter(private val fragment:FavoritesListFragment): Fragment
 
     override fun createFragment(position: Int): Fragment {
         val fragment= PostFragment()
-        fragment.arguments = Bundle().apply{putString("key","t3_yuid9n")
+        fragment.arguments = Bundle().apply{putString("key","t3_yut62u")
                                             putString("pos",position.toString())}
         return fragment
     }

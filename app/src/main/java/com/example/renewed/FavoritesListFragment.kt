@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
@@ -29,6 +30,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         adapter2 = FavoritesListAdapter(this)
         val binding = FragmentFavoritesListBinding.bind(view)
         binding.apply { pager.adapter = adapter2
+                        pager.orientation=ViewPager2.ORIENTATION_VERTICAL
         }
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())

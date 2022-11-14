@@ -27,12 +27,22 @@ fun T5.toDbModel() : RoomT5 {
 }
 
 //TODO selftext is optional here
-fun T3.toDbModel() : RoomT3 =
-    RoomT3(
-        name = name, subredditId = subreddit_id, created_utc =Instant.ofEpochSecond(created_utc),  timeLastAccessed = Instant.now(),
-        title =title, selftext =selftext, url =url, permalink =permalink, thumbnail =thumbnail)
+fun T3.toDbModel() : RoomT3 {
+    if (url.startsWith("https://v.redd.it")) url+= "/DASH_720.mp4?source=fallback"
+    return RoomT3(
 
+        name = name,
+        subredditId = subreddit_id,
+        created_utc = Instant.ofEpochSecond(created_utc),
+        timeLastAccessed = Instant.now(),
+        title = title,
+        selftext = selftext,
+        url = url,
+        permalink = permalink,
+        thumbnail = thumbnail
+    )
 
+}
 
     fun RoomT5.toViewState(): ViewStateT5 =
         ViewStateT5(

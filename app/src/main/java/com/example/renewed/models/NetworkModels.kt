@@ -58,7 +58,7 @@ data class T3(
     val upvoteRatio: Double,
      //can be image or vid link hot tell apart can also just be text post
     @Json(name = "url")
-    val url: String,
+    var url: String,
     //if url is permalink then create a text, if not then either vid  or photo link
      val permalink: String,
         //image link for vids
