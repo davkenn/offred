@@ -80,7 +80,7 @@ Completable.complete()
 
     override fun getPosts(name:String) : Single<List<RoomT3>> {
       return  t3Dao.getPosts(name)
-      
+
 
     }
 
