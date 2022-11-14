@@ -279,7 +279,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onStart()
         Timber.d("onStart in home Fragment")
 //this is to check if its the first time being loaded and only loads it then
-        if (buttonStatus!=null)  {
+        if (selectPos!=-1)  {
             subredditAdapter.setSelect(selectPos,subRV.findViewHolderForAdapterPosition(selectPos))
             return
         }
