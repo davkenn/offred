@@ -2,9 +2,7 @@
 
 package com.example.renewed
 
-import android.media.effect.Effect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -13,7 +11,6 @@ import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +20,6 @@ import com.example.renewed.models.EffectType
 import com.example.renewed.models.MyEvent
 import com.example.renewed.models.PartialViewState
 import com.google.android.material.snackbar.Snackbar
-import com.jakewharton.rxbinding4.recyclerview.dataChanges
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -48,14 +44,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private var selectPos: Int by atomic(-1)
 
-    private var saveEnabled: Boolean? by atomic(null)
     private lateinit var saveButton1: Button
-
-    private var deleteEnabled: Boolean? by atomic(null)
     private lateinit var deleteButton1: Button
+    private lateinit var backButton1: Button
+
+    private var saveAndDeleteEnabled: Boolean? by atomic(null)
     private var backEnabled: Boolean? by atomic(null)
 
-    private lateinit var backButton1: Button
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,23 +58,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Timber.d("onCreate in SubredditsSelectionFragment")
 
         selectPos = savedInstanceState?.getInt("selected_pos") ?: -1
-        saveEnabled = savedInstanceState?.getBoolean("save_enabled")
-        deleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
+
+        saveAndDeleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.run {
-            //TODO do i need to fix button status too like selectedpos
-
-            saveEnabled?.let { putBoolean("save_enabled", it) }
-            deleteEnabled?.let { putBoolean("delete_enabled", it) }
+            saveAndDeleteEnabled?.let { putBoolean("delete_enabled", it) }
             backEnabled?.let { putBoolean("back_enabled", it) }
             putInt("selected_pos", selectPos)
         }
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -232,8 +223,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
 
-        if (inBackStack) {subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
-                            return}
+        if (inBackStack && t3OrT5 is PartialViewState.T5ForViewing)
+        {
+            subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
+            return
+        }
 
         navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
 
@@ -250,10 +244,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
         deleteButton1.visibility = INVISIBLE
         deleteButton1.isClickable = false
-        deleteEnabled=false
         saveButton1.visibility = INVISIBLE
         saveButton1.isClickable = false
-        saveEnabled=false
+        saveAndDeleteEnabled=false
 
     }
 
@@ -267,20 +260,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         deleteButton1.isClickable = true
         deleteButton1.visibility = VISIBLE
-        deleteEnabled=true
-
         saveButton1.visibility = VISIBLE
         saveButton1.isClickable = true
-        saveEnabled=true
-
+        saveAndDeleteEnabled=true
     }
 
     override fun onStart() {
         super.onStart()
         Timber.d("onStart in home Fragment")
 //this is to check if its the first time being loaded and only loads it then
+        //TODO this is no longer capturing if its the first time
         if (selectPos!=-1)  {
             subredditAdapter.setSelect(selectPos,subRV.findViewHolderForAdapterPosition(selectPos))
+         //TODO is this messed up here should I not reteurn?
             return
         }
 
@@ -307,7 +299,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Timber.d("onResume in home Fragment")
         super.onResume()
 
-        deleteEnabled?.let {
+        saveAndDeleteEnabled?.let {
             if (it)enableButtons(onlyBack = false)
             else if (backEnabled != null && backEnabled as Boolean)
                 enableButtons(onlyBack = true)
