@@ -44,15 +44,7 @@ import javax.inject.Singleton
             @Singleton
             fun provideT3DAO(db: RedditDatabase) : T3DAO = db.postsDao()
 
-            /**
-    object TestTasksRepositoryModule {
 
-        @Singleton
-        @Provides
-        fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO) :
-                BaseSubredditsAndPostsRepo = SubredditsAndPostsRepository(api, t5Dao, t3Dao)
-
-    }**/
-}
+    }
 
 
