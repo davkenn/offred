@@ -105,8 +105,7 @@ object ExoPlayerModule {
     @Singleton
     @Provides
     fun provideExoplayer(@ApplicationContext ctx: Context): ExoPlayer =
-        ExoPlayer.Builder(ctx).build()
-
+                                                                    ExoPlayer.Builder(ctx).build()
 }
 
 

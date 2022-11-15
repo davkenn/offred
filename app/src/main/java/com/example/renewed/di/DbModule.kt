@@ -13,21 +13,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @InstallIn(SingletonComponent::class)
 @Module
 class DbModule {
-
     @Provides
     @Singleton
-    fun provideDB(@ApplicationContext ctxt: Context) : RedditDatabase {
-        return Room.databaseBuilder(
-            ctxt,
-            RedditDatabase::class.java,
-            "RedditDBProd"
-        )//.createFromAsset("RedditDBProduction")
-            .build()
-    }
+    fun provideDB(@ApplicationContext ctxt: Context) : RedditDatabase =
+             Room.databaseBuilder(ctxt, RedditDatabase::class.java, "RedditDBTest").build()
 
     @Provides
     @Singleton
@@ -40,8 +32,4 @@ class DbModule {
     @Provides
     @Singleton
     fun provideFavoritesDAO(db: RedditDatabase) : FavoritesDAO = db.favoritesDao()
-
-
-
-
 }
