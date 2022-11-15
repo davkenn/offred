@@ -29,6 +29,7 @@ class LargeTest {
     @Before
     fun init() {
         hiltRule.inject()
+
         val fragArgs = bundleOf()
         launchFragmentInHiltContainer<SubredditsSelectionFragment>()
 
@@ -117,11 +118,18 @@ class LargeTest {
             e.printStackTrace()
         }
         onView(withId(R.id.subreddits_rv)).perform(
-                                        RecyclerViewActions.actionOnItemAtPosition
-                                        <SubredditsAdapter.SubredditViewHolder>(0, click()))
+            RecyclerViewActions.actionOnItemAtPosition
+            <SubredditsAdapter.SubredditViewHolder>(0, click())
+        )
 
-        onView(withId(R.id.subreddits_rv)).check(   matches(allOf(hasDescendant(isSelected()),
-                                                    hasDescendant(withText("ATT")))))
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(
+                allOf(
+                    hasDescendant(isSelected()),
+                    hasDescendant(withText("ATT"))
+                )
+            )
+        )
 
         onView(withId(R.id.refresh_button)).perform(click())
 
@@ -131,32 +139,48 @@ class LargeTest {
             e.printStackTrace()
         }
 
-        onView(withId(R.id.subreddits_rv)).check(   matches(allOf(
-                                                                    not(hasDescendant(isSelected())),
-                                                        not(hasDescendant(withText("ATT"))))))
-
-
-
-//        @Test
-  //      fun testIfFourRefreshesWithNothingClickedBringsBackInitial() {
-    //    }
-
-            /**   onView(withId(R.id.subreddits_rv))
-            .perform(
-            RecyclerViewActions.actionOnItemAtPosition
-            <SubredditsAdapter.SubredditViewHolder>(0, click())
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(
+                allOf(
+                    not(hasDescendant(isSelected())),
+                    not(hasDescendant(withText("ATT")))
+                )
             )
-            onView(withId(R.id.subreddits_rv))
-            .check(matches(allOf(withChild(isSelected()), withChild(withText("Anarchism")))))
-             **/
+        )
+        }
+    //TODO the db needs to be recreated from asset after every test
+        @Test
+        fun refreshButton4FourTimesBringsUpSameList() {
 
-            //   onView(withId(R.id.subreddits_rv))
-            //     .check(matches()
+            try {
+                Thread.sleep(3000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            onView(withId(R.id.subreddits_rv)).perform(
+                RecyclerViewActions.actionOnItemAtPosition
+                <SubredditsAdapter.SubredditViewHolder>(0, click())
+            )
 
+            onView(withId(R.id.subreddits_rv)).check(
+                matches(
+                    allOf(
+                        hasDescendant(isSelected()),
+                        hasDescendant(withText("ATT"))
+                    )
+                )
+            )
 
-            //   .check(matches(isDisplayed()))
-            //  .check(matches(hasDescendant(withText("TexttoMatch"))))
-            //      val scenario = launchFragmentInContainer<SubredditsSelectionFragment>(fragArgs)
+            repeat(4) { onView(withId(R.id.refresh_button)).perform(click())
+                try {
+                    Thread.sleep(3000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+
+            onView(withId(R.id.subreddits_rv)).check(
+                matches(hasDescendant(withText("ATT"))))
 
         }
 
