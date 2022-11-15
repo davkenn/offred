@@ -36,7 +36,7 @@ interface T5DAO {
 
         //get subreddits yet to have any posts loaded for it
         @Query("SELECT roomT5.displayName FROM roomT5  LEFT JOIN roomT3  ON roomT5.name = subredditId  " +
-                "WHERE subredditId IS NULL LIMIT 40")   //this num must be same as num loaded
+                "WHERE subredditId IS NULL LIMIT 80")   //this num must be same as num loaded
         fun getSubredditIDsNeedingPosts() : Single<List<String>>
 
         @Insert(onConflict = OnConflictStrategy.IGNORE)

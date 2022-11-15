@@ -40,16 +40,11 @@ class SubredditsAndPostsVM @Inject constructor(
     fun prefetch(): Completable =
         repository.deleteUninterestingSubreddits()
             .andThen(repository.prefetchSubreddits()
-                                .retry(0)
-                     //           .onErrorResumeNext {repository.prefetchDefaultSubreddits() }
-
-
                                 .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") }
                 .onErrorComplete()
                 .doOnComplete { Timber.d("---- done fetching subreddits") })
             .andThen(repository.prefetchPosts()
-            .retry(0)
-         //   .onErrorResumeNext {repository.prefetchDefaultPosts() }
+
                                           .doOnComplete { Timber.d("---- done fetching posts") }
 
                                           .doOnError { Timber.e("----error getting posts") }
