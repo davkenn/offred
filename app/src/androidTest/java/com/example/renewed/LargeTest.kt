@@ -3,7 +3,6 @@ package com.example.renewed
 import android.content.Context
 import androidx.core.os.bundleOf
 import androidx.room.Room
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -16,26 +15,25 @@ import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.Screen1.SubredditsSelectionFragment
 import com.example.renewed.di.DbModule
+import com.example.renewed.models.RoomT3
+import com.example.renewed.models.RoomT5
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import dagger.hilt.components.SingletonComponent
-import dagger.hilt.testing.TestInstallIn
-import okio.ArrayIndexOutOfBoundsException
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
+import javax.inject.Inject
 import javax.inject.Singleton
+
+var allData5: List<RoomT5>?=null
+var allData3: List<RoomT3>?=null
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -45,15 +43,62 @@ class LargeTest {
     @get:Rule()
     var hiltRule = HiltAndroidRule(this)
 
+    @Inject
+    lateinit var t5: T5DAO
+
+    @Inject
+    lateinit var t3: T3DAO
+
+    @Inject
+    lateinit var db: RedditDatabase
+
+
+//     var allData: List<RoomT5>?=null
 
     @Before
     fun init() {
         hiltRule.inject()
+        //only null first call
+
+        if (allData5 == null) {
+            t5.clearViews()
+            allData5 = t5.getAllRows()
+            allData3 = t3.getAllRows()
+        }
 
         val fragArgs = bundleOf()
         launchFragmentInHiltContainer<SubredditsSelectionFragment>()
     }
 
+    @After
+    fun resetDBContents() {
+        db.clearAllTables()
+        t5.fillDb(allData5!!)
+        t3.fillDb(allData3!!)
+    }
+
+    companion object {
+        init {
+            // things that may need to be setup before companion class member variables are instantiated
+        }
+
+
+        @BeforeClass @JvmStatic fun setup() {
+            // things to execute once and keep around for the class
+        }
+
+        @AfterClass @JvmStatic fun teardown() {
+            allData5=null
+            allData3=null
+        }
+    }
+
+/**
+    @AfterClass
+    fun clearContentsList() {
+            allData=null
+    }
+**/
     @Test
     fun testAllDisplayedDBColumnsAreZeroOnRecreate() {
 
@@ -111,8 +156,18 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenClickPostVerifyPostViewLoaded() {
+        try {
+            Thread.sleep(3000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
         onView(withId(R.id.subreddits_rv))
             .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
+        try {
+            Thread.sleep(3000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
         onView(withId(R.id.subreddits_rv))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition
@@ -126,39 +181,37 @@ class LargeTest {
         onView(allOf(withId(R.id.subscreen_nav_container)))
             .check(matches(hasDescendant(withId(R.id.post_name))))
         onView(withId(R.id.post_name))
-            .check(matches(withText("Authority, is that you?")))
-    }
-/**@Module
-@InstallIn(SingletonComponent::class)
-object TestRepoModule {
-
-    @Provides
-    @Singleton
-    fun provideDB(@ApplicationContext ctxt: Context): RedditDatabase {
-
-        return Room.databaseBuilder(
-            ctxt,
-            RedditDatabase::class.java,
-            "RedditDB1"
-        ).createFromAsset("RedditDBTest")
-            .build()
+            .check(matches(withText("HDB is a very knowledgeable man")))
     }
 
-    @Provides
-    @Singleton
-    fun provideT5DAO(db: RedditDatabase): T5DAO = db.subredditDao()
+    @Module
+    @InstallIn(SingletonComponent::class)
+    object TestRepoModule {
 
-    @Provides
-    @Singleton
-    fun provideT3DAO(db: RedditDatabase): T3DAO = db.postsDao()
-}**/
+        @Provides
+        @Singleton
+        fun provideDB(@ApplicationContext ctxt: Context): RedditDatabase {
+
+            return Room.databaseBuilder(
+                ctxt,
+                RedditDatabase::class.java,
+                "RedditDB1"
+            ).createFromAsset("RedditDBTest")
+                .build()
+        }
+
+        @Provides
+        @Singleton
+        fun provideT5DAO(db: RedditDatabase): T5DAO = db.subredditDao()
+
+        @Provides
+        @Singleton
+        fun provideT3DAO(db: RedditDatabase): T3DAO = db.postsDao()
+    }
+
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
-        try {
-            Thread.sleep(3000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+
         onView(withId(R.id.subreddits_rv)).perform(
             RecyclerViewActions.actionOnItemAtPosition
             <SubredditsAdapter.SubredditViewHolder>(0, click())
@@ -189,43 +242,47 @@ object TestRepoModule {
                 )
             )
         )
-        }
+    }
+
     //TODO the db needs to be recreated from asset after every test
-        @Test
-        fun refreshButton4FourTimesBringsUpSameList() {
+    @Test
+    fun refreshButton4FourTimesBringsUpSameList() {
 
 
+        try {
+            Thread.sleep(3000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        onView(withId(R.id.subreddits_rv)).perform(
+            RecyclerViewActions.actionOnItemAtPosition
+            <SubredditsAdapter.SubredditViewHolder>(0, click())
+        )
+
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(
+                allOf(
+                    hasDescendant(isSelected()),
+                    hasDescendant(withText("ATT"))
+                )
+            )
+        )
+
+        repeat(4) {
+            onView(withId(R.id.refresh_button)).perform(click())
             try {
                 Thread.sleep(3000)
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
-            onView(withId(R.id.subreddits_rv)).perform(
-                RecyclerViewActions.actionOnItemAtPosition
-                <SubredditsAdapter.SubredditViewHolder>(0, click())
-            )
-
-            onView(withId(R.id.subreddits_rv)).check(
-                matches(
-                    allOf(
-                        hasDescendant(isSelected()),
-                        hasDescendant(withText("ATT"))
-                    )
-                )
-            )
-
-            repeat(4) { onView(withId(R.id.refresh_button)).perform(click())
-                try {
-                    Thread.sleep(3000)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
-            }
-
-            onView(withId(R.id.subreddits_rv)).check(
-                matches(hasDescendant(withText("ATT"))))
-
         }
+
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(hasDescendant(withText("ATT")))
+        )
+
+    }
+}
 
 /**
         @Test
@@ -233,5 +290,5 @@ object TestRepoModule {
             val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
         }**/
-    }
+
 

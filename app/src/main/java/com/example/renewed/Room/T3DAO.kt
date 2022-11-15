@@ -28,4 +28,12 @@ interface T3DAO {
     //FROM WHEN FLOWABLE ? or does it do this with single?
     // @Query("SELECT * FROM RoomT5 WHERE isSaved=0 ORDER BY RANDOM() LIMIT 50")
 
+    //FOR UI TESTING
+
+    @Query("SELECT * FROM RoomT3")
+    fun getAllRows(): List<RoomT3>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun fillDb(t5s: List<RoomT3>): Unit
+
 }

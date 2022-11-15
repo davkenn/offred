@@ -52,4 +52,19 @@ interface T5DAO {
         fun clearDisplayed() : Completable
 
 
+        //FOR UI TESTING
+
+        @Query("UPDATE RoomT5 SET totalViews=0")
+        fun clearViews() : Unit
+
+
+        @Query("SELECT * FROM RoomT5")
+        fun getAllRows(): List<RoomT5>
+
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        fun fillDb(t5s: List<RoomT5>): Unit
+
+
+
+
 }
