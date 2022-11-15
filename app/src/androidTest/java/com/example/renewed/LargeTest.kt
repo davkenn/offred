@@ -6,13 +6,14 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.contrib.RecyclerViewActions.*
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.renewed.Screen1.SubredditsSelectionFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.hamcrest.CoreMatchers.*
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -110,42 +111,31 @@ class LargeTest {
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
 
-        onView(withId(R.id.subreddits_rv))
-            .perform(
-                RecyclerViewActions.actionOnItemAtPosition
-                <SubredditsAdapter.SubredditViewHolder>(0, click())
-            )
-        onView(withId(R.id.subreddits_rv))
-            .check(matches(allOf(hasDescendant(isSelected()), hasDescendant(withText("AZURE")))))
+        try {
+            Thread.sleep(3000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+        onView(withId(R.id.subreddits_rv)).perform(
+                                        RecyclerViewActions.actionOnItemAtPosition
+                                        <SubredditsAdapter.SubredditViewHolder>(0, click()))
 
+        onView(withId(R.id.subreddits_rv)).check(   matches(allOf(hasDescendant(isSelected()),
+                                                    hasDescendant(withText("ATT")))))
 
         onView(withId(R.id.refresh_button)).perform(click())
 
+        try {
+            Thread.sleep(3000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
 
-        onView(withId(R.id.subreddits_rv))
-            .check(
-                matches(
-                    allOf(
-                        not(hasDescendant(isSelected())),
-                        not(hasDescendant(withText("AZURE")))
-                    )
-                )
-            )
-
+        onView(withId(R.id.subreddits_rv)).check(   matches(allOf(
+                                                                    not(hasDescendant(isSelected())),
+                                                        not(hasDescendant(withText("ATT"))))))
 
 
-            onView(withId(R.id.refresh_button)).perform(click())
-
-
-            onView(withId(R.id.subreddits_rv))
-                .check(
-                    matches(
-                        allOf(
-                            not(hasDescendant(isSelected())),
-                            not(hasDescendant(withText("AZURE")))
-                        )
-                    )
-                )
 
 //        @Test
   //      fun testIfFourRefreshesWithNothingClickedBringsBackInitial() {

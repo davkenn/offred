@@ -8,7 +8,7 @@ import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface T5DAO {
-        //TODO this is
+
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         fun insertAll(t5s: List<RoomT5>): Completable
 
@@ -41,7 +41,6 @@ interface T5DAO {
 
         @Insert(onConflict = OnConflictStrategy.IGNORE)
         fun insertT5(t5: RoomT5): Completable
-
 
         @Update(onConflict = OnConflictStrategy.REPLACE)
         fun updateT5(t5: RoomT5): Completable

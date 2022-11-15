@@ -7,40 +7,23 @@ import androidx.room.PrimaryKey
 import java.time.Instant
 
 @Entity
-data class RoomT5(
-    @PrimaryKey val name: String,
-    val displayName: String,
-    val description: String,
-    val thumbnail: String,
-    val banner_img: String,
-    val timeLastAccessed: Instant,
-    val subscribers: Int,
-    val created_utc: Instant,
-    val isSaved: Boolean = false,
-    val totalViews: Int = 0,
-    val isDisplayed: Int = 0)
+data class RoomT5(@PrimaryKey val name: String, val displayName: String, val description: String,
+                  val thumbnail: String, val banner_img: String, val timeLastAccessed: Instant,
+                  val subscribers: Int, val created_utc: Instant, val isSaved: Boolean = false,
+                  val totalViews: Int = 0, val isDisplayed: Int = 0)
 
 @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
                                   childColumns = arrayOf("link_id"), onDelete = ForeignKey.CASCADE,
                                                                     onUpdate = ForeignKey.CASCADE)])
-data class RoomT1(
-    @PrimaryKey val name: String,
-    @ColumnInfo(index = true) val link_id: String,
-    val body: String)
+data class RoomT1(@PrimaryKey val name: String, @ColumnInfo(index = true) val link_id: String,
+                                                                                val body: String)
 
 @Entity(foreignKeys = [ForeignKey(entity = RoomT5::class, parentColumns = arrayOf("name"),
                               childColumns = arrayOf("subredditId"), onDelete = ForeignKey.CASCADE,
                                                                     onUpdate = ForeignKey.CASCADE)])
-data class RoomT3(
-    @PrimaryKey val name: String,
-    @ColumnInfo(index = true) val subredditId: String,
-    val created_utc: Instant,
-    val timeLastAccessed: Instant,
-    val title: String,
-    val selftext: String,
-    val url: String,
-    val permalink:String,
-    val thumbnail: String)
+data class RoomT3(@PrimaryKey val name: String, @ColumnInfo(index = true) val subredditId: String,
+                  val created_utc: Instant, val timeLastAccessed: Instant, val title: String,
+                  val selftext: String, val url: String, val permalink:String, val thumbnail: String)
 
    /** @Json(name = "author")
     val author: String,
@@ -99,5 +82,4 @@ data class RoomT3(
    @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
                                     childColumns = arrayOf("postId"), onDelete = ForeignKey.CASCADE,
                                                                     onUpdate = ForeignKey.CASCADE)])
-   data class CurrentFavoritesList(
-       @PrimaryKey val postId: String)
+   data class CurrentFavoritesList(@PrimaryKey val postId: String)

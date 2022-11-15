@@ -26,17 +26,10 @@ class RedditPostAdapter {
     }
 }
 
-
 class RedditHolderAdapter {
-
     @FromJson fun RedditPostFromHolder(holder: Holder): RedditPostType = holder.data
-
     @ToJson fun HolderFromRedditPost(event: RedditPostType): Holder =
         Holder(event, event.name.takeWhile { it != '_' })
-    }
+}
 
 
-/**class RedditListingAdapter {
-    @FromJson fun RedditListingFromListing(listing: Listing): RedditListing = listing.data
-    @ToJson fun ListingFromRedditListing(event: RedditListing): Listing = Listing(event)
-}**/

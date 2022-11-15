@@ -41,7 +41,8 @@ class SubredditsAndPostsRepo(
         t5Dao.getSubreddit(name)
 
     override fun getSubreddits(startFeedAfterThis: String?) : Single<List<RoomT5>> =
-        t5Dao.getSubredditsFromTable(if (startFeedAfterThis.isNullOrEmpty()) "" else startFeedAfterThis)
+        t5Dao.getSubredditsFromTable(if (startFeedAfterThis.isNullOrEmpty()) ""
+                                    else startFeedAfterThis)
             .flatMap { it ->
                 updateSubreddits(
                     it.map { it.name }, isDisplayedInAdapter = true,
