@@ -7,9 +7,6 @@ import com.example.renewed.models.CurrentFavoritesList
 import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
 
-
-
-//TODO im using the subclass here
     @Database(entities =[RoomT5::class, RoomT3::class,CurrentFavoritesList::class ], version = 1,exportSchema =false )
     @TypeConverters(Converters::class)
     abstract class RedditDatabase : RoomDatabase() {

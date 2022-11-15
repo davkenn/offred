@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SubredditsSelectionFragment">
+        tools:context=".Screen1.SubredditsSelectionFragment">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guidelinea"

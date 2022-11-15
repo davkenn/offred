@@ -9,14 +9,10 @@ sealed class MyEvent{
     data class SaveOrDeleteEvent(val targetedSubreddit: String?,val previousState:List<ViewStateT5>,val shouldDelete:Boolean) : MyEvent()
     object ClearEffectEvent:MyEvent()
     object MakeSnackBarEffect:MyEvent()
-
 }
-
 
 sealed class MyFavsEvent{
     data class UpdateDateRangeEvent(val name:String?): MyFavsEvent() // will lead to returning a list t5 viewstate
     object UpdateCurrentSubreddits:MyFavsEvent()
-
-
 }
 

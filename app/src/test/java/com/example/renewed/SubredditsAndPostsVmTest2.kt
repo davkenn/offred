@@ -1,19 +1,11 @@
 package com.example.renewed
 
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import com.example.renewed.Room.RedditDatabase
-import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
-import okhttp3.OkHttpClient
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.SocketPolicy
+import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import org.hamcrest.MatcherAssert
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 class SubredditsAndPostsVMTest2 {

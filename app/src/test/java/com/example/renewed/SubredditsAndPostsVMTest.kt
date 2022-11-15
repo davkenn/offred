@@ -4,6 +4,7 @@ package com.example.renewed
 import com.example.renewed.TestTools.Companion.loadJsonResponse
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
+import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -14,8 +15,6 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 import java.util.concurrent.TimeUnit
-import java.util.function.Predicate.isEqual
-import java.util.function.Predicate.not
 
 
 class SubredditsAndPostsVMTest {

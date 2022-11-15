@@ -8,8 +8,7 @@ import java.time.Instant
 
 @Entity
 data class RoomT5(
-    @PrimaryKey
-    val name: String,
+    @PrimaryKey val name: String,
     val displayName: String,
     val description: String,
     val thumbnail: String,
@@ -19,43 +18,23 @@ data class RoomT5(
     val created_utc: Instant,
     val isSaved: Boolean = false,
     val totalViews: Int = 0,
-    val isDisplayed: Int = 0
-)
+    val isDisplayed: Int = 0)
 
-@Entity(foreignKeys = [ForeignKey(entity = RoomT3::class,
-    parentColumns = arrayOf("name"),
-    childColumns = arrayOf("postId"),
-    onDelete = ForeignKey.CASCADE,onUpdate = ForeignKey.CASCADE)])
-data class CurrentFavoritesList(
-    @PrimaryKey
-    val postId: String
-
-)
-
-@Entity(foreignKeys = [ForeignKey(entity = RoomT3::class,
-    parentColumns = arrayOf("name"),
-    childColumns = arrayOf("link_id"),
-    onDelete = ForeignKey.CASCADE,onUpdate = ForeignKey.CASCADE)])
+@Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
+                                  childColumns = arrayOf("link_id"), onDelete = ForeignKey.CASCADE,
+                                                                    onUpdate = ForeignKey.CASCADE)])
 data class RoomT1(
-    @PrimaryKey
-    val name: String,
-    @ColumnInfo(index = true)
-    val link_id: String,
-    val body: String
+    @PrimaryKey val name: String,
+    @ColumnInfo(index = true) val link_id: String,
+    val body: String)
 
-    )
-
-@Entity(foreignKeys = [ForeignKey(entity = RoomT5::class,
-    parentColumns = arrayOf("name"),
-    childColumns = arrayOf("subredditId"),
-    onDelete = ForeignKey.CASCADE,onUpdate = ForeignKey.CASCADE)])
+@Entity(foreignKeys = [ForeignKey(entity = RoomT5::class, parentColumns = arrayOf("name"),
+                              childColumns = arrayOf("subredditId"), onDelete = ForeignKey.CASCADE,
+                                                                    onUpdate = ForeignKey.CASCADE)])
 data class RoomT3(
-
-    @PrimaryKey
-    val name: String,
-    @ColumnInfo(index = true)
-    val subredditId: String,
-    val created_utc: Instant,//todo fix
+    @PrimaryKey val name: String,
+    @ColumnInfo(index = true) val subredditId: String,
+    val created_utc: Instant,
     val timeLastAccessed: Instant,
     val title: String,
     val selftext: String,
@@ -63,18 +42,11 @@ data class RoomT3(
     val permalink:String,
     val thumbnail: String)
 
-
    /** @Json(name = "author")
-
     val author: String,
-
     val author_fullname: String,
-
     val created: Int,
-
-
     val downs: Int,
-
     override val name: String,
     val num_cmments: Int,
 
@@ -124,3 +96,8 @@ data class RoomT3(
 
 )
 **/
+   @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
+                                    childColumns = arrayOf("postId"), onDelete = ForeignKey.CASCADE,
+                                                                    onUpdate = ForeignKey.CASCADE)])
+   data class CurrentFavoritesList(
+       @PrimaryKey val postId: String)

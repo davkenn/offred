@@ -21,7 +21,6 @@ interface API {
                             @Query("before") before:String?=null,
                             @Query("after") after:String?=null): Single<Listing>
 
-
     @GET("r/{subName}/comments.json")
     fun getCommentsInDateRange(@Path("subName") subName:String,
                             @Query("limit")limit:String="100",

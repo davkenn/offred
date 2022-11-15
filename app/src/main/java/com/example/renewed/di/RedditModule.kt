@@ -5,9 +5,13 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.example.renewed.*
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
+import com.example.renewed.repos.BaseFavoritesRepo
 import com.example.renewed.moshiadapters.DescriptionAdapter
 import com.example.renewed.moshiadapters.RedditHolderAdapter
 import com.example.renewed.moshiadapters.RedditPostAdapter
+import com.example.renewed.repos.BaseSubredditsAndPostsRepo
+import com.example.renewed.repos.FavoritesRepo
+import com.example.renewed.repos.SubredditsAndPostsRepo
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -91,7 +95,7 @@ object RepoModule {
     @Singleton
     @Provides
     fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO): BaseSubredditsAndPostsRepo =
-                        SubredditsAndPostsRepository(api, t5Dao, t3Dao)
+                        SubredditsAndPostsRepo(api, t5Dao, t3Dao)
 
 }
 
@@ -112,6 +116,6 @@ object FavsRepoModule {
     @Singleton
     @Provides
     fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO): BaseFavoritesRepo =
-        FavoritesRepository(t5Dao, t3Dao)
+        FavoritesRepo(t5Dao, t3Dao)
 
 }

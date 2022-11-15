@@ -1,4 +1,4 @@
-package com.example.renewed
+package com.example.renewed.repos
 
 import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
@@ -26,5 +26,5 @@ interface BaseSubredditsAndPostsRepo {
         shouldToggleDisplayedColumnInDb: Boolean
     ): Completable
 
-
+    fun clearDisplayed(): Completable
 }

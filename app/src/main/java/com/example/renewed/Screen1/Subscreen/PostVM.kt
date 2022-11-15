@@ -1,6 +1,7 @@
-package com.example.renewed
+package com.example.renewed.Screen1.Subscreen
 
 import androidx.lifecycle.ViewModel
+import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import com.example.renewed.models.PartialViewState
 import com.example.renewed.models.toViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,7 +12,6 @@ import javax.inject.Inject
 class PostVM @Inject constructor(
 private val repository: BaseSubredditsAndPostsRepo
 ): ViewModel() {
-
     lateinit var name: String
         private set
 
@@ -19,6 +19,4 @@ private val repository: BaseSubredditsAndPostsRepo
         repository.getPost(n)
             .doOnEvent{x,y->name =  x.subredditId}
             .map { PartialViewState.T3ForViewing(it.toViewState() )}
-
-
 }

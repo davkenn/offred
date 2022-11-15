@@ -26,17 +26,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate called")
 
-
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-
-
         bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNavigationView.setupWithNavController(navController)
-
-
-
         navController.addOnDestinationChangedListener { _, destination, _ ->
             toggleFullscreen(destination.id)
         }
@@ -46,31 +40,22 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         if (id == R.id.feed) {
             bottomNavigationView.visibility = View.GONE
 
-            val ctrl = WindowCompat.getInsetsController(
-                window,
-                window.decorView.findViewById(R.id.favorites)
-            )
+            val ctrl = WindowCompat.getInsetsController(window,
+                                                       window.decorView.findViewById(R.id.favorites))
             ctrl.hide(WindowInsetsCompat.Type.statusBars())
             ctrl.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             ctrl.hide(WindowInsetsCompat.Type.systemBars())
-
         } else {
             bottomNavigationView.visibility = View.VISIBLE
-
-            val ctrl = WindowCompat.getInsetsController(
-                window,
-                window.decorView.findViewById(R.id.selection)
-            )
+            val ctrl = WindowCompat.getInsetsController(window,
+                                                      window.decorView.findViewById(R.id.selection))
             ctrl.show(WindowInsetsCompat.Type.statusBars())
             ctrl.show(WindowInsetsCompat.Type.systemBars())
-
          }
     }
 //
   //  override fun onRestart() {
     //    super.onRestart()
    // }
-
-
 }

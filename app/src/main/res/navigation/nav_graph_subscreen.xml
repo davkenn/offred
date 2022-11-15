@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/postFragment"
-        android:name="com.example.renewed.PostFragment"
+        android:name="com.example.renewed.Screen1.Subscreen.PostFragment"
         android:label="Post">
         <argument
             android:name="key"
@@ -26,7 +26,7 @@
 
     <fragment
         android:id="@+id/subredditFragment"
-        android:name="com.example.renewed.SubredditFragment"
+        android:name="com.example.renewed.Screen1.Subscreen.SubredditFragment"
         android:label="Subreddit">
         <argument
             android:name="key"
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/blankFragment"
-        android:name="com.example.renewed.BlankFragment"
+        android:name="com.example.renewed.Screen1.Subscreen.BlankFragment"
         android:label="Blank">
         <action
             android:id="@+id/action_blankFragment_to_subredditFragment"

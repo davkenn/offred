@@ -5,12 +5,13 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.renewed.Room.RedditDatabase
 import com.example.renewed.models.MyEvent
+import com.example.renewed.repos.BaseSubredditsAndPostsRepo
+import com.example.renewed.repos.SubredditsAndPostsRepo
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
 
 class SubredditsAndPostsVMTestPreloadedDb {
@@ -30,7 +31,7 @@ class SubredditsAndPostsVMTestPreloadedDb {
             .build()
         mockWebServer = MockWebServer()
         apiService = setupTestRetrofit(mockWebServer,true)
-        fakerepo = SubredditsAndPostsRepository(apiService,a.subredditDao(),a.postsDao() )
+        fakerepo = SubredditsAndPostsRepo(apiService,a.subredditDao(),a.postsDao() )
         viewModel = SubredditsAndPostsVM(fakerepo)
 
     }

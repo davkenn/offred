@@ -7,9 +7,7 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 import com.example.renewed.DefaultDBContents.t5SampleList
-import com.example.renewed.DefaultDBContents.t3SampleList
-import com.example.renewed.Room.T3DAO
-import com.example.renewed.Room.T5DAO
+import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 
 
 class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {

@@ -1,6 +1,6 @@
 @file:Suppress("SpellCheckingInspection")
 
-package com.example.renewed
+package com.example.renewed.Screen1
 
 import android.os.Bundle
 import android.view.View
@@ -14,6 +14,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.renewed.*
+import com.example.renewed.Screen1.Subscreen.ContentFragment
+import com.example.renewed.Screen1.Subscreen.PostFragment
+import com.example.renewed.Screen1.Subscreen.SubredditFragment
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
 import com.example.renewed.models.EffectType
 
@@ -30,7 +34,6 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
-
 
     private lateinit var subredditAdapter: SubredditsAdapter
     private lateinit var postAdapter: PostsAdapter
@@ -106,7 +109,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 )
             }
 
-
             backButton.setOnClickListener {
                 subsAndPostsVM.processInput(MyEvent.UpdateViewingState(getSubredditNameOrNull()))
             }
@@ -137,53 +139,30 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 )
             }
 
-
             saveButton1 = saveButton
             deleteButton1 = deleteButton
             backButton1 = backButton
-
-
-
         }
 
         //TODO found a bug when click on t5 then t3 then rotate the snackbar repeates
-
             subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
-                { x ->
-
-                    x.t5ListForRV?.let {
-                        subredditAdapter.submitList(it.vsT5)
-                    }
-
-
-                    postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
-
-                    x.latestEvent3?.let { t3 ->
-                        navigateToPostOrSubreddit(R.id.postFragment, t3)
-
-                    }
-
-                    x.latestEvent5?.let { t5 ->
-                        navigateToPostOrSubreddit(R.id.subredditFragment, t5)
-                    }
-
-                    if (x.effect != null){
-                    when (x.effect) {
-                        EffectType.DELETE_OR_SAVE -> {popTopViewerElement()
-                            subredditAdapter.clearSelected()
-                            selectPos = -1}
-                        EffectType.SNACKBAR -> Snackbar.make(
-                            binding.root, "Already in Stack. Press back to find it...",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-
+                { x -> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
+                       postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
+                       x.latestEvent3?.let { t3 -> navigateToPostOrSubreddit(R.id.postFragment, t3) }
+                       x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
+                       if (x.effect != null){
+                           when (x.effect) {
+                               EffectType.DELETE_OR_SAVE -> {popTopViewerElement()
+                                                             subredditAdapter.clearSelected()
+                                                             selectPos = -1}
+                               EffectType.SNACKBAR -> Snackbar.make(binding.root,
+                                   "Already in Stack. Press back to find it...", Snackbar.LENGTH_SHORT)
+                                   .show()
                     }
                         //Clear the effect in case process is recreated so we don't repeat it
                         subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
-
                     }
                 },
-
                 { Timber.e("error fetching vs: ${it.localizedMessage}") })
                 .addTo(disposables)
     }
@@ -202,7 +181,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         if (navHostFragment.navController.backQueue.size > 2) enableButtons(onlyBack = false)
         else disableButtons(true)
     }
-
 
     private fun getSubredditNameOrNull(): String? {
         var name: String? = null
@@ -230,7 +208,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
 
         navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
-
         if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(includingBack = false)
                                                             else enableButtons(onlyBack = false)
 
@@ -251,7 +228,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     private fun enableButtons(onlyBack:Boolean) {
-
         backButton1.visibility= VISIBLE
         backButton1.isClickable=true
         backEnabled=true
@@ -290,15 +266,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onPause() {
         Timber.d("onResume in home Fragment")
-
         super.onPause()
-
     }
 
     override fun onResume() {
         Timber.d("onResume in home Fragment")
         super.onResume()
-
         saveAndDeleteEnabled?.let {
             if (it)enableButtons(onlyBack = false)
             else if (backEnabled != null && backEnabled as Boolean)

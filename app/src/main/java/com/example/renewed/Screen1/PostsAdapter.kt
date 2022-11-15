@@ -9,7 +9,6 @@ import com.example.renewed.databinding.RvPostElemBinding
 
 import com.example.renewed.models.ViewStateT3
 
-
 class PostsAdapter(private val onClick: (ViewStateT3) -> Unit) :
     ListAdapter<ViewStateT3, PostsAdapter.PostViewHolder>(PostDiffCallback) {
 
@@ -26,12 +25,10 @@ class PostsAdapter(private val onClick: (ViewStateT3) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val postBinding = RvPostElemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostViewHolder(postBinding)
-
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(getItem(position),onClick )
-
     }
 }
 
@@ -39,10 +36,9 @@ object PostDiffCallback : DiffUtil.ItemCallback<ViewStateT3>() {
     override fun areItemsTheSame(oldItem: ViewStateT3, newItem: ViewStateT3): Boolean {
         return oldItem.name == newItem.name
     }
-
     override fun areContentsTheSame(oldItem: ViewStateT3, newItem: ViewStateT3): Boolean {
         //TODO what to do here
         //  return oldItem.timeLastAccessed == newItem.timeLastAccessed
         return oldItem.displayName == newItem.displayName
     }
-    }
+}

@@ -25,7 +25,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     private var selected = -1
     var previousSelected :RecyclerView.ViewHolder? = null
 
-
     fun clearSelected() {
         previousSelected?.let{it.itemView.isSelected=false}
         selected=-1
@@ -35,7 +34,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     fun setSelect(num: Int, adapterForPos: RecyclerView.ViewHolder?) {
         selected= num
         adapterForPos?.itemView?.isSelected= true
-
         previousSelected = adapterForPos
     }
 
@@ -46,45 +44,32 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         RecyclerView.ViewHolder(elementBinding.root){
 
         fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit){
-
             elementBinding.displayName.text = sr.displayName
-            elementBinding.root.setOnClickListener {
-
-                selected = layoutPosition
-                bindingAdapter?.notifyItemChanged(selected)
-                bindingAdapter?.dataChanges()?.subscribe{itemView-> Timber.d(itemView.toString()
-                .toString())}
-                fragmentContextClosure.invoke(sr)
-
-            }
-
-            if (sr.displayName.length > 18) {
-                elementBinding.detailImage.visibility=GONE
-                return
-            }
-
-            if (sr.thumbnail.isBlank()){
-                elementBinding.detailImage.visibility= VISIBLE
-                  elementBinding.detailImage.setImageResource(R.color.purple_500)
-                  return
-            }
-
+            elementBinding.root.setOnClickListener { selected = layoutPosition
+                                                     bindingAdapter?.notifyItemChanged(selected)
+                                                     fragmentContextClosure.invoke(sr)
+                                                    }
+            if (sr.displayName.length > 18) { elementBinding.detailImage.visibility=GONE
+                                              return
+                                            }
+            if (sr.thumbnail.isBlank()){ elementBinding.detailImage.visibility= VISIBLE
+                                    elementBinding.detailImage.setImageResource(R.color.purple_500)
+                                        return
+                                        }
             elementBinding.detailImage.visibility=VISIBLE
             Glide.with(this.itemView.context).load(sr.thumbnail)
                 .apply(
                     RequestOptions().override(50, 50))
-                        .placeholder(ColorDrawable(Color.BLACK))
-                        .error(ColorDrawable(Color.RED))
-                        .fallback(ColorDrawable(Color.YELLOW))
-                        .into(elementBinding.detailImage)
-            }
+                                   .placeholder(ColorDrawable(Color.BLACK))
+                                   .error(ColorDrawable(Color.RED))
+                                   .fallback(ColorDrawable(Color.YELLOW))
+                                   .into(elementBinding.detailImage)
+        }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubredditViewHolder {
-
         val elementBinding = RvSubredditElemBinding.inflate(LayoutInflater.from(parent.context),
-                                                                    parent, false)
+                                                                      parent, false)
         return SubredditViewHolder(elementBinding)
     }
 
@@ -92,7 +77,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         if (selected == holder.adapterPosition) selected = -1
         super.onViewRecycled(holder)
     }
-
 
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
         holder.bind(getItem(position), onClick)
@@ -104,15 +88,13 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         else{
             holder.itemView.isSelected=false
         }
-
     }
 }
-//TODO should this be nested
+
 object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
     override fun areItemsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem.name == newItem.name
     }
-
     override fun areContentsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem == newItem
     }
