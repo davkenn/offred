@@ -181,7 +181,7 @@ class LargeTest {
         onView(allOf(withId(R.id.subscreen_nav_container)))
             .check(matches(hasDescendant(withId(R.id.post_name))))
         onView(withId(R.id.post_name))
-            .check(matches(withText("HDB is a very knowledgeable man")))
+            .check(matches(withText("Authority, is that you?")))
     }
 
     @Module
