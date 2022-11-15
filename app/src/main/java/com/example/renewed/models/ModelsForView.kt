@@ -39,7 +39,9 @@ data class ViewStateT5(
     val subscribers: Int,
     val created: String,
     val timeLastAccessed: Instant) {
+
     override fun toString(): String = "ViewStateT5($name) "
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

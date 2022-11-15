@@ -28,17 +28,6 @@ class SubredditsAndPostsRepository(
                 t3Dao.insertAll(roomT3s)
             }
     }
-//TODO here you need to check if db is empty first otherwise this wont work
-    override fun prefetchDefaultSubreddits():Completable =
-        //            Single.just(com.example.renewed.DefaultDBContents.t5SampleList)
-       //                   .flatMapCompletable{ x-> t5Dao.insertAll(x)}
-        Completable.complete()
-
-
-    override fun prefetchDefaultPosts(): Completable =
-   //     Single.just(com.example.renewed.DefaultDBContents.t3SampleList)
-     //       .flatMapCompletable{ x-> t3Dao.insertAll(x)}
-Completable.complete()
 
 
     override fun prefetchSubreddits() : Completable =

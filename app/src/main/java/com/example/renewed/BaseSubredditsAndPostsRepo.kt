@@ -11,10 +11,6 @@ interface BaseSubredditsAndPostsRepo {
     fun prefetchSubreddits(): Completable
     fun prefetchPosts(): Completable
 
-    //used to fil db with data if no internet
-    fun prefetchDefaultSubreddits(): Completable
-    fun prefetchDefaultPosts(): Completable
-
     fun getSubreddit(name: String): Single<RoomT5>
     fun getSubreddits(startFeedAfterThis: String?=null): Single<List<RoomT5>>
 

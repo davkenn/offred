@@ -60,7 +60,13 @@ class PostFragment : ContentFragment() {
                 postBinding!!.bodyText.text = t3ViewState.t3.selftext
                 postBinding!!.url.text = t3ViewState.t3.url
 
-                if (isUrlPost(t3ViewState)) loadUrlClickListener(t3ViewState)
+                if (isUrlPost(t3ViewState)) {
+                    loadUrlClickListener(t3ViewState)
+                }
+                else {
+                    postBinding!!.url.visibility = GONE
+                }
+
                 if (isImagePost(t3ViewState))  loadImage(t3ViewState)
 
 //could it also be a text post that this is signalling?
