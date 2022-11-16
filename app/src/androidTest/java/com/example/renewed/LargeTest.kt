@@ -61,7 +61,7 @@ class LargeTest {
         //only null first call
 
         if (allData5 == null) {
-            t5.clearViews()
+   //         t5.clearViews()
             allData5 = t5.getAllRows()
             allData3 = t3.getAllRows()
         }
@@ -93,12 +93,6 @@ class LargeTest {
         }
     }
 
-/**
-    @AfterClass
-    fun clearContentsList() {
-            allData=null
-    }
-**/
     @Test
     fun testAllDisplayedDBColumnsAreZeroOnRecreate() {
 

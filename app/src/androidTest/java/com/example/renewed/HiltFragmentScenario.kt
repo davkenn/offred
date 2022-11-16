@@ -20,7 +20,6 @@ class HiltFragmentScenario<F : Fragment> private constructor(
 ) {
     @Suppress("UNCHECKED_CAST")
     var fragment: F?=null
-
         get() =
             getTheActivity<HiltTestActivity>()
             ?.supportFragmentManager

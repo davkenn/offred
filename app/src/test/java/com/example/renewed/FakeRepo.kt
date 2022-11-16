@@ -26,13 +26,8 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
 
     }
 
-    override fun prefetchDefaultSubreddits(): Completable {
-        TODO("Not yet implemented")
-    }
 
-    override fun prefetchDefaultPosts(): Completable {
-        TODO("Not yet implemented")
-    }
+
 
     override fun getSubreddit(name: String): Single<RoomT5> {
         return Single.just(res[0])
@@ -53,11 +48,11 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
 
 
     override fun deleteUninterestingSubreddits(): Completable {
-        TODO("Not yet implemented")
+        return Completable.complete()
     }
 
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
-        TODO("Not yet implemented")
+        return Completable.complete()
     }
 
     override fun updateSubreddits(
@@ -66,6 +61,10 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
         shouldToggleDisplayedColumnInDb: Boolean
     ): Completable {
         TODO("Not yet implemented")
+    }
+
+    override fun clearDisplayed(): Completable {
+        return Completable.complete()
     }
 
 
