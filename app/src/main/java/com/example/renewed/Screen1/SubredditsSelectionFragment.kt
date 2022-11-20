@@ -45,7 +45,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
-    private var selectPos: Int by atomic(-1)
+    private var selectPos: Int by atomic(-2)
 
     private lateinit var saveButton1: Button
     private lateinit var deleteButton1: Button
@@ -60,10 +60,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
 
-        selectPos = savedInstanceState?.getInt("selected_pos") ?: -1
-
+        selectPos = savedInstanceState?.getInt("selected_pos") ?: -2
         saveAndDeleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
-        //saveAndDeleteEnabled = false
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
     }
 
@@ -145,7 +143,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             backButton1 = backButton
         }
 
-        //TODO found a bug when click on t5 then t3 then rotate the snackbar repeates
             subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
                 { x -> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
                        postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
@@ -179,13 +176,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
         }
+        //after popping the stack, its either a subreddit....
         if (navHostFragment.navController.backQueue.size > 2) enableButtons(onlyBack = false)
+        //or a blank fragment
         else disableButtons(true)
     }
 
     private fun getSubredditNameOrNull(): String? {
-        var name: String? = null
         val t = navHostFragment.childFragmentManager.primaryNavigationFragment
+        var name: String?
         t.let { name = (t as ContentFragment).getName() }
         if (name == "BlankFragment") return null
         return name
@@ -202,7 +201,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
 
-        if (inBackStack && t3OrT5 is PartialViewState.T5ForViewing)
+        if (inBackStack && (t3OrT5 is PartialViewState.T5ForViewing))
         {
             subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
             return
@@ -247,22 +246,31 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Timber.d("onStart in home Fragment")
 //this is to check if its the first time being loaded and only loads it then
         //TODO this is no longer capturing if its the first time
-        if (selectPos!=-1)  {
-            subredditAdapter.setSelect(selectPos,subRV.findViewHolderForAdapterPosition(selectPos))
-         //TODO is this messed up here should I not reteurn?
+        //if first time loaded
+        if (selectPos == -2) {
+            disposable = subsAndPostsVM.prefetch()
+                .concatWith {
+                    subsAndPostsVM.processInput(
+                        MyEvent.ScreenLoadEvent("")
+                    )
+                }
+                .subscribe({ Timber.d("----done fetching both ") },
+                    {
+                        Timber.e("----error fetching is ${it.localizedMessage}")
+                    })
+        }
+        selectPos = -1
+
+
+        if (selectPos != -1) {
+            subredditAdapter.setSelect(selectPos, subRV.findViewHolderForAdapterPosition(selectPos))
+            //TODO is this messed up here should I not reteurn?
             return
         }
-
-        disposable = subsAndPostsVM.prefetch()
-            .concatWith {
-                subsAndPostsVM.processInput(
-                    MyEvent.ScreenLoadEvent(""))
-            }
-            .subscribe({ Timber.d("----done fetching both ") },
-                {
-                    Timber.e("----error fetching is ${it.localizedMessage}")
-                })
     }
+
+
+
 //TODO its fucked up that im not pausing the disposable here I think FIX THISSS
 
     override fun onPause() {
@@ -287,7 +295,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     override fun onDestroy() {
-        disposable?.dispose()
+  //      disposable?.dispose()
         super.onDestroy()
     }}
 
