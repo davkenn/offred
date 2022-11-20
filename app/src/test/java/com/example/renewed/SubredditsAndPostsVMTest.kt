@@ -114,6 +114,7 @@ class SubredditsAndPostsVMTest {
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
                 setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
 
+        
         val res = viewModel.vs.test()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         var n = res.await(1,TimeUnit.SECONDS)
@@ -140,8 +141,6 @@ class SubredditsAndPostsVMTest {
         res.assertValueCount(2)
         res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![0].url=="https://v.redd.it/cx5ll43oe31a1/DASH_1080.mp4?source=fallback" }
         res.assertNotComplete()
-     //  res.assertValueAt(0){it.latestEvent3!!.t3.url=="https://v.redd.it/x1xbnz0g4r0a1/DASH_720.mp4?source=fallback"}
-    //    res.assertValue {it.t3ListForRV!!.vsT3!![0].}
 
     }
 
