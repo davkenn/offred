@@ -60,7 +60,7 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
         isDisplayedInAdapter: Boolean,
         shouldToggleDisplayedColumnInDb: Boolean
     ): Completable {
-        TODO("Not yet implemented")
+       return Completable.complete()
     }
 
     override fun clearDisplayed(): Completable {

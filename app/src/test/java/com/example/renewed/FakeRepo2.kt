@@ -1,10 +1,7 @@
 package com.example.renewed
 
 
-import com.example.renewed.models.RoomT3
-import com.example.renewed.models.RoomT5
-import com.example.renewed.models.T5
-import com.example.renewed.models.toDbModel
+import com.example.renewed.models.*
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
@@ -47,13 +44,20 @@ class FakeRepo2(private val apiService: API) : BaseSubredditsAndPostsRepo {
     }
 
     override fun getPost(name: String): Single<RoomT3> {
-        return Single.error { Exception() }
+        return Single.error(Exception())
     }
 
     override fun getPosts(name: String): Single<List<RoomT3>> {
-   //     return Single.just(listOf(RoomT3("aaa","aaa", Instant.now(),Instant.now(),"aaa",
+        return apiService.getPostsInDateRange("not used",
+        ).map{(it.data.children.map{x->(x.data as T3).toDbModel()} )
+
+        }
+    //   map{it.data.children.map{x->(x.data as T3).toDbModel() }}
+ //           .map{z-> val b = mutableListOf<RoomT3>(z);b}
+
+            //     return Single.just(listOf(RoomT3("aaa","aaa", Instant.now(),Instant.now(),"aaa",
      //       "aaa","aaa","per", "aaa")))
-        return Single.just(listOf())
+
     }
 
 

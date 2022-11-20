@@ -4,6 +4,7 @@ package com.example.renewed
 import com.example.renewed.TestTools.Companion.loadJsonResponse
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
+import com.example.renewed.models.PartialViewState
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
@@ -45,6 +46,7 @@ class SubredditsAndPostsVMTest {
     @Test
     fun prefetch() {
         fakerepo.prefetchSubreddits()
+        fakerepo.prefetchPosts()
     }
 
     @Test
@@ -77,6 +79,7 @@ class SubredditsAndPostsVMTest {
     fun getRandomSubreddit() {
         //GIVEN
         val end = loadJsonResponse("Berserk.json")
+
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
 
         //WHEN
@@ -122,12 +125,20 @@ class SubredditsAndPostsVMTest {
     fun getVideoSubreddit() {
   //      mockWebServer = MockWebServer()
 
-        val end = loadJsonResponse("handlevideoembed.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+        val end1 = loadJsonResponse("crtgamingabout.json")
+
+        val end2 = loadJsonResponse("crtgamingposts.json")
+
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end1!!))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end2!!))
+
 
         val res = viewModel.vs.test()
+
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
+  //     res.assertValueAt(1){it.latestEvent3!!.t3.url=="https://v.redd.it/x1xbnz0g4r0a1/DASH_720.mp4?source=fallback"}
+      //  res.assertValue {it.t3ListForRV!!.vsT3!![0].url==selftext=="aaa"}
 
     }
 
