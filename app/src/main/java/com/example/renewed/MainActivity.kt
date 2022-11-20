@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             bottomNavigationView.visibility = View.VISIBLE
             val ctrl = WindowCompat.getInsetsController(window,
                                                       window.decorView.findViewById(R.id.selection))
-            ctrl.show(WindowInsetsCompat.Type.statusBars())
-            ctrl.show(WindowInsetsCompat.Type.systemBars())
+
+           ctrl.show(WindowInsetsCompat.Type.navigationBars())
          }
     }
 //

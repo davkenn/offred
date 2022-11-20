@@ -244,28 +244,23 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onStart() {
         super.onStart()
         Timber.d("onStart in home Fragment")
-//this is to check if its the first time being loaded and only loads it then
-        //TODO this is no longer capturing if its the first time
         //if first time loaded
         if (selectPos == -2) {
             disposable = subsAndPostsVM.prefetch()
                 .concatWith {
                     subsAndPostsVM.processInput(
                         MyEvent.ScreenLoadEvent("")
-                    )
-                }
+                    ) }
                 .subscribe({ Timber.d("----done fetching both ") },
                     {
                         Timber.e("----error fetching is ${it.localizedMessage}")
                     })
+
+            selectPos = -1
         }
-        selectPos = -1
-
-
+        //if has been loaded but no subreddit selected
         if (selectPos != -1) {
             subredditAdapter.setSelect(selectPos, subRV.findViewHolderForAdapterPosition(selectPos))
-            //TODO is this messed up here should I not reteurn?
-            return
         }
     }
 
@@ -295,12 +290,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     override fun onDestroy() {
-  //      disposable?.dispose()
+        Timber.d("onDestroy in home Fragment")
+        //should I use this? how do I still have a
+        disposable?.dispose()
         super.onDestroy()
     }}
-
-
-
 
 
 
