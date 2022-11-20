@@ -63,6 +63,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         selectPos = savedInstanceState?.getInt("selected_pos") ?: -1
 
         saveAndDeleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
+        //saveAndDeleteEnabled = false
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
     }
 

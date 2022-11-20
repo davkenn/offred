@@ -3,11 +3,15 @@ package com.example.renewed
 import android.content.Context
 import androidx.core.os.bundleOf
 import androidx.room.Room
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.renewed.Room.RedditDatabase
@@ -43,6 +47,7 @@ class LargeTest {
     @get:Rule()
     var hiltRule = HiltAndroidRule(this)
 
+    //TODO still have prob where totalviews is 2 and 1 to start
     @Inject
     lateinit var t5: T5DAO
 
@@ -105,12 +110,10 @@ class LargeTest {
     fun testIfButtonClickSelectsButton() {
 
         onView(withId(R.id.subreddits_rv))
-            .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
-        onView(withId(R.id.subreddits_rv))
 
             .perform(
-                RecyclerViewActions.actionOnItemAtPosition
-                <SubredditsAdapter.SubredditViewHolder>(10, click())
+              //          scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
+                        actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(10, click())
             )
         onView(withId(R.id.subreddits_rv))
             .check(matches(withChild(isSelected())))
@@ -136,12 +139,11 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
-        onView(withId(R.id.subreddits_rv))
-            .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
+
         onView(withId(R.id.subreddits_rv))
             .perform(
-                RecyclerViewActions.actionOnItemAtPosition
-                <SubredditsAdapter.SubredditViewHolder>(10, click())
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(10, click())
             )
 
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
@@ -150,34 +152,97 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenClickPostVerifyPostViewLoaded() {
-        try {
-            Thread.sleep(3000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        onView(withId(R.id.subreddits_rv))
-            .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
-        try {
-            Thread.sleep(3000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+
         onView(withId(R.id.subreddits_rv))
             .perform(
-                RecyclerViewActions.actionOnItemAtPosition
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
+                actionOnItemAtPosition
                 <SubredditsAdapter.SubredditViewHolder>(10, click())
             )
         onView(withId(R.id.posts_rv))
             .perform(
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
                 RecyclerViewActions.actionOnItemAtPosition
                 <PostsAdapter.PostViewHolder>(1, click())
             )
+
         onView(allOf(withId(R.id.subscreen_nav_container)))
             .check(matches(hasDescendant(withId(R.id.post_name))))
+
         onView(withId(R.id.post_name))
             .check(matches(withText("Authority, is that you?")))
     }
 
+
+    @Test
+    fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
+
+        onView(withId(R.id.subreddits_rv)).perform(
+            RecyclerViewActions.actionOnItemAtPosition
+            <SubredditsAdapter.SubredditViewHolder>(0, click())
+        )
+
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(
+                allOf(
+                    hasDescendant(isSelected()),
+                    hasDescendant(withText("ATT"))
+                )
+            )
+        )
+
+        onView(withId(R.id.refresh_button)).perform(click())
+
+        try {
+            Thread.sleep(1000)
+        } catch (e: InterruptedException) {
+            e.printStackTrace()
+        }
+
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(
+                allOf(
+                    not(hasDescendant(isSelected())),
+                    not(hasDescendant(withText("ATT")))
+                )
+            )
+        )
+    }
+
+    //TODO the db needs to be recreated from asset after every test
+    @Test
+    fun refreshButton4FourTimesBringsUpSameList() {
+
+
+
+        onView(withId(R.id.subreddits_rv)).perform(
+            RecyclerViewActions.actionOnItemAtPosition
+            <SubredditsAdapter.SubredditViewHolder>(0, click())
+        )
+
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(
+                allOf(
+                    hasDescendant(isSelected()),
+                    hasDescendant(withText("ATT"))
+                )
+            )
+        )
+
+        repeat(4) {
+            onView(withId(R.id.refresh_button)).perform(click())
+            try {
+                Thread.sleep(1000)
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+        }
+
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(hasDescendant(withText("ATT")))
+        )
+
+    }
     @Module
     @InstallIn(SingletonComponent::class)
     object TestRepoModule {
@@ -203,79 +268,6 @@ class LargeTest {
         fun provideT3DAO(db: RedditDatabase): T3DAO = db.postsDao()
     }
 
-    @Test
-    fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
-
-        onView(withId(R.id.subreddits_rv)).perform(
-            RecyclerViewActions.actionOnItemAtPosition
-            <SubredditsAdapter.SubredditViewHolder>(0, click())
-        )
-
-        onView(withId(R.id.subreddits_rv)).check(
-            matches(
-                allOf(
-                    hasDescendant(isSelected()),
-                    hasDescendant(withText("ATT"))
-                )
-            )
-        )
-
-        onView(withId(R.id.refresh_button)).perform(click())
-
-        try {
-            Thread.sleep(3000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-
-        onView(withId(R.id.subreddits_rv)).check(
-            matches(
-                allOf(
-                    not(hasDescendant(isSelected())),
-                    not(hasDescendant(withText("ATT")))
-                )
-            )
-        )
-    }
-
-    //TODO the db needs to be recreated from asset after every test
-    @Test
-    fun refreshButton4FourTimesBringsUpSameList() {
-
-
-        try {
-            Thread.sleep(3000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
-        onView(withId(R.id.subreddits_rv)).perform(
-            RecyclerViewActions.actionOnItemAtPosition
-            <SubredditsAdapter.SubredditViewHolder>(0, click())
-        )
-
-        onView(withId(R.id.subreddits_rv)).check(
-            matches(
-                allOf(
-                    hasDescendant(isSelected()),
-                    hasDescendant(withText("ATT"))
-                )
-            )
-        )
-
-        repeat(4) {
-            onView(withId(R.id.refresh_button)).perform(click())
-            try {
-                Thread.sleep(3000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-        }
-
-        onView(withId(R.id.subreddits_rv)).check(
-            matches(hasDescendant(withText("ATT")))
-        )
-
-    }
 }
 
 /**

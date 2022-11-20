@@ -15,8 +15,6 @@ class RedirectInterceptor : Interceptor {
             response.close()
             response = chain.proceed(request.newBuilder().url((url?.substringBefore(".json?") ) +"about.json?").build())
         }
-
         return response
     }
-
 }
