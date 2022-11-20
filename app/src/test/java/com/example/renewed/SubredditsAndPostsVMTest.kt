@@ -1,7 +1,7 @@
 package com.example.renewed
 
 
-import com.example.renewed.TestTools.Companion.loadJsonResponse
+ import com.example.renewed.TestTools.Companion.loadJsonResponse
 import com.example.renewed.models.FullViewState
 import com.example.renewed.models.MyEvent
 import com.example.renewed.models.PartialViewState
@@ -137,8 +137,11 @@ class SubredditsAndPostsVMTest {
 
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
-  //     res.assertValueAt(1){it.latestEvent3!!.t3.url=="https://v.redd.it/x1xbnz0g4r0a1/DASH_720.mp4?source=fallback"}
-      //  res.assertValue {it.t3ListForRV!!.vsT3!![0].url==selftext=="aaa"}
+        res.assertValueCount(2)
+        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![0].url=="https://v.redd.it/cx5ll43oe31a1/DASH_1080.mp4?source=fallback" }
+        res.assertNotComplete()
+     //  res.assertValueAt(0){it.latestEvent3!!.t3.url=="https://v.redd.it/x1xbnz0g4r0a1/DASH_720.mp4?source=fallback"}
+    //    res.assertValue {it.t3ListForRV!!.vsT3!![0].}
 
     }
 

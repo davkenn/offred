@@ -21,7 +21,7 @@ class DescriptionAdapter {
         descriptionFromJson
                              .replace("&gt;", "")
                             .replace("&lt;", "")
-                            .replace("""[\[\]()*]""".toRegex(),"")
+                            .replace("""[\[\]()*#]""".toRegex(),"")
                             .replace(regex) {"\n${it.value}\n"}
 
     }
