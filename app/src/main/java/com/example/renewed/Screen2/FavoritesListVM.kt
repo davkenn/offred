@@ -40,7 +40,7 @@ package com.example.renewed.Screen2
                 .subscribe(   {
                 Timber.d("observ" +it.name)
             },
-            {Timber.e("observeerror",it.stackTrace)}).addTo(disposables)}
+            {Timber.e("observeerror: ${it.localizedMessage}")}).addTo(disposables)}
 
         override fun onCleared() {
             super.onCleared()

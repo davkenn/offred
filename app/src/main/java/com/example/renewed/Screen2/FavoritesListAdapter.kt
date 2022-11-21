@@ -14,7 +14,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
     override fun createFragment(position: Int): Fragment {
         val fragment = PostFragment()
         fragment.arguments = Bundle().apply {
-            putString("key", "t3_z11prn")
+            putString("key", "t3_z109qt")
             //TODO do i need to readd pos
             //  putString("pos",position.toString())
 
