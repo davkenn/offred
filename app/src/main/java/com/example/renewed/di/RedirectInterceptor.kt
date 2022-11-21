@@ -11,7 +11,7 @@ class RedirectInterceptor : Interceptor {
         val request: Request = chain.request()
         var response = chain.proceed(request)
         val url = response.headers["location"]
-        if (response.isRedirect and request.url.toString().endsWith("random.json")){
+        if (response.isRedirect and request.url.toString().endsWith("/r/random.json")){
             response.close()
             response = chain.proceed(request.newBuilder().url((url?.substringBefore(".json?") ) +"about.json?").build())
         }

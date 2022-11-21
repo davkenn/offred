@@ -65,7 +65,7 @@ object RedditModule {
     @Provides
     fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor()
         .apply {
-            level = HttpLoggingInterceptor.Level.HEADERS
+            level = HttpLoggingInterceptor.Level.BASIC
         }
 
     @Singleton
