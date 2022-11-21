@@ -36,6 +36,7 @@ import org.junit.runner.RunWith
 import javax.inject.Inject
 import javax.inject.Singleton
 
+
 var allData5: List<RoomT5>?=null
 var allData3: List<RoomT3>?=null
 
@@ -47,7 +48,6 @@ class LargeTest {
     @get:Rule()
     var hiltRule = HiltAndroidRule(this)
 
-    //TODO still have prob where totalviews is 2 and 1 to start
     @Inject
     lateinit var t5: T5DAO
 
@@ -58,15 +58,14 @@ class LargeTest {
     lateinit var db: RedditDatabase
 
 
-//     var allData: List<RoomT5>?=null
-
     @Before
     fun init() {
         hiltRule.inject()
         //only null first call
 
         if (allData5 == null) {
-   //         t5.clearViews()
+ //TODO kinda a cheat and would ned to do it for isdisplayed
+            t5.clearViews()
             allData5 = t5.getAllRows()
             allData3 = t3.getAllRows()
         }

@@ -59,7 +59,7 @@ interface T5DAO {
 
         //FOR UI TESTING
 
-        @Query("UPDATE RoomT5 SET totalViews=0")
+        @Query("UPDATE RoomT5 SET totalViews=0 and isDisplayed=0 and isSaved=0")
         fun clearViews() : Unit
 
 
