@@ -33,7 +33,7 @@ package com.example.renewed.Screen2
             repository.observeSavedSubreddits()
                     //have to delete in here before make sublist
                 .map{it.shuffled().take(4)}.flatMapIterable { it}
-                .flatMapSingle{repository.getRandomPost(it.name.substring(3))}
+                .flatMapSingle{repository.getRandomPost(it.displayName)}
 
                     //now update with the four new ones
 
