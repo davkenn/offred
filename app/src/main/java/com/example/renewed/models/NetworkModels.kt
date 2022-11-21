@@ -16,6 +16,10 @@ sealed class RedditPostType {
 @JsonClass(generateAdapter = true)
 data class RedditListing(val children: List<Holder>, val before: String?, val after: String?)
 
+
+@JsonClass(generateAdapter = true)
+data class PostAndComments(  val data: List<RedditListing>)
+
 @JsonClass(generateAdapter = true)
 data class Listing(  val data: RedditListing)
 
