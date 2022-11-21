@@ -64,8 +64,9 @@ class LargeTest {
         //only null first call
 
         if (allData5 == null) {
- //TODO kinda a cheat and would ned to do it for isdisplayed
-            t5.clearViews()
+ //TODO kinda a cheat and would ned to do it for isdisplayed and also what if I delete
+            t5.getAllRows()
+       //     t5.clearViews()
             allData5 = t5.getAllRows()
             allData3 = t3.getAllRows()
         }
@@ -79,6 +80,7 @@ class LargeTest {
         db.clearAllTables()
         t5.fillDb(allData5!!)
         t3.fillDb(allData3!!)
+
     }
 
     companion object {
@@ -86,12 +88,12 @@ class LargeTest {
             // things that may need to be setup before companion class member variables are instantiated
         }
 
-
         @BeforeClass @JvmStatic fun setup() {
             // things to execute once and keep around for the class
         }
 
         @AfterClass @JvmStatic fun teardown() {
+
             allData5=null
             allData3=null
         }
@@ -247,7 +249,8 @@ class LargeTest {
         @Singleton
         fun provideDB(@ApplicationContext ctxt: Context): RedditDatabase {
 
-            return Room.databaseBuilder(
+            return Room.
+            databaseBuilder(
                 ctxt,
                 RedditDatabase::class.java,
                 "RedditDB1"
