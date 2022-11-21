@@ -3,6 +3,7 @@ package com.example.renewed.Room
 import androidx.room.*
 import com.example.renewed.models.RoomT5
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 
@@ -29,6 +30,8 @@ interface T5DAO {
         @Query("SELECT * FROM RoomT5 WHERE isSaved= 1 AND totalViews < 3 "+
                 "ORDER BY totalViews LIMIT :returnCount")
         fun getNextFavoriteSubreddits(returnCount:Int): Single<List<RoomT5>>
+        @Query("SELECT * FROM RoomT5 WHERE isSaved= 1 ")
+        fun observeSavedSubreddits(): Observable<List<RoomT5>>
 
 
         @Query("SELECT * FROM RoomT5 WHERE RoomT5.name LIKE :name")
@@ -50,6 +53,8 @@ interface T5DAO {
 
         @Query("UPDATE RoomT5 SET isDisplayed=0")
         fun clearDisplayed() : Completable
+
+
 
 
         //FOR UI TESTING

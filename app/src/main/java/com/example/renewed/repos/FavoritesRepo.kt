@@ -21,6 +21,11 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO): BaseFavorites
     override fun getNextSubreddits(i: Int): Single<List<RoomT5>> {
         return  t5.getNextFavoriteSubreddits(5)
 
-    }}
+    }
+    fun observeSavedSubreddits(): Observable<List<RoomT5>>{
+        return t5.observeSavedSubreddits()
+    }
+
+}
 
 

@@ -9,6 +9,7 @@ package com.example.renewed.Screen2
  import dagger.hilt.android.lifecycle.HiltViewModel
  import io.reactivex.rxjava3.core.Observable
  import io.reactivex.rxjava3.disposables.CompositeDisposable
+ import io.reactivex.rxjava3.kotlin.addTo
  import io.reactivex.rxjava3.kotlin.mergeAll
  import timber.log.Timber
  import java.util.concurrent.TimeUnit
@@ -19,20 +20,20 @@ package com.example.renewed.Screen2
     class FavoritesListVM @Inject constructor(
         private val repository: BaseFavoritesRepo
     ): ViewModel() {
-
+        private val disposables: CompositeDisposable = CompositeDisposable()
+        private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
         init{
             prefetch1().subscribe({
                 Timber.d("HERE",it.toString())},
              //   processInput(MyFavsEvent.UpdateCurrentSubreddits)},
-                {Timber.e("FAVLISTERROR",it.stackTrace)})
+                {Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
 
         }
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()
         }
-        private val disposables: CompositeDisposable = CompositeDisposable()
-        private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
+
         val vs: Observable<List<RoomT5>> = inputEvents
         .doOnNext { Timber.d("---- Event is $it") }
         .eventToResult()
