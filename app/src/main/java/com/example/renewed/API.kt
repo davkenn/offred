@@ -15,6 +15,9 @@ interface API {
     @GET("/r/random.json")//
     fun getRandomSubreddit(): Single<RedditPostType>
 
+    @GET("/r/{subName}/random.json")//
+    fun getRandomPost(@Path("subName")subName:String): Single<RedditPostType>
+
     @GET("r/{subName}/new.json")
     fun getPostsInDateRange(@Path("subName") subName:String,
                             @Query("limit")limit:String="10",

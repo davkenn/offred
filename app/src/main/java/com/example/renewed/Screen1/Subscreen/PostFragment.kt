@@ -24,7 +24,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
-    private var page:String?=null
+
     private val postsVM: PostVM by viewModels()
     private var postBinding: PostViewBinding? = null
 
@@ -47,7 +47,6 @@ class PostFragment : ContentFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val name = arguments?.getString("key") ?: "NONE"
-        page = arguments?.getString("pos")?: "NO PAGE"
 
         postsVM.setPost(name)
                .subscribeOn(Schedulers.io())
