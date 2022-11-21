@@ -128,11 +128,9 @@ class LargeTest {
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
         onView(withId(R.id.subreddits_rv))
-            .perform(scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10))
-        onView(withId(R.id.subreddits_rv))
             .perform(
-                RecyclerViewActions.actionOnItemAtPosition
-                <SubredditsAdapter.SubredditViewHolder>(10, click())
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(10, click())
             )
         onView(allOf(withId(R.id.posts_rv))).check(matches(hasMinimumChildCount(5)))
     }
@@ -178,8 +176,7 @@ class LargeTest {
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
 
         onView(withId(R.id.subreddits_rv)).perform(
-            RecyclerViewActions.actionOnItemAtPosition
-            <SubredditsAdapter.SubredditViewHolder>(0, click())
+            actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
         )
 
         onView(withId(R.id.subreddits_rv)).check(
