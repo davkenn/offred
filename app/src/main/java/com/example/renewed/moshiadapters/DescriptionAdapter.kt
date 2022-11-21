@@ -12,7 +12,7 @@ import com.squareup.moshi.ToJson
 annotation class SubredditDescription
 class DescriptionAdapter {
 
-    private val regex :Regex = """https?://\S+\s""".toRegex()
+    private val urls :Regex = """https?://\S+\s""".toRegex()
 
     @ToJson fun toJson(@SubredditDescription description:  String): String = description
 
@@ -20,9 +20,11 @@ class DescriptionAdapter {
     fun fromJson(descriptionFromJson: String): String =
         descriptionFromJson
                              .replace("&gt;", "")
-                            .replace("&lt;", "")
+                             .replace("&lt;", "")
+                             .replace("&amp;", "")
+                             .replace("nbsp;", "")
                             .replace("""[\[\]()*#]""".toRegex(),"")
-                            .replace(regex) {"\n${it.value}\n"}
+                            .replace(urls) {"\n${it.value}\n"}
 
     }
 

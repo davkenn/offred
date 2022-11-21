@@ -108,7 +108,6 @@ class SubredditsAndPostsVMTest {
 
     @Test
     fun processNetworkError() {
-//        mockWebServer = MockWebServer()
 
         val end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
@@ -124,7 +123,6 @@ class SubredditsAndPostsVMTest {
 
     @Test
     fun getVideoSubreddit() {
-  //      mockWebServer = MockWebServer()
 
         val end1 = loadJsonResponse("crtgamingabout.json")
 
