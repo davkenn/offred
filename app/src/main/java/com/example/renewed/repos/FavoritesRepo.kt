@@ -1,5 +1,6 @@
 package com.example.renewed.repos
 
+import com.example.renewed.API
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.RoomT5
@@ -9,7 +10,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import java.util.concurrent.TimeUnit
 
-class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO): BaseFavoritesRepo {
+class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val api: API): BaseFavoritesRepo {
     override fun getCurrentState(): Flowable<Int> {
         return Flowable.fromArray(1, 2, 3)
     }
@@ -22,9 +23,11 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO): BaseFavorites
         return  t5.getNextFavoriteSubreddits(5)
 
     }
-    fun observeSavedSubreddits(): Observable<List<RoomT5>>{
+    override fun observeSavedSubreddits(): Observable<List<RoomT5>>{
         return t5.observeSavedSubreddits()
     }
+
+
 
 }
 

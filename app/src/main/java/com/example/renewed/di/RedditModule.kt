@@ -114,7 +114,7 @@ object ExoPlayerModule {
 object FavsRepoModule {
     @Singleton
     @Provides
-    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO): BaseFavoritesRepo =
-        FavoritesRepo(t5Dao, t3Dao)
+    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO,api:API): BaseFavoritesRepo =
+        FavoritesRepo(t5Dao, t3Dao,api)
 
 }

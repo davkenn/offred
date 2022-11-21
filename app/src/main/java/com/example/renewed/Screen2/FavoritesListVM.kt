@@ -28,7 +28,18 @@ package com.example.renewed.Screen2
              //   processInput(MyFavsEvent.UpdateCurrentSubreddits)},
                 {Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
 
-        }
+
+            //TODO i need a delete button to make this really worthwhile
+            repository.observeSavedSubreddits()
+                    //have to delete in here before make sublist
+                .map{it.shuffled().take(4)}
+                    //now update with the four new ones
+
+                .subscribe(   {
+                Timber.d("observ" +it.map{x->x.subscribers}.joinToString())
+            },
+            {Timber.e("observeerror",it.stackTrace)}).addTo(disposables)}
+
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()

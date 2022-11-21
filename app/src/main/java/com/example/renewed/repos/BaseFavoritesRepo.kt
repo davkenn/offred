@@ -8,5 +8,6 @@ import io.reactivex.rxjava3.core.Single
 interface BaseFavoritesRepo{
     fun getCurrentState(): Flowable<Int>
     fun startPollingPosts(): Observable<Long>
-    abstract fun getNextSubreddits(i: Int): Single<List<RoomT5>>
+    fun getNextSubreddits(i: Int): Single<List<RoomT5>>
+    fun observeSavedSubreddits(): Observable<List<RoomT5>>
 }
