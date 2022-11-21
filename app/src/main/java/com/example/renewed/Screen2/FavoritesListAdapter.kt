@@ -7,7 +7,7 @@ import com.example.renewed.Screen1.Subscreen.PostFragment
 
 class FavoritesListAdapter(private val fragment: FavoritesListFragment): FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 22
-    // override fun getItemId(position: Int): Long = items.itemId(position)
+ //    override fun getItemId(position: Int): Long = items.itemId(position)
     //override fun containsItem(itemId: Long): Boolean = items.contains(itemId)
 
 

@@ -38,7 +38,7 @@ package com.example.renewed.Screen2
                     //now update with the four new ones
 
                 .subscribe(   {
-                Timber.d("observ" +it.name)
+                Timber.d("observ" +it.url)
             },
             {Timber.e("observeerror: ${it.localizedMessage}")}).addTo(disposables)}
 

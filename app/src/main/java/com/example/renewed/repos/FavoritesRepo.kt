@@ -15,13 +15,6 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val api: API): BaseFavoritesRepo {
-    override fun getCurrentState(): Flowable<Int> {
-        return Flowable.fromArray(1, 2, 3)
-    }
-
-    override fun startPollingPosts(): Observable<Long> {
-        return Observable.interval(1, TimeUnit.SECONDS).replay(10).take(10)
-    }
 
     override fun getNextSubreddits(i: Int): Single<List<RoomT5>> {
         return  t5.getNextFavoriteSubreddits(5)
