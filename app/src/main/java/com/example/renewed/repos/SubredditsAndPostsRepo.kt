@@ -55,7 +55,7 @@ class SubredditsAndPostsRepo(
     override fun getPosts(name:String) : Single<List<RoomT3>> = t3Dao.getPosts(name)
 
     //TODO fix this later just testing
-    override fun deleteUninterestingSubreddits(): Completable= t5Dao.deleteUnwanted(30)
+    override fun deleteUninterestingSubreddits(): Completable= t5Dao.deleteUnwanted(3)
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable =
          Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
                    .concatMapCompletable{ callUpdate(it, shouldDelete) }
