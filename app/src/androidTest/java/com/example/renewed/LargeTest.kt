@@ -241,6 +241,27 @@ class LargeTest {
         )
 
     }
+
+    @Test
+    fun clickSubredditThenClickDeleteVerifyRecyclerViewReloaded() {
+
+        onView(withId(R.id.subreddits_rv))
+            .perform(
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(0),
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
+            )
+
+        onView(withId(R.id.delete_button)).perform(click())
+
+        onView(withId(R.id.subreddits_rv)).check(
+            matches(not(hasDescendant(withText("ATT")))))
+    }
+
+
+
+
+
+
     @Module
     @InstallIn(SingletonComponent::class)
     object TestRepoModule {
