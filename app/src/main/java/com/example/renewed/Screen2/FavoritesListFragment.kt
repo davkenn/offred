@@ -39,4 +39,24 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
     }
+
+    override fun onDestroy() {
+        Timber.d("onDestroy in FavoritesListFragment")
+        super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        Timber.d("onDestroyView in FavoritesListFragment")
+        super.onDestroyView()
+    }
+
+    override fun onPause() {
+        Timber.d("onPause in FavoritesListFragment")
+        super.onPause()
+    }
+
+    override fun onResume() {
+        Timber.d("onResume in FavoritesListFragment")
+        super.onResume()
+    }
 }
