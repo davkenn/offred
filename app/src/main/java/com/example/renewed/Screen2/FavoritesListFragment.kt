@@ -34,7 +34,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ Timber.d("FavoritesListVM::",it.toString())},{
+            .subscribe({ Timber.d("FavoritesListVM::$it")},{
                 Timber.e("FAVLISTERROR",it.stackTrace)})
 
 

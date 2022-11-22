@@ -32,12 +32,16 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
         return favs.getPosts()
     }
 
+
     override fun getRandomPost(name:String): Single<RoomT3>{
 
         return  api.getRandomPost(name)
 
+
                 //TODO fix this its way too hacky
             .map{(it[0].data.children[0].data as T3).toDbModel()}
+         .doOnEvent { x, _ -> t3.insertAll(listOf(x)).subscribe() }
+
     }
 
 

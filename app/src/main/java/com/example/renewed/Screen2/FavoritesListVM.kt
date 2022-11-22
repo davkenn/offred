@@ -21,14 +21,14 @@ package com.example.renewed.Screen2
     class FavoritesListVM @Inject constructor(
         private val repository: BaseFavoritesRepo
     ): ViewModel() {
+        val vs: Observable<List<String>>
         private val disposables: CompositeDisposable = CompositeDisposable()
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
         init {
-            prefetch1().subscribe({
-                Timber.d("HERE", it.toString())
-            },
-                //   processInput(MyFavsEvent.UpdateCurrentSubreddits)},
-                { Timber.e("FAVLISTERROR", it.stackTrace) }).addTo(disposables)
+     //       prefetch1().subscribe({
+       //         Timber.d("HERE", it.toString())
+         //   },
+      //          { Timber.e("FAVLISTERROR", it.stackTrace) }).addTo(disposables)
 
 
             //TODO i need a delete button to make this really worthwhile
@@ -36,32 +36,36 @@ package com.example.renewed.Screen2
                 //have to delete in here before make sublist
                 .map { it.shuffled().take(4) }.flatMapIterable { it }
                 .flatMapSingle { repository.getRandomPost(it.displayName) }
+                    //TODO need to also save it to the db here
+
                 .doOnNext {
                     repository.insert(it.name).subscribe({},
                         { Timber.e("dberror: ${it.localizedMessage}") })
                 }
-                //now update with the four new ones
+
 
                 .subscribe({
                     Timber.d("observ" + it.url)
                 },
                     { Timber.e("observeerror: ${it.localizedMessage}") }).addTo(disposables)
-            repository.observeCurrentPostList().subscribe { Timber.d("you $it") }.addTo(disposables)
+
+            vs = repository.observeCurrentPostList()        .replay(1)
+                .autoConnect(1){disposables.add(it)}
+
+
+
+    //        repository.observeCurrentPostList()
+ //               .subscribe { Timber.d("you $it") }.addTo(disposables)
             //have to delete in here before make sublist
 
         }
+
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()
         }
 
-        val vs: Observable<List<RoomT5>> = inputEvents
-        .doOnNext { Timber.d("---- Event is $it") }
-        .eventToResult()
-        .doOnNext { Timber.d("---- Result is $it") }
 
-        .replay(1)
-        .autoConnect(2){disposables.add(it)}
 
 
 
