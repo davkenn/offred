@@ -46,7 +46,7 @@ package com.example.renewed.Screen2
                     Timber.d("observ" + it.url)
                 },
                     { Timber.e("observeerror: ${it.localizedMessage}") }).addTo(disposables)
-            repository.observeCurrentPostList().subscribe { Timber.d("you $it") }
+            repository.observeCurrentPostList().subscribe { Timber.d("you $it") }.addTo(disposables)
             //have to delete in here before make sublist
 
         }
