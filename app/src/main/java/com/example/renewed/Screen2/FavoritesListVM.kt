@@ -25,10 +25,6 @@ package com.example.renewed.Screen2
         private val disposables: CompositeDisposable = CompositeDisposable()
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
         init {
-     //       prefetch1().subscribe({
-       //         Timber.d("HERE", it.toString())
-         //   },
-      //          { Timber.e("FAVLISTERROR", it.stackTrace) }).addTo(disposables)
 
 
             //TODO i need a delete button to make this really worthwhile
@@ -40,9 +36,8 @@ package com.example.renewed.Screen2
 
                 .doOnNext {
                     repository.insert(it.name).subscribe({},
-                        { Timber.e("dberror: ${it.localizedMessage}") })
+                        { Timber.e("dberror: ${it.localizedMessage}") }).addTo(disposables)
                 }
-
 
                 .subscribe({
                     Timber.d("observ" + it.url)
@@ -53,42 +48,12 @@ package com.example.renewed.Screen2
                 .autoConnect(1){disposables.add(it)}
 
 
-
-    //        repository.observeCurrentPostList()
- //               .subscribe { Timber.d("you $it") }.addTo(disposables)
-            //have to delete in here before make sublist
-
         }
 
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()
         }
-
-
-
-
-
-
-
-private fun Observable<MyFavsEvent>.eventToResult(): Observable<List<RoomT5>> {
-            return publish { o ->
-                val a = Observable.fromArray(
-                    o.ofType(MyFavsEvent.UpdateCurrentSubreddits::class.java).onUpdateSubs(),
-                    o.ofType(MyFavsEvent.UpdateDateRangeEvent::class.java).flatMap { Observable.just(listOf()) }
-                )
-                a.mergeAll()
-            }
-        }
-
-        private fun Observable<MyFavsEvent.UpdateCurrentSubreddits>.onUpdateSubs(): Observable<List<RoomT5>> {
-            return flatMap{repository.getNextSubreddits(5).toObservable()}
-        }
-
-
-
-        fun prefetch1(): Observable<Long> =
-            Observable.interval(5, TimeUnit.SECONDS)
 
 
 

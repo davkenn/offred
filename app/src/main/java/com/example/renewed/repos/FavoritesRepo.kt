@@ -15,10 +15,7 @@ import java.util.concurrent.TimeUnit
 
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val favs:FavoritesDAO,private val api: API): BaseFavoritesRepo {
 
-    override fun getNextSubreddits(i: Int): Single<List<RoomT5>> {
-        return  t5.getNextFavoriteSubreddits(5)
 
-    }
 
     override fun insert(s: String): Completable {
         return  favs.insert(CurrentFavoritesList(s))
