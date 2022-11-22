@@ -25,6 +25,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         val name = postIds[position]
         val fragment = PostFragment()
         fragment.arguments = Bundle().apply {
+            putInt("pos", position)
             putString("key", name)
             //TODO do i need to readd pos
             //  putString("pos",position.toString())

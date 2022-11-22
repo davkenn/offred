@@ -31,14 +31,15 @@ class PostFragment : ContentFragment() {
     private var name:String?= null
     override fun getName() : String = postsVM.name
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    //TODO am i shooting myself in the foot here by only saving instance state from fragmentadapter?
+   // override fun onSaveInstanceState(outState: Bundle) {
 
-        super.onSaveInstanceState(outState)
-        outState.run {
+     //   super.onSaveInstanceState(outState)
+       // outState.run {
 
-            putString("key",name)
-        }
-    }
+         //   putString("key",name)
+        //}
+    //}
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,6 +50,7 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onDestroyView() {
+        //TODO need to not do this if I don't want crashes
    //     postBinding = null
         super.onDestroyView()
     }
@@ -87,8 +89,8 @@ class PostFragment : ContentFragment() {
     }
 
     private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
-        t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self"
-                                                                    || isImagePost(t3ViewState)
+        t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self" ||
+                t3ViewState.t3.thumbnail == "default"  || isImagePost(t3ViewState)
 
     private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing) =
         postBinding!!.url.setOnClickListener {
