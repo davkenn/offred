@@ -3,6 +3,7 @@ package com.example.renewed.di
 import android.content.Context
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.renewed.*
+import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.repos.BaseFavoritesRepo
@@ -54,6 +55,7 @@ object RedditModule {
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor,redirect: RedirectInterceptor):
             OkHttpClient = OkHttpClient
         .Builder()
+            //set these to false so I can handle redirects my own way
         .followRedirects(false)
         .followSslRedirects(false)
         .addInterceptor(httpLoggingInterceptor)
@@ -114,7 +116,7 @@ object ExoPlayerModule {
 object FavsRepoModule {
     @Singleton
     @Provides
-    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO,api:API): BaseFavoritesRepo =
-        FavoritesRepo(t5Dao, t3Dao,api)
+    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO, favs: FavoritesDAO, api:API): BaseFavoritesRepo =
+        FavoritesRepo(t5Dao, t3Dao,favs, api)
 
 }

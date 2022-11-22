@@ -3,6 +3,7 @@ package com.example.renewed.Screen2
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.renewed.Screen1.Subscreen.BlankFragment
 import com.example.renewed.Screen1.Subscreen.PostFragment
 
 class FavoritesListAdapter(private val fragment: FavoritesListFragment): FragmentStateAdapter(fragment) {
@@ -12,13 +13,14 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
 
     override fun createFragment(position: Int): Fragment {
-        val fragment = PostFragment()
-        fragment.arguments = Bundle().apply {
-            putString("key", "t3_z109qt")
+     //   val fragment = PostFragment()
+       // fragment.arguments = Bundle().apply {
+         //   putString("key", "t3_yzqebk")
             //TODO do i need to readd pos
             //  putString("pos",position.toString())
 
-        }
+        //}
+           val fragment = BlankFragment()
             return fragment
     }
 

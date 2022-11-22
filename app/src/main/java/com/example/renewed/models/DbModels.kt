@@ -79,7 +79,5 @@ data class RoomT3(@PrimaryKey val name: String, @ColumnInfo(index = true) val su
 
 )
 **/
-   @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
-                                    childColumns = arrayOf("postId"), onDelete = ForeignKey.CASCADE,
-                                                                    onUpdate = ForeignKey.CASCADE)])
-   data class CurrentFavoritesList(@PrimaryKey val postId: String)
+   @Entity
+   data class CurrentFavoritesList(@PrimaryKey  val postId: String)

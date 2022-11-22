@@ -2,6 +2,7 @@ package com.example.renewed.Screen2
 
 
  import androidx.lifecycle.ViewModel
+ import com.example.renewed.Room.FavoritesDAO
  import com.example.renewed.repos.BaseFavoritesRepo
  import com.example.renewed.models.MyFavsEvent
  import com.example.renewed.models.RoomT5
@@ -34,7 +35,8 @@ package com.example.renewed.Screen2
                     //have to delete in here before make sublist
                 .map{it.shuffled().take(4)}.flatMapIterable { it}
                 .flatMapSingle{repository.getRandomPost(it.displayName)}
-
+                .doOnNext{repository.insert(it.name).subscribe({},
+                    {Timber.e("dberror: ${it.localizedMessage}")})}
                     //now update with the four new ones
 
                 .subscribe(   {
