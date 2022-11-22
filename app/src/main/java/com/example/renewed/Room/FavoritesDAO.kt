@@ -17,7 +17,7 @@ interface FavoritesDAO {
     fun insert(elem: CurrentFavoritesList): Completable
 
     @Query("SELECT * FROM CurrentFavoritesList ")
-    fun getPosts(): Observable<String>
+    fun getPosts(): Observable<List<String>>
 
 
 

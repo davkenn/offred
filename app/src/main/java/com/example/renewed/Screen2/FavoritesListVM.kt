@@ -23,27 +23,33 @@ package com.example.renewed.Screen2
     ): ViewModel() {
         private val disposables: CompositeDisposable = CompositeDisposable()
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
-        init{
+        init {
             prefetch1().subscribe({
-                Timber.d("HERE",it.toString())},
-             //   processInput(MyFavsEvent.UpdateCurrentSubreddits)},
-                {Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
+                Timber.d("HERE", it.toString())
+            },
+                //   processInput(MyFavsEvent.UpdateCurrentSubreddits)},
+                { Timber.e("FAVLISTERROR", it.stackTrace) }).addTo(disposables)
 
 
             //TODO i need a delete button to make this really worthwhile
             repository.observeSavedSubreddits()
-                    //have to delete in here before make sublist
-                .map{it.shuffled().take(4)}.flatMapIterable { it}
-                .flatMapSingle{repository.getRandomPost(it.displayName)}
-                .doOnNext{repository.insert(it.name).subscribe({},
-                    {Timber.e("dberror: ${it.localizedMessage}")})}
-                    //now update with the four new ones
+                //have to delete in here before make sublist
+                .map { it.shuffled().take(4) }.flatMapIterable { it }
+                .flatMapSingle { repository.getRandomPost(it.displayName) }
+                .doOnNext {
+                    repository.insert(it.name).subscribe({},
+                        { Timber.e("dberror: ${it.localizedMessage}") })
+                }
+                //now update with the four new ones
 
-                .subscribe(   {
-                Timber.d("observ" +it.url)
-            },
-            {Timber.e("observeerror: ${it.localizedMessage}")}).addTo(disposables)}
+                .subscribe({
+                    Timber.d("observ" + it.url)
+                },
+                    { Timber.e("observeerror: ${it.localizedMessage}") }).addTo(disposables)
+            repository.observeCurrentPostList().subscribe { Timber.d("you $it") }
+            //have to delete in here before make sublist
 
+        }
         override fun onCleared() {
             super.onCleared()
             disposables.dispose()

@@ -12,4 +12,5 @@ interface BaseFavoritesRepo{
     fun observeSavedSubreddits(): Observable<List<RoomT5>>
     fun getRandomPost(name: String): Single<RoomT3>
     fun insert(s: String): Completable
+    fun observeCurrentPostList(): Observable<List<String>>
 }
