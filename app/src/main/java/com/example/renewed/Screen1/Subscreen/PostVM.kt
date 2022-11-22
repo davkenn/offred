@@ -17,6 +17,7 @@ private val repository: BaseSubredditsAndPostsRepo
 
     fun setPost(n: String) : Single<PartialViewState.T3ForViewing> =
         repository.getPost(n)
+                //TODO this feels really wrong
             .doOnEvent{x,y->name =  x.subredditId}
             .map { PartialViewState.T3ForViewing(it.toViewState() )}
 }

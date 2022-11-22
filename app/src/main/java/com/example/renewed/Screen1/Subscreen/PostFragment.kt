@@ -21,12 +21,13 @@ import com.example.renewed.models.PartialViewState
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
 
     private val postsVM: PostVM by viewModels()
-    private var postBinding: PostViewBinding? = null
+     var postBinding: PostViewBinding? = null
     private var name:String?= null
     override fun getName() : String = postsVM.name
 
@@ -48,7 +49,7 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onDestroyView() {
-        postBinding = null
+   //     postBinding = null
         super.onDestroyView()
     }
 
@@ -59,7 +60,7 @@ class PostFragment : ContentFragment() {
         postsVM.setPost(name!!)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
-               .subscribe { t3ViewState -> postBinding!!.fullImg.visibility= GONE
+               .subscribe( { t3ViewState -> postBinding!!.fullImg.visibility= GONE
                                            postBinding!!.postName.text = t3ViewState.t3.displayName
                                            val text = t3ViewState.t3.created + ": "
                                            postBinding!!.timeCreated.text = text
@@ -76,7 +77,7 @@ class PostFragment : ContentFragment() {
                                            if (hasNoThumbnail(t3ViewState)) {
                                                postBinding!!.thumb.visibility = GONE
                                            }  else loadThumbNail(t3ViewState)
-                        }
+                        },{ Timber.e("Error in binding ${it.localizedMessage}")})
     }
 
     private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
@@ -92,6 +93,7 @@ class PostFragment : ContentFragment() {
     private fun loadImage(t3ViewState: PartialViewState.T3ForViewing) {
         postBinding!!.thumb.visibility = GONE
         postBinding!!.fullImg.visibility = VISIBLE
+        //TODO this is where the error is triggered on the rotate
         Glide.with(this).load(t3ViewState.t3.url)
             .into(postBinding!!.fullImg)
     }
