@@ -27,9 +27,17 @@ class PostFragment : ContentFragment() {
 
     private val postsVM: PostVM by viewModels()
     private var postBinding: PostViewBinding? = null
-
+    private var name:String?= null
     override fun getName() : String = postsVM.name
 
+    override fun onSaveInstanceState(outState: Bundle) {
+
+        super.onSaveInstanceState(outState)
+        outState.run {
+
+            putString("key",name)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,9 +54,9 @@ class PostFragment : ContentFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val name = arguments?.getString("key") ?: "NONE"
+        name = arguments?.getString("key") ?: "NONE"
 
-        postsVM.setPost(name)
+        postsVM.setPost(name!!)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe { t3ViewState -> postBinding!!.fullImg.visibility= GONE

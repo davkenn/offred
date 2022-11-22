@@ -15,7 +15,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
-    private lateinit var adapter2 : FragmentStateAdapter
+    private lateinit var adapter2 : FavoritesListAdapter
     private val favoritesVM: FavoritesListVM by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
@@ -33,9 +33,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
         }
 
+
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ Timber.d("FavoritesListVM::$it")},{
-                Timber.e("FAVLISTERROR",it.stackTrace)})
+            .subscribe({ Timber.d("FavoritesListVM::$it")
+                            adapter2.replaceList(it) },
+                { Timber.e("FAVLISTERROR",it.stackTrace)})
 
 
     }
