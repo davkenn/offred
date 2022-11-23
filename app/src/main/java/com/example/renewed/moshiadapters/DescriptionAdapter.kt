@@ -23,8 +23,8 @@ class DescriptionAdapter {
                              .replace("&lt;", "")
                              .replace("&amp;", "")
                              .replace("nbsp;", "")
-                            .replace("""[\[\]()*#]""".toRegex(),"")
-                            .replace(urls) {"\n${it.value}\n"}
+                            .replace("""[\[\]()*#]""".toRegex()," ")
+                            .replace(urls) {"\n${it.value} "}
 
     }
 
