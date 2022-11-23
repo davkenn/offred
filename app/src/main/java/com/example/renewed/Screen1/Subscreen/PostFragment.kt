@@ -69,25 +69,27 @@ class PostFragment : ContentFragment() {
         postsVM.setPost(name!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe( { t3ViewState -> postBinding!!.fullImg.visibility= GONE
-                postBinding!!.postName.text = t3ViewState.t3.displayName
-                val text = t3ViewState.t3.created + ": "
-                postBinding!!.timeCreated.text = text
-                postBinding!!.bodyText.text = t3ViewState.t3.selftext
-                Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
-                postBinding!!.url.text = t3ViewState.t3.url
-                if (isUrlPost(t3ViewState)) {
-                    loadUrlClickListener(t3ViewState)
-                }
-                else {
-                    postBinding!!.url.visibility = GONE
-                }
-                if (isImagePost(t3ViewState))  loadImage(t3ViewState)
-                //could it also be a text post that this is signalling?
-                if (hasNoThumbnail(t3ViewState)) {
-                    postBinding!!.thumb.visibility = GONE
-                }  else loadThumbNail(t3ViewState)
-            },{ Timber.e("Error in binding ${it.localizedMessage}")})
+            .subscribe(
+                { t3ViewState -> postBinding!!.postName.text = t3ViewState.t3.displayName
+                                                            val text = t3ViewState.t3.created + ": "
+                                                            postBinding!!.timeCreated.text = text
+                                    postBinding!!.bodyText.text = t3ViewState.t3.selftext
+                                    Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
+                                    postBinding!!.url.text = t3ViewState.t3.url
+
+                                    if (isUrlPost(t3ViewState)) {
+                                        loadUrlClickListener(t3ViewState)
+                                        postBinding!!.url.visibility= VISIBLE
+                                    }
+                                    if (isImagePost(t3ViewState))  {
+                                        loadImage(t3ViewState)
+                                        postBinding!!.fullImg.visibility = VISIBLE
+                                    }
+                                    if (!hasNoThumbnail(t3ViewState)) {
+                                        loadThumbNail(t3ViewState)
+                                        postBinding!!.thumb.visibility = VISIBLE
+                                    }
+                        },{ Timber.e("Error in binding ${it.localizedMessage}")})
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,8 +110,7 @@ class PostFragment : ContentFragment() {
         }
 
     private fun loadImage(t3ViewState: PartialViewState.T3ForViewing) {
-        postBinding!!.thumb.visibility = GONE
-        postBinding!!.fullImg.visibility = VISIBLE
+
         //TODO this is where the error is triggered on the rotate
         Glide.with(this).load(t3ViewState.t3.url)
             .into(postBinding!!.fullImg)
