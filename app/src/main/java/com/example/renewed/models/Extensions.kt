@@ -19,6 +19,7 @@ fun T5.toDbModel(): RoomT5 {
 }
 
 fun T3.toDbModel(): RoomT3 {
+
     //TODO need to fix this and get the actual url from the other field
     if (url.startsWith("https://v.redd.it")) url += "/DASH_720.mp4?source=fallback"
     return RoomT3(

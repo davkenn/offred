@@ -2,6 +2,7 @@ package com.example.renewed.Screen2
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -15,6 +16,7 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
+    private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
     private val favoritesVM: FavoritesListVM by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +31,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         adapter2 = FavoritesListAdapter(this)
         val binding = FragmentFavoritesListBinding.bind(view)
-        binding.apply { pager.adapter = adapter2
+        binding.apply {
+                        pager.adapter = adapter2
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
+                        vp = pager
         }
 
 
@@ -42,9 +46,25 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.apply { putInt("pos",vp.currentItem) }
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        vp.post{
+            vp.currentItem = savedInstanceState?.getInt("pos") ?: 0
+
+        }
+        }
+
+
+
     override fun onDestroy() {
         Timber.d("onDestroy in FavoritesListFragment")
         super.onDestroy()
+
     }
 
     override fun onDestroyView() {

@@ -46,6 +46,7 @@ data class Media  (val reddit_video:Video?)
 @JsonClass(generateAdapter = true)
 data class Video  (val fallback_url:String)
 
+
 @JsonClass(generateAdapter = true)
 data class T1 (override val name: String, val link_id: String, val body: String): RedditPostType()
 

@@ -21,12 +21,14 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
     }
 
+
     override fun createFragment(position: Int): Fragment {
         val name = postIds[position]
         val fragment = PostFragment()
         fragment.arguments = Bundle().apply {
-            putInt("pos", position)
+
             putString("key", name)
+     //       putInt("pos",position)
             //TODO do i need to readd pos
             //  putString("pos",position.toString())
 

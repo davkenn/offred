@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNavigationView = findViewById(R.id.bottom_nav)
         bottomNavigationView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             toggleFullscreen(destination.id)

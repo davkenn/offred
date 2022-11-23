@@ -1,10 +1,7 @@
 package com.example.renewed.moshiadapters
 
 import com.example.renewed.models.*
-import com.squareup.moshi.FromJson
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.JsonReader
-import com.squareup.moshi.ToJson
+import com.squareup.moshi.*
 
 
 class RedditPostAdapter {
@@ -31,5 +28,6 @@ class RedditHolderAdapter {
     @ToJson fun HolderFromRedditPost(event: RedditPostType): Holder =
         Holder(event, event.name.takeWhile { it != '_' })
 }
+
 
 
