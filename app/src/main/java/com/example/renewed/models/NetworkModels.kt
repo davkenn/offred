@@ -35,7 +35,7 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
               val score: Int, val num_comments: Int,  @SubredditDescription val selftext: String,
               val subreddit: String, val subreddit_id: String, val subreddit_subscribers: Int,
               val title: String, @Json(name = "upvote_ratio") val upvoteRatio: Double,
-              @Json(name = "url") var url: String, val spoiler:String,
+              @Json(name = "url") var url: String, val spoiler:Boolean,
             //if url is permalink then create a text, if not then either vid  or photo link
               val permalink: String, /**image link for vids**/ val thumbnail: String,
               val created_utc: Long,val media:Media?) : RedditPostType()

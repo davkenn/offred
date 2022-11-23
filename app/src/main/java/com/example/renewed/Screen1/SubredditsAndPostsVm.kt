@@ -180,7 +180,7 @@ class SubredditsAndPostsVM @Inject constructor(
                 .onErrorComplete()
                 .doOnComplete { Timber.d("---- done fetching subreddits") })
             .andThen(repo.prefetchPosts()
-                .doOnError { Timber.e("----error getting posts") }
+                .doOnError { Timber.e("----error getting posts ${it.stackTraceToString()}") }
                 .onErrorComplete()
                 .doOnComplete { Timber.d("---- done fetching posts") })
             .subscribeOn(Schedulers.io())
