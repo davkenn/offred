@@ -19,13 +19,16 @@ fun T5.toDbModel(): RoomT5 {
 }
 
 fun T3.toDbModel(): RoomT3 {
-
+    var thumb: String?=null
     //TODO need to fix this and get the actual url from the other field
     if (url.startsWith("https://v.redd.it")) url += "/DASH_720.mp4?source=fallback"
+  //  if (media_metadata!=null && (thumb!=null) && ("gallery" !in url)) {
+    //    thumb = media_metadata.p?.last()?.u?.replace("amp;", "")
+      //  }
     return RoomT3(
         name = name, subredditId = subreddit_id, selftext = selftext,
         created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
-        timeLastAccessed = Instant.now(), title = title, thumbnail = thumbnail,
+        timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
         url = media?.reddit_video?.fallback_url ?: url
     )
 

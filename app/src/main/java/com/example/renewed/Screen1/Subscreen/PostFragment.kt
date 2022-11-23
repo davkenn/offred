@@ -125,10 +125,13 @@ class PostFragment : ContentFragment() {
 
     private fun loadThumbNail(viewState: PartialViewState.T3ForViewing)     {
         postBinding!!.thumb.visibility = VISIBLE
-        if (viewState.t3.thumbnail == "spoiler") postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
-        if (viewState.t3.thumbnail == "nsfw") postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
-        Glide.with(this).load(viewState.t3.thumbnail)
-            .apply( RequestOptions().override(100, 100))
+        if (viewState.t3.thumbnail == "spoiler"){ postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
+                                                return}
+        if (viewState.t3.thumbnail == "nsfw") {postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
+            return
+        }
+        Glide.with(this).load(viewState.t3.thumbnail.replace("&amp;", ""))
+            .apply( RequestOptions().override(150, 150))
             .placeholder(ColorDrawable(Color.BLACK))
             .error(ColorDrawable(Color.RED))
             .fallback(ColorDrawable(Color.YELLOW))
