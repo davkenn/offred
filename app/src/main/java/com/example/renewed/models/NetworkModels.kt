@@ -1,5 +1,6 @@
 package com.example.renewed.models
 
+
 import com.example.renewed.moshiadapters.SubredditDescription
 import com.squareup.moshi.JsonClass
 
@@ -39,7 +40,12 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
 
             //if url is permalink then create a text, if not then either vid  or photo link
               val permalink: String, /**image link for vids**/ val thumbnail: String,
-              val created_utc: Long,val media:Media?) : RedditPostType()
+              val created_utc: Long,val media:Media?, val media_metadata:Media2?) : RedditPostType()
+
+@JsonClass(generateAdapter = true)
+data class Media2  (val e:String?,val m:String?,val picsAndDimens:List<PicsAndDimens>)
+@JsonClass(generateAdapter = true)
+data class PicsAndDimens (val y:Int,val x:Int, val u:String)
 
 @JsonClass(generateAdapter = true)
 data class Media  (val reddit_video:Video?)

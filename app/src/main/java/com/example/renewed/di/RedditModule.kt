@@ -8,6 +8,7 @@ import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.repos.BaseFavoritesRepo
 import com.example.renewed.moshiadapters.DescriptionAdapter
+import com.example.renewed.moshiadapters.MediaAdapter
 import com.example.renewed.moshiadapters.RedditHolderAdapter
 import com.example.renewed.moshiadapters.RedditPostAdapter
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
@@ -81,6 +82,7 @@ object RedditModule {
         .add(RedditPostAdapter())
         .add(RedditHolderAdapter())
         .add(DescriptionAdapter())
+        .add(MediaAdapter())
         .build()
 
 
