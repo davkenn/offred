@@ -1,4 +1,4 @@
-package com.example.renewed.di
+package com.example.renewed
 
 import okhttp3.Interceptor
 import okhttp3.Request
