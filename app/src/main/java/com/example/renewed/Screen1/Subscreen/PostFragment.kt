@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -67,6 +68,7 @@ class PostFragment : ContentFragment() {
                 val text = t3ViewState.t3.created + ": "
                 postBinding!!.timeCreated.text = text
                 postBinding!!.bodyText.text = t3ViewState.t3.selftext
+                Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
                 postBinding!!.url.text = t3ViewState.t3.url
                 if (isUrlPost(t3ViewState)) {
                     loadUrlClickListener(t3ViewState)
@@ -91,7 +93,8 @@ class PostFragment : ContentFragment() {
     private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
         t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self" ||
                 t3ViewState.t3.thumbnail == "default"  || isImagePost(t3ViewState)
-
+          //TODO I also need to implement this spoiler somewhere
+                || t3ViewState.t3.thumbnail == "spoiler" //|| thumbnail == nsfw
     private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing) =
         postBinding!!.url.setOnClickListener {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.t3.url))
