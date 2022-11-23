@@ -143,6 +143,27 @@ class SubredditsAndPostsVMTest {
     }
 
     @Test
+    fun getImageForThumbnail()
+    {
+        val end1 = loadJsonResponse("crtgamingabout.json")
+
+        val end2 = loadJsonResponse("crtgamingposts.json")
+
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end1!!))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end2!!))
+
+        val res = viewModel.vs.test()
+
+        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        res.await(1,TimeUnit.SECONDS)
+        res.assertValueCount(2)
+        res.assertValueAt(3) { it.t3ListForRV!!.vsT3!![0].thumbnail=="https://v.redd.it/cx5ll43oe31a1/DASH_1080.mp4?source=fallback" }
+        res.assertNotComplete()
+
+
+    }
+
+    @Test
     fun getRidOfEmptyFullViewStateAsFirstEmission()
     {
         val end = loadJsonResponse("Berserk.json")
