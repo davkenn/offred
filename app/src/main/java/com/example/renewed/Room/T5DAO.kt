@@ -23,7 +23,7 @@ interface T5DAO {
         fun deleteUnwanted(maxViews: Int): Completable
 
         //TODO here I am cutting off before deleting, maybe should just remove totalviews
-        @Query("SELECT * FROM RoomT5 WHERE isSaved= 0 AND totalViews < 3 "+
+        @Query("SELECT * FROM RoomT5 WHERE isSaved= 0 AND totalViews < 27 "+
                 "ORDER BY displayName <= :startReturningAfter,  displayName LIMIT 20")
         fun getSubredditsFromTable(startReturningAfter:String): Single<List<RoomT5>>
 
