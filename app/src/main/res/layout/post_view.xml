@@ -39,15 +39,11 @@
             android:id="@+id/timeCreated"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16sp"
-            android:layout_marginBottom="16sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="4dp"
             android:maxLines="2"
 
-
-            android:textAlignment="viewStart"
             app:layout_constraintBottom_toTopOf="@id/barrier"
-
-
             app:layout_constraintEnd_toStartOf="@id/guidelinea"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -67,7 +63,7 @@
             android:id="@+id/thumb"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            app:layout_constraintBottom_toTopOf="@id/barrier2"
+            app:layout_constraintBottom_toTopOf="@id/body_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier" />
@@ -81,25 +77,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/barrier"/>
-        android:scaleType="fitXY"
-            android:adjustViewBounds="true" />
 
 
         <TextView
             android:id="@+id/body_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
-            android:layout_marginStart="16dp"
-
-            android:layout_marginEnd="16dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:text="miss"
             app:layout_constraintBottom_toTopOf="@id/barrier2"
             app:layout_constraintEnd_toEndOf="parent"
-
-
-            app:layout_constraintStart_toEndOf="@id/thumb"
-            app:layout_constraintTop_toBottomOf="@id/barrier" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thumb" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/barrier2"
