@@ -114,9 +114,9 @@ class PostFragment : ContentFragment() {
                                         postBinding!!.exoplayer.visibility=VISIBLE
                                         playerView = postBinding!!.exoplayer
                                         playerView?.player=exo
-
-                                        exo.playWhenReady=true
-                                        exo.prepare()}
+                          exo.playWhenReady=true
+                                        exo.prepare()
+                                    exo.seekTo(0)}
                     //should I also do title or just make it neon?
 
 
