@@ -21,8 +21,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-    @Inject
-    lateinit var exo: ExoPlayer
+
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
 

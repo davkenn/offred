@@ -12,10 +12,13 @@ import com.example.renewed.R
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
 
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
+    private val disposables = CompositeDisposable()
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
     private val favoritesVM: FavoritesListVM by viewModels()
@@ -55,7 +58,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")
                             adapter2.replaceList(it) },
-                { Timber.e("FAVLISTERROR",it.stackTrace)})
+                { Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
 
 
     }
@@ -82,6 +85,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onDestroyView() {
         Timber.d("onDestroyView in FavoritesListFragment")
+    //here or in ondestroy?
+        disposables.clear()
         super.onDestroyView()
     }
 
