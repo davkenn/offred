@@ -12,6 +12,7 @@ package com.example.renewed.Screen2
  import io.reactivex.rxjava3.disposables.CompositeDisposable
  import io.reactivex.rxjava3.kotlin.addTo
  import io.reactivex.rxjava3.kotlin.mergeAll
+ import io.reactivex.rxjava3.schedulers.Schedulers
  import timber.log.Timber
  import java.util.concurrent.TimeUnit
 
@@ -31,13 +32,14 @@ package com.example.renewed.Screen2
             repository.observeSavedSubreddits()
                 //have to delete in here before make sublist
                 .map { it.shuffled().take(4) }.flatMapIterable { it }
-                .flatMap{ repository.getRandomPosts(it.displayName,4) }
+                .flatMap{ repository.getRandomPosts(it.displayName,2) }
                     //TODO need to also save it to the db here
 
                 .doOnNext {
                     repository.insert(it.name).subscribe({},
                         { Timber.e("dberror: ${it.localizedMessage}") }).addTo(disposables)
-                }
+                }.startWith( repository.clearPages().subscribeOn(Schedulers.io())
+                )
 
                 .subscribe({
                     Timber.d("observ" + it.url)
@@ -47,15 +49,15 @@ package com.example.renewed.Screen2
             vs = repository.observeCurrentPostList()        .replay(1)
                 .autoConnect(1){disposables.add(it)}
 
-
         }
 
         override fun onCleared() {
             super.onCleared()
+            Timber.d("oncleared in favslistvm")
+       //     repository.clearPages().subscribeOn(Schedulers.io()).subscribe()
+
             disposables.dispose()
         }
-
-
 
 
         fun processInput(name: MyFavsEvent) {

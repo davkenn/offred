@@ -13,4 +13,5 @@ interface BaseFavoritesRepo{
     fun getRandomPosts(name: String,number:Int): Observable<RoomT3>
     fun insert(s: String): Completable
     fun observeCurrentPostList(): Observable<List<String>>
+    fun clearPages(): Completable
 }

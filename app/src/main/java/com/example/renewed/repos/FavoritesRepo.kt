@@ -29,6 +29,10 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
         return favs.getPosts()
     }
 
+    override fun clearPages(): Completable {
+        return favs.clearDb()
+    }
+
 
     override fun getRandomPosts(name:String,number:Int): Observable<RoomT3>{
 

@@ -19,6 +19,9 @@ interface FavoritesDAO {
     @Query("SELECT * FROM CurrentFavoritesList ")
     fun getPosts(): Observable<List<String>>
 
+    @Query("DELETE FROM CurrentFavoritesList ")
+    fun clearDb(): Completable
+
 
 
     //   getPostsByWeekPeriod(weeksAgo:Int):Flowable
