@@ -29,7 +29,7 @@ fun T3.toDbModel(): RoomT3 {
         name = name, subredditId = subreddit_id, selftext = selftext,
         created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
         timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
-        url = media?.reddit_video?.fallback_url ?: url
+        url = media?.reddit_video?.dash_url ?:  url
     )
 
 }

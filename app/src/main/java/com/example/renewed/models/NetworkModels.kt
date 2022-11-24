@@ -52,7 +52,7 @@ data class Media2(val e:String?, val m:String?, val p: List<PicsAndDimens>?)
 @JsonClass(generateAdapter = true)
 data class Media  (val reddit_video:Video?)
 @JsonClass(generateAdapter = true)
-data class Video  (val fallback_url:String)
+data class Video  (val fallback_url:String,val dash_url:String)
 
 
 @JsonClass(generateAdapter = true)

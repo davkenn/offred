@@ -37,6 +37,20 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                         vp = pager
         }
 
+        vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                if (position == 0) {
+                    // you are on the first page
+                }
+                else if (position == 1) {
+                    // you are on the second page
+                }
+                else if (position == 2){
+                    // you are on the third page
+                }
+                super.onPageSelected(position)
+            }
+        })
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")

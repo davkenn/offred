@@ -114,7 +114,7 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onPause() {
-        Timber.d("onDestroy in Post Fragment")
+        Timber.d("onPause in Post Fragment")
         super.onPause()
     }
 
