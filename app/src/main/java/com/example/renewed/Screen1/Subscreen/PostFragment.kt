@@ -14,6 +14,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 
 import androidx.fragment.app.viewModels
+import androidx.media3.exoplayer.ExoPlayer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.R
@@ -23,10 +24,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
-
+    @Inject lateinit var exo: ExoPlayer
     private val postsVM: PostVM by viewModels()
      var postBinding: PostViewBinding? = null
     private var name:String?= null
@@ -89,7 +91,15 @@ class PostFragment : ContentFragment() {
                                         loadThumbNail(t3ViewState)
                                         postBinding!!.thumb.visibility = VISIBLE
                                     }
-                        },{ Timber.e("Error in binding ${it.localizedMessage}")})
+                    //FOr now get rid of all state
+                                    if (isVideoPost(t3ViewState))
+                                        postBinding!!.timeCreated.visibility= GONE
+                                        postBinding!!.bodyText.visibility=GONE
+                    //should I also do title or just make it neon?
+
+
+
+                },{ Timber.e("Error in binding ${it.localizedMessage}")})
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -101,8 +111,7 @@ class PostFragment : ContentFragment() {
     private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
         t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self" ||
                 t3ViewState.t3.thumbnail == "default"  || isImagePost(t3ViewState)
-          //TODO I also need to implement this spoiler somewhere
-                || t3ViewState.t3.thumbnail == "spoiler" //|| thumbnail == nsfw
+                || isVideoPost(t3ViewState) || t3ViewState.t3.thumbnail == "spoiler" //|| thumbnail == nsfw
     private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing) =
         postBinding!!.url.setOnClickListener {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.t3.url))
@@ -116,6 +125,13 @@ class PostFragment : ContentFragment() {
             .into(postBinding!!.fullImg)
     }
 
+    private fun loadVideo(t3ViewState: PartialViewState.T3ForViewing) {
+
+        //TODO this is where the error is triggered on the rotate
+        Glide.with(this).load(t3ViewState.t3.url)
+            .into(postBinding!!.fullImg)
+    }
+
     private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         t3ViewState.t3.url.startsWith("http")// && "com" in x.t3.url
                 && (("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url) ||
@@ -123,6 +139,10 @@ class PostFragment : ContentFragment() {
 
     private fun isImagePost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
                                                             "i.redd.it" in t3ViewState.t3.url
+
+    private fun isVideoPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
+        "v.redd.it" in t3ViewState.t3.url
+
 
     private fun loadThumbNail(viewState: PartialViewState.T3ForViewing)     {
         postBinding!!.thumb.visibility = VISIBLE
