@@ -101,7 +101,6 @@ object RepoModule {
     @Provides
     fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO): BaseSubredditsAndPostsRepo =
                         SubredditsAndPostsRepo(api, t5Dao, t3Dao)
-
 }
 
 @InstallIn(SingletonComponent::class)

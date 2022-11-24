@@ -17,7 +17,7 @@ buildscript {
         fragmentVersion = '1.5.4'
         glideVersion = '4.10.0'
         gradleVersion = '7.0.2'
-        hiltVersion = '2.43.2'
+        hiltVersion = '2.44.2'
  //       junitVersion = '4.12'
         junitVersion = '4.13'
         kotlinVersion = '1.4.30'
@@ -49,7 +49,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
 
 
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

@@ -14,6 +14,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.RedditDatabase
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
@@ -42,7 +43,6 @@ var allData3: List<RoomT3>?=null
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-
 @UninstallModules(  DbModule::class)
 class LargeTest {
     @get:Rule()
@@ -113,16 +113,11 @@ class LargeTest {
         onView(withId(R.id.subreddits_rv))
 
             .perform(
-              //          scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
-                        actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(10, click())
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(10, click())
             )
         onView(withId(R.id.subreddits_rv))
             .check(matches(withChild(isSelected())))
-
-
-        //   .check(matches(isDisplayed()))
-        //  .check(matches(hasDescendant(withText("TexttoMatch"))))
-        //      val scenario = launchFragmentInContainer<SubredditsSelectionFragment>(fragArgs)
 
     }
 
@@ -184,7 +179,7 @@ class LargeTest {
             matches(
                 allOf(
                     hasDescendant(isSelected()),
-                    hasDescendant(withText("ATT"))
+                    hasDescendant(withText("30PlusSkinCare"))
                 )
             )
         )
@@ -201,7 +196,7 @@ class LargeTest {
             matches(
                 allOf(
                     not(hasDescendant(isSelected())),
-                    not(hasDescendant(withText("ATT")))
+                    not(hasDescendant(withText("30PlusSkinCare")))
                 )
             )
         )
@@ -211,21 +206,13 @@ class LargeTest {
     @Test
     fun refreshButton4FourTimesBringsUpSameList() {
 
-
-
         onView(withId(R.id.subreddits_rv)).perform(
             RecyclerViewActions.actionOnItemAtPosition
             <SubredditsAdapter.SubredditViewHolder>(0, click())
         )
 
         onView(withId(R.id.subreddits_rv)).check(
-            matches(
-                allOf(
-                    hasDescendant(isSelected()),
-                    hasDescendant(withText("ATT"))
-                )
-            )
-        )
+            matches(hasDescendant(withText("30PlusSkinCare"))))
 
         repeat(4) {
             onView(withId(R.id.refresh_button)).perform(click())
@@ -237,7 +224,7 @@ class LargeTest {
         }
 
         onView(withId(R.id.subreddits_rv)).check(
-            matches(hasDescendant(withText("ATT")))
+            matches(hasDescendant(withText("30PlusSkinCare")))
         )
 
     }
@@ -278,6 +265,11 @@ class LargeTest {
             ).createFromAsset("RedditDBTest")
                 .build()
         }
+
+        @Provides
+        @Singleton
+        fun provideFavsDAO(db: RedditDatabase): FavoritesDAO = db.favoritesDao()
+
 
         @Provides
         @Singleton

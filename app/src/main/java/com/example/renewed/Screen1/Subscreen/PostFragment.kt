@@ -72,82 +72,63 @@ class PostFragment : ContentFragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-
-
     }
 
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         name = arguments?.getString("key") ?: "NONE"
-
-
-
         postsVM.setPost(name!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { t3ViewState -> postBinding!!.postName.text = t3ViewState.t3.displayName
-                                                            val text = t3ViewState.t3.created + ": "
-                                                            postBinding!!.timeCreated.text = text
-                                    postBinding!!.bodyText.text = t3ViewState.t3.selftext
-                                    Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
-                                    postBinding!!.url.text = t3ViewState.t3.url
-
+                                 val text = t3ViewState.t3.created + ": "
+                                 postBinding!!.timeCreated.text = text
+                                 postBinding!!.bodyText.text = t3ViewState.t3.selftext
+                                 Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
+                                 postBinding!!.url.text = t3ViewState.t3.url
 
                     if (isUrlPost(t3ViewState)) {
-                                        loadUrlClickListener(t3ViewState)
-                                        postBinding!!.url.visibility= VISIBLE
-                                    }
-                                    if (isImagePost(t3ViewState))  {
-                                        loadImage(t3ViewState)
-                                        postBinding!!.fullImg.visibility = VISIBLE
-                                    }
-                                    if (!hasNoThumbnail(t3ViewState)) {
-                                        loadThumbNail(t3ViewState)
-                                        postBinding!!.thumb.visibility = VISIBLE
-                                    }
+                        loadUrlClickListener(t3ViewState)
+                        postBinding!!.url.visibility= VISIBLE
+                    }
+                    if (isImagePost(t3ViewState))  {
+                        loadImage(t3ViewState)
+                        postBinding!!.fullImg.visibility = VISIBLE
+                    }
+                    if (!hasNoThumbnail(t3ViewState)) {
+                        loadThumbNail(t3ViewState)
+                        postBinding!!.thumb.visibility = VISIBLE
+                    }
                     //FOr now get rid of all state
-                                    if (isVideoPost(t3ViewState)){
-                                        postBinding!!.timeCreated.visibility= GONE
-                                        postBinding!!.bodyText.visibility=GONE
-                                        postBinding!!.exoplayer.visibility=VISIBLE
-                                        playerView = postBinding!!.exoplayer
-                                        playerView?.player=exo
-                                        val vid = MediaItem.fromUri(t3ViewState.t3.url)
-                                        exo.setMediaItem(vid)
-                                        exo.playWhenReady=true
-                                        exo.prepare()
-                                        exo.seekTo(0)}
+                    if (isVideoPost(t3ViewState)){
+                        postBinding!!.timeCreated.visibility= GONE
+                        postBinding!!.bodyText.visibility=GONE
+                        postBinding!!.exoplayer.visibility=VISIBLE
+                        loadVideo(t3ViewState)
+     }
                     //should I also do title or just make it neon?
-
-
-
-
-                },{ Timber.e("Error in binding ${it.localizedMessage}")})
+                }, { Timber.e("Error in binding ${it.localizedMessage}")})
 
     }
 
     override fun onPause() {
         Timber.d("onDestroy in Post Fragment")
         super.onPause()
-
     }
 
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
-
-    }
 
     private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
         t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self" ||
                 t3ViewState.t3.thumbnail == "default"  || isImagePost(t3ViewState)
                 || isVideoPost(t3ViewState) || t3ViewState.t3.thumbnail == "spoiler" //|| thumbnail == nsfw
+
     private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing) =
         postBinding!!.url.setOnClickListener {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.t3.url))
@@ -162,10 +143,13 @@ class PostFragment : ContentFragment() {
     }
 
     private fun loadVideo(t3ViewState: PartialViewState.T3ForViewing) {
-
-        //TODO this is where the error is triggered on the rotate
-        Glide.with(this).load(t3ViewState.t3.url)
-            .into(postBinding!!.fullImg)
+        playerView = postBinding!!.exoplayer
+        playerView?.player=exo
+        val vid = MediaItem.fromUri(t3ViewState.t3.url)
+        exo.setMediaItem(vid)
+        exo.playWhenReady=true
+        exo.prepare()
+        exo.seekTo(0)
     }
 
     private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
