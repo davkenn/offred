@@ -22,8 +22,9 @@ fun T3.toDbModel(): RoomT3 {
     var thumb: String?=null
     var address: String?=null
     //TODO need to fix this and get the actual url from the other field
-    if (url.startsWith("https://v.redd.it")) address= media?.reddit_video?.dash_url ?:
-                                                        media?.reddit_video?.fallback_url?:""
+    if (url.startsWith("https://v.redd.it")){
+                                                address= media?.reddit_video?.dash_url ?:
+                                                        media?.reddit_video?.fallback_url?:""}
   //  if (media_metadata!=null && (thumb!=null) && ("gallery" !in url)) {
     //    thumb = media_metadata.p?.last()?.u?.replace("amp;", "")
       //  }

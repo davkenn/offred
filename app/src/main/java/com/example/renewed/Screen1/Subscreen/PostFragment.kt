@@ -118,10 +118,17 @@ class PostFragment : ContentFragment() {
         super.onPause()
     }
 
+    override fun onResume() {
+        Timber.d("onResume in Post Fragment")
+        super.onResume()
+    }
+
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
     }
+
+
 
 
     private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
@@ -152,6 +159,9 @@ class PostFragment : ContentFragment() {
         exo.seekTo(0)
     }
 
+    override fun onStop() {
+        super.onStop()
+    }
     private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         t3ViewState.t3.url.startsWith("http")// && "com" in x.t3.url
                 && (("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url) ||
