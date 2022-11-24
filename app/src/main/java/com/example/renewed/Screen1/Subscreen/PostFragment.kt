@@ -114,9 +114,11 @@ class PostFragment : ContentFragment() {
                                         postBinding!!.exoplayer.visibility=VISIBLE
                                         playerView = postBinding!!.exoplayer
                                         playerView?.player=exo
-                          exo.playWhenReady=true
+                                        val vid = MediaItem.fromUri(t3ViewState.t3.url)
+                                        exo.setMediaItem(vid)
+                                        exo.playWhenReady=true
                                         exo.prepare()
-                                    exo.seekTo(0)}
+                                        exo.seekTo(0)}
                     //should I also do title or just make it neon?
 
 

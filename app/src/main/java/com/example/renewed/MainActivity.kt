@@ -38,8 +38,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             toggleFullscreen(destination.id)
         }
-        val vid = MediaItem.fromUri("https://v.redd.it/qu1rx4oqxq1a1/DASH_720.mp4?source=fallback")
-        exo.setMediaItem(vid)
+
     }
 
 
