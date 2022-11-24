@@ -12,23 +12,28 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-
 import androidx.fragment.app.viewModels
-import androidx.media3.exoplayer.ExoPlayer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.R
 import com.example.renewed.databinding.PostViewBinding
 import com.example.renewed.models.PartialViewState
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.ui.PlayerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
-    @Inject lateinit var exo: ExoPlayer
+    @Inject
+    lateinit var exo: ExoPlayer
+    var playerView: PlayerView? = null
+
     private val postsVM: PostVM by viewModels()
      var postBinding: PostViewBinding? = null
     private var name:String?= null
@@ -40,13 +45,20 @@ class PostFragment : ContentFragment() {
      //   super.onSaveInstanceState(outState)
        // outState.run {
 
-         //   putString("key",name)
-        //}
+    //   putString("key",name)
     //}
+    //}
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
         return binding.root
@@ -68,6 +80,9 @@ class PostFragment : ContentFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         name = arguments?.getString("key") ?: "NONE"
+
+
+
         postsVM.setPost(name!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -79,7 +94,8 @@ class PostFragment : ContentFragment() {
                                     Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
                                     postBinding!!.url.text = t3ViewState.t3.url
 
-                                    if (isUrlPost(t3ViewState)) {
+
+                    if (isUrlPost(t3ViewState)) {
                                         loadUrlClickListener(t3ViewState)
                                         postBinding!!.url.visibility= VISIBLE
                                     }
@@ -92,16 +108,34 @@ class PostFragment : ContentFragment() {
                                         postBinding!!.thumb.visibility = VISIBLE
                                     }
                     //FOr now get rid of all state
-                                    if (isVideoPost(t3ViewState))
+                                    if (isVideoPost(t3ViewState)){
                                         postBinding!!.timeCreated.visibility= GONE
                                         postBinding!!.bodyText.visibility=GONE
+                                        postBinding!!.exoplayer.visibility=VISIBLE
+                                        playerView = postBinding!!.exoplayer
+                                        playerView?.player=exo
+
+                                        exo.playWhenReady=true
+                                        exo.prepare()}
                     //should I also do title or just make it neon?
 
 
 
+
                 },{ Timber.e("Error in binding ${it.localizedMessage}")})
+
     }
 
+    override fun onPause() {
+        Timber.d("onDestroy in Post Fragment")
+        super.onPause()
+
+    }
+
+    override fun onDestroy() {
+        Timber.d("onDestroy in Post Fragment")
+        super.onDestroy()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

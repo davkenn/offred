@@ -57,6 +57,16 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="timeCreated,post_name"/>
 
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/exoplayer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            app:resize_mode="zoom"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
 
         <ImageView
             android:visibility="gone"

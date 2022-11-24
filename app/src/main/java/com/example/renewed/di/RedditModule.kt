@@ -1,7 +1,7 @@
 package com.example.renewed.di
 
 import android.content.Context
-import androidx.media3.exoplayer.ExoPlayer
+
 import com.example.renewed.*
 import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.T3DAO
@@ -14,6 +14,7 @@ import com.example.renewed.moshiadapters.RedditPostAdapter
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import com.example.renewed.repos.FavoritesRepo
 import com.example.renewed.repos.SubredditsAndPostsRepo
+import com.google.android.exoplayer2.ExoPlayer
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides

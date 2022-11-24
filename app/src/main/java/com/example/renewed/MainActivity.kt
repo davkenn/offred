@@ -12,13 +12,17 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
+    @Inject
+    lateinit var exo: ExoPlayer
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
 
@@ -34,7 +38,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             toggleFullscreen(destination.id)
         }
+        val vid = MediaItem.fromUri("https://v.redd.it/qu1rx4oqxq1a1/DASH_720.mp4?source=fallback")
+        exo.setMediaItem(vid)
     }
+
 
     private fun toggleFullscreen(id:Int) {
         if (id == R.id.feed) {
