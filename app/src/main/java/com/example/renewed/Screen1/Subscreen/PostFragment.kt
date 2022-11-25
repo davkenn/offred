@@ -56,8 +56,6 @@ class PostFragment : ContentFragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
@@ -103,48 +101,18 @@ class PostFragment : ContentFragment() {
                         postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
                                 private var dex: Int = 1
                                 override fun onClick(v: View?) {
-
-                                    Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA$dex")
-                                    //Your code here
-
-
                                     Glide.with(this@PostFragment)
                                         .load(t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size])
                                         .into(postBinding!!.fullImg)
                                     dex += 1
                                 }})
 
-
-
-
-
                             Glide.with(this).load(t3ViewState.galleryUrls!![0])
                                 .into(postBinding!!.fullImg)
                             postBinding!!.fullImg.visibility = VISIBLE
+                        val end = "\nGALLERY, click to to open..."
+                        postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
 
-                //        postBinding!!.fullImg.setOnClickListener {   class GalleryClick : View.OnClickListener {
-                  //              override fun onClick(v: View) {
-                    //                Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA")
-                      //          }}}
-                                /**  var index:Int
-                                init{index= 0}
-                                override fun onClick(v: View) {
-
-                                Glide.with(this@PostFragment).load(t3ViewState
-                                .galleryUrls!![0.rangeTo(t3ViewState.galleryUrls.size).shuffled().first()])
-                                .into(postBinding!!.fullImg)
-                                //    index= index+1
-                                Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA$index")
-                                }
-                                }
-                                var index = 0;**/
-                         //   }
-
-                        //TODO this is where the error is triggered on the rotate
-                  //      TImber.d("this is")
-             //           Glide.with(this).load(t3ViewState.galleryUrls!![0])
-               //             .into(postBinding!!.fullImg)
-                 //               postBinding!!.fullImg.visibility = VISIBLE
 
                     }
                     if (isUrlPost(t3ViewState)) {
@@ -229,15 +197,12 @@ class PostFragment : ContentFragment() {
 
     }
 
-//TODO this is a mess I have to unselect all the image posts then check if image post in image one
     private fun isUrlPost(t3ViewState: ViewStateT3):Boolean =
         t3ViewState.url.startsWith("http")// && "com" in x.t3.url
                 //todo this is better but doesnt capture the text posts that no need url
              //   && !isImagePost(t3ViewState) && !isVideoPost(t3ViewState)
                 && ("reddit" !in t3ViewState.url  && "redd.it" !in t3ViewState.url
                                                      && "imgur" !in t3ViewState.url)
-   //                 || ("reddit" in t3ViewState.url) && ("gallery" in t3ViewState.url)
-
 
     private fun isGalleryPost(t3ViewState: ViewStateT3):Boolean =
         ("reddit" in t3ViewState.url) && ("gallery" in t3ViewState.url)
