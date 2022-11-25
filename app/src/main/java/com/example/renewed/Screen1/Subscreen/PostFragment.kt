@@ -66,7 +66,7 @@ class PostFragment : ContentFragment() {
 
     override fun onDestroyView() {
         //TODO need to not do this if I don't want crashes
-   //     postBinding = null
+        postBinding = null
         super.onDestroyView()
     }
 
@@ -128,7 +128,12 @@ class PostFragment : ContentFragment() {
         super.onDestroy()
     }
 
-
+    override fun onStop() {
+     //is this ok? can onstop and onstart in the next fragment get mixed up? should I do this in onpause?
+        exo.
+        exo.pause()
+        super.onStop()
+    }
 
 
     private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
@@ -159,9 +164,7 @@ class PostFragment : ContentFragment() {
         exo.seekTo(0)
     }
 
-    override fun onStop() {
-        super.onStop()
-    }
+
     private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         t3ViewState.t3.url.startsWith("http")// && "com" in x.t3.url
                 && (("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url) ||
