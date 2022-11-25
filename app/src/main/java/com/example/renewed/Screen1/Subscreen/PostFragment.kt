@@ -165,14 +165,15 @@ class PostFragment : ContentFragment() {
         exo.seekTo(0)
     }
 
-
+//TODO this is a mess I have to unselect all the image posts then check if image post in image one
     private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         t3ViewState.t3.url.startsWith("http")// && "com" in x.t3.url
-                && (("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url) ||
-        (("reddit" in t3ViewState.t3.url) && ("gallery" in t3ViewState.t3.url)))
+                && (("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url
+                                                     && "imgur" !in t3ViewState.t3.url) ||
+                    (("reddit" in t3ViewState.t3.url) && ("gallery" in t3ViewState.t3.url)))
 
     private fun isImagePost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
-                                                            "i.redd.it" in t3ViewState.t3.url
+                            "i.redd.it" in t3ViewState.t3.url || "imgur" in t3ViewState.t3.url
 
     private fun isVideoPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         "v.redd.it" in t3ViewState.t3.url

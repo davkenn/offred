@@ -98,7 +98,6 @@ class SubredditsAndPostsVMTest {
     @Test
     fun processNonExistingSubredditError(){
         val emptySubreddit = loadJsonResponse("handleUrlNotPointingToSubreddit.json")
-
         mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody(emptySubreddit!!))
 
 
