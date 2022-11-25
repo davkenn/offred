@@ -80,8 +80,7 @@ class PostFragment : ContentFragment() {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.let {
-            exoPosition = it.getLong("player_pos")
-
+            exoPosition= savedInstanceState.getLong("player_pos")
         }
     }
     @Deprecated("Deprecated in Java")
@@ -170,9 +169,11 @@ class PostFragment : ContentFragment() {
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         playerView?.useController = false
-        exo.playWhenReady=true
-        exo.prepare()
+        exo.playWhenReady       =true
         exo.seekTo(exoPosition)
+
+       exo.prepare()
+
     }
 
 //TODO this is a mess I have to unselect all the image posts then check if image post in image one
