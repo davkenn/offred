@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.R
 import com.example.renewed.databinding.PostViewBinding
 import com.example.renewed.models.PartialViewState
+import com.example.renewed.models.ViewStateT3
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -34,21 +35,26 @@ class PostFragment : ContentFragment() {
     @Inject
     lateinit var exo: ExoPlayer
     var playerView: PlayerView? = null
+    var exoPosition: Long = 0
+
 
     private val postsVM: PostVM by viewModels()
      var postBinding: PostViewBinding? = null
     private var name:String?= null
     override fun getName() : String = postsVM.name
 
-    //TODO am i shooting myself in the foot here by only saving instance state from fragmentadapter?
-   // override fun onSaveInstanceState(outState: Bundle) {
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putLong("player_pos", exo.contentPosition)
+
+
+    //TODO am i shooting myself in the foot here by only saving instance state from fragmentadapter?
      //   super.onSaveInstanceState(outState)
        // outState.run {
 
     //   putString("key",name)
     //}
-    //}
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,8 +79,11 @@ class PostFragment : ContentFragment() {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-    }
+        savedInstanceState?.let {
+            exoPosition = it.getLong("player_pos")
 
+        }
+    }
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -83,12 +92,12 @@ class PostFragment : ContentFragment() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { t3ViewState -> postBinding!!.postName.text = t3ViewState.t3.displayName
-                                 val text = t3ViewState.t3.created + ": "
+                { t3ViewState -> postBinding!!.postName.text = t3ViewState.displayName
+                                 val text = t3ViewState.created + ": "
                                  postBinding!!.timeCreated.text = text
-                                 postBinding!!.bodyText.text = t3ViewState.t3.selftext
+                                 postBinding!!.bodyText.text = t3ViewState.selftext
                                  Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
-                                 postBinding!!.url.text = t3ViewState.t3.url
+                                 postBinding!!.url.text = t3ViewState.url
 
                     if (isUrlPost(t3ViewState)) {
                         loadUrlClickListener(t3ViewState)
@@ -136,60 +145,64 @@ class PostFragment : ContentFragment() {
     }
 
 
-    private fun hasNoThumbnail(t3ViewState: PartialViewState.T3ForViewing) =
-        t3ViewState.t3.thumbnail.isBlank() || t3ViewState.t3.thumbnail == "self" ||
-                t3ViewState.t3.thumbnail == "default"  || isImagePost(t3ViewState)
-                || isVideoPost(t3ViewState) || t3ViewState.t3.thumbnail == "spoiler" //|| thumbnail == nsfw
+    private fun hasNoThumbnail(t3ViewState: ViewStateT3) =
+        t3ViewState.thumbnail.isBlank() || t3ViewState.thumbnail == "self" ||
+                t3ViewState.thumbnail == "default"  || isImagePost(t3ViewState)
+                || isVideoPost(t3ViewState) || t3ViewState.thumbnail == "spoiler" //|| thumbnail == nsfw
 
-    private fun loadUrlClickListener(t3ViewState: PartialViewState.T3ForViewing) =
+    private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
         postBinding!!.url.setOnClickListener {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.t3.url))
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.url))
                     startActivity(browserIntent)
         }
 
-    private fun loadImage(t3ViewState: PartialViewState.T3ForViewing) {
+    private fun loadImage(t3ViewState: ViewStateT3) {
 
         //TODO this is where the error is triggered on the rotate
-        Glide.with(this).load(t3ViewState.t3.url)
+        Glide.with(this).load(t3ViewState.url)
             .into(postBinding!!.fullImg)
     }
 
-    private fun loadVideo(t3ViewState: PartialViewState.T3ForViewing) {
+    private fun loadVideo(t3ViewState: ViewStateT3) {
         playerView = postBinding!!.exoplayer
         playerView?.player=exo
-        val vid = MediaItem.fromUri(t3ViewState.t3.url)
+        val vid = MediaItem.fromUri(t3ViewState.url)
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         playerView?.useController = false
         exo.playWhenReady=true
         exo.prepare()
-        exo.seekTo(0)
+        exo.seekTo(exoPosition)
     }
 
 //TODO this is a mess I have to unselect all the image posts then check if image post in image one
-    private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
-        t3ViewState.t3.url.startsWith("http")// && "com" in x.t3.url
+    private fun isUrlPost(t3ViewState: ViewStateT3):Boolean =
+        t3ViewState.url.startsWith("http")// && "com" in x.t3.url
                 //todo this is better but doesnt capture the text posts that no need url
              //   && !isImagePost(t3ViewState) && !isVideoPost(t3ViewState)
-                && ("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url
-                                                     && "imgur" !in t3ViewState.t3.url)
-                    || ("reddit" in t3ViewState.t3.url) && ("gallery" in t3ViewState.t3.url)
-
-    private fun isImagePost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
-                            "i.redd.it" in t3ViewState.t3.url || "imgur" in t3ViewState.t3.url
-
-    private fun isVideoPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
-                "v.redd.it" in t3ViewState.t3.url
+                && ("reddit" !in t3ViewState.url  && "redd.it" !in t3ViewState.url
+                                                     && "imgur" !in t3ViewState.url)
+                    || ("reddit" in t3ViewState.url) && ("gallery" in t3ViewState.url)
 
 
-    private fun loadThumbNail(viewState: PartialViewState.T3ForViewing)     {
+    private fun isGalleryPost(t3ViewState: ViewStateT3):Boolean =
+        ("reddit" in t3ViewState.url) && ("gallery" in t3ViewState.url)
+
+    private fun isImagePost(t3ViewState: ViewStateT3):Boolean =
+                            "i.redd.it" in t3ViewState.url || "imgur" in t3ViewState.url
+
+    private fun isVideoPost(t3ViewState: ViewStateT3):Boolean =
+                "v.redd.it" in t3ViewState.url
+
+
+    private fun loadThumbNail(viewState: ViewStateT3)     {
         postBinding!!.thumb.visibility = VISIBLE
-        if (viewState.t3.thumbnail == "spoiler"){ postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
+        if (viewState.thumbnail == "spoiler"){ postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
                                                 return}
-        if (viewState.t3.thumbnail == "nsfw") {postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
+        if (viewState.thumbnail == "nsfw") {postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
             return
         }
-        Glide.with(this).load(viewState.t3.thumbnail.replace("&amp;", ""))
+        Glide.with(this).load(viewState.thumbnail.replace("&amp;", ""))
              .apply( RequestOptions().override(150, 150))
              .placeholder(ColorDrawable(Color.BLACK))
              .error(ColorDrawable(Color.RED))

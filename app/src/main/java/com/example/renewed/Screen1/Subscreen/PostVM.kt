@@ -1,8 +1,10 @@
 package com.example.renewed.Screen1.Subscreen
 
+import android.provider.Telephony
 import androidx.lifecycle.ViewModel
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import com.example.renewed.models.PartialViewState
+import com.example.renewed.models.ViewStateT3
 import com.example.renewed.models.toViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Single
@@ -15,9 +17,9 @@ private val repository: BaseSubredditsAndPostsRepo
     lateinit var name: String
         private set
 
-    fun setPost(n: String) : Single<PartialViewState.T3ForViewing> =
+    fun setPost(n: String) : Single<ViewStateT3> =
         repository.getPost(n)
                 //TODO this feels really wrong
             .doOnEvent{x,y->name =  x.subredditId}
-            .map { PartialViewState.T3ForViewing(it.toViewState() )}
+            .map { it.toViewState() }
 }
