@@ -17,10 +17,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         postIds.clear()
         postIds.addAll(idList)
         notifyDataSetChanged()
-
-
     }
-
 
     override fun createFragment(position: Int): Fragment {
         val name = postIds[position]

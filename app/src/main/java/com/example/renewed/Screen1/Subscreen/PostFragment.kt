@@ -20,6 +20,7 @@ import com.example.renewed.databinding.PostViewBinding
 import com.example.renewed.models.PartialViewState
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -130,7 +131,6 @@ class PostFragment : ContentFragment() {
 
     override fun onStop() {
      //is this ok? can onstop and onstart in the next fragment get mixed up? should I do this in onpause?
-        exo.
         exo.pause()
         super.onStop()
     }
@@ -159,6 +159,7 @@ class PostFragment : ContentFragment() {
         playerView?.player=exo
         val vid = MediaItem.fromUri(t3ViewState.t3.url)
         exo.setMediaItem(vid)
+        exo.repeatMode = Player.REPEAT_MODE_ALL
         exo.playWhenReady=true
         exo.prepare()
         exo.seekTo(0)

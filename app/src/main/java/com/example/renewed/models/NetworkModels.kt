@@ -17,7 +17,6 @@ sealed class RedditPostType {
 @JsonClass(generateAdapter = true)
 data class RedditListing(val children: List<Holder>, val before: String?, val after: String?)
 
-
 @JsonClass(generateAdapter = true)
 data class PostAndComments(  val data: List<RedditListing>)
 
@@ -37,7 +36,6 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
               val subreddit: String, val subreddit_id: String, val subreddit_subscribers: Int,
               @SubredditDescription val title: String,  var url: String,  val spoiler:Boolean,
               @Json(name = "upvote_ratio") val upvoteRatio: Double,
-
             //if url is permalink then create a text, if not then either vid  or photo link
               val permalink: String, /**image link for vids**/ val thumbnail: String,
               val created_utc: Long,val media:Media?, val media_metadata:Media2?) : RedditPostType()
@@ -45,15 +43,14 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
 @JsonClass(generateAdapter = true)
 data class PicsAndDimens (val y:Int,val x:Int, val u:String)
 
-
 @JsonClass(generateAdapter = true)
 data class Media2(val e:String?, val m:String?, val p: List<PicsAndDimens>?)
 
 @JsonClass(generateAdapter = true)
 data class Media  (val reddit_video:Video?)
+
 @JsonClass(generateAdapter = true)
 data class Video  (val fallback_url:String,val dash_url:String)
-
 
 @JsonClass(generateAdapter = true)
 data class T1 (override val name: String, val link_id: String, val body: String): RedditPostType()

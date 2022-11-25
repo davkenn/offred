@@ -59,8 +59,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             .subscribe({ Timber.d("FavoritesListVM::$it")
                             adapter2.replaceList(it) },
                 { Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
-
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -75,12 +73,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }
     }
 
-
-
     override fun onDestroy() {
         Timber.d("onDestroy in FavoritesListFragment")
         super.onDestroy()
-
     }
 
     override fun onDestroyView() {

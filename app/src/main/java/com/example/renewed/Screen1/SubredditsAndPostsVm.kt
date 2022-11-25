@@ -67,30 +67,25 @@ class SubredditsAndPostsVM @Inject constructor(
         return scan(FullViewState()) { state, event ->
             when (event) {
                 is PartialViewState.T5ListForRV -> state.copy(
-                    t5ListForRV = event, latestEvent5 = null,
-                    latestEvent3 = null, effect = null
-                )
+                                                        t5ListForRV = event, latestEvent5 = null,
+                                                        latestEvent3 = null, effect = null)
                 is PartialViewState.T3ListForRV -> state.copy(
-                    t3ListForRV = event, latestEvent5 = null,
-                    latestEvent3 = null, effect = null
-                )
+                                                        t3ListForRV = event, latestEvent5 = null,
+                                                        latestEvent3 = null, effect = null)
                 is PartialViewState.T5ForViewing -> state.copy(
-                    latestEvent5 = event, latestEvent3 = null,
-                    effect = null
-                )
+                                                        latestEvent5 = event, latestEvent3 = null,
+                                                        effect = null)
                 is PartialViewState.T3ForViewing -> state.copy(
-                    latestEvent3 = event, latestEvent5 = null,
-                    effect = null
-                )
+                                                        latestEvent3 = event, latestEvent5 = null,
+                                                        effect = null)
                 is PartialViewState.NavigateBackEffect -> state.copy(
-                    latestEvent3= null, latestEvent5 = null,
-                    effect = EffectType.DELETE_OR_SAVE
-                )
+                                                        latestEvent3= null, latestEvent5 = null,
+                                                        effect = EffectType.DELETE_OR_SAVE)
                 is PartialViewState.ClearEffectEffect -> state.copy(
-                effect = null
-                )
-                is PartialViewState.SnackbarEffect -> state.copy(effect=EffectType.SNACKBAR,
-                                                                 latestEvent3 = null,latestEvent5=null)
+                                                                            effect = null)
+                is PartialViewState.SnackbarEffect -> state.copy(
+                                                        effect=EffectType.SNACKBAR,
+                                                            latestEvent3 = null,latestEvent5=null)
             }
         }.skip(1)
     }
@@ -159,18 +154,20 @@ class SubredditsAndPostsVM @Inject constructor(
                                                          shouldToggleDisplayedColumnInDb = true)
                     .subscribeOn(Schedulers.io())
                     .andThen(repo.getPosts(clickOnT5Event.name)
-                        .map { list -> list.map { x -> x.toViewState() }}
-                        .map { x -> PartialViewState.T3ListForRV(x) })},
+                    .map { list -> list.map { x -> x.toViewState() }}
+                    .map { x -> PartialViewState.T3ListForRV(x) })
+            },
             flatMapSingle {
                 repo.getSubreddit(it.name)
                     .onErrorResumeWith(Single.just(RoomT5(name= "Oops! Somehow there's an error...",
                         description = "Either you have no internet connection"  +
-                                "or the site you seek no longer exists", displayName="ll",
+                                       "or the site you seek no longer exists", displayName="ll",
                         created_utc = Instant.now(),timeLastAccessed = Instant.now(),
-                        thumbnail = "", banner_img = "", subscribers=5))
-                        .retry(1))
+                                                    thumbnail = "", banner_img = "", subscribers=5))
+                    .retry(1))
                     .subscribeOn(Schedulers.io())
-                    .map { x -> PartialViewState.T5ForViewing(x.toViewState()) }})
+                    .map { x -> PartialViewState.T5ForViewing(x.toViewState()) }
+            })
     }
 
     fun prefetch(): Completable =
