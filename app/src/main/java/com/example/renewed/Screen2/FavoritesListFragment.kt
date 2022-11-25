@@ -22,6 +22,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
     private val favoritesVM: FavoritesListVM by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
@@ -57,8 +58,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")
-                            adapter2.replaceList(it) },
-                { Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
+                         adapter2.replaceList(it) },
+                       { Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

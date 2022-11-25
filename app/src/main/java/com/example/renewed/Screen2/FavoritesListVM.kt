@@ -31,10 +31,12 @@ package com.example.renewed.Screen2
             //TODO i need a delete button to make this really worthwhile
             repository.observeSavedSubreddits()
                 //have to delete in here before make sublist
-                .map { it.shuffled().take(4) }.flatMapIterable { it }
+                .flatMap {   x->      Observable.just(1,1,1)
+                                                 .map {  x.shuffled().take(1) }
+                }
+                .flatMapIterable { it }
                 .flatMap{ repository.getRandomPosts(it.displayName,2) }
                     //TODO need to also save it to the db here
-
                 .doOnNext {
                     repository.insert(it.name).subscribe({},
                         { Timber.e("dberror: ${it.localizedMessage}") }).addTo(disposables)
@@ -54,8 +56,6 @@ package com.example.renewed.Screen2
         override fun onCleared() {
             super.onCleared()
             Timber.d("oncleared in favslistvm")
-       //     repository.clearPages().subscribeOn(Schedulers.io()).subscribe()
-
             disposables.dispose()
         }
 
