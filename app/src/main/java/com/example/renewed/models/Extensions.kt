@@ -32,8 +32,11 @@ fun T3.toDbModel(): RoomT3 {
         name = name, subredditId = subreddit_id, selftext = selftext, url = address?: url,
         created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
         timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
-                gallery_urls = media_metadata?.p?.joinToString(separator = " ") {
-                                                it.u.replace("amp;","")})
+        gallery_urls = media_metadata?.joinToString(separator = " ") {
+                                                it.p?.last()?.u?.
+                                                replace("amp;","")?:""})
+//    gallery_urls = media_metadata?.p?.joinToString(separator = " ") {
+              //                                  it.u.replace("amp;","")})
 }
 
 

@@ -154,9 +154,9 @@ class SubredditsAndPostsVMTest {
         val res = viewModel.vs.test()
 
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
-        res.await(1,TimeUnit.SECONDS)
+        res.await(3,TimeUnit.SECONDS)
         res.assertValueCount(2)
-        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].galleryUrls==null }
+        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].galleryUrls!=null }
         res.assertNotComplete()
 
     }
