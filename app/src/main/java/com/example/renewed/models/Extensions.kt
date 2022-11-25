@@ -29,13 +29,15 @@ fun T3.toDbModel(): RoomT3 {
     //    thumb = media_metadata.p?.last()?.u?.replace("amp;", "")
       //  }
     return RoomT3(
-        name = name, subredditId = subreddit_id, selftext = selftext,
+        name = name, subredditId = subreddit_id, selftext = selftext, url = address?: url,
         created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
         timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
-        url = address?: url
-    )
-
+                gallery_urls = media_metadata?.p?.joinToString(separator = " ") {
+                                                it.u.replace("amp;","")})
 }
+
+
+
 
 fun RoomT5.toViewState(): ViewStateT5 =
     ViewStateT5(
@@ -48,9 +50,8 @@ fun RoomT3.toViewState(): ViewStateT3 =
     ViewStateT3(
         name = this.name, displayName = this.title, subredditId = this.subredditId,
         selftext = this.selftext, thumbnail = this.thumbnail, url = this.url,
-        created = this.created_utc.instantToDateString()
-            .replaceFirst(" ", "\n")
-    )
+        created = this.created_utc.instantToDateString().replaceFirst(" ", "\n"),
+        galleryUrls = gallery_urls?.split(" "))
 
 private fun Instant.instantToDateString() =
     this.atZone(ZoneId.of("America/Los_Angeles"))

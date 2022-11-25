@@ -44,6 +44,9 @@ data class ViewStateT5(val name: String, val displayName: String, val descriptio
     }
 }
 
-data class ViewStateT3(val name: String, val displayName: String, val subredditId: String,
-                       val selftext: String, val url: String, val thumbnail: String, val created: String ) {
+data class ViewStateT3(
+    val name: String, val displayName: String, val subredditId: String,
+    val selftext: String, val url: String, val thumbnail: String,
+    val created: String, val galleryUrls: List<String>?
+) {
                         override fun toString(): String = "ViewStateT3($name) " }

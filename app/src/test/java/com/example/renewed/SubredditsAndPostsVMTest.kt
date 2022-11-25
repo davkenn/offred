@@ -140,6 +140,26 @@ class SubredditsAndPostsVMTest {
         res.assertNotComplete()
 
     }
+    @Test
+    fun gallerySubredditLoadsImageUrls() {
+
+        val end1 = loadJsonResponse("crtgamingabout.json")
+
+        val end2 = loadJsonResponse("crtgamingposts.json")
+
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end1!!))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end2!!))
+
+
+        val res = viewModel.vs.test()
+
+        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        res.await(1,TimeUnit.SECONDS)
+        res.assertValueCount(2)
+        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].galleryUrls==null }
+        res.assertNotComplete()
+
+    }
 
     @Test
     fun getVideoPost()

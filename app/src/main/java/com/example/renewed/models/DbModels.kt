@@ -23,7 +23,8 @@ data class RoomT1(@PrimaryKey val name: String, @ColumnInfo(index = true) val li
                                                                     onUpdate = ForeignKey.CASCADE)])
 data class RoomT3(@PrimaryKey val name: String, @ColumnInfo(index = true) val subredditId: String,
                   val created_utc: Instant, val timeLastAccessed: Instant, val title: String,
-                  val selftext: String, val url: String, val permalink:String, val thumbnail: String)
+                  val selftext: String, val url: String, val permalink:String, val thumbnail: String,
+                  val gallery_urls: String?)
 
    /** @Json(name = "author")
     val author: String,

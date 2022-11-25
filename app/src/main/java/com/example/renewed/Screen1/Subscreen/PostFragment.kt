@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.R
 import com.example.renewed.databinding.PostViewBinding
-import com.example.renewed.models.PartialViewState
 import com.example.renewed.models.ViewStateT3
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -91,13 +90,53 @@ class PostFragment : ContentFragment() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { t3ViewState -> postBinding!!.postName.text = t3ViewState.displayName
-                                 val text = t3ViewState.created + ": "
-                                 postBinding!!.timeCreated.text = text
-                                 postBinding!!.bodyText.text = t3ViewState.selftext
-                                 Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
-                                 postBinding!!.url.text = t3ViewState.url
+                { t3ViewState ->
+                    postBinding!!.postName.text = t3ViewState.displayName
+                    val text = t3ViewState.created + ": "
+                    postBinding!!.timeCreated.text = text
+                    postBinding!!.bodyText.text = t3ViewState.selftext
+                    Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
+                    postBinding!!.url.text = t3ViewState.url
 
+
+                    if (isGalleryPost(t3ViewState)){
+                        postBinding!!.fullImg.setOnClickListener {
+                            Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA")
+                            Glide.with(this@PostFragment)
+                                .load(
+                                    t3ViewState.galleryUrls!![(0 until t3ViewState.galleryUrls.size)
+                                        .shuffled().first()]
+                                )
+                                .into(postBinding!!.fullImg)
+                            Glide.with(this).load(t3ViewState.galleryUrls!![0])
+                                .into(postBinding!!.fullImg)
+                            postBinding!!.fullImg.visibility = VISIBLE
+                        }
+                //        postBinding!!.fullImg.setOnClickListener {   class GalleryClick : View.OnClickListener {
+                  //              override fun onClick(v: View) {
+                    //                Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA")
+                      //          }}}
+                                /**  var index:Int
+                                init{index= 0}
+                                override fun onClick(v: View) {
+
+                                Glide.with(this@PostFragment).load(t3ViewState
+                                .galleryUrls!![0.rangeTo(t3ViewState.galleryUrls.size).shuffled().first()])
+                                .into(postBinding!!.fullImg)
+                                //    index= index+1
+                                Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA$index")
+                                }
+                                }
+                                var index = 0;**/
+                         //   }
+
+                        //TODO this is where the error is triggered on the rotate
+                  //      TImber.d("this is")
+                        Glide.with(this).load(t3ViewState.galleryUrls!![1])
+                            .into(postBinding!!.fullImg)
+                                postBinding!!.fullImg.visibility = VISIBLE
+
+                    }
                     if (isUrlPost(t3ViewState)) {
                         loadUrlClickListener(t3ViewState)
                         postBinding!!.url.visibility= VISIBLE
@@ -169,8 +208,11 @@ class PostFragment : ContentFragment() {
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         playerView?.useController = false
+
         exo.playWhenReady       =true
+     //TODO not working
         exo.seekTo(exoPosition)
+
 
        exo.prepare()
 
@@ -183,7 +225,7 @@ class PostFragment : ContentFragment() {
              //   && !isImagePost(t3ViewState) && !isVideoPost(t3ViewState)
                 && ("reddit" !in t3ViewState.url  && "redd.it" !in t3ViewState.url
                                                      && "imgur" !in t3ViewState.url)
-                    || ("reddit" in t3ViewState.url) && ("gallery" in t3ViewState.url)
+   //                 || ("reddit" in t3ViewState.url) && ("gallery" in t3ViewState.url)
 
 
     private fun isGalleryPost(t3ViewState: ViewStateT3):Boolean =
