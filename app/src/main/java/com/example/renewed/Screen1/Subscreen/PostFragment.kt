@@ -160,6 +160,7 @@ class PostFragment : ContentFragment() {
         val vid = MediaItem.fromUri(t3ViewState.t3.url)
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
+        playerView?.useController = false
         exo.playWhenReady=true
         exo.prepare()
         exo.seekTo(0)
@@ -168,15 +169,17 @@ class PostFragment : ContentFragment() {
 //TODO this is a mess I have to unselect all the image posts then check if image post in image one
     private fun isUrlPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
         t3ViewState.t3.url.startsWith("http")// && "com" in x.t3.url
-                && (("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url
-                                                     && "imgur" !in t3ViewState.t3.url) ||
-                    (("reddit" in t3ViewState.t3.url) && ("gallery" in t3ViewState.t3.url)))
+                //todo this is better but doesnt capture the text posts that no need url
+             //   && !isImagePost(t3ViewState) && !isVideoPost(t3ViewState)
+                && ("reddit" !in t3ViewState.t3.url  && "redd.it" !in t3ViewState.t3.url
+                                                     && "imgur" !in t3ViewState.t3.url)
+                    || ("reddit" in t3ViewState.t3.url) && ("gallery" in t3ViewState.t3.url)
 
     private fun isImagePost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
                             "i.redd.it" in t3ViewState.t3.url || "imgur" in t3ViewState.t3.url
 
     private fun isVideoPost(t3ViewState: PartialViewState.T3ForViewing):Boolean =
-        "v.redd.it" in t3ViewState.t3.url
+                "v.redd.it" in t3ViewState.t3.url
 
 
     private fun loadThumbNail(viewState: PartialViewState.T3ForViewing)     {
@@ -187,11 +190,11 @@ class PostFragment : ContentFragment() {
             return
         }
         Glide.with(this).load(viewState.t3.thumbnail.replace("&amp;", ""))
-            .apply( RequestOptions().override(150, 150))
-            .placeholder(ColorDrawable(Color.BLACK))
-            .error(ColorDrawable(Color.RED))
-            .fallback(ColorDrawable(Color.YELLOW))
-            .into(postBinding!!.thumb)
+             .apply( RequestOptions().override(150, 150))
+             .placeholder(ColorDrawable(Color.BLACK))
+             .error(ColorDrawable(Color.RED))
+             .fallback(ColorDrawable(Color.YELLOW))
+             .into(postBinding!!.thumb)
     }
 }
 

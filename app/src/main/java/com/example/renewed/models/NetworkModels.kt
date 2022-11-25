@@ -40,6 +40,9 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
               val permalink: String, /**image link for vids**/ val thumbnail: String,
               val created_utc: Long,val media:Media?, val media_metadata:Media2?) : RedditPostType()
 
+
+
+//data class T1(override val name: String)
 @JsonClass(generateAdapter = true)
 data class PicsAndDimens (val y:Int,val x:Int, val u:String)
 
