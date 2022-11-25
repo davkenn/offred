@@ -27,7 +27,6 @@ package com.example.renewed.Screen2
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
         init {
 
-
             //TODO i need a delete button to make this really worthwhile
             repository.observeSavedSubreddits()
                 //have to delete in here before make sublist

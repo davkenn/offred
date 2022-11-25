@@ -143,7 +143,7 @@ class SubredditsAndPostsVMTest {
     }
 
     @Test
-    fun getImageForThumbnail()
+    fun getVideoPost()
     {
         val end1 = loadJsonResponse("crtgamingabout.json")
 
@@ -157,7 +157,10 @@ class SubredditsAndPostsVMTest {
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
         res.assertValueCount(2)
-        res.assertValueAt(3) { it.t3ListForRV!!.vsT3!![0].thumbnail=="https://v.redd.it/cx5ll43oe31a1/DASH_1080.mp4?source=fallback" }
+        res.assertValueAt(1) {
+            it.t3ListForRV!!.vsT3!![0].url=="https://v.redd.it/cx5ll43oe31a1/DASHPlaylist" +
+                    ".mpd?a=1671522034%2CZWMzZTFjMzc5ZjI4OTViOGM1MWQ5MmJiYjAxNGMxZWYwNTlkMTM4YT" +
+                                        "YxMjQzYTU0MTIwNmQ1NDIxM2ZiNmZiMw%3D%3D&amp;v=1&amp;f=sd" }
         res.assertNotComplete()
 
 
