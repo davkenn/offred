@@ -140,6 +140,7 @@ class SubredditsAndPostsVMTest {
         res.assertNotComplete()
 
     }
+
     @Test
     fun gallerySubredditLoadsImageUrls() {
 

@@ -100,18 +100,28 @@ class PostFragment : ContentFragment() {
 
 
                     if (isGalleryPost(t3ViewState)){
-                        postBinding!!.fullImg.setOnClickListener {
-                            Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA")
-                            Glide.with(this@PostFragment)
-                                .load(
-                                    t3ViewState.galleryUrls!![(0 until t3ViewState.galleryUrls.size)
-                                        .shuffled().first()]
-                                )
-                                .into(postBinding!!.fullImg)
+                        postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
+                                private var dex: Int = 1
+                                override fun onClick(v: View?) {
+
+                                    Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA$dex")
+                                    //Your code here
+
+
+                                    Glide.with(this@PostFragment)
+                                        .load(t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size])
+                                        .into(postBinding!!.fullImg)
+                                    dex += 1
+                                }})
+
+
+
+
+
                             Glide.with(this).load(t3ViewState.galleryUrls!![0])
                                 .into(postBinding!!.fullImg)
                             postBinding!!.fullImg.visibility = VISIBLE
-                        }
+
                 //        postBinding!!.fullImg.setOnClickListener {   class GalleryClick : View.OnClickListener {
                   //              override fun onClick(v: View) {
                     //                Timber.d("AAAAAAAAAAAAAAAAAAAAAAAAAA")
@@ -132,9 +142,9 @@ class PostFragment : ContentFragment() {
 
                         //TODO this is where the error is triggered on the rotate
                   //      TImber.d("this is")
-                        Glide.with(this).load(t3ViewState.galleryUrls!![1])
-                            .into(postBinding!!.fullImg)
-                                postBinding!!.fullImg.visibility = VISIBLE
+             //           Glide.with(this).load(t3ViewState.galleryUrls!![0])
+               //             .into(postBinding!!.fullImg)
+                 //               postBinding!!.fullImg.visibility = VISIBLE
 
                     }
                     if (isUrlPost(t3ViewState)) {
@@ -186,7 +196,8 @@ class PostFragment : ContentFragment() {
     private fun hasNoThumbnail(t3ViewState: ViewStateT3) =
         t3ViewState.thumbnail.isBlank() || t3ViewState.thumbnail == "self" ||
                 t3ViewState.thumbnail == "default"  || isImagePost(t3ViewState)
-                || isVideoPost(t3ViewState) || t3ViewState.thumbnail == "spoiler" //|| thumbnail == nsfw
+                || isVideoPost(t3ViewState) || isGalleryPost(t3ViewState)  ||
+                t3ViewState.thumbnail == "spoiler" //|| thumbnail == nsfw
 
     private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
         postBinding!!.url.setOnClickListener {
