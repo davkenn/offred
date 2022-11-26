@@ -65,15 +65,7 @@ class SubredditsAndPostsVMTest {
         assertThat("Is there a subscrier?",res.hasSubscription())
         res.assertNotComplete()
         res.assertNoErrors()
-        res.assertValueCount(2)
-
-
-
-
-
-
-
-
+        res.assertValueCount(1)
     }
     @Test
     fun getRandomSubreddit() {
@@ -100,14 +92,10 @@ class SubredditsAndPostsVMTest {
         val emptySubreddit = loadJsonResponse("handleUrlNotPointingToSubreddit.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(404).setBody(emptySubreddit!!))
 
-
-
-
     }
 
     @Test
     fun processNetworkError() {
-
         val end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!).
                 setSocketPolicy(SocketPolicy.DISCONNECT_AT_START))
@@ -136,7 +124,10 @@ class SubredditsAndPostsVMTest {
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
         res.assertValueCount(2)
-        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![0].url=="https://v.redd.it/cx5ll43oe31a1/DASH_1080.mp4?source=fallback" }
+        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![0].url.contains(
+            "v.redd.it/cx5ll43oe31a1/DASHPlaylist.mpd?")
+
+        }
         res.assertNotComplete()
 
     }
@@ -157,7 +148,10 @@ class SubredditsAndPostsVMTest {
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         res.await(3,TimeUnit.SECONDS)
         res.assertValueCount(2)
-        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].galleryUrls!=null }
+        //loads 3 images for galeery
+        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].galleryUrls!!.size == 3}
+
+
         res.assertNotComplete()
 
     }

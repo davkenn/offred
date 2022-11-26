@@ -51,8 +51,8 @@ data class PicsAndDimens (val y:Int,val x:Int, val u:String)
 data class Media2(val e:String?, val m:String?, val p: List<PicsAndDimens>?)
 
 
-@JsonClass(generateAdapter = true)
-data class Media3(val e:List<Media2>)
+//@JsonClass(generateAdapter = true)
+//data class Media3(val e:List<Media2>)
 
 
 @JsonClass(generateAdapter = true)

@@ -1,6 +1,7 @@
 package com.example.renewed
 
 import com.example.renewed.moshiadapters.DescriptionAdapter
+import com.example.renewed.moshiadapters.MediaList
 import com.example.renewed.moshiadapters.RedditHolderAdapter
 import com.example.renewed.moshiadapters.RedditPostAdapter
 import com.squareup.moshi.Moshi
@@ -52,6 +53,7 @@ fun setupTestRetrofit(
         .add(RedditPostAdapter())
         .add(RedditHolderAdapter())
         .add(DescriptionAdapter())
+        .add(MediaList())
         .build()
     val okHttpClient = OkHttpClient.Builder()
 

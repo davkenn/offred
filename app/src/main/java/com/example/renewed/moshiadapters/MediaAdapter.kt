@@ -24,12 +24,12 @@ class MediaList {
         val jsonObj = reader.readJsonValue() as Map<String, Any>
         jsonObj.keys.forEach{
             ls.add(mediaAdapter.fromJsonValue(jsonObj[it])!!)
-
         }
+
         return ls
     }
 }
 
-private fun <E> MutableList<E>.add(element: Media3?) {
-    this.add(element)
-}
+//private fun <E> MutableList<E>.add(element: Media3?) {
+  //  this.add(element)
+//}
