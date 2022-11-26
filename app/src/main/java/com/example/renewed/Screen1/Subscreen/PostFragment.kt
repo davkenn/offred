@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.R
 import com.example.renewed.databinding.PostViewBinding
-import com.example.renewed.models.ViewStateT3
+import com.example.renewed.models.*
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -36,7 +36,6 @@ class PostFragment : ContentFragment() {
     var playerView: PlayerView? = null
     var exoPosition: Long = 0
 
-
     private val postsVM: PostVM by viewModels()
      var postBinding: PostViewBinding? = null
     private var name:String?= null
@@ -45,7 +44,6 @@ class PostFragment : ContentFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putLong("player_pos", exo.contentPosition)
-
 
     //TODO am i shooting myself in the foot here by only saving instance state from fragmentadapter?
      //   super.onSaveInstanceState(outState)
@@ -96,13 +94,12 @@ class PostFragment : ContentFragment() {
                     Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
                     postBinding!!.url.text = t3ViewState.url
 
-
-                    if (isGalleryPost(t3ViewState)){
+                    if (t3ViewState.isGalleryPost()){
                         postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
                                 private var dex: Int = 1
                                 override fun onClick(v: View?) {
-                                    Glide.with(this@PostFragment)
-                                        .load(t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size])
+                                    Glide.with(this@PostFragment).load(
+                                        t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size])
                                         .into(postBinding!!.fullImg)
                                     dex += 1
                                 }})
@@ -110,25 +107,23 @@ class PostFragment : ContentFragment() {
                             Glide.with(this).load(t3ViewState.galleryUrls!![0])
                                 .into(postBinding!!.fullImg)
                             postBinding!!.fullImg.visibility = VISIBLE
-                        val end = "\nGALLERY, click to to open..."
-                        postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
-
-
+                            val end = "\nGALLERY, click to to open..."
+                            postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
                     }
-                    if (isUrlPost(t3ViewState)) {
+                    if (t3ViewState.isUrlPost()) {
                         loadUrlClickListener(t3ViewState)
                         postBinding!!.url.visibility= VISIBLE
                     }
-                    if (isImagePost(t3ViewState))  {
+                    if (t3ViewState.isImagePost())  {
                         loadImage(t3ViewState)
                         postBinding!!.fullImg.visibility = VISIBLE
                     }
-                    if (!hasNoThumbnail(t3ViewState)) {
+                    if (!t3ViewState.hasNoThumbnail()) {
                         loadThumbNail(t3ViewState)
                         postBinding!!.thumb.visibility = VISIBLE
                     }
                     //FOr now get rid of all state
-                    if (isVideoPost(t3ViewState)){
+                    if (t3ViewState.isVideoPost()){
                         postBinding!!.timeCreated.visibility= GONE
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
@@ -160,13 +155,6 @@ class PostFragment : ContentFragment() {
         super.onStop()
     }
 
-
-    private fun hasNoThumbnail(t3ViewState: ViewStateT3) =
-        t3ViewState.thumbnail.isBlank() || t3ViewState.thumbnail == "self" ||
-                t3ViewState.thumbnail == "default"  || isImagePost(t3ViewState)
-                || isVideoPost(t3ViewState) || isGalleryPost(t3ViewState)  ||
-                t3ViewState.thumbnail == "spoiler" //|| thumbnail == nsfw
-
     private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
         postBinding!!.url.setOnClickListener {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.url))
@@ -185,33 +173,13 @@ class PostFragment : ContentFragment() {
         playerView?.player=exo
         val vid = MediaItem.fromUri(t3ViewState.url)
         exo.setMediaItem(vid)
+        exo.seekTo(exoPosition)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         playerView?.useController = false
-
         exo.playWhenReady       =true
      //TODO not working
-        exo.seekTo(exoPosition)
-
-
        exo.prepare()
-
     }
-
-    private fun isUrlPost(t3ViewState: ViewStateT3):Boolean =
-        t3ViewState.url.startsWith("http")// && "com" in x.t3.url
-                //todo this is better but doesnt capture the text posts that no need url
-             //   && !isImagePost(t3ViewState) && !isVideoPost(t3ViewState)
-                && ("reddit" !in t3ViewState.url  && "redd.it" !in t3ViewState.url
-                                                     && "imgur" !in t3ViewState.url)
-
-    private fun isGalleryPost(t3ViewState: ViewStateT3):Boolean =
-        ("reddit" in t3ViewState.url) && ("gallery" in t3ViewState.url)
-
-    private fun isImagePost(t3ViewState: ViewStateT3):Boolean =
-                            "i.redd.it" in t3ViewState.url || "imgur" in t3ViewState.url
-
-    private fun isVideoPost(t3ViewState: ViewStateT3):Boolean =
-                "v.redd.it" in t3ViewState.url
 
 
     private fun loadThumbNail(viewState: ViewStateT3)     {

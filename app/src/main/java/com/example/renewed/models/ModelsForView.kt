@@ -1,5 +1,6 @@
 package com.example.renewed.models
 
+import io.reactivex.rxjava3.core.Observable
 import java.time.Instant
 
 data class FullViewState(
@@ -50,3 +51,21 @@ data class ViewStateT3(
     val created: String, val galleryUrls: List<String>?
 ) {
                         override fun toString(): String = "ViewStateT3($name) " }
+
+fun ViewStateT3.isGalleryPost() =   ("reddit" in url) && ("gallery" in url)
+
+fun ViewStateT3.isUrlPost() =
+    url.startsWith("http")// && "com" in x.t3.url
+            && ("reddit" !in url  && "redd.it" !in url  && "imgur" !in url)
+//todo this is better but doesnt capture the text posts that no need url
+//   && !isImagePost(t3ViewState) && !isVideoPost(t3ViewState)
+
+
+fun ViewStateT3.isImagePost() =  "i.redd.it" in url || "imgur" in url
+
+fun ViewStateT3.isVideoPost() =  "v.redd.it" in url
+
+fun ViewStateT3.hasNoThumbnail() =  thumbnail.isBlank() || thumbnail == "self" ||
+                             isGalleryPost() || isImagePost() || isVideoPost() ||
+                             thumbnail == "default"||  thumbnail == "spoiler" //|| thumbnail == nsfw
+

@@ -2,10 +2,8 @@ package com.example.renewed
 
 
  import com.example.renewed.TestTools.Companion.loadJsonResponse
-import com.example.renewed.models.FullViewState
-import com.example.renewed.models.MyEvent
-import com.example.renewed.models.PartialViewState
-import com.example.renewed.repos.BaseSubredditsAndPostsRepo
+ import com.example.renewed.models.*
+ import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -150,10 +148,33 @@ class SubredditsAndPostsVMTest {
         res.assertValueCount(2)
         //loads 3 images for galeery
         res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].galleryUrls!!.size == 3}
+        res.assertNotComplete()
+    }
 
+    @Test
+    fun gallerySubredditIsOnlyGalleryTypes() {
+
+        val end1 = loadJsonResponse("crtgamingabout.json")
+
+        val end2 = loadJsonResponse("crtgamingposts.json")
+
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end1!!))
+        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end2!!))
+
+
+        val res = viewModel.vs.test()
+
+        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        res.await(3,TimeUnit.SECONDS)
+        res.assertValueCount(2)
+        //loads 3 images for galeery
+        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].hasNoThumbnail() }
+        res.assertValueAt(1) { !it.t3ListForRV!!.vsT3!![3].isImagePost()}
+        res.assertValueAt(1) { !it.t3ListForRV!!.vsT3!![3].isVideoPost() }
+        res.assertValueAt(1) { !it.t3ListForRV!!.vsT3!![3].isUrlPost()}
+        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].isGalleryPost()}
 
         res.assertNotComplete()
-
     }
 
     @Test
@@ -176,8 +197,6 @@ class SubredditsAndPostsVMTest {
                     ".mpd?a=1671522034%2CZWMzZTFjMzc5ZjI4OTViOGM1MWQ5MmJiYjAxNGMxZWYwNTlkMTM4YT" +
                                         "YxMjQzYTU0MTIwNmQ1NDIxM2ZiNmZiMw%3D%3D&amp;v=1&amp;f=sd" }
         res.assertNotComplete()
-
-
     }
 
     @Test
@@ -188,9 +207,7 @@ class SubredditsAndPostsVMTest {
         val res = viewModel.vs.test()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         var n = res.await(1,TimeUnit.SECONDS)
-
         res.assertValueAt(0) { it != FullViewState() }
-
     }
 
 /**
