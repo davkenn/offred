@@ -185,6 +185,7 @@ class PostFragment : ContentFragment() {
     override fun onStop() {
         Timber.d("onStop in Post Fragment")
      //is this ok? can onstop and onstart in the next fragment get mixed up? should I do this in onpause?
+        stopVideo()
 
         super.onStop()
 

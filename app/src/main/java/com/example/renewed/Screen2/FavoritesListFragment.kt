@@ -33,6 +33,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
         exo.addListener(listener2)
+
+
     }
 
 
@@ -92,37 +94,39 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         adapter2 = FavoritesListAdapter(this)
         val binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
+
                         pager.adapter = adapter2
                         pager.offscreenPageLimit=2
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
+                    pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    exo.addListener(listener)
+
+                    //TODO this all assumes I can only scroll one way
+                    var result = adapter2.stopVideoAtPosition((position - 1) % adapter2.itemCount)
+                    if (result==false)  adapter2.startVideoAtPosition(position)
+                    exo.removeListener(listener)
+
+
+                    if (position ==  0) {
+//                    adapter2.startVideoAtPosition(0)
+
+                    }
+                    else if (position == 1) {
+                        // you are on the second page
+                    }
+                    else if (position == 2){
+                        // you are on the third page
+                    }
+                    super.onPageSelected(position)
+                }
+            })
                         vp = pager
 
         }
 
 
-        vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                exo.addListener(listener)
 
-                    //TODO this all assumes I can only scroll one way
-                var result = adapter2.stopVideoAtPosition((position - 1) % adapter2.itemCount)
-                if (result==false)  adapter2.startVideoAtPosition(position)
-                exo.removeListener(listener)
-
-
-                if (position ==  0) {
-//                    adapter2.startVideoAtPosition(0)
-
-                }
-                else if (position == 1) {
-                    // you are on the second page
-                }
-                else if (position == 2){
-                    // you are on the third page
-                }
-                super.onPageSelected(position)
-            }
-        })
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")
@@ -139,7 +143,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onViewStateRestored(savedInstanceState)
         vp.post{
             vp.currentItem = savedInstanceState?.getInt("pos") ?: 0
+
         }
+
     }
 
     override fun onDestroy() {
