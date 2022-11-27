@@ -32,14 +32,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
+        exo.addListener(listener2)
     }
+
 
     private val listener = object : Player.Listener { // player listener
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) { // check player play back state
                 Player.STATE_READY -> {
-                    //       aspectRatioFrameLayout.setAspectRatio(16f / 9f)
+
                 }
                 Player.STATE_ENDED -> {
               //your logic
@@ -58,6 +60,29 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             }
         }
     }
+    private val listener2 = object : Player.Listener { // player listener
+
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) { // check player play back state
+                Player.STATE_READY -> {
+
+                    exo.playWhenReady= true
+                }
+                Player.STATE_ENDED -> {
+                    //your logic
+                }
+                Player.STATE_BUFFERING -> {
+                    //your logic
+                }
+                Player.STATE_IDLE -> {
+                    //your logic
+                }
+                else -> {
+
+                }
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Timber.d("onViewCreated in FavoritesListFragment")
@@ -68,7 +93,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         val binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
                         pager.adapter = adapter2
-                        pager.offscreenPageLimit=1
+                        pager.offscreenPageLimit=2
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
                         vp = pager
 

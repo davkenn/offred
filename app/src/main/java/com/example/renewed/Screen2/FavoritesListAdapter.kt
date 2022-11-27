@@ -24,7 +24,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
     }
 
     fun stopVideoAtPosition(position: Int): Boolean {
-        if (position <0) return false
+        if (position <0|| position >=  fragList.size) return false
         if (fragList[position].state?.isVideoPost()==null ||
             fragList[position].state?.isVideoPost()==false ) return false
         else{
