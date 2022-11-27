@@ -21,6 +21,7 @@ import com.example.renewed.models.*
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.Listener
 import com.google.android.exoplayer2.ui.PlayerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -31,6 +32,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
+
+
     @Inject
     lateinit var exo: ExoPlayer
     var playerView: PlayerView? = null
@@ -39,6 +42,7 @@ class PostFragment : ContentFragment() {
     private val postsVM: PostVM by viewModels()
      var postBinding: PostViewBinding? = null
     private var name:String?= null
+    var state: ViewStateT3? = null
     override fun getName() : String = postsVM.name
 
 
@@ -81,15 +85,27 @@ class PostFragment : ContentFragment() {
             name=              savedInstanceState.getString("key")
         }
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+
+
+
+
         name = arguments?.getString("key") ?: "NONE"
         postsVM.setPost(name!!)
+            .doOnEvent{x,_ -> state=x}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { t3ViewState ->
+                    state = t3ViewState
                     postBinding!!.postName.text = t3ViewState.displayName
                     val text = t3ViewState.created + ": "
                     postBinding!!.timeCreated.text = text
@@ -130,7 +146,7 @@ class PostFragment : ContentFragment() {
                         postBinding!!.timeCreated.visibility= GONE
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
-                        loadVideo(t3ViewState)
+
      }
                     //should I also do title or just make it neon?
                 }, { Timber.e("Error in binding ${it.localizedMessage}")})
@@ -142,8 +158,7 @@ class PostFragment : ContentFragment() {
         super.onPause()
 
         exo.pause()
-        exo.playWhenReady       =false
-        playerView?.player?.stop()
+
 
        // postBinding= null
    //     playerView?.player=null
@@ -157,8 +172,6 @@ class PostFragment : ContentFragment() {
     override fun onResume() {
         Timber.d("onResume in Post Fragment")
         super.onResume()
-        playerView = postBinding?.exoplayer
-        playerView?.player=exo
         //exo.playWhenReady=true
 
     }
@@ -190,19 +203,26 @@ class PostFragment : ContentFragment() {
             .into(postBinding!!.fullImg)
     }
 
-    private fun loadVideo(t3ViewState: ViewStateT3) {
+    fun loadVideo() {
 
-        val vid = MediaItem.fromUri(t3ViewState.url)
+        if (state?.let{!it.isVideoPost()} == true)  return
+
+        playerView = postBinding?.exoplayer
+        playerView?.player=exo
+
+        val vid = MediaItem.fromUri(state?.url?: "")
         exo.setMediaItem(vid)
 
-
-        exo.repeatMode = Player.REPEAT_MODE_ALL
-        playerView?.useController = false
         exo.playWhenReady       =true
+        exo.repeatMode = Player.REPEAT_MODE_ALL
+        playerView?.useController = true
+
 
  //       exo.seekTo(2000L)
      //TODO not working
        exo.prepare()
+
+
 
     }
 
@@ -223,7 +243,11 @@ class PostFragment : ContentFragment() {
     }
 
     fun stopVideo() {
-        TODO("Not yet implemented")
+
+    //    exo.playWhenReady       =false
+        playerView?.player?.stop()
+
+
     }
 }
 

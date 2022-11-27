@@ -10,22 +10,53 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
 
 import com.example.renewed.databinding.FragmentFavoritesListBinding
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.Player
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private val disposables = CompositeDisposable()
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
+    @Inject
+    lateinit var exo: ExoPlayer
     private val favoritesVM: FavoritesListVM by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
+    }
+
+    private val listener = object : Player.Listener { // player listener
+
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) { // check player play back state
+                Player.STATE_READY -> {
+                    //       aspectRatioFrameLayout.setAspectRatio(16f / 9f)
+                }
+                Player.STATE_ENDED -> {
+              //your logic
+                }
+                Player.STATE_BUFFERING -> {
+                    //your logic
+                }
+                Player.STATE_IDLE -> {
+                    adapter2.startVideoAtPosition(vp.currentItem)
+                    exo.removeListener(this)
+                    //your logic
+                }
+                else -> {
+
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +77,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
+                exo.addListener(listener)
+
+                    //TODO this all assumes I can only scroll one way
+                var result = adapter2.stopVideoAtPosition((position - 1) % adapter2.itemCount)
+                if (result==false)  adapter2.startVideoAtPosition(position)
+                exo.removeListener(listener)
+
+
                 if (position ==  0) {
+//                    adapter2.startVideoAtPosition(0)
 
                 }
                 else if (position == 1) {
