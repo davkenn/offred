@@ -213,10 +213,10 @@ class PostFragment : ContentFragment() {
 
         val vid = MediaItem.fromUri(state?.url?: "")
         exo.setMediaItem(vid)
-
+        playerView?.useController = false
 
         exo.repeatMode = Player.REPEAT_MODE_ALL
-        playerView?.useController = true
+
         exo.prepare()
       //  exo.playWhenReady       =true
 

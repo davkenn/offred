@@ -96,17 +96,20 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         binding.apply {
 
                         pager.adapter = adapter2
-                        pager.offscreenPageLimit=2
+                        pager.offscreenPageLimit=3
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
-                    pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                         pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
                     exo.addListener(listener)
 
                     //TODO this all assumes I can only scroll one way
-                    var result = adapter2.stopVideoAtPosition((position - 1) % adapter2.itemCount)
-                    if (result==false)  adapter2.startVideoAtPosition(position)
-                    exo.removeListener(listener)
-
+          //          adapter2.stopVideoAtPosition(0)
+                    var result = adapter2.stopVideoAtPosition((position - 1))
+                    if (result==false) {
+                        adapter2.startVideoAtPosition(position)
+                        exo.removeListener(listener)
+                    }
 
                     if (position ==  0) {
 //                    adapter2.startVideoAtPosition(0)
@@ -118,7 +121,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                     else if (position == 2){
                         // you are on the third page
                     }
-                    super.onPageSelected(position)
+
                 }
             })
                         vp = pager
