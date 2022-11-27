@@ -9,6 +9,7 @@ import com.example.renewed.Screen1.Subscreen.PostFragment
 
 class FavoritesListAdapter(private val fragment: FavoritesListFragment): FragmentStateAdapter(fragment) {
     var postIds: MutableList<String> = mutableListOf<String>()
+    var fragList: MutableList<PostFragment> = mutableListOf<PostFragment>()
     override fun getItemCount(): Int = postIds.size
  //    override fun getItemId(position: Int): Long = items.itemId(position)
     //override fun containsItem(itemId: Long): Boolean = items.contains(itemId)
@@ -17,6 +18,10 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         postIds.clear()
         postIds.addAll(idList)
         notifyDataSetChanged()
+    }
+
+    fun stopVideoAtPosition(position: Int){
+        fragList[position].stopVideo()
     }
 
     override fun createFragment(position: Int): Fragment {
@@ -30,6 +35,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
             //  putString("pos",position.toString())
 
         }
+        fragList.add(position,fragment)
         return fragment
         //   val fragment = BlankFragment()
           //  return fragment

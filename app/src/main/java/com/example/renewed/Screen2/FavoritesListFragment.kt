@@ -37,14 +37,17 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         val binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
                         pager.adapter = adapter2
+                        pager.offscreenPageLimit=1
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
                         vp = pager
+
         }
+
 
         vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                if (position == 0) {
-                    // you are on the first page
+                if (position ==  0) {
+
                 }
                 else if (position == 1) {
                     // you are on the second page

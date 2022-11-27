@@ -43,14 +43,14 @@ class PostFragment : ContentFragment() {
 
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putLong("player_pos", exo.contentPosition)
 
     //TODO am i shooting myself in the foot here by only saving instance state from fragmentadapter?
-     //   super.onSaveInstanceState(outState)
-       // outState.run {
+        super.onSaveInstanceState(outState)
+        outState.run {
+        putLong("player_pos", exo.currentPosition)
 
-    //   putString("key",name)
-    //}
+               putString("key",name)
+        }
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +64,7 @@ class PostFragment : ContentFragment() {
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
         return binding.root
+
     }
 
     override fun onDestroyView() {
@@ -72,10 +73,12 @@ class PostFragment : ContentFragment() {
         super.onDestroyView()
     }
 
+
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.let {
             exoPosition= savedInstanceState.getLong("player_pos")
+            name=              savedInstanceState.getString("key")
         }
     }
     @Deprecated("Deprecated in Java")
@@ -97,14 +100,14 @@ class PostFragment : ContentFragment() {
                     if (t3ViewState.isGalleryPost()){
                         postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
                                 private var dex: Int = 1
-                                override fun onClick(v: View?) {
+                              override fun onClick(v: View?) {
                                     Glide.with(this@PostFragment).load(
                                         t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size])
                                         .into(postBinding!!.fullImg)
                                     dex += 1
                                 }})
 
-                            Glide.with(this).load(t3ViewState.galleryUrls!![0])
+                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
                                 .into(postBinding!!.fullImg)
                             postBinding!!.fullImg.visibility = VISIBLE
                             val end = "\nGALLERY, click to to open..."
@@ -137,22 +140,41 @@ class PostFragment : ContentFragment() {
     override fun onPause() {
         Timber.d("onPause in Post Fragment")
         super.onPause()
+
+        exo.pause()
+        exo.playWhenReady       =false
+        playerView?.player?.stop()
+
+       // postBinding= null
+   //     playerView?.player=null
+
+     //   exo.clearMediaItems()
+
+
+
     }
 
     override fun onResume() {
         Timber.d("onResume in Post Fragment")
         super.onResume()
+        playerView = postBinding?.exoplayer
+        playerView?.player=exo
+        //exo.playWhenReady=true
+
     }
 
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
+
     }
 
     override fun onStop() {
+        Timber.d("onStop in Post Fragment")
      //is this ok? can onstop and onstart in the next fragment get mixed up? should I do this in onpause?
-        exo.pause()
+
         super.onStop()
+
     }
 
     private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
@@ -164,21 +186,24 @@ class PostFragment : ContentFragment() {
     private fun loadImage(t3ViewState: ViewStateT3) {
 
         //TODO this is where the error is triggered on the rotate
-        Glide.with(this).load(t3ViewState.url)
+        Glide.with(this@PostFragment).load(t3ViewState.url)
             .into(postBinding!!.fullImg)
     }
 
     private fun loadVideo(t3ViewState: ViewStateT3) {
-        playerView = postBinding!!.exoplayer
-        playerView?.player=exo
+
         val vid = MediaItem.fromUri(t3ViewState.url)
         exo.setMediaItem(vid)
-        exo.seekTo(exoPosition)
+
+
         exo.repeatMode = Player.REPEAT_MODE_ALL
         playerView?.useController = false
         exo.playWhenReady       =true
+
+ //       exo.seekTo(2000L)
      //TODO not working
        exo.prepare()
+
     }
 
 
@@ -195,6 +220,10 @@ class PostFragment : ContentFragment() {
              .error(ColorDrawable(Color.RED))
              .fallback(ColorDrawable(Color.YELLOW))
              .into(postBinding!!.thumb)
+    }
+
+    fun stopVideo() {
+        TODO("Not yet implemented")
     }
 }
 
