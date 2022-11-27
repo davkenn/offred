@@ -37,6 +37,11 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
     }
 
+    //TODO BUGSS
+    //on the last fragment when you rotate it doesn't reload the video, maybe the position im using is incremented?
+    //after the first few fragments rotate doesn't work on a video, related to the pages initially loaded in vp?
+    //related to previous: it seems to start the first video and then come to the current and not load it
+
     override fun createFragment(position: Int): Fragment {
         val name = postIds[position]
         val fragment = PostFragment()

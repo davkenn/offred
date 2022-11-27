@@ -104,9 +104,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                     exo.addListener(listener)
 
                     //TODO this all assumes I can only scroll one way
-          //          adapter2.stopVideoAtPosition(0)
-                    var result = adapter2.stopVideoAtPosition((position - 1))
-                    if (result==false) {
+                    //check to see if we need to call startvideo here or in the adapter
+                    if (!adapter2.stopVideoAtPosition(0) && !adapter2.stopVideoAtPosition(position-1)){
+        //            var result = adapter2.stopVideoAtPosition((position - 1))
+          //          if (result==false) {
                         adapter2.startVideoAtPosition(position)
                         exo.removeListener(listener)
                     }
