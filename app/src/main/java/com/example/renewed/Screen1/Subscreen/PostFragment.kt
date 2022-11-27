@@ -16,6 +16,8 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.R
+import com.example.renewed.Screen1.SubredditsSelectionFragment
+import com.example.renewed.Screen2.FavoritesListFragment
 import com.example.renewed.databinding.PostViewBinding
 import com.example.renewed.models.*
 import com.google.android.exoplayer2.ExoPlayer
@@ -38,10 +40,11 @@ class PostFragment : ContentFragment() {
     lateinit var exo: ExoPlayer
     var playerView: PlayerView? = null
     var exoPosition: Long = 0
-
+    private var name:String?= null
+    private var isSubScreen:Boolean = false
     private val postsVM: PostVM by viewModels()
      var postBinding: PostViewBinding? = null
-    private var name:String?= null
+
     var state: ViewStateT3? = null
     override fun getName() : String = postsVM.name
 
@@ -58,6 +61,7 @@ class PostFragment : ContentFragment() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -83,6 +87,8 @@ class PostFragment : ContentFragment() {
         savedInstanceState?.let {
             exoPosition= savedInstanceState.getLong("player_pos")
             name=              savedInstanceState.getString("key")
+            isSubScreen = savedInstanceState.getBoolean("isSubscreen")
+
         }
     }
 
@@ -95,7 +101,7 @@ class PostFragment : ContentFragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-
+        isSubScreen = arguments?.getBoolean("isSubscreen")?: false
 
 
         name = arguments?.getString("key") ?: "NONE"
@@ -146,6 +152,11 @@ class PostFragment : ContentFragment() {
                         postBinding!!.timeCreated.visibility= GONE
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
+                        //TODO how to have vids on main screen
+                        if (isSubScreen){
+                            loadVideo()
+                        }
+            //               loadVideo()
 
      }
                     //should I also do title or just make it neon?
@@ -157,7 +168,7 @@ class PostFragment : ContentFragment() {
         Timber.d("onPause in Post Fragment")
         super.onPause()
 
-        exo.pause()
+   //     exo.pause()
 
 
        // postBinding= null

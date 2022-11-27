@@ -43,6 +43,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         fragment.arguments = Bundle().apply {
 
             putString("key", name)
+            putBoolean("isSubscreen",false)
      //       putInt("pos",position)
             //TODO do i need to readd pos
             //  putString("pos",position.toString())

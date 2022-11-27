@@ -207,7 +207,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             return
         }
 
-        navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
+        navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name,"isSubscreen" to true))
         if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(includingBack = false)
                                                             else enableButtons(onlyBack = false)
 
