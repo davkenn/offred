@@ -10,6 +10,8 @@ import com.example.renewed.R
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
+import com.jakewharton.rxbinding4.view.changeEvents
+import com.jakewharton.rxbinding4.viewpager2.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -85,6 +87,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
 
+
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")
                          adapter2.replaceList(it) },
@@ -98,29 +101,22 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                exo.addListener(stopPlayerCompleteListener)
 
-                if (position == 0){
-                    if (!adapter2.stopVideoAtPosition(position+1)) {
-                        adapter2.startVideoAtPosition(position)
-                        exo.removeListener(stopPlayerCompleteListener)
-                    }
+        vp.pageSelections().subscribe { position ->
+            var red = savedInstanceState?.getInt("pos") ?: 0
+            if (position==0 && red != 0) return@subscribe
+            exo.addListener(stopPlayerCompleteListener)
+
+                //check to see if we need to call startvideo here or in the adapter
+                if (!adapter2.stopVideoAtPosition(position - 1) &&
+                    !adapter2.stopVideoAtPosition(position + 1)
+                ) {
+                    adapter2.startVideoAtPosition(position)
+
+                    exo.removeListener(stopPlayerCompleteListener)
                 }
-                else{
-                    //check to see if we need to call startvideo here or in the adapter
-                    if (!adapter2.stopVideoAtPosition(0) &&
-                        !adapter2.stopVideoAtPosition(position-1) &&
-                        !adapter2.stopVideoAtPosition(position+1)) {
 
-                        adapter2.startVideoAtPosition(position)
-                        exo.removeListener(stopPlayerCompleteListener)
-                    }}
-            }
-        })
-
+        }.addTo(disposables)
 
         vp.post{
             vp.currentItem = savedInstanceState?.getInt("pos") ?: 0
