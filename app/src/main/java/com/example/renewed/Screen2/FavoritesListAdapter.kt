@@ -56,8 +56,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         }
         fragList.add(position,fragment)
         return fragment
-        //   val fragment = BlankFragment()
-          //  return fragment
+
     }
 
     fun startVideoAtPosition(position: Int) {

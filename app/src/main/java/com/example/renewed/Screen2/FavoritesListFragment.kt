@@ -119,8 +119,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-
-
         vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -143,6 +141,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                     }}
             }
         })
+
+
         vp.post{
             vp.currentItem = savedInstanceState?.getInt("pos") ?: 0
         }
@@ -152,6 +152,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onDestroy() {
         Timber.d("onDestroy in FavoritesListFragment")
         super.onDestroy()
+
     }
 
     override fun onDestroyView() {

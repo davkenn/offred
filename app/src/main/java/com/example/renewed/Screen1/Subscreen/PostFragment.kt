@@ -77,6 +77,7 @@ class PostFragment : ContentFragment() {
 
     override fun onDestroyView() {
         //TODO need to not do this if I don't want crashes
+
         postBinding = null
         super.onDestroyView()
     }
@@ -167,7 +168,7 @@ class PostFragment : ContentFragment() {
     override fun onPause() {
         Timber.d("onPause in Post Fragment")
         super.onPause()
-
+//        stopVideo()
    //     exo.pause()
 
 
@@ -188,6 +189,7 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onDestroy() {
+
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
 
@@ -227,13 +229,7 @@ class PostFragment : ContentFragment() {
         playerView?.useController = false
 
         exo.repeatMode = Player.REPEAT_MODE_ALL
-
         exo.prepare()
-      //  exo.playWhenReady       =true
-     //TODO not working
-
-
-
 
     }
 
