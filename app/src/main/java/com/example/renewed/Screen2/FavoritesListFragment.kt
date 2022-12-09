@@ -118,16 +118,19 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+
         vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 exo.addListener(listener)
 
                 if (position == 0){
-                    if (!adapter2.stopVideoAtPosition(position+1))
+                    if (!adapter2.stopVideoAtPosition(position+1)) {
                         adapter2.startVideoAtPosition(position)
-                    exo.removeListener(listener)
-
+                        exo.removeListener(listener)
+                    }
                 }
                 else{
                     //check to see if we need to call startvideo here or in the adapter
@@ -140,10 +143,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                     }}
             }
         })
-        super.onViewStateRestored(savedInstanceState)
         vp.post{
             vp.currentItem = savedInstanceState?.getInt("pos") ?: 0
-
         }
 
     }
