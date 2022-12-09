@@ -249,7 +249,10 @@ class PostFragment : ContentFragment() {
              .into(postBinding!!.thumb)
     }
 
+    fun isPlaying() = playerView?.player?.isPlaying?:false
+
     fun stopVideo() {
+
 
     //    exo.playWhenReady       =false
         playerView?.player?.stop()

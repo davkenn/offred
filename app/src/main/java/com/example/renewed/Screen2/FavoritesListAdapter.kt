@@ -31,8 +31,10 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         if (fragList[position].state?.isVideoPost()==null ||
             fragList[position].state?.isVideoPost()==false ) return false
         else{
-            fragList[position].stopVideo()
-            return true
+            if (fragList[position].isPlaying()){
+                fragList[position].stopVideo()
+                 return true}
+            return false
         }
 
     }
