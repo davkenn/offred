@@ -95,25 +95,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         val binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
 
+            //TODO bug is now that first position doesnt start
                         pager.adapter = adapter2
                         pager.offscreenPageLimit=6
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
-                        pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                            override fun onPageSelected(position: Int) {
-                                super.onPageSelected(position)
-                                exo.addListener(listener)
 
-
-                        //check to see if we need to call startvideo here or in the adapter
-                                if (!adapter2.stopVideoAtPosition(0) &&
-                                    !adapter2.stopVideoAtPosition(position-1) &&
-                                    !adapter2.stopVideoAtPosition(position+1)) {
-
-                                        adapter2.startVideoAtPosition(position)
-                                        exo.removeListener(listener)
-                                    }
-                            }
-                        })
                         vp = pager
         }
 
@@ -132,6 +118,28 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                exo.addListener(listener)
+
+                if (position == 0){
+                    if (!adapter2.stopVideoAtPosition(position+1))
+                        adapter2.startVideoAtPosition(position)
+                    exo.removeListener(listener)
+
+                }
+                else{
+                    //check to see if we need to call startvideo here or in the adapter
+                    if (!adapter2.stopVideoAtPosition(0) &&
+                        !adapter2.stopVideoAtPosition(position-1) &&
+                        !adapter2.stopVideoAtPosition(position+1)) {
+
+                        adapter2.startVideoAtPosition(position)
+                        exo.removeListener(listener)
+                    }}
+            }
+        })
         super.onViewStateRestored(savedInstanceState)
         vp.post{
             vp.currentItem = savedInstanceState?.getInt("pos") ?: 0
