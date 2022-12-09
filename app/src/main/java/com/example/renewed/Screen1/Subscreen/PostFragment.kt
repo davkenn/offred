@@ -152,21 +152,15 @@ class PostFragment : ContentFragment() {
                     }
                     //FOr now get rid of all state
                     if (t3ViewState.isVideoPost()){
-                        //todo not working on first
-                 //       postBinding!!.postName.setTextColor(Color.parseColor("yellow"))
-                //        view?.setBackgroundColor(Color.parseColor("black"))
+
                         postBinding!!.timeCreated.visibility= GONE
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
 
-                        //TODO how to have vids on main screen
                         if (isSubScreen){
                             loadVideo()
                         }
-
-
      }
-                    //should I also do title or just make it neon?
                 }, { Timber.e("Error in binding ${it.localizedMessage}")})
 
     }
