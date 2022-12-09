@@ -24,9 +24,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="4"
-            android:text="yes thats it"
             android:gravity="start"
-
+            android:textColor="@color/yellow20"
 
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:maxLines="2"
-
+            android:textColor="@color/yellow20"
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toStartOf="@id/guidelinea"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:resize_mode="zoom"
-        android:background="#37AEE4"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,6 +91,7 @@
         <TextView
             android:id="@+id/body_text"
             android:layout_width="0dp"
+            android:textColor="@color/white20"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
@@ -112,6 +112,7 @@
         <TextView
             android:id="@+id/url"
             android:visibility="gone"
+            android:textColor="@color/white20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"

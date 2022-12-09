@@ -30,16 +30,15 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
     fun stopVideoAtPosition(position: Int): Boolean {
         if (position <0|| position >=  fragList.size) return false
-        if (fragList[position].state?.isVideoPost()==null ||
-            fragList[position].state?.isVideoPost()==false ) return false
-        else{
-            if (fragList[position].isPlaying()){
-                fragList[position].stopVideo()
-                 return true}
-            return false
+        if (fragList[position].state?.isVideoPost() == false) return false
+        if (fragList[position].isPlaying()){
+            fragList[position].stopVideo()
+            return true
         }
-
+        return false
     }
+
+
 
     //TODO BUGSS
     //on the last fragment when you rotate it doesn't reload the video, maybe the position im using is incremented?

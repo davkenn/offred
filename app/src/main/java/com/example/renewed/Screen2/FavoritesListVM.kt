@@ -31,7 +31,8 @@ package com.example.renewed.Screen2
             repository.observeSavedSubreddits()
                 //have to delete in here before make sublist
                 .flatMap {   x->      Observable.just(1,1,1)
-                                                 .map {  x.shuffled().take(1) }
+
+                    .map {  x.shuffled().take(1) }
                 }
                 .flatMapIterable { it }
                 .flatMap{ repository.getRandomPosts(it.displayName,2) }

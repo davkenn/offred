@@ -2,10 +2,8 @@ package com.example.renewed.Screen2
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.view.doOnAttach
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
 
@@ -21,67 +19,48 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
+    @Inject
+    lateinit var exo: ExoPlayer
     private val disposables = CompositeDisposable()
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
-    @Inject
-    lateinit var exo: ExoPlayer
+
     private val favoritesVM: FavoritesListVM by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
-        exo.addListener(listener2)
-
-
+        exo.addListener(readyToPlayListener)
     }
 
-
-    private val listener = object : Player.Listener { // player listener
+    private val stopPlayerCompleteListener = object : Player.Listener { // player listener
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) { // check player play back state
-                Player.STATE_READY -> {
-
-                }
-                Player.STATE_ENDED -> {
-              //your logic
-                }
-                Player.STATE_BUFFERING -> {
-                    //your logic
-                }
+                Player.STATE_READY -> {}
+                Player.STATE_ENDED -> {}
+                Player.STATE_BUFFERING ->{}
                 Player.STATE_IDLE -> {
                     adapter2.startVideoAtPosition(vp.currentItem)
                     exo.removeListener(this)
                     //your logic
                 }
-                else -> {
-
-                }
+                else -> {}
             }
         }
     }
-    private val listener2 = object : Player.Listener { // player listener
+    private val readyToPlayListener = object : Player.Listener { // player listener
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) { // check player play back state
                 Player.STATE_READY -> {
-
                     exo.playWhenReady= true
                 }
-                Player.STATE_ENDED -> {
-                    //your logic
-                }
-                Player.STATE_BUFFERING -> {
-                    //your logic
-                }
-                Player.STATE_IDLE -> {
-                    //your logic
-                }
-                else -> {
-
-                }
+                Player.STATE_ENDED -> {}
+                Player.STATE_BUFFERING -> {}
+                Player.STATE_IDLE -> {}
+                else -> {}
             }
         }
     }
@@ -122,12 +101,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         vp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                exo.addListener(listener)
+                exo.addListener(stopPlayerCompleteListener)
 
                 if (position == 0){
                     if (!adapter2.stopVideoAtPosition(position+1)) {
                         adapter2.startVideoAtPosition(position)
-                        exo.removeListener(listener)
+                        exo.removeListener(stopPlayerCompleteListener)
                     }
                 }
                 else{
@@ -137,7 +116,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                         !adapter2.stopVideoAtPosition(position+1)) {
 
                         adapter2.startVideoAtPosition(position)
-                        exo.removeListener(listener)
+                        exo.removeListener(stopPlayerCompleteListener)
                     }}
             }
         })
