@@ -17,6 +17,8 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
  //    override fun getItemId(position: Int): Long = items.itemId(position)
     //override fun containsItem(itemId: Long): Boolean = items.contains(itemId)
 
+
+    //YAY
     fun replaceList(idList:List<String>){
     //    fragList.clear()
         postIds.clear()
