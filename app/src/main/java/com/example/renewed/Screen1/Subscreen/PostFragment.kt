@@ -256,6 +256,7 @@ class PostFragment : ContentFragment() {
 
     //    exo.playWhenReady       =false
         playerView?.player?.stop()
+        playerView?.player = null
 
 
 

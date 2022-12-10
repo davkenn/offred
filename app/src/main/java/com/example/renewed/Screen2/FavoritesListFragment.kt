@@ -99,11 +99,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         outState.putInt("pos",vp.currentItem)
     }
 
+
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-
+        var red = savedInstanceState?.getInt("pos") ?: 0
         vp.pageSelections().subscribe { position ->
-            var red = savedInstanceState?.getInt("pos") ?: 0
+
             if (position==0 && red != 0) return@subscribe
             exo.addListener(stopPlayerCompleteListener)
 
@@ -111,15 +112,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 if (!adapter2.stopVideoAtPosition(position - 1) &&
                     !adapter2.stopVideoAtPosition(position + 1)
                 ) {
+                    exo.removeListener(stopPlayerCompleteListener)
                     adapter2.startVideoAtPosition(position)
 
-                    exo.removeListener(stopPlayerCompleteListener)
+
                 }
 
         }.addTo(disposables)
 
         vp.post{
-            vp.currentItem = savedInstanceState?.getInt("pos") ?: 0
+            vp.currentItem = red
         }
 
     }
