@@ -77,9 +77,11 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onDestroyView() {
-        //TODO need to not do this if I don't want crashes
 
+   //     stopVideo()
+        //TODO need to not do this if I don't want crashes
         postBinding = null
+
         super.onDestroyView()
     }
 
@@ -196,6 +198,7 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onStop() {
+        //moved this to ondestroyview maybe thats better
         stopVideo()
         Timber.d("onStop in Post Fragment")
         super.onStop()
@@ -219,10 +222,13 @@ class PostFragment : ContentFragment() {
 
     fun loadVideo() {
 
-        if (state?.let{!it.isVideoPost()} == true)  return
-
         playerView = postBinding?.exoplayer
         playerView?.player=exo
+
+
+        exo.stop()
+        if (state?.let{!it.isVideoPost()} == true)  return
+
 
         val vid = MediaItem.fromUri(state?.url?: "")
         exo.setMediaItem(vid)

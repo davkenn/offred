@@ -44,8 +44,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 Player.STATE_ENDED -> {}
                 Player.STATE_BUFFERING ->{}
                 Player.STATE_IDLE -> {
-                    adapter2.startVideoAtPosition(vp.currentItem)
                     exo.removeListener(this)
+                    adapter2.startVideoAtPosition(vp.currentItem)
+
                     //your logic
                 }
                 else -> {}
@@ -85,7 +86,24 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }
 
 
+        vp.pageSelections().subscribe { position ->
 
+            //       if (position==0 && red != 0) return@subscribe
+            exo.addListener(stopPlayerCompleteListener)
+
+            //check to see if we need to call startvideo here or in the adapter
+            if (!adapter2.stopVideoAtPosition(position - 1) &&
+                !adapter2.stopVideoAtPosition(position + 1)
+            ) {
+         //       if (position!= 0 )adapter2.stopVideoAtPosition(0)
+
+                exo.removeListener(stopPlayerCompleteListener)
+                adapter2.startVideoAtPosition(position)
+
+
+            }
+
+        }.addTo(disposables)
 
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
@@ -105,28 +123,13 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onViewStateRestored(savedInstanceState)
         var red = savedInstanceState?.getInt("pos") ?: 0
 
-        vp.pageSelections().subscribe { position ->
-
-            if (position==0 && red != 0) return@subscribe
-            exo.addListener(stopPlayerCompleteListener)
-
-                //check to see if we need to call startvideo here or in the adapter
-                if (!adapter2.stopVideoAtPosition(position - 1) &&
-                    !adapter2.stopVideoAtPosition(position + 1)
-                ) {
-                    exo.removeListener(stopPlayerCompleteListener)
-                    adapter2.startVideoAtPosition(position)
 
 
-                }
 
-        }.addTo(disposables)
-
-        vp.post{
-            vp.currentItem = red
+            vp.post {
+                vp.currentItem = red
+            }
         }
-
-    }
 
     override fun onDestroy() {
         Timber.d("onDestroy in FavoritesListFragment")
