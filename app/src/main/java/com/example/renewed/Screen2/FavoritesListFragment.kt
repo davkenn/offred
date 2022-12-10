@@ -103,9 +103,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         var red = savedInstanceState?.getInt("pos") ?: 0
+        savedInstanceState?.putInt("pos",vp.currentItem)
         vp.pageSelections().subscribe { position ->
-
-            if (position==0 && red != 0) return@subscribe
+            var red1 = savedInstanceState?.getInt("pos") ?: 0
+            if (position==0 && red1 != 0) return@subscribe
             exo.addListener(stopPlayerCompleteListener)
 
                 //check to see if we need to call startvideo here or in the adapter
