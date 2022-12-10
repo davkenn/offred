@@ -89,19 +89,19 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         vp.pageSelections().subscribe { position ->
 
             //       if (position==0 && red != 0) return@subscribe
-            exo.addListener(stopPlayerCompleteListener)
+       //     exo.addListener(stopPlayerCompleteListener)
 
             //check to see if we need to call startvideo here or in the adapter
-            if (!adapter2.stopVideoAtPosition(position - 1) &&
-                !adapter2.stopVideoAtPosition(position + 1)
-            ) {
+   //         if (!adapter2.stopVideoAtPosition(position - 1) &&
+     //           !adapter2.stopVideoAtPosition(position + 1)
+         //   ) {
          //       if (position!= 0 )adapter2.stopVideoAtPosition(0)
 
-                exo.removeListener(stopPlayerCompleteListener)
+           //     exo.removeListener(stopPlayerCompleteListener)
                 adapter2.startVideoAtPosition(position)
 
 
-            }
+           // }
 
         }.addTo(disposables)
 

@@ -221,7 +221,8 @@ class PostFragment : ContentFragment() {
     }
 
     fun loadVideo() {
-      stopVideo()
+//      stopVideo()
+        playerView?.player = null
        playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()
