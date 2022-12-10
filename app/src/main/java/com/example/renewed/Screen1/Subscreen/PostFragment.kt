@@ -221,12 +221,12 @@ class PostFragment : ContentFragment() {
     }
 
     fun loadVideo() {
-
-        playerView = postBinding?.exoplayer
+      stopVideo()
+       playerView = postBinding?.exoplayer
         playerView?.player=exo
-
-
         exo.stop()
+
+
         if (state?.let{!it.isVideoPost()} == true)  return
 
 
@@ -260,7 +260,7 @@ class PostFragment : ContentFragment() {
     fun stopVideo() {
 
 
-    //    exo.playWhenReady       =false
+
         playerView?.player?.stop()
         playerView?.player = null
 
