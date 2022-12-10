@@ -36,23 +36,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         exo.addListener(readyToPlayListener)
     }
 
-    private val stopPlayerCompleteListener = object : Player.Listener { // player listener
-
-        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            when (playbackState) { // check player play back state
-                Player.STATE_READY -> {}
-                Player.STATE_ENDED -> {}
-                Player.STATE_BUFFERING ->{}
-                Player.STATE_IDLE -> {
-                    exo.removeListener(this)
-                    adapter2.startVideoAtPosition(vp.currentItem)
-
-                    //your logic
-                }
-                else -> {}
-            }
-        }
-    }
     private val readyToPlayListener = object : Player.Listener { // player listener
 
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
@@ -87,22 +70,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
         vp.pageSelections().subscribe { position ->
-
-            //       if (position==0 && red != 0) return@subscribe
-       //     exo.addListener(stopPlayerCompleteListener)
-
-            //check to see if we need to call startvideo here or in the adapter
-   //         if (!adapter2.stopVideoAtPosition(position - 1) &&
-     //           !adapter2.stopVideoAtPosition(position + 1)
-         //   ) {
-         //       if (position!= 0 )adapter2.stopVideoAtPosition(0)
-
-           //     exo.removeListener(stopPlayerCompleteListener)
                 adapter2.startVideoAtPosition(position)
-
-
-           // }
-
         }.addTo(disposables)
 
 
