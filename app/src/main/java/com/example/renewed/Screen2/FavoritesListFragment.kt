@@ -62,7 +62,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
             //TODO bug is now that first position doesnt start
                         pager.adapter = adapter2
-                        pager.offscreenPageLimit=6
+            //need to keep this as least as high as the number of pages
+                        pager.offscreenPageLimit=10
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
 
                         vp = pager
