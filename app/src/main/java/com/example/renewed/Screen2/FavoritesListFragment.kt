@@ -107,6 +107,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         vp.post{
             Timber.d("THELII STARTING POS $selectPos")
+            vp.currentItem=selectPos
         }
         var r = vp.getDragSensitivity()
 
