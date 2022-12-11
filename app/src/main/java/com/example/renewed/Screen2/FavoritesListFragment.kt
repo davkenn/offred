@@ -150,15 +150,19 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     }
 
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("pos", vp.currentItem)
     }
+
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
+        var red = savedInstanceState?.getInt("pos") ?: 0
 
-
+        vp.post {
+            vp.currentItem = red
         }
+    }
 
     override fun onDestroy() {
         Timber.d("onDestroy in FavoritesListFragment")
