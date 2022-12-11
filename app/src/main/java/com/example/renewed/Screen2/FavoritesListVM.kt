@@ -56,7 +56,7 @@ package com.example.renewed.Screen2
                 },
                     { Timber.e("observeerror: ${it.localizedMessage}") }).addTo(disposables)
 
-            vs = repository.observeCurrentPostList()        .replay(1)
+            vs = repository.observeCurrentPostList()   .replay(1)
                 .autoConnect(1){disposables.add(it)}
 
        //     vsPos = Observable.just(3).replay(1)

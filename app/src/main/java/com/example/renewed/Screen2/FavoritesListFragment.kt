@@ -152,7 +152,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("pos", vp.currentItem)
+        outState.putInt("pos",selectPos)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
