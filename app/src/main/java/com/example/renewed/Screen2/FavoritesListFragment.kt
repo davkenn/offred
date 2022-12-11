@@ -109,10 +109,10 @@ vp.pageScrollEvents().subscribe(){
 
     Timber.d("AAAA")
 
-    if (it.positionOffset>0 && it.positionOffsetPixels>=44) {
+    if (it.positionOffset<0.5 && it.positionOffsetPixels>=44) {
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem + 1))
     }
-    if (it.positionOffset<0 && it.positionOffsetPixels>=44) {
+    if (it.positionOffset>=0.5 && it.positionOffsetPixels>=44) {
             favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem -1))
         }
 
