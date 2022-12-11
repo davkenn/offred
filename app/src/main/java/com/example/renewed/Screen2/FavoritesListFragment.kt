@@ -103,28 +103,31 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
 
-vp.pageScrollEvents().subscribe(){
+/**vp.pageScrollEvents().subscribe(){
   //  vp.currentItem = selectPos
    // adapter2.startVideoAtPosition(selectPos)
 
 
-
     if (it.positionOffset<=0.5 && it.positionOffsetPixels>=44) {
+        Timber.d("THELIIUP ${it.positionOffset}")
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem + 1))
     }
     if (it.positionOffset>0.5 && it.positionOffsetPixels>=44) {
-            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem -1))
+        Timber.d("THELIIDOWN ${it.positionOffset}")
+
+        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent
+                (vp.currentItem -1))
         }
 
     }
-
+**/
         vp.pageSelections().subscribe { position ->
             //probably need this first
 
 //todo this isnt going to work maybe because I have to wait for a response
 
 
-     //       favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
 
 // dont reverse these or it wont work timing wise. need to start current vid before moving pos
     //        adapter2.startVideoAtPosition(selectPos)
