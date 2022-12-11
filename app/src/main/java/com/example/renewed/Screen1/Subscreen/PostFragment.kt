@@ -214,10 +214,16 @@ class PostFragment : ContentFragment() {
         }
 
     private fun loadImage(t3ViewState: ViewStateT3) {
+//this works on imgur what about gifycat
+        if (t3ViewState.url.endsWith("gifv")) {
+            val url = t3ViewState.url.subSequence(0,t3ViewState.url.length-1)
+            Glide.with(this@PostFragment).asGif().load(url).into(postBinding!!.fullImg)
+        }
+        else{
+            Glide.with(this@PostFragment).load(t3ViewState.url)
+                .into(postBinding!!.fullImg)
+        }
 
-        //TODO this is where the error is triggered on the rotate
-        Glide.with(this@PostFragment).load(t3ViewState.url)
-            .into(postBinding!!.fullImg)
     }
 
     fun loadVideo() {
