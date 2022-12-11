@@ -60,11 +60,13 @@ package com.example.renewed.Screen2
 
        //     vsPos = Observable.just(3).replay(1)
          //       .autoConnect(1){disposables.add(it)}
-            vsPos = inputEvents.distinctUntilChanged().publish{
+            vsPos = inputEvents.publish{
 
                 it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { it.newPosition}
                 .replay(1)
                 .autoConnect(1){disposables.add(it)}
+
+
        //     .share()
 
          //       .replay(1).share()
@@ -84,7 +86,7 @@ package com.example.renewed.Screen2
 
 
         fun processInput(name: MyFavsEvent) {
-
+            Timber.d("THELIISEVENTS ${(name as MyFavsEvent.UpdatePositionEvent).newPosition}")
             inputEvents.accept(name)
         }
     }

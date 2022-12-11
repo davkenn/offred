@@ -40,7 +40,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
     //-1 as a test its correctly loading position state
-    private var selectPos: Int by atomic(0)
+    private var selectPos: Int by atomic(-1)
 
 
 
@@ -91,7 +91,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
+            .subscribe({   Timber.d("THELIISEVENTS $it")
                 selectPos = it
             })
             .addTo(disposables)
@@ -126,15 +126,18 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 //todo this isnt going to work maybe because I have to wait for a response
 
-
+            Timber.d("THELIISPOS $position")
             favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+
 
 // dont reverse these or it wont work timing wise. need to start current vid before moving pos
     //        adapter2.startVideoAtPosition(selectPos)
             adapter2.startVideoAtPosition(position)
+
             var a = selectPos
             Timber.d("THELIIS $a")
-     //       vp.currentItem = selectPos
+
+   //         vp.currentItem = selectPos
 
 
         }.addTo(disposables)
