@@ -57,6 +57,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//TODO justify not having to add the listener to autoplay. seems to work on reddit vids but not outside
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
 

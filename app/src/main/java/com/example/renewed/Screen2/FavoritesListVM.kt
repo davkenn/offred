@@ -31,8 +31,8 @@ package com.example.renewed.Screen2
             repository.observeSavedSubreddits()
 
                     //here i have 10 so 5 could be the number to delete and add
-                .flatMap {   x->      Observable.just(1,1,1,1,1)
 
+                .flatMap {   x->      Observable.just(1,1,1,1,1)
                     .map {  x.shuffled().take(1) }
                 }
                 .flatMapIterable { it }

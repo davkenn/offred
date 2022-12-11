@@ -65,7 +65,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //need to keep this as least as high as the number of pages
                         pager.offscreenPageLimit=10
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
-
                         vp = pager
         }
 
@@ -91,9 +90,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         var red = savedInstanceState?.getInt("pos") ?: 0
-
-
-
 
             vp.post {
                 vp.currentItem = red

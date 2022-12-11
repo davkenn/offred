@@ -28,15 +28,6 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
     }
 
-    fun stopVideoAtPosition(position: Int): Boolean {
-        if (position <0|| position >=  fragList.size) return false
-        if (fragList[position].state?.isVideoPost() == false) return false
-        if (fragList[position].isPlaying()){
-            fragList[position].stopVideo()
-            return true}
-            return false
-        }
-
 
 
     //TODO BUGSS
@@ -47,22 +38,21 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         val name = postIds[position]
         val fragment = PostFragment()
         fragment.arguments = Bundle().apply {
-
             putString("key", name)
             putBoolean("isSubscreen",false)
      //       putInt("pos",position)
             //TODO do i need to readd pos
             //  putString("pos",position.toString())
-
         }
         fragList.add(position,fragment)
         return fragment
 
     }
     fun startVideoAtPosition(position: Int) {
-
+        //from stopvideoatposition do i need isplaying
+        //        if (fragList[position].isPlaying()){
+        //            fragList[position].stopVideo()
         if (position <0|| position >=  fragList.size) return
-
         fragList[position].loadVideo()
     }
 
