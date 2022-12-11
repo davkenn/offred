@@ -20,6 +20,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
+import java.lang.Math.abs
 import javax.inject.Inject
 //TODO maybe call this somewhere ive
 fun ViewPager2.getDragSensitivity(): Int {
@@ -52,6 +53,13 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
         exo.addListener(readyToPlayListener)
+
+        favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({   Timber.d("THELIISEVENTS $it")
+                selectPos = it
+            })
+            .addTo(disposables)
+
     }
 
     private val readyToPlayListener = object : Player.Listener { // player listener
@@ -80,21 +88,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         binding.apply {
 
             //TODO bug is now that first position doesnt start
+                         vp = pager
                         pager.adapter = adapter2
             //need to keep this as least as high as the number of pages
                         pager.offscreenPageLimit=10
                         pager.orientation=ViewPager2.ORIENTATION_VERTICAL
-                        vp = pager
+
         }
 
         var r = vp.getDragSensitivity()
 
-
-        favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({   Timber.d("THELIISEVENTS $it")
-                selectPos = it
-            })
-            .addTo(disposables)
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")
@@ -103,8 +106,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
 
-/**vp.pageScrollEvents().subscribe(){
-  //  vp.currentItem = selectPos
+vp.pageScrollEvents().subscribe() {
+    if (it.positionOffsetPixels==0){
+    //    Timber.d("THELIISONSTART $selectPos")
+      //  vp.post{vp.currentItem=selectPos}
+    }
+var a = selectPos
+//vp.currentItem=selectPos
+
+}
+/**  //  vp.currentItem = selectPos
    // adapter2.startVideoAtPosition(selectPos)
 
 
@@ -121,21 +132,28 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     }
 **/
+ //       vp.pageScrollStateChanges().subscribe(){if (it==ViewPager2.SCROLL_STATE_IDLE)vp.currentItem=selectPos}
         vp.pageSelections().subscribe { position ->
             //probably need this first
 
 //todo this isnt going to work maybe because I have to wait for a response
 
+            var a = selectPos
             Timber.d("THELIISPOS $position")
-            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
 
+
+
+            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
 
 // dont reverse these or it wont work timing wise. need to start current vid before moving pos
     //        adapter2.startVideoAtPosition(selectPos)
             adapter2.startVideoAtPosition(position)
-            vp.post{   var a = selectPos
-                Timber.d("THELIIS $a")}
+            //THIS IS NEVESARRY TO GET THE POSITION TO UPDATE
 
+            vp.post{   var a = selectPos
+                Timber.d("THELIIS $a")
+                //   if (selectPos==3) vp.currentItem=0
+            /**    vp.currentItem=selectPos**/}
          //   var a = selectPos
      //       Timber.d("THELIIS $a")
 

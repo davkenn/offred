@@ -86,7 +86,7 @@ package com.example.renewed.Screen2
 
 
         fun processInput(name: MyFavsEvent) {
-            Timber.d("THELIISEVENTS ${(name as MyFavsEvent.UpdatePositionEvent).newPosition}")
+
             inputEvents.accept(name)
         }
     }
