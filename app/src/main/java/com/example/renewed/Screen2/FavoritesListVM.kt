@@ -14,6 +14,7 @@ package com.example.renewed.Screen2
  import io.reactivex.rxjava3.core.Completable
  import io.reactivex.rxjava3.core.Observable
  import io.reactivex.rxjava3.core.ObservableOnSubscribe
+ import io.reactivex.rxjava3.core.Single
  import io.reactivex.rxjava3.disposables.CompositeDisposable
  import io.reactivex.rxjava3.kotlin.addTo
  import io.reactivex.rxjava3.kotlin.mergeAll
@@ -60,9 +61,10 @@ package com.example.renewed.Screen2
 
        //     vsPos = Observable.just(3).replay(1)
          //       .autoConnect(1){disposables.add(it)}
-            vsPos = inputEvents.publish{
+            vsPos= inputEvents.publish{
 
-                it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { it.newPosition}
+                it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { it.newPosition}.startWith(
+                Single.just(3))
                 .replay(1)
                 .autoConnect(1){disposables.add(it)}
 
