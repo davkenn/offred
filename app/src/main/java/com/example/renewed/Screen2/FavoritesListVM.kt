@@ -11,6 +11,7 @@ package com.example.renewed.Screen2
  import com.example.renewed.models.RoomT5
  import com.jakewharton.rxrelay3.PublishRelay
  import dagger.hilt.android.lifecycle.HiltViewModel
+ import io.reactivex.rxjava3.core.Completable
  import io.reactivex.rxjava3.core.Observable
  import io.reactivex.rxjava3.core.ObservableOnSubscribe
  import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -60,9 +61,16 @@ package com.example.renewed.Screen2
        //     vsPos = Observable.just(3).replay(1)
          //       .autoConnect(1){disposables.add(it)}
             vsPos = inputEvents.publish{
-                it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { 3 }
-          //  vsPos = Observable.just(3).replay(1)
-            //    .autoConnect(1){disposables.add(it)}
+
+                it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { it.newPosition}.share()
+
+         //       .replay(1).share()
+       //     vsPos.subscribe()
+
+          //cant do this because it doesnt work on rotate
+        // //.replay(1).autoConnect(1){disposables.add(it)}
+
+
         }
 
         override fun onCleared() {

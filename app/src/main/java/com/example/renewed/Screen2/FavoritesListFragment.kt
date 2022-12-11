@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
 import com.example.renewed.atomic
@@ -20,7 +21,17 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
 import javax.inject.Inject
+//TODO maybe call this somewhere ive
+fun ViewPager2.getDragSensitivity(): Int {
+    val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+    recyclerViewField.isAccessible = true
+    val recyclerView = recyclerViewField.get(this) as RecyclerView
 
+    val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+    touchSlopField.isAccessible = true
+    return touchSlopField.get(recyclerView) as Int
+//    touchSlopField.set(recyclerView, touchSlop*f)       // "8" was obtained experimentally
+}
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     @Inject
@@ -29,7 +40,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
     //-1 as a test its correctly loading position state
-    private var selectPos: Int by atomic(-1)
+    private var selectPos: Int by atomic(0)
+
+
+
 
     private val favoritesVM: FavoritesListVM by viewModels()
 
@@ -58,6 +72,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Timber.d("onViewCreated in FavoritesListFragment")
 
+
         super.onViewCreated(view, savedInstanceState)
 
         adapter2 = FavoritesListAdapter(this)
@@ -72,7 +87,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                         vp = pager
         }
 
-
+        var r = vp.getDragSensitivity()
 
 
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
@@ -88,17 +103,35 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
 
+vp.pageScrollEvents().subscribe(){
+  //  vp.currentItem = selectPos
+   // adapter2.startVideoAtPosition(selectPos)
+
+    Timber.d("AAAA")
+
+    if (it.positionOffset>0 && it.positionOffsetPixels>=44) {
+        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem + 1))
+    }
+    if (it.positionOffset<0 && it.positionOffsetPixels>=44) {
+            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem -1))
+        }
+
+    }
+
         vp.pageSelections().subscribe { position ->
             //probably need this first
-            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+
 //todo this isnt going to work maybe because I have to wait for a response
 
 
+     //       favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+
 // dont reverse these or it wont work timing wise. need to start current vid before moving pos
+    //        adapter2.startVideoAtPosition(selectPos)
             adapter2.startVideoAtPosition(position)
-            if (selectPos!=position)  {
-                vp.currentItem = selectPos
-            }
+            var a = selectPos
+     //       vp.currentItem = selectPos
+
 
         }.addTo(disposables)
     }
