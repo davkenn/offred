@@ -60,11 +60,11 @@ fun ViewStateT3.isUrlPost() =
 //todo this is better but doesnt capture the text posts that no need url
 //   && !isImagePost(t3ViewState) && !isVideoPost(t3ViewState)
 
-
+//TODO IMGUR can also be an mp4 or a webp (videopost)
 fun ViewStateT3.isImagePost() =  "i.redd.it" in url || "imgur" in url
 
 fun ViewStateT3.isVideoPost() =  "v.redd.it" in url
-
+//TODO gfycat should be in thumbnail posts bc need a link
 fun ViewStateT3.hasNoThumbnail() =  thumbnail.isBlank() || thumbnail == "self" ||
                              isGalleryPost() || isImagePost() || isVideoPost() ||
                              thumbnail == "default"||  thumbnail == "spoiler" //|| thumbnail == nsfw

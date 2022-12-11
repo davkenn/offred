@@ -29,8 +29,9 @@ package com.example.renewed.Screen2
 
             //TODO i need a delete button to make this really worthwhile
             repository.observeSavedSubreddits()
-                //have to delete in here before make sublist
-                .flatMap {   x->      Observable.just(1,1,1)
+
+                    //here i have 10 so 5 could be the number to delete and add
+                .flatMap {   x->      Observable.just(1,1,1,1,1)
 
                     .map {  x.shuffled().take(1) }
                 }

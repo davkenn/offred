@@ -216,7 +216,7 @@ class PostFragment : ContentFragment() {
     private fun loadImage(t3ViewState: ViewStateT3) {
 //this works on imgur what about gifycat
         if (t3ViewState.url.endsWith("gifv")) {
-            val url = t3ViewState.url.subSequence(0,t3ViewState.url.length-1)
+            val url = t3ViewState.url.substring(0,t3ViewState.url.length-1)
             Glide.with(this@PostFragment).asGif().load(url).into(postBinding!!.fullImg)
         }
         else{
@@ -235,8 +235,6 @@ class PostFragment : ContentFragment() {
 
 
         if (state?.let{!it.isVideoPost()} == true)  return
-
-
         val vid = MediaItem.fromUri(state?.url?: "")
         exo.setMediaItem(vid)
         playerView?.useController = false
