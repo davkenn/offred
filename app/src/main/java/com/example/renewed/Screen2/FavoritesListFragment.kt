@@ -107,12 +107,12 @@ vp.pageScrollEvents().subscribe(){
   //  vp.currentItem = selectPos
    // adapter2.startVideoAtPosition(selectPos)
 
-    Timber.d("AAAA")
 
-    if (it.positionOffset<0.5 && it.positionOffsetPixels>=44) {
+
+    if (it.positionOffset<=0.5 && it.positionOffsetPixels>=44) {
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem + 1))
     }
-    if (it.positionOffset>=0.5 && it.positionOffsetPixels>=44) {
+    if (it.positionOffset>0.5 && it.positionOffsetPixels>=44) {
             favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem -1))
         }
 
@@ -130,6 +130,7 @@ vp.pageScrollEvents().subscribe(){
     //        adapter2.startVideoAtPosition(selectPos)
             adapter2.startVideoAtPosition(position)
             var a = selectPos
+            Timber.d("THELIIS $a")
      //       vp.currentItem = selectPos
 
 
