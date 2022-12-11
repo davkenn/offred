@@ -73,40 +73,38 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }
 
 
-        vp.pageSelections().subscribe { position ->
-                adapter2.startVideoAtPosition(position)
-            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
-
-        }.addTo(disposables)
 
 
-        favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread()).subscribe({selectPos=it}).addTo(disposables)
+        favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                selectPos = it
+            })
+            .addTo(disposables)
+
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")
                          adapter2.replaceList(it) },
                        { Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
+
+
+
+        vp.pageSelections().subscribe { position ->
+            if (selectPos!=position)  {
+                vp.currentItem = selectPos
+            }
+            adapter2.startVideoAtPosition(position)
+            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+
+        }.addTo(disposables)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("pos",vp.currentItem)
-
-    }
 
 
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        var red = savedInstanceState?.getInt("pos") ?: 0
-
-          //  vp.post {
-            //    vp.currentItem = red
-          //  }
 
 
-        vp.post {
-            vp.currentItem = selectPos
-        }
         }
 
     override fun onDestroy() {
