@@ -2,6 +2,7 @@ package com.example.renewed.Screen2
 
 
  import androidx.lifecycle.ViewModel
+ import androidx.test.core.app.canTakeScreenshot
  import com.example.renewed.Room.FavoritesDAO
  import com.example.renewed.repos.BaseFavoritesRepo
  import com.example.renewed.models.MyFavsEvent
@@ -9,6 +10,7 @@ package com.example.renewed.Screen2
  import com.jakewharton.rxrelay3.PublishRelay
  import dagger.hilt.android.lifecycle.HiltViewModel
  import io.reactivex.rxjava3.core.Observable
+ import io.reactivex.rxjava3.core.ObservableOnSubscribe
  import io.reactivex.rxjava3.disposables.CompositeDisposable
  import io.reactivex.rxjava3.kotlin.addTo
  import io.reactivex.rxjava3.kotlin.mergeAll
@@ -23,6 +25,7 @@ package com.example.renewed.Screen2
         private val repository: BaseFavoritesRepo
     ): ViewModel() {
         val vs: Observable<List<String>>
+        val vsPos: Observable<Int>
         private val disposables: CompositeDisposable = CompositeDisposable()
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
         init {
@@ -52,6 +55,8 @@ package com.example.renewed.Screen2
             vs = repository.observeCurrentPostList()        .replay(1)
                 .autoConnect(1){disposables.add(it)}
 
+            vsPos = Observable.just(3).replay(1)
+                .autoConnect(1){disposables.add(it)}
         }
 
         override fun onCleared() {

@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
+import com.example.renewed.atomic
 
 import com.example.renewed.databinding.FragmentFavoritesListBinding
+import com.example.renewed.models.MyFavsEvent
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.jakewharton.rxbinding4.view.changeEvents
@@ -26,6 +28,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private val disposables = CompositeDisposable()
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
+    //-1 as a test its correctly loading position state
+    private var selectPos: Int by atomic(-1)
 
     private val favoritesVM: FavoritesListVM by viewModels()
 
@@ -71,9 +75,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         vp.pageSelections().subscribe { position ->
                 adapter2.startVideoAtPosition(position)
+            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+
         }.addTo(disposables)
 
 
+        favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread()).subscribe({selectPos=it}).addTo(disposables)
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")
                          adapter2.replaceList(it) },
@@ -83,6 +90,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("pos",vp.currentItem)
+
     }
 
 
@@ -94,6 +102,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             vp.post {
                 vp.currentItem = red
             }
+        super.onViewStateRestored(savedInstanceState)
+
+
+       // vp.post {
+     //       vp.currentItem = selectPos
+   //     }
         }
 
     override fun onDestroy() {

@@ -179,7 +179,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
         //after popping the stack, its either a subreddit....
         if (navHostFragment.navController.backQueue.size > 2) enableButtons(onlyBack = false)
-        //or a blank fragment
+        //...or a blank fragment
         else disableButtons(true)
     }
 
