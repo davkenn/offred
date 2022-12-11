@@ -99,15 +99,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onViewStateRestored(savedInstanceState)
         var red = savedInstanceState?.getInt("pos") ?: 0
 
-            vp.post {
-                vp.currentItem = red
-            }
-        super.onViewStateRestored(savedInstanceState)
+          //  vp.post {
+            //    vp.currentItem = red
+          //  }
 
 
-       // vp.post {
-     //       vp.currentItem = selectPos
-   //     }
+        vp.post {
+            vp.currentItem = selectPos
+        }
         }
 
     override fun onDestroy() {
