@@ -4,6 +4,8 @@ package com.example.renewed.Screen2
  import androidx.lifecycle.ViewModel
  import androidx.test.core.app.canTakeScreenshot
  import com.example.renewed.Room.FavoritesDAO
+ import com.example.renewed.models.FullViewState
+ import com.example.renewed.models.MyEvent
  import com.example.renewed.repos.BaseFavoritesRepo
  import com.example.renewed.models.MyFavsEvent
  import com.example.renewed.models.RoomT5
@@ -55,8 +57,12 @@ package com.example.renewed.Screen2
             vs = repository.observeCurrentPostList()        .replay(1)
                 .autoConnect(1){disposables.add(it)}
 
-            vsPos = Observable.just(3).replay(1)
-                .autoConnect(1){disposables.add(it)}
+       //     vsPos = Observable.just(3).replay(1)
+         //       .autoConnect(1){disposables.add(it)}
+            vsPos = inputEvents.publish{
+                it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { 3 }
+          //  vsPos = Observable.just(3).replay(1)
+            //    .autoConnect(1){disposables.add(it)}
         }
 
         override fun onCleared() {

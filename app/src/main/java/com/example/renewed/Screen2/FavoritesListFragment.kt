@@ -89,11 +89,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
         vp.pageSelections().subscribe { position ->
+            //probably need this first
+            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+//todo this isnt going to work maybe because I have to wait for a response
+
+
+// dont reverse these or it wont work timing wise. need to start current vid before moving pos
+            adapter2.startVideoAtPosition(position)
             if (selectPos!=position)  {
                 vp.currentItem = selectPos
             }
-            adapter2.startVideoAtPosition(position)
-            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
 
         }.addTo(disposables)
     }

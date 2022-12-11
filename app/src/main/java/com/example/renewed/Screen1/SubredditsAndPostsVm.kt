@@ -47,16 +47,16 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
     private fun Observable<MyEvent>.eventToResult(): Observable<PartialViewState> {
-        return publish { o ->
+        return publish {
             val a = Observable.fromArray(
-                o.ofType(MyEvent.ScreenLoadEvent::class.java).onScreenLoad(),
-                o.ofType(MyEvent.ClickOnT5ViewEvent::class.java).onClickT5(),
-                o.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
-                o.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
-                o.ofType(MyEvent.UpdateViewingState::class.java).updateViewingState() ,
-                o.ofType(MyEvent.SaveOrDeleteEvent::class.java).onSaveOrDelete(),
-                o.ofType(MyEvent.ClearEffectEvent::class.java).onClear(),
-                o.ofType(MyEvent.MakeSnackBarEffect::class.java).onSnackbar()
+                it.ofType(MyEvent.ScreenLoadEvent::class.java).onScreenLoad(),
+                it.ofType(MyEvent.ClickOnT5ViewEvent::class.java).onClickT5(),
+                it.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
+                it.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
+                it.ofType(MyEvent.UpdateViewingState::class.java).updateViewingState() ,
+                it.ofType(MyEvent.SaveOrDeleteEvent::class.java).onSaveOrDelete(),
+                it.ofType(MyEvent.ClearEffectEvent::class.java).onClear(),
+                it.ofType(MyEvent.MakeSnackBarEffect::class.java).onSnackbar()
             )
             a.mergeAll()
         }
