@@ -133,9 +133,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 // dont reverse these or it wont work timing wise. need to start current vid before moving pos
     //        adapter2.startVideoAtPosition(selectPos)
             adapter2.startVideoAtPosition(position)
+            vp.post{   var a = selectPos
+                Timber.d("THELIIS $a")}
 
-            var a = selectPos
-            Timber.d("THELIIS $a")
+         //   var a = selectPos
+     //       Timber.d("THELIIS $a")
 
    //         vp.currentItem = selectPos
 
