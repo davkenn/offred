@@ -121,7 +121,7 @@ var p :Int? = null
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("pos",vp.currentItem)
+        outState.putInt("pos",selectPos)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -163,11 +163,6 @@ var p :Int? = null
 
             Timber.d("THELIISPOS $position")
             //this 10 thing is obviously wrong sometimes have less
-
-
-///
-
-
 
               if (position == adapter2.postIds.size - 4 &&
                 adapter2.postIds.size == 10

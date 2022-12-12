@@ -36,10 +36,10 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         var copy = postIds.toMutableList()
         copy.removeAt(0)
         replaceList(copy)
-      //  var copy2 = fragList.toMutableList()
-      //  copy2.removeAt(0)
-    //    fragList=copy2
-    //    notifyDataSetChanged()
+        var copy2 = fragList.toMutableList()
+        copy2.removeAt(0)
+        fragList=copy2
+        notifyDataSetChanged()
 
         Timber.d("WELLSAFTER $postIds")
         Timber.d("WELLSAFTER2  ${fragList.map{it.state?.name}}")
