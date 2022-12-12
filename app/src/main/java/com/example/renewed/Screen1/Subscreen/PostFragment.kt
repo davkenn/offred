@@ -36,52 +36,40 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
 
-
     @Inject
     lateinit var exo: ExoPlayer
     var playerView: PlayerView? = null
     var exoPosition: Long = 0
+    private val postsVM: PostVM by viewModels()
     private var name:String?= null
     private var isSubScreen:Boolean = false
-    private val postsVM: PostVM by viewModels()
-     var postBinding: PostViewBinding? = null
-
+    var postBinding: PostViewBinding? = null
     var state: ViewStateT3? = null
-    override fun getName() : String = postsVM.name
 
+    override fun getName() : String = postsVM.name
 
     override fun onSaveInstanceState(outState: Bundle) {
 
     //TODO am i shooting myself in the foot here by only saving instance state from fragmentadapter?
         super.onSaveInstanceState(outState)
         outState.run {
-        putLong("player_pos", exo.currentPosition)
-
-               putString("key",name)
+                       putLong("player_pos", exo.currentPosition)
+                       putString("key",name)
         }
-    }
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
         return binding.root
-
     }
 
     override fun onDestroyView() {
-
-   //     stopVideo()
         //TODO need to not do this if I don't want crashes
         postBinding = null
-
         super.onDestroyView()
     }
 
@@ -92,7 +80,6 @@ class PostFragment : ContentFragment() {
             exoPosition= savedInstanceState.getLong("player_pos")
             name=              savedInstanceState.getString("key")
             isSubScreen = savedInstanceState.getBoolean("isSubscreen")
-
         }
     }
 
@@ -105,9 +92,7 @@ class PostFragment : ContentFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-
         isSubScreen = arguments?.getBoolean("isSubscreen")?: false
-
 
         name = arguments?.getString("key") ?: "NONE"
         postsVM.setPost(name!!)
@@ -170,31 +155,16 @@ class PostFragment : ContentFragment() {
     override fun onPause() {
         Timber.d("onPause in Post Fragment")
         super.onPause()
-//        stopVideo()
-   //     exo.pause()
-
-
-       // postBinding= null
-   //     playerView?.player=null
-
-     //   exo.clearMediaItems()
-
-
-
     }
 
     override fun onResume() {
         Timber.d("onResume in Post Fragment")
         super.onResume()
-
-
     }
 
     override fun onDestroy() {
-
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
-
     }
 
     override fun onStop() {
@@ -203,8 +173,6 @@ class PostFragment : ContentFragment() {
         Timber.d("onStop in Post Fragment")
         super.onStop()
      //is this ok? can onstop and onstart in the next fragment get mixed up? should I do this in onpause?
-
-
     }
 
     private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
@@ -214,7 +182,7 @@ class PostFragment : ContentFragment() {
         }
 
     private fun loadImage(t3ViewState: ViewStateT3) {
-//this works on imgur what about gifycat
+//makes work for imgur
         if (t3ViewState.url.endsWith("gifv")) {
             val url = t3ViewState.url.substring(0,t3ViewState.url.length-1)
             Glide.with(this@PostFragment).asGif().load(url).into(postBinding!!.fullImg)
@@ -223,16 +191,13 @@ class PostFragment : ContentFragment() {
             Glide.with(this@PostFragment).load(t3ViewState.url)
                 .into(postBinding!!.fullImg)
         }
-
     }
 
     fun loadVideo() {
-//      stopVideo()
         playerView?.player = null
        playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()
-
 
         if (state?.let{!it.isVideoPost()} == true)  return
         val vid = MediaItem.fromUri(state?.url?: "")
@@ -241,9 +206,7 @@ class PostFragment : ContentFragment() {
 
         exo.repeatMode = Player.REPEAT_MODE_ALL
         exo.prepare()
-
     }
-
 
     private fun loadThumbNail(viewState: ViewStateT3)     {
         postBinding!!.thumb.visibility = VISIBLE
@@ -263,14 +226,8 @@ class PostFragment : ContentFragment() {
     fun isPlaying() = playerView?.player?.isPlaying?:false
 
     fun stopVideo() {
-
-
-
         playerView?.player?.stop()
         playerView?.player = null
-
-
-
     }
 }
 

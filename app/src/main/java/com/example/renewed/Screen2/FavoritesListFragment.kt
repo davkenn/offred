@@ -24,51 +24,31 @@ import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
 import java.lang.Math.abs
 import javax.inject.Inject
-//TODO maybe call this somewhere ive
-fun ViewPager2.getDragSensitivity(): Int {
-    val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
-    recyclerViewField.isAccessible = true
-    val recyclerView = recyclerViewField.get(this) as RecyclerView
 
-    val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
-    touchSlopField.isAccessible = true
-    return touchSlopField.get(recyclerView) as Int
-//    touchSlopField.set(recyclerView, touchSlop*f)       // "8" was obtained experimentally
-}
+
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
+
+
     @Inject
     lateinit var exo: ExoPlayer
+    private val favoritesVM: FavoritesListVM by viewModels()
     private val disposables = CompositeDisposable()
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
     //-1 as a test its correctly loading position state
     private var selectPos: Int by atomic(-1)
-var p :Int? = null
-
-
-
-    private val favoritesVM: FavoritesListVM by viewModels()
+    var p :Int? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
         exo.addListener(readyToPlayListener)
-
-
-
-         p = savedInstanceState?.getInt("pos") ?: 0
-        //     favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(red))
-
-
-
-
-
+        p = savedInstanceState?.getInt("pos") ?: 0
     }
 
     private val readyToPlayListener = object : Player.Listener { // player listener
-
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) { // check player play back state
                 Player.STATE_READY -> {
@@ -84,10 +64,8 @@ var p :Int? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         Timber.d("onViewCreated in FavoritesListFragment")
-
-
-
 
         adapter2 = FavoritesListAdapter(this)
 
@@ -99,8 +77,6 @@ var p :Int? = null
             pager.offscreenPageLimit = 10
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
         }
-
-
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it) },
@@ -114,18 +90,11 @@ var p :Int? = null
            },
                 { Timber.d("ERROR IN POS") })
             .addTo(disposables)
-
-
-
-        // }
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("pos",selectPos)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
     }
 
     override fun onDestroy() {
@@ -149,45 +118,26 @@ var p :Int? = null
         Timber.d("onResume in FavoritesListFragment")
         super.onResume()
 
+        vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
-        vp.pageSelections().subscribe { position ->
+            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == 10) {
 
-            Timber.d("THELIISPOS $position")
-            //this 10 thing is obviously wrong sometimes have less
-
-              if (position == adapter2.postIds.size - 4 &&
-                adapter2.postIds.size == 10
-            ) {
-
-             //   favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 1))
-
-
-                  favoritesVM.processInput(
-                                                   MyFavsEvent.DeleteSubredditEvent(
-                                                        adapter2.postIds.take(4)))
+                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(4)))
                 vp.post { repeat(4) { adapter2.removeFirst() } }
-                //                   favoritesVM.processInput(
-                //                             MyFavsEvent.DeleteSubredditEvent(
-                //                                  adapter2.postIds.take(1)))
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 4))
-
             } else {
+
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
-
 
             vp.post {
                 var a = selectPos
                 Timber.d("THELIIS $a")
-                //     vp.currentItem=selectPos
             }
 
-// dont reverse these or it wont work timing wise. need to start current vid before moving pos
-            //        adapter2.startVideoAtPosition(selectPos)
             adapter2.startVideoAtPosition(position)
-
-
         }
-        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
 
-    }}
+        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
+    }
+}

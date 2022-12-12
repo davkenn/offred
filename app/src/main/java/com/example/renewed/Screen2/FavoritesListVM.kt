@@ -34,27 +34,23 @@ package com.example.renewed.Screen2
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
         init {
 
-            //TODO i need a delete button to make this really worthwhile
             repository.observeSavedSubreddits()
-
-                    //here i have 10 so 5 could be the number to delete and add
-
-                .flatMap {   x->      Observable.just(1,1,1,1,1)
+                    //get exactly 10 posts, even if loading fails for some
+                .flatMap {   x->      Observable.just(1,1,1,1,1,
+                                                    1,1,1,1,1)
                     .map {  x.shuffled().take(1) }
                 }
                 .flatMapIterable { it }
-                .flatMap{ repository.getRandomPosts(it.displayName,2) }
+                .flatMap{ repository.getRandomPosts(it.displayName,2) }.take(10)
                     //TODO need to also save it to the db here
                 .doOnNext {
-                    repository.insert(it.name).subscribe({},
-                        { Timber.e("dberror: ${it.localizedMessage}") }).addTo(disposables)
-                }.startWith( repository.clearPages().subscribeOn(Schedulers.io())
-                )
-
-                .subscribe({
-                    Timber.d("observ" + it.url)
-                },
-                    { Timber.e("observeerror: ${it.localizedMessage}") }).addTo(disposables)
+                    repository.insert(it.name)
+                              .subscribe({}, { Timber.e("dberr:${it.localizedMessage}")})
+                              .addTo(disposables)
+                }.startWith( repository.clearPages().subscribeOn(Schedulers.io()))
+                .subscribe({ Timber.d("observ" + it.url) },
+                           { Timber.e("observeerror: ${it.localizedMessage}") })
+                .addTo(disposables)
 
             vs = repository.observeCurrentPostList()   .replay(1)
                 .autoConnect(1){disposables.add(it)}
@@ -67,11 +63,8 @@ package com.example.renewed.Screen2
             inputEvents.publish{
                 it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)}
                   .flatMapCompletable{ repository.deletePages(it.targets)
-                                                 .subscribeOn(Schedulers.io())}
-                                            .subscribe()
-
-
-        }
+                  .subscribeOn(Schedulers.io())}.subscribe()
+            }
 
         override fun onCleared() {
             super.onCleared()
@@ -79,9 +72,7 @@ package com.example.renewed.Screen2
             disposables.dispose()
         }
 
-
         fun processInput(name: MyFavsEvent) {
-
             inputEvents.accept(name)
         }
     }
