@@ -1,6 +1,8 @@
 package com.example.renewed.Screen2
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -114,7 +116,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it")
-                         adapter2.replaceList(it) },
+                         adapter2.replaceList(it)
+                      },
                        { Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
 
 
@@ -185,6 +188,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onResume() {
         Timber.d("onResume in FavoritesListFragment")
         super.onResume()
+
+
         vp.pageSelections().subscribe { position ->
             //probably need this first
 
@@ -193,20 +198,28 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             var a = selectPos
             Timber.d("THELIISPOS $position")
 
-            if (position==adapter2.postIds.size-1) {
-               // selectPos -= 1
-                selectPos=0
-                vp.currentItem= selectPos
+            if (position==adapter2.postIds.size-2 && adapter2.postIds.size>2) {
+                // selectPos -= 1
+
                 Timber.d("YAAAA ${adapter2.postIds.take(4)}")
                 Timber.d("YAAAA ${adapter2.postIds.reversed().take(4)}")
 
+                vp.post{selectPos-=2
+                           adapter2.removeFirst()}
+           //     Handler(Looper.getMainLooper()).postDelayed({
+             //       adapter2.removeFirst()
+               // }, 5000)
 
-                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.reversed().take(1)))
+           //     vp.post{selectPos-=2
+             //       vp.currentItem= selectPos}
 
-
+                   //        favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(1)))
 
 
             }
+
+
+
 
             favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
 

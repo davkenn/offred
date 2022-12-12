@@ -28,6 +28,13 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
     }
 
+    fun removeFirst(){
+        var copy = postIds.toMutableList()
+        copy.removeAt(0)
+        replaceList(copy)
+
+    }
+
 
 
     //TODO BUGSS
