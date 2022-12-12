@@ -111,7 +111,7 @@ var p :Int? = null
             .subscribe({
                 Timber.d("THELIISEVENTS $it"); selectPos = it
                 vp.post{vp.currentItem = selectPos}
-            },
+           },
                 { Timber.d("ERROR IN POS") })
             .addTo(disposables)
 
@@ -126,15 +126,6 @@ var p :Int? = null
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-    //    var red = savedInstanceState?.getInt("pos") ?: 0
-   //     favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(red))
-
-  //      vp.post {
-    //        vp.currentItem = red
-      //  }
-
-
-
     }
 
     override fun onDestroy() {
@@ -181,10 +172,6 @@ var p :Int? = null
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
 
-//            vp.post {
-  //              vp.currentItem= selectPos
-//
-  //          }
 
             vp.post {
                 var a = selectPos
