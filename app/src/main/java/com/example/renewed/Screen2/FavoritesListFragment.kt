@@ -86,33 +86,38 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         val binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
-                    vp = pager
-                    pager.adapter = adapter2
+            vp = pager
+            pager.adapter = adapter2
             //need to keep this as least as high as the number of pages
-                    pager.offscreenPageLimit=10
-                    pager.orientation=ViewPager2.ORIENTATION_VERTICAL
+            pager.offscreenPageLimit = 10
+            pager.orientation = ViewPager2.ORIENTATION_VERTICAL
         }
 
-        vp.post{
-            Timber.d("THELII STARTING POS $selectPos")
-            vp.currentItem=selectPos
-        }
+
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it)  },
-                       { Timber.e("FAVLISTERROR",it.stackTrace)})
+            .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it) },
+                { Timber.e("FAVLISTERROR", it.stackTrace) })
             .addTo(disposables)
 
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
-            .subscribe( {Timber.d("THELIISEVENTS $it"); selectPos = it
-                                            vp.post{ vp.currentItem=selectPos }},
-                        {Timber.d("ERROR IN POS")})
+            .subscribe({
+                Timber.d("THELIISEVENTS $it"); selectPos = it
+                vp.post{vp.currentItem = selectPos}
+            },
+                { Timber.d("ERROR IN POS") })
             .addTo(disposables)
-    }
 
+
+        //    vp.post{
+        //      Timber.d("THELII STARTING POS $selectPos")
+        //    vp.currentItem=selectPos
+        // }
+        // }
+    }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("pos",selectPos)
+        outState.putInt("pos",vp.currentItem)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -122,6 +127,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         vp.post {
             vp.currentItem = red
         }
+
     }
 
     override fun onDestroy() {
@@ -152,47 +158,39 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //this 10 thing is obviously wrong sometimes have less
 
 
-            if (position==adapter2.postIds.size-4 &&
-                          adapter2.postIds.size==10) {
 
-                    favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position-1))
+             if (position == adapter2.postIds.size - 4 &&
+                adapter2.postIds.size == 10
+            ) {
 
-
-                                                    vp.post{ repeat(4){adapter2.removeFirst()} }
-                                 //                   favoritesVM.processInput(
-                                   //                             MyFavsEvent.DeleteSubredditEvent(
-                                     //                                  adapter2.postIds.take(1)))
-                                     favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position-4))
+                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 1))
 
 
-            }
-            else {
+                vp.post { repeat(4) { adapter2.removeFirst() } }
+                //                   favoritesVM.processInput(
+                //                             MyFavsEvent.DeleteSubredditEvent(
+                //                                  adapter2.postIds.take(1)))
+                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 4))
+
+            } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
 
+    //        vp.post {
+      //          vp.currentItem= selectPos
 
-            vp.post{   var a = selectPos
+        //    }
+
+            vp.post {
+                var a = selectPos
                 Timber.d("THELIIS $a")
-           //     vp.currentItem=selectPos
+                //     vp.currentItem=selectPos
             }
-
-
-
-
 
 // dont reverse these or it wont work timing wise. need to start current vid before moving pos
             //        adapter2.startVideoAtPosition(selectPos)
             adapter2.startVideoAtPosition(position)
-            //THIS IS NEVESARRY TO GET THE POSITION TO UPDATE
 
-
-                //   if (selectPos==3) vp.currentItem=0
-        //        /**    vp.currentItem=selectPos**/}
-            //   var a = selectPos
-            //       Timber.d("THELIIS $a")
-
-            //         vp.currentItem = selectPos
 
         }
-    }
-}
+    }}
