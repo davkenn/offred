@@ -9,6 +9,7 @@ import com.example.renewed.Screen1.Subscreen.PostFragment
 import com.example.renewed.models.isVideoPost
 import com.google.android.exoplayer2.Player
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 class FavoritesListAdapter(private val fragment: FavoritesListFragment): FragmentStateAdapter(fragment) {
     var postIds: MutableList<String> = mutableListOf<String>()
@@ -29,9 +30,20 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
     }
 
     fun removeFirst(){
+
+        Timber.d("WELLSBEFORE $postIds")
+        Timber.d("WELLSBEFORE2 ${fragList.map{it.state?.name}}")
         var copy = postIds.toMutableList()
         copy.removeAt(0)
         replaceList(copy)
+        var copy2 = fragList.toMutableList()
+        copy2.removeAt(0)
+        fragList=copy2
+        notifyDataSetChanged()
+
+        Timber.d("WELLSAFTER $postIds")
+        Timber.d("WELLSAFTER2  ${fragList.map{it.state?.name}}")
+        notifyItemRemoved(0)
 
     }
 
@@ -47,9 +59,6 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         fragment.arguments = Bundle().apply {
             putString("key", name)
             putBoolean("isSubscreen",false)
-     //       putInt("pos",position)
-            //TODO do i need to readd pos
-            //  putString("pos",position.toString())
         }
         fragList.add(position,fragment)
         return fragment
