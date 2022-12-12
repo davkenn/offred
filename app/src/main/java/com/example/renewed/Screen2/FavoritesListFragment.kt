@@ -162,6 +162,9 @@ var p :Int? = null
              //   favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 1))
 
 
+                  favoritesVM.processInput(
+                                                   MyFavsEvent.DeleteSubredditEvent(
+                                                        adapter2.postIds.take(4)))
                 vp.post { repeat(4) { adapter2.removeFirst() } }
                 //                   favoritesVM.processInput(
                 //                             MyFavsEvent.DeleteSubredditEvent(
