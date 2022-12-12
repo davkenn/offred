@@ -23,7 +23,7 @@ interface FavoritesDAO {
     fun clearDb(): Completable
 
 
-    @Query("DELETE FROM CurrentFavoritesList where foodId in (:idList) ")
+    @Query("DELETE FROM CurrentFavoritesList where postId in (:idList) ")
     fun deleteList(idList: List<String>): Completable
 
 

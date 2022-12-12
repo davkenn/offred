@@ -68,16 +68,7 @@ package com.example.renewed.Screen2
                 it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)}
                   .flatMapCompletable{ repository.deletePages(it.targets)
                                                  .subscribeOn(Schedulers.io())}
-                .subscribe()
-             //   .autoConnect(1){disposables.add(it)}
-
-       //     .share()
-
-         //       .replay(1).share()
-       //     vsPos.subscribe()
-
-          //cant do this because it doesnt work on rotate
-        // //.replay(1).autoConnect(1){disposables.add(it)}
+                                            .subscribe()
 
 
         }
