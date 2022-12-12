@@ -14,4 +14,5 @@ interface BaseFavoritesRepo{
     fun insert(s: String): Completable
     fun observeCurrentPostList(): Observable<List<String>>
     fun clearPages(): Completable
+    fun deletePages(s: List<String>): Completable
 }

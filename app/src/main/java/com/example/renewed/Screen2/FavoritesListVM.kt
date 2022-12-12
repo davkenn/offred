@@ -62,12 +62,14 @@ package com.example.renewed.Screen2
        //     vsPos = Observable.just(3).replay(1)
          //       .autoConnect(1){disposables.add(it)}
             vsPos= inputEvents.publish{
-
                 it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { it.newPosition}.startWith(
                 Single.just(3))
                 .replay(1)
                 .autoConnect(1){disposables.add(it)}
 
+            inputEvents.publish{
+                it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)}.flatMapCompletable { repository.deletePages(it.targets).subscribeOn(Schedulers.io())}.subscribe()
+             //   .autoConnect(1){disposables.add(it)}
 
        //     .share()
 

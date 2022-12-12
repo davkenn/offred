@@ -193,7 +193,15 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             var a = selectPos
             Timber.d("THELIISPOS $position")
 
+            if (position==adapter2.postIds.size-1) {
+                selectPos -= 1
+                vp.currentItem= selectPos
+                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(1)))
 
+
+
+
+            }
 
             favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
 
@@ -204,13 +212,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
             vp.post{   var a = selectPos
                 Timber.d("THELIIS $a")
+
+                    }
                 //   if (selectPos==3) vp.currentItem=0
-                /**    vp.currentItem=selectPos**/}
+        //        /**    vp.currentItem=selectPos**/}
             //   var a = selectPos
             //       Timber.d("THELIIS $a")
 
             //         vp.currentItem = selectPos
-
 
         }
     }

@@ -13,6 +13,7 @@ sealed class MyEvent{
 
 sealed class MyFavsEvent{
     data class UpdatePositionEvent(val newPosition: Int): MyFavsEvent() // will lead to returning a list t5 viewstate
+    data class DeleteSubredditEvent(val targets:List<String>):MyFavsEvent()
     object LoadMorePostsEvent:MyFavsEvent()
 }
 
