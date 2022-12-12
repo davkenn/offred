@@ -79,79 +79,36 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated in FavoritesListFragment")
 
-        favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({   Timber.d("THELIISEVENTS $it")
-                selectPos = it
-            })
-            .addTo(disposables)
 
 
-
-
-
-
-        //    vp.post {
-      //      vp.currentItem = selectPos
-       // }
 
         adapter2 = FavoritesListAdapter(this)
+
         val binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
-
-            //TODO bug is now that first position doesnt start
-                         vp = pager
-                        pager.adapter = adapter2
+                    vp = pager
+                    pager.adapter = adapter2
             //need to keep this as least as high as the number of pages
-                        pager.offscreenPageLimit=10
-                        pager.orientation=ViewPager2.ORIENTATION_VERTICAL
-
+                    pager.offscreenPageLimit=10
+                    pager.orientation=ViewPager2.ORIENTATION_VERTICAL
         }
 
         vp.post{
             Timber.d("THELII STARTING POS $selectPos")
             vp.currentItem=selectPos
         }
-        var r = vp.getDragSensitivity()
-
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ Timber.d("FavoritesListVM::$it")
-                         adapter2.replaceList(it)
-                      },
-                       { Timber.e("FAVLISTERROR",it.stackTrace)}).addTo(disposables)
+            .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it)  },
+                       { Timber.e("FAVLISTERROR",it.stackTrace)})
+            .addTo(disposables)
 
-
-
-//vp.pageScrollEvents().subscribe() {
-  //  if (it.positionOffsetPixels==0){
-    //    Timber.d("THELIISONSTART $selectPos")
-      //  vp.post{vp.currentItem=selectPos}
-    //}
-//var a = selectPos
-//vp.currentItem=selectPos
-
-//}
-/**  //  vp.currentItem = selectPos
-   // adapter2.startVideoAtPosition(selectPos)
-
-
-    if (it.positionOffset<=0.5 && it.positionOffsetPixels>=44) {
-        Timber.d("THELIIUP ${it.positionOffset}")
-        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(vp.currentItem + 1))
+        favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
+            .subscribe( {Timber.d("THELIISEVENTS $it"); selectPos = it
+                                            vp.post{ vp.currentItem=selectPos }},
+                        {Timber.d("ERROR IN POS")})
+            .addTo(disposables)
     }
-    if (it.positionOffset>0.5 && it.positionOffsetPixels>=44) {
-        Timber.d("THELIIDOWN ${it.positionOffset}")
-
-        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent
-                (vp.currentItem -1))
-        }
-
-    }
-**/
- //       vp.pageScrollStateChanges().subscribe(){if (it==ViewPager2.SCROLL_STATE_IDLE)vp.currentItem=selectPos}
-
-    }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -170,7 +127,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onDestroy() {
         Timber.d("onDestroy in FavoritesListFragment")
         super.onDestroy()
-
     }
 
     override fun onDestroyView() {
@@ -191,48 +147,45 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
         vp.pageSelections().subscribe { position ->
-            //probably need this first
 
-//todo this isnt going to work maybe because I have to wait for a response
-
-            var a = selectPos
             Timber.d("THELIISPOS $position")
-
             //this 10 thing is obviously wrong sometimes have less
-            if (position==adapter2.postIds.size-2 && adapter2.postIds.size==10) {
-                // selectPos -= 1
-
-                Timber.d("YAAAA ${adapter2.postIds.take(4)}")
-                Timber.d("YAAAA ${adapter2.postIds.reversed().take(4)}")
-
-                vp.post{//selectPos-=2
-                           adapter2.removeFirst()}
-           //     Handler(Looper.getMainLooper()).postDelayed({
-             //       adapter2.removeFirst()
-               // }, 5000)
-
-           //     vp.post{selectPos-=2
-             //       vp.currentItem= selectPos}
-
-                   //        favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(1)))
 
 
+            if (position==adapter2.postIds.size-4 &&
+                          adapter2.postIds.size==10) {
+
+                    favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position-1))
+
+
+                                                    vp.post{ repeat(4){adapter2.removeFirst()} }
+                                 //                   favoritesVM.processInput(
+                                   //                             MyFavsEvent.DeleteSubredditEvent(
+                                     //                                  adapter2.postIds.take(1)))
+                                     favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position-4))
+
+
+            }
+            else {
+                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+            }
+
+
+            vp.post{   var a = selectPos
+                Timber.d("THELIIS $a")
+           //     vp.currentItem=selectPos
             }
 
 
 
 
-            favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
 
 // dont reverse these or it wont work timing wise. need to start current vid before moving pos
             //        adapter2.startVideoAtPosition(selectPos)
             adapter2.startVideoAtPosition(position)
             //THIS IS NEVESARRY TO GET THE POSITION TO UPDATE
 
-            vp.post{   var a = selectPos
-                Timber.d("THELIIS $a")
 
-                    }
                 //   if (selectPos==3) vp.currentItem=0
         //        /**    vp.currentItem=selectPos**/}
             //   var a = selectPos
