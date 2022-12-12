@@ -198,13 +198,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             var a = selectPos
             Timber.d("THELIISPOS $position")
 
-            if (position==adapter2.postIds.size-2 && adapter2.postIds.size>2) {
+            //this 10 thing is obviously wrong sometimes have less
+            if (position==adapter2.postIds.size-2 && adapter2.postIds.size==10) {
                 // selectPos -= 1
 
                 Timber.d("YAAAA ${adapter2.postIds.take(4)}")
                 Timber.d("YAAAA ${adapter2.postIds.reversed().take(4)}")
 
-                vp.post{selectPos-=2
+                vp.post{//selectPos-=2
                            adapter2.removeFirst()}
            //     Handler(Looper.getMainLooper()).postDelayed({
              //       adapter2.removeFirst()

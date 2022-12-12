@@ -15,8 +15,8 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
     var postIds: MutableList<String> = mutableListOf<String>()
     var fragList: MutableList<PostFragment> = mutableListOf<PostFragment>()
     override fun getItemCount(): Int = postIds.size
- //    override fun getItemId(position: Int): Long = items.itemId(position)
-    //override fun containsItem(itemId: Long): Boolean = items.contains(itemId)
+     override fun getItemId(position: Int): Long = postIds[position].hashCode().toLong()
+    override fun containsItem(itemId: Long): Boolean =  postIds.filter{it.hashCode().toLong()==itemId}.any()
 
 
     //YAY
@@ -36,10 +36,10 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         var copy = postIds.toMutableList()
         copy.removeAt(0)
         replaceList(copy)
-        var copy2 = fragList.toMutableList()
-        copy2.removeAt(0)
-        fragList=copy2
-        notifyDataSetChanged()
+      //  var copy2 = fragList.toMutableList()
+      //  copy2.removeAt(0)
+    //    fragList=copy2
+    //    notifyDataSetChanged()
 
         Timber.d("WELLSAFTER $postIds")
         Timber.d("WELLSAFTER2  ${fragList.map{it.state?.name}}")
