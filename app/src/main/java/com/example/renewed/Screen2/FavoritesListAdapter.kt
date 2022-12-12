@@ -21,10 +21,11 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
 
     fun replaceList(idList:List<String>){
-    //    fragList.clear()
+     //   fragList.clear()
         postIds.clear()
-        postIds.addAll(idList)
       //  fragList.clear()
+        postIds.addAll(idList)
+
         notifyDataSetChanged()
 
     }
@@ -39,7 +40,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         var copy2 = fragList.toMutableList()
         copy2.removeAt(0)
         fragList=copy2
-        notifyDataSetChanged()
+       // notifyDataSetChanged()
 
         Timber.d("WELLSAFTER $postIds")
         Timber.d("WELLSAFTER2  ${fragList.map{it.state?.name}}")
@@ -60,6 +61,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
             putString("key", name)
             putBoolean("isSubscreen",false)
         }
+     //   fragList.removeAt(position)
         fragList.add(position,fragment)
         return fragment
 
