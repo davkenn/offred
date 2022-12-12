@@ -44,7 +44,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private lateinit var adapter2 : FavoritesListAdapter
     //-1 as a test its correctly loading position state
     private var selectPos: Int by atomic(-1)
-
+var p :Int? = null
 
 
 
@@ -58,10 +58,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
 
-        var p = savedInstanceState?.getInt("pos") ?: 0
+         p = savedInstanceState?.getInt("pos") ?: 0
         //     favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(red))
 
-        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p))
+
 
 
 
@@ -133,10 +133,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     //        vp.currentItem = red
       //  }
 
-        vp.post{
-            //  Timber.d("THELII STARTING POS $selectPos")
-            vp.currentItem=savedInstanceState?.getInt("pos")?:0
-        }
+
 
     }
 
@@ -170,6 +167,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
 
+
+
               if (position == adapter2.postIds.size - 4 &&
                 adapter2.postIds.size == 10
             ) {
@@ -187,10 +186,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
 
-    //        vp.post {
-      //          vp.currentItem= selectPos
-
-        //    }
+//            vp.post {
+  //              vp.currentItem= selectPos
+//
+  //          }
 
             vp.post {
                 var a = selectPos
@@ -204,4 +203,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
         }
+        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
+
     }}
