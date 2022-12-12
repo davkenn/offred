@@ -58,6 +58,13 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
 
+        var p = savedInstanceState?.getInt("pos") ?: 0
+        //     favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(red))
+
+        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p))
+
+
+
     }
 
     private val readyToPlayListener = object : Player.Listener { // player listener
@@ -109,10 +116,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             .addTo(disposables)
 
 
-        //    vp.post{
-        //      Timber.d("THELII STARTING POS $selectPos")
-        //    vp.currentItem=selectPos
-        // }
+
         // }
     }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -122,10 +126,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        var red = savedInstanceState?.getInt("pos") ?: 0
+    //    var red = savedInstanceState?.getInt("pos") ?: 0
+   //     favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(red))
 
-        vp.post {
-            vp.currentItem = red
+  //      vp.post {
+    //        vp.currentItem = red
+      //  }
+
+        vp.post{
+            //  Timber.d("THELII STARTING POS $selectPos")
+            vp.currentItem=savedInstanceState?.getInt("pos")?:0
         }
 
     }
@@ -159,11 +169,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
 
-             if (position == adapter2.postIds.size - 4 &&
+
+              if (position == adapter2.postIds.size - 4 &&
                 adapter2.postIds.size == 10
             ) {
 
-                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 1))
+             //   favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 1))
 
 
                 vp.post { repeat(4) { adapter2.removeFirst() } }

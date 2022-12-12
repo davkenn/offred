@@ -62,8 +62,7 @@ package com.example.renewed.Screen2
        //     vsPos = Observable.just(3).replay(1)
          //       .autoConnect(1){disposables.add(it)}
             vsPos= inputEvents.publish{
-                it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { it.newPosition}.startWith(
-                Single.just(0))
+                it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)}.map { it.newPosition}
                 .replay(1)
                 .autoConnect(1){disposables.add(it)}
 
