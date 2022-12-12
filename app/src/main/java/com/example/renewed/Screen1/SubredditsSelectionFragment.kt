@@ -20,7 +20,6 @@ import com.example.renewed.Screen1.Subscreen.PostFragment
 import com.example.renewed.Screen1.Subscreen.SubredditFragment
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
 import com.example.renewed.models.EffectType
-
 import com.example.renewed.models.MyEvent
 import com.example.renewed.models.PartialViewState
 import com.google.android.material.snackbar.Snackbar
@@ -35,14 +34,15 @@ import timber.log.Timber
 @AndroidEntryPoint
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
-    private lateinit var subredditAdapter: SubredditsAdapter
-    private lateinit var postAdapter: PostsAdapter
-    private val disposables = CompositeDisposable()
-    private var disposable: Disposable? = null
+    private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
 
     private lateinit var subRV: RecyclerView
+    private lateinit var subredditAdapter: SubredditsAdapter
     private lateinit var postRV: RecyclerView
-    private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
+    private lateinit var postAdapter: PostsAdapter
+
+    private val disposables = CompositeDisposable()
+    private var disposable: Disposable? = null
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
     private var selectPos: Int by atomic(-2)
@@ -50,7 +50,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private lateinit var saveButton1: Button
     private lateinit var deleteButton1: Button
     private lateinit var backButton1: Button
-
     private var saveAndDeleteEnabled: Boolean? by atomic(null)
     private var backEnabled: Boolean? by atomic(null)
 
@@ -74,7 +73,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             putInt("selected_pos", selectPos)
         }
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -264,8 +262,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditAdapter.setSelect(selectPos, subRV.findViewHolderForAdapterPosition(selectPos))
         }
     }
-
-
 
 //TODO its fucked up that im not pausing the disposable here I think FIX THISSS
 

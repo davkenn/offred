@@ -2,9 +2,7 @@ package com.example.renewed
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -14,11 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.databinding.RvSubredditElemBinding
-
 import com.example.renewed.models.ViewStateT5
-import com.jakewharton.rxbinding4.recyclerview.dataChanges
-import timber.log.Timber
-
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
@@ -90,7 +84,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         }
     }
 }
-
+//TODO not doing this kind of diffing yet maybe remove
 object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
     override fun areItemsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem.name == newItem.name

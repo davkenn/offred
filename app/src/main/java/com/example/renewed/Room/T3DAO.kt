@@ -25,11 +25,7 @@ interface T3DAO {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateT3(t5: RoomT5): Completable
 
-    //FROM WHEN FLOWABLE ? or does it do this with single?
-    // @Query("SELECT * FROM RoomT5 WHERE isSaved=0 ORDER BY RANDOM() LIMIT 50")
-
     //FOR UI TESTING
-
     @Query("SELECT * FROM RoomT3")
     fun getAllRows(): List<RoomT3>
 

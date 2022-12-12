@@ -37,9 +37,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             toggleFullscreen(destination.id)
         }
-
     }
-
 
     private fun toggleFullscreen(id:Int) {
         if (id == R.id.feed) {
@@ -59,8 +57,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
            ctrl.show(WindowInsetsCompat.Type.navigationBars())
          }
     }
-//
-  //  override fun onRestart() {
-    //    super.onRestart()
-   // }
+
 }

@@ -11,7 +11,6 @@ import com.example.renewed.models.RoomT5
                                                     version = 1, exportSchema =false )
     @TypeConverters(Converters::class)
     abstract class RedditDatabase : RoomDatabase() {
-
         abstract fun subredditDao(): T5DAO
         abstract fun postsDao(): T3DAO
         abstract fun favoritesDao():FavoritesDAO

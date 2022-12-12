@@ -16,11 +16,10 @@ class RedirectInterceptor : Interceptor {
             response.close()
             response = chain.proceed(request.newBuilder()
                             .url((url?.substringBefore(".json?") ) +"about.json?")
-                .build())
+                            .build())
         }
         //handle all other redirects normally
-        if (response.isRedirect)
-        {
+        if (response.isRedirect) {
             response.close()
             response = chain.proceed(request.newBuilder().url(url!!).build())
         }

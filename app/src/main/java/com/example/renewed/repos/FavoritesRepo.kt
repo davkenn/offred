@@ -15,8 +15,6 @@ import java.util.concurrent.TimeUnit
 
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val favs:FavoritesDAO,private val api: API): BaseFavoritesRepo {
 
-
-
     override fun insert(s: String): Completable {
         return  favs.insert(CurrentFavoritesList(s))
 
@@ -37,24 +35,15 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
         return favs.clearDb()
     }
 
-
     override fun getRandomPosts(name:String,number:Int): Observable<RoomT3>{
-
-        return  Observable.just(name).repeat(number.toLong()).flatMapSingle {  api.getRandomPost(name)
-
-
+        return  Observable.just(name)
+                          .repeat(number.toLong())
+                          .flatMapSingle {  api.getRandomPost(name)
                 //TODO fix this its way too hacky
-            .map{(it[0].data.children[0].data as T3).toDbModel()} }
-            .doOnNext { t3.insertAll(listOf(it)).subscribe() }
-
-
+                          .map{(it[0].data.children[0].data as T3).toDbModel()} }
+                          .doOnNext { t3.insertAll(listOf(it)).subscribe() }
                 //TODO this seems to be crashing sometimes too
-
-
     }
-
-
-
 }
 
 

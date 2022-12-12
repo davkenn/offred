@@ -33,13 +33,12 @@ interface T5DAO {
         @Query("SELECT * FROM RoomT5 WHERE isSaved= 1 ")
         fun observeSavedSubreddits(): Observable<List<RoomT5>>
 
-
         @Query("SELECT * FROM RoomT5 WHERE RoomT5.name LIKE :name")
         fun getSubreddit(name: String) : Single<RoomT5>
 
         //get subreddits yet to have any posts loaded for it
-        @Query("SELECT roomT5.displayName FROM roomT5  LEFT JOIN roomT3  ON roomT5.name = subredditId  " +
-                "WHERE subredditId IS NULL LIMIT 80")   //this num must be same as num loaded
+        @Query("SELECT roomT5.displayName FROM roomT5  LEFT JOIN roomT3  " +
+                "ON roomT5.name = subredditId WHERE subredditId IS NULL LIMIT 80")   //this num must be same as num loaded
         fun getSubredditIDsNeedingPosts() : Single<List<String>>
 
         @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -55,10 +54,7 @@ interface T5DAO {
         fun clearDisplayed() : Completable
 
 
-
-
         //FOR UI TESTING
-
         @Query("UPDATE RoomT5 SET totalViews=0 and isDisplayed=0 and isSaved=0")
         fun clearViews() : Unit
 

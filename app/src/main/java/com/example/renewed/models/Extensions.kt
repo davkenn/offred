@@ -35,10 +35,7 @@ fun T3.toDbModel(): RoomT3 {
         gallery_urls = media_metadata?.joinToString(separator = " ") {
                                                 it.p?.last()?.u?.
                                                 replace("amp;","")?:""})
-//    gallery_urls = media_metadata?.p?.joinToString(separator = " ") {
-              //                                  it.u.replace("amp;","")})
 }
-
 
 
 

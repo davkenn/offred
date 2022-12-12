@@ -73,7 +73,6 @@ class PostFragment : ContentFragment() {
         super.onDestroyView()
     }
 
-
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         savedInstanceState?.let {
