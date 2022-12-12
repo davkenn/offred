@@ -15,11 +15,11 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
     var postIds: MutableList<String> = mutableListOf<String>()
     var fragList: MutableList<PostFragment> = mutableListOf<PostFragment>()
     override fun getItemCount(): Int = postIds.size
-     override fun getItemId(position: Int): Long = postIds[position].hashCode().toLong()
-    override fun containsItem(itemId: Long): Boolean =  postIds.filter{it.hashCode().toLong()==itemId}.any()
+    override fun getItemId(position: Int): Long = postIds[position].hashCode().toLong()
+    override fun containsItem(itemId: Long): Boolean = postIds.any { it.hashCode().toLong() == itemId }
 
 
-    //YAY
+
     fun replaceList(idList:List<String>){
     //    fragList.clear()
         postIds.clear()
