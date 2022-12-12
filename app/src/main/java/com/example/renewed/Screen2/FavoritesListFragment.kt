@@ -194,9 +194,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             Timber.d("THELIISPOS $position")
 
             if (position==adapter2.postIds.size-1) {
-                selectPos -= 1
+               // selectPos -= 1
+                selectPos=0
                 vp.currentItem= selectPos
-                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(1)))
+                Timber.d("YAAAA ${adapter2.postIds.take(4)}")
+                Timber.d("YAAAA ${adapter2.postIds.reversed().take(4)}")
+
+
+                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.reversed().take(1)))
 
 
 

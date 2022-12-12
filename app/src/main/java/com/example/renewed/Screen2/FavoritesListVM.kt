@@ -68,7 +68,10 @@ package com.example.renewed.Screen2
                 .autoConnect(1){disposables.add(it)}
 
             inputEvents.publish{
-                it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)}.flatMapCompletable { repository.deletePages(it.targets).subscribeOn(Schedulers.io())}.subscribe()
+                it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)}
+                  .flatMapCompletable{ repository.deletePages(it.targets)
+                                                 .subscribeOn(Schedulers.io())}
+                .subscribe()
              //   .autoConnect(1){disposables.add(it)}
 
        //     .share()
