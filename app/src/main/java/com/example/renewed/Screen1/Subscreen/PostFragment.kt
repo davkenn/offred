@@ -195,15 +195,13 @@ class PostFragment : ContentFragment() {
 
     fun loadVideo() {
         playerView?.player = null
-       playerView = postBinding?.exoplayer
+        playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()
 
         if (state?.let{!it.isVideoPost()} == true)  return
         val vid = MediaItem.fromUri(state?.url?: "")
         exo.setMediaItem(vid)
-        playerView?.useController = false
-
         exo.repeatMode = Player.REPEAT_MODE_ALL
         exo.prepare()
     }
