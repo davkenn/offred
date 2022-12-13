@@ -9,14 +9,17 @@ class RedditPostAdapter {
     fun parse(
         reader: JsonReader,
         t1Adapter: JsonAdapter<T1>,
+        t3Adapter: JsonAdapter<T3>,
         t5Adapter: JsonAdapter<T5>,
-        t3Adapter: JsonAdapter<T3>
+
+        moreAdapter: JsonAdapter<More>
     ): Holder {
         val jsonObj = reader.readJsonValue() as Map<String, Any>
         val data = when (val type = jsonObj["kind"]) {
             "t5" -> t5Adapter.fromJsonValue(jsonObj["data"])!!
             "t3" -> t3Adapter.fromJsonValue(jsonObj["data"])!!
             "t1" -> t1Adapter.fromJsonValue(jsonObj["data"])!!
+            "more" -> moreAdapter.fromJsonValue(jsonObj["data"])!!
             else -> throw IllegalStateException("unexpected type: $type")
         }
         return Holder(data, jsonObj["kind"] as String)

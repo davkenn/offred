@@ -5,13 +5,8 @@ import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
-import com.example.renewed.repos.BaseFavoritesRepo
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
-import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val favs:FavoritesDAO,private val api: API): BaseFavoritesRepo {
 
@@ -38,12 +33,20 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
     override fun getRandomPosts(name:String,number:Int): Observable<RoomT3>{
         return  Observable.just(name)
                           .repeat(number.toLong())
-                          .flatMapSingle {  api.getRandomPost(name)
-                //TODO fix this its way too hacky
-                          .map{(it[0].data.children[0].data as T3).toDbModel()} }
+                 //         .flatMapSingle {  api.getRandomPost(name)}
+            .flatMapSingle {  api.getPostWithLotsOfComments()}
+                /**This call makes this error in moshi adapter. now will fix it and see if it goes away
+                 * turn this into an autmated test
+                              .flatMapSingle {  api.getPostWithLotsOfComments()}
+                2022-12-13 13:51:41.479 31104-31135/com.example.offred E/FavoritesListVM: observeerror:
+                 * java.lang.IllegalStateException: unexpected type: more at $[1].data.children[8]
+                **/
+                          .map{ extractT3Field(it).toDbModel()}
                           .doOnNext { t3.insertAll(listOf(it)).subscribe() }
                 //TODO this seems to be crashing sometimes too
     }
+
+    private fun extractT3Field(it: List<Listing>): T3 = it[0].data.children[0].data as T3
 }
 
 

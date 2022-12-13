@@ -62,3 +62,12 @@ data class Video  (val fallback_url:String?,val dash_url:String?)
 @JsonClass(generateAdapter = true)
 data class T1 (override val name: String, val link_id: String, val body: String): RedditPostType()
 
+//if you fetch from a post a list of its replies and limit it to some number of posts n,
+//you will also get a more datatype at the end giving you links to more replies
+//Right now my moshi parser is failing posts with tons of replies and thus with a more
+
+//more has a name field but its also included in the list of more replies and I don't
+//need to save it in a db (I don't think) so no need for key.
+//actually I gave it the unique name because I do need for it to have the inherited name property
+@JsonClass(generateAdapter = true)
+data class More (override val name: String, val children: List<String>): RedditPostType()

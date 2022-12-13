@@ -122,17 +122,17 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                                               subredditAdapter.currentList.map { it.displayName })}
 
         val backRefreshClicks = backClicks.mergeWith(refreshClicks)
-                                          .throttleFirst(100,TimeUnit.MILLISECONDS)
+                                          .throttleFirst(200,TimeUnit.MILLISECONDS)
 
         val deleteClicks = deleteButton1.clicks()
-                                        .throttleFirst(100,TimeUnit.MILLISECONDS)
+                                        .throttleFirst(200,TimeUnit.MILLISECONDS)
                                         .flatMap{Observable.just(
                                                     MyEvent.UpdateViewingState(getSubNameOrNull()),
                                             MyEvent.SaveOrDeleteEvent(getSubNameOrNull(),
                                                 subredditAdapter.currentList, true))}
 
         val saveClicks = saveButton1.clicks()
-                                    .throttleFirst(100,TimeUnit.MILLISECONDS)
+                                    .throttleFirst(200,TimeUnit.MILLISECONDS)
                                     .flatMap { Observable.just(MyEvent.UpdateViewingState(
                                                                                 getSubNameOrNull()),
                                                        MyEvent.SaveOrDeleteEvent(getSubNameOrNull(),

@@ -31,4 +31,10 @@ interface API {
                             @Query("before") before:String?=null,
                             @Query("after") after:String?=null): Single<Listing>
 
+    @GET("r/politics/comments/zl1c39/lawmakers_unveil_bipartisan_bill_that_aims_to_ban.json")
+    fun getPostWithLotsOfComments(@Query("limit")limit:String="20",
+                                @Query("before") before:String?=null,
+                                    @Query("after") after:String?=null): Single<List<Listing>>
+
+
 }
