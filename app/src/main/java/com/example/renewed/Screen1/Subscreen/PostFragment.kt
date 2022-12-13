@@ -108,7 +108,7 @@ class PostFragment : ContentFragment() {
                     postBinding!!.bodyText.text = t3ViewState.selftext
                     Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
                     postBinding!!.url.text = t3ViewState.url
-
+//TODO there is a bug here where if you click on the imageview to go to 2nd in gallery it jumps back to top
                     if (t3ViewState.isGalleryPost()){
                         postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
                                 private var dex: Int = 1
