@@ -55,7 +55,7 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="timeCreated,post_name"/>
 
-        <com.google.android.exoplayer2.ui.PlayerView
+        <com.google.android.exoplayer2.ui.StyledPlayerView
             android:id="@+id/exoplayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -26,6 +26,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.Player.Listener
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -38,7 +39,7 @@ class PostFragment : ContentFragment() {
 
     @Inject
     lateinit var exo: ExoPlayer
-    var playerView: PlayerView? = null
+    var playerView: StyledPlayerView? = null
     var exoPosition: Long = 0
     private val postsVM: PostVM by viewModels()
     private var name:String?= null

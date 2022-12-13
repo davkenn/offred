@@ -1,21 +1,17 @@
 package com.example.renewed.Screen2
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
 import com.example.renewed.atomic
-
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.MyFavsEvent
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
-import com.jakewharton.rxbinding4.view.changeEvents
 import com.jakewharton.rxbinding4.viewpager2.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
