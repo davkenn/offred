@@ -84,8 +84,9 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.setBackgroundColor(Color.parseColor("black"))
+
         super.onViewCreated(view, savedInstanceState)
+        view.setBackgroundColor(Color.parseColor("black"))
 
     }
     @Deprecated("Deprecated in Java")

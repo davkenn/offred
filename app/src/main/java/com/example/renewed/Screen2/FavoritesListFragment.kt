@@ -1,5 +1,6 @@
 package com.example.renewed.Screen2
 
+import android.graphics.Color
 import android.os.Bundle
 
 import android.view.View
@@ -72,9 +73,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //need to keep this as least as high as the number of pages
             pager.offscreenPageLimit = 10
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
+            pager.setBackgroundColor(Color.parseColor("black"))
         }
-
-        favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
+//this filter is so I don't get adapter bugs for createfragment
+        favoritesVM.vs.filter{it.size>5}.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it) },
                 { Timber.e("FAVLISTERROR", it.stackTrace) })
             .addTo(disposables)
@@ -82,7 +84,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Timber.d("THELIISEVENTS $it"); selectPos = it
-                vp.post{vp.currentItem = selectPos}
+                vp.post{vp.setCurrentItem( selectPos,false)}
            },
                 { Timber.d("ERROR IN POS") })
             .addTo(disposables)
@@ -122,7 +124,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 vp.post { repeat(4) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 4))
             } else {
-
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
 
