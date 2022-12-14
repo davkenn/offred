@@ -164,11 +164,13 @@ class PostFragment : ContentFragment() {
                         postBinding!!.fullImg.visibility = VISIBLE
                     }
                     //TODO not handling great if its both a thumb and certain kinds of reddit urls
+                    //Latina Teen Short Shorts from tiktokthots_2
                     if (!t3ViewState.hasNoThumbnail()) {
                         loadThumbNail(t3ViewState)
                         postBinding!!.thumb.visibility = VISIBLE
                     }
                     //FOr now get rid of all state
+
                     if (t3ViewState.isVideoPost()){
 
                         postBinding!!.timeCreated.visibility= GONE
@@ -229,7 +231,7 @@ class PostFragment : ContentFragment() {
 
         if (state?.let{!it.isVideoPost()} == true)  return
         val vid = MediaItem.fromUri(state?.url?: "")
-  //      val vid = MediaItem.fromUri(  " https://v.redd.it/5asdaux80k5a1/DASHPlaylist.mpd?a=1673596605%2CYTEzMDcyMjA4ZGY3ZDRlY2ViZmVmMmQ5ZGEyNTllNjVkOGVmMDIwOTE5NjBhYjc5MmRiYzk0YmUyNTA2MTM4Zg%3D%3D&amp;v=1&amp;f=sd"    )
+     //   val vid = MediaItem.fromUri(  "https://v.redd.it/5asdaux80k5a1/DASHPlaylist.mpd?a=1673596605%2CYTEzMDcyMjA4ZGY3ZDRlY2ViZmVmMmQ5ZGEyNTllNjVkOGVmMDIwOTE5NjBhYjc5MmRiYzk0YmUyNTA2MTM4Zg%3D%3D&amp;v=1&amp;f=sd"    )
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         exo.prepare()
