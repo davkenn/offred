@@ -163,6 +163,7 @@ class PostFragment : ContentFragment() {
                         loadImage(t3ViewState)
                         postBinding!!.fullImg.visibility = VISIBLE
                     }
+                    //TODO not handling great if its both a thumb and certain kinds of reddit urls
                     if (!t3ViewState.hasNoThumbnail()) {
                         loadThumbNail(t3ViewState)
                         postBinding!!.thumb.visibility = VISIBLE
@@ -190,7 +191,7 @@ class PostFragment : ContentFragment() {
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
-        disposables.clear()
+
     }
 
     override fun onStop() {
@@ -198,7 +199,7 @@ class PostFragment : ContentFragment() {
         stopVideo()
         Timber.d("onStop in Post Fragment")
         super.onStop()
-
+        disposables.clear()
      //is this ok? can onstop and onstart in the next fragment get mixed up? should I do this in onpause?
     }
 
@@ -228,6 +229,7 @@ class PostFragment : ContentFragment() {
 
         if (state?.let{!it.isVideoPost()} == true)  return
         val vid = MediaItem.fromUri(state?.url?: "")
+  //      val vid = MediaItem.fromUri(  " https://v.redd.it/5asdaux80k5a1/DASHPlaylist.mpd?a=1673596605%2CYTEzMDcyMjA4ZGY3ZDRlY2ViZmVmMmQ5ZGEyNTllNjVkOGVmMDIwOTE5NjBhYjc5MmRiYzk0YmUyNTA2MTM4Zg%3D%3D&amp;v=1&amp;f=sd"    )
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         exo.prepare()
