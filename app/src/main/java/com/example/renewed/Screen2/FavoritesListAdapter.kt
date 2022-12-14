@@ -6,6 +6,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.renewed.PostsAdapter
 import com.example.renewed.Screen1.Subscreen.BlankFragment
 import com.example.renewed.Screen1.Subscreen.PostFragment
+import com.example.renewed.models.PartialViewState
+import com.example.renewed.models.ViewStateT3
 import com.example.renewed.models.isVideoPost
 import com.google.android.exoplayer2.Player
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +37,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         var copy2 = fragList.toMutableList()
         copy2.removeAt(0)
         fragList=copy2
-        notifyItemRemoved(0)
+
         Timber.d("WELLSAFTER $postIds")
         Timber.d("WELLSAFTER2  ${fragList.map{it?.state?.name}}")
     }
@@ -135,6 +137,14 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
      //   fragList.add(position,fragment)
         fragList[position] = fragment
         return fragment
+
+    }
+    fun addFragment(t3: ViewStateT3){
+        var copy = postIds.toMutableList()
+        t3.name?.let { copy.add(it) }
+
+        replaceList(copy)
+  notifyDataSetChanged()
 
     }
     fun startVideoAtPosition(position: Int) {

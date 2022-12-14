@@ -4,11 +4,8 @@ package com.example.renewed.Screen2
  import androidx.lifecycle.ViewModel
  import androidx.test.core.app.canTakeScreenshot
  import com.example.renewed.Room.FavoritesDAO
- import com.example.renewed.models.FullViewState
- import com.example.renewed.models.MyEvent
+ import com.example.renewed.models.*
  import com.example.renewed.repos.BaseFavoritesRepo
- import com.example.renewed.models.MyFavsEvent
- import com.example.renewed.models.RoomT5
  import com.jakewharton.rxrelay3.PublishRelay
  import dagger.hilt.android.lifecycle.HiltViewModel
  import io.reactivex.rxjava3.core.Completable
@@ -28,6 +25,7 @@ package com.example.renewed.Screen2
     class FavoritesListVM @Inject constructor(
         private val repository: BaseFavoritesRepo
     ): ViewModel() {
+        val vs3: Observable<PartialViewState.T3ForViewing>
         val vs: Observable<List<String>>
         val vsPos: Observable<Int>
         private val disposables: CompositeDisposable = CompositeDisposable()
@@ -35,7 +33,7 @@ package com.example.renewed.Screen2
 
         init {
 
-            repository.observeSavedSubreddits()
+            var a=repository.observeSavedSubreddits()
                 //get exactly 10 posts, even if loading fails for some
                 .flatMap { x ->
                     Observable.just(
@@ -46,9 +44,9 @@ package com.example.renewed.Screen2
                 }
                 .flatMapIterable { it }
                 .flatMap{ repository.getRandomPosts(it.displayName,2) }.take(10)
-
+                .share()
                     //TODO need to also save it to the db here
-                .doOnNext {
+                a.doOnNext {
                     repository.insert(it.name)
                               .subscribe({}, { Timber.e("dberr:${it.localizedMessage}")})
                               .addTo(disposables)
@@ -56,6 +54,8 @@ package com.example.renewed.Screen2
                 .subscribe({ Timber.d("observ" + it.url) },
                            { Timber.e("observeerror: ${it.localizedMessage}") })
                 .addTo(disposables)
+
+         //   a.flatMapCompletable {  }
 
                     vs = repository.observeCurrentPostList().replay(1)
                         .autoConnect(1) { disposables.add(it) }
@@ -65,15 +65,28 @@ package com.example.renewed.Screen2
                     }.map { it.newPosition }
                         .replay(1)
                         .autoConnect(1) { disposables.add(it) }
-
+vs3 =
                     inputEvents.publish {
-                        it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)
+                        it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).doOnNext{repository.deletePages(it.targets).subscribeOn(Schedulers.io()).subscribe()}.updateViewingState()
                     }
-                        .flatMapCompletable {
-                            repository.deletePages(it.targets)
-                                .subscribeOn(Schedulers.io())
-                        }.
-                        subscribe()
+a
+
+                        //} //.compose( a.take(4)  )
+                    //    .subscribe({}, { Timber.e("dberr:${it.localizedMessage}")})
+                      //  .addTo(disposables)
+
+
+//                        .doOnNext { repository.insert(it.name).subscribeOn(Schedulers.io()).subscribe() }
+                          //  . subscribe()
+                }
+        private fun Observable<MyFavsEvent.DeleteSubredditEvent>.updateViewingState(): Observable<PartialViewState.T3ForViewing> {
+            return              flatMapIterable { it.targets }
+                .flatMap{ repository.getRandomPosts(it,2) }
+                . take(4).map{PartialViewState.T3ForViewing(it.toViewState())}
+
+
+           // }
+
                 }
 
 
