@@ -7,6 +7,7 @@ import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import retrofit2.http.Path
 
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val favs:FavoritesDAO,private val api: API): BaseFavoritesRepo {
 
@@ -30,23 +31,38 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
         return favs.clearDb()
     }
 
-    override fun getRandomPosts(name:String,number:Int): Observable<RoomT3>{
+    override fun getRandomPosts(name:String,number:Int): Observable<List<RoomT3>> {
         return  Observable.just(name)
-                          .repeat(number.toLong())
-                 //         .flatMapSingle {  api.getRandomPost(name)}
-            .flatMapSingle {  api.getPostWithLotsOfComments()}
+
+//                          .flatMapSingle {  api.getRandomPost(name)}
+            .flatMapSingle {  api.getHotComments(name)}
+                .map{ x -> extractT3Field(x).take(number).map{it.toDbModel()}}
+                .doOnNext { t3.insertAll(it).subscribe() }
+
+
+
+//            .flatMapSingle {  api.getPostWithLotsOfComments()}
                 /**This call makes this error in moshi adapter. now will fix it and see if it goes away
                  * turn this into an autmated test
                               .flatMapSingle {  api.getPostWithLotsOfComments()}
                 2022-12-13 13:51:41.479 31104-31135/com.example.offred E/FavoritesListVM: observeerror:
                  * java.lang.IllegalStateException: unexpected type: more at $[1].data.children[8]
                 **/
-                          .map{ extractT3Field(it).toDbModel()}
-                          .doOnNext { t3.insertAll(listOf(it)).subscribe() }
+                      //    .map{ extractT3Field(it)}. take(number)
+                   //       .doOnNext { t3.insertAll(it).subscribe() }
                 //TODO this seems to be crashing sometimes too
     }
 
     private fun extractT3Field(it: List<Listing>): T3 = it[0].data.children[0].data as T3
+
+
+//    private fun extractT3Field(it: Listing): T3 = it.data.children[0].data as T3
+
+
+
+    private fun extractT3Field(it: Listing): List<T3> =
+        it.data.children.take(2).map { it.data as T3 }
+
 }
 
 

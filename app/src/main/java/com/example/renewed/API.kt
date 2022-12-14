@@ -36,5 +36,10 @@ interface API {
                                 @Query("before") before:String?=null,
                                     @Query("after") after:String?=null): Single<List<Listing>>
 
+    @GET("r/{subName}/hot.json")
+    fun getHotComments(@Path("subName") subName:String,@Query("limit")limit:String="2",
+                                  @Query("before") before:String?=null,
+                                  @Query("after") after:String?=null): Single<Listing>
+
 
 }

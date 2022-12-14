@@ -13,7 +13,8 @@ import timber.log.Timber
 
 class FavoritesListAdapter(private val fragment: FavoritesListFragment): FragmentStateAdapter(fragment) {
     var postIds: MutableList<String> = mutableListOf<String>()
-    var fragList: MutableList<PostFragment> = mutableListOf<PostFragment>()
+    var fragList: MutableList<PostFragment?> = arrayOfNulls<PostFragment>(10).toMutableList()
+    var a = arrayOfNulls<PostFragment>(10).toMutableList()
 
     override fun getItemCount(): Int = postIds.size
     override fun getItemId(position: Int): Long = postIds[position].hashCode().toLong()
@@ -27,7 +28,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
     fun removeFirst(){
         Timber.d("WELLSBEFORE $postIds")
-        Timber.d("WELLSBEFORE2 ${fragList.map{it.state?.name}}")
+        Timber.d("WELLSBEFORE2 ${fragList.map{it?.state?.name}}")
         var copy = postIds.toMutableList()
         copy.removeAt(0)
         replaceList(copy)
@@ -36,7 +37,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         fragList=copy2
         notifyItemRemoved(0)
         Timber.d("WELLSAFTER $postIds")
-        Timber.d("WELLSAFTER2  ${fragList.map{it.state?.name}}")
+        Timber.d("WELLSAFTER2  ${fragList.map{it?.state?.name}}")
     }
 
     /**  used to always get this error for short lists before I watched only longer emissions.
@@ -131,12 +132,13 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
             putString("key", name)
             putBoolean("isSubscreen",false)
         }
-        fragList.add(position,fragment)
+     //   fragList.add(position,fragment)
+        fragList[position] = fragment
         return fragment
 
     }
     fun startVideoAtPosition(position: Int) {
         if (position <0|| position >=  fragList.size) return
-        fragList[position].loadVideo()
+        fragList[position]?.loadVideo()
     }
 }
