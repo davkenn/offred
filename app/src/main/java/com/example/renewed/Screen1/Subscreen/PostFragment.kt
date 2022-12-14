@@ -29,6 +29,8 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -46,7 +48,7 @@ class PostFragment : ContentFragment() {
     private var isSubScreen:Boolean = false
     var postBinding: PostViewBinding? = null
     var state: ViewStateT3? = null
-
+    private val disposables = CompositeDisposable()
     override fun getName() : String = postsVM.name
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -89,6 +91,24 @@ class PostFragment : ContentFragment() {
         view.setBackgroundColor(Color.parseColor("black"))
 
     }
+
+ /**   E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.example.offred, PID: 14675
+    java.lang.NullPointerException
+    at com.example.renewed.Screen1.Subscreen.PostFragment.onActivityCreated$lambda-3(PostFragment.kt:123)
+    at com.example.renewed.Screen1.Subscreen.PostFragment.$r8$lambda$S1vzCuUV1WPgskrHPj82n0CADGg(Unknown Source:0)
+    at com.example.renewed.Screen1.Subscreen.PostFragment$$ExternalSyntheticLambda2.accept(Unknown Source:4)
+    at io.reactivex.rxjava3.internal.observers.ConsumerSingleObserver.onSuccess(ConsumerSingleObserver.java:62)
+    at io.reactivex.rxjava3.internal.operators.single.SingleObserveOn$ObserveOnSingleObserver.run(SingleObserveOn.java:81)
+    at io.reactivex.rxjava3.android.schedulers.HandlerScheduler$ScheduledRunnable.run(HandlerScheduler.java:123)
+    at android.os.Handler.handleCallback(Handler.java:938)
+    at android.os.Handler.dispatchMessage(Handler.java:99)
+    at android.os.Looper.loop(Looper.java:223)
+    at android.app.ActivityThread.main(ActivityThread.java:7656)
+    at java.lang.reflect.Method.invoke(Native Method)
+    at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
+    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
+**/
     @Deprecated("Deprecated in Java")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -96,6 +116,15 @@ class PostFragment : ContentFragment() {
         isSubScreen = arguments?.getBoolean("isSubscreen")?: false
 
         name = arguments?.getString("key") ?: "NONE"
+
+    }
+
+    override fun onPause() {
+        Timber.d("onPause in Post Fragment")
+        super.onPause()
+    }
+
+    override fun onStart() {
         postsVM.setPost(name!!)
             .doOnEvent{x,_ -> state=x}
             .subscribeOn(Schedulers.io())
@@ -112,19 +141,19 @@ class PostFragment : ContentFragment() {
 //TODO there is a bug here where if you click on the imageview to go to 2nd in gallery it jumps back to top
                     if (t3ViewState.isGalleryPost()){
                         postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
-                                private var dex: Int = 1
-                              override fun onClick(v: View?) {
-                                    Glide.with(this@PostFragment).load(
-                                        t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size])
-                                        .into(postBinding!!.fullImg)
-                                    dex += 1
-                                }})
+                            private var dex: Int = 1
+                            override fun onClick(v: View?) {
+                                Glide.with(this@PostFragment).load(
+                                    t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size])
+                                    .into(postBinding!!.fullImg)
+                                dex += 1
+                            }})
 
-                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
-                                .into(postBinding!!.fullImg)
-                            postBinding!!.fullImg.visibility = VISIBLE
-                            val end = "\nGALLERY, click to to open..."
-                            postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
+                        Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
+                            .into(postBinding!!.fullImg)
+                        postBinding!!.fullImg.visibility = VISIBLE
+                        val end = "\nGALLERY, click to to open..."
+                        postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
                     }
                     if (t3ViewState.isUrlPost()) {
                         loadUrlClickListener(t3ViewState)
@@ -148,16 +177,11 @@ class PostFragment : ContentFragment() {
                         if (isSubScreen){
                             loadVideo()
                         }
-     }
-                }, { Timber.e("Error in binding ${it.localizedMessage}")})
+                    }
+                }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
 
+        super.onStart()
     }
-
-    override fun onPause() {
-        Timber.d("onPause in Post Fragment")
-        super.onPause()
-    }
-
     override fun onResume() {
         Timber.d("onResume in Post Fragment")
         super.onResume()
@@ -166,6 +190,7 @@ class PostFragment : ContentFragment() {
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
+        disposables.clear()
     }
 
     override fun onStop() {
@@ -173,6 +198,7 @@ class PostFragment : ContentFragment() {
         stopVideo()
         Timber.d("onStop in Post Fragment")
         super.onStop()
+
      //is this ok? can onstop and onstart in the next fragment get mixed up? should I do this in onpause?
     }
 
