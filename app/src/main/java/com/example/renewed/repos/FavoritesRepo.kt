@@ -31,13 +31,13 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
         return favs.clearDb()
     }
 
-    override fun getRandomPosts(name:String,number:Int): Observable<List<RoomT3>> {
-        return  Observable.just(name)
+    override fun getRandomPosts(name:String,number:Int): Observable<RoomT3> {
+        return  Observable.just(name).repeat(number.toLong())
 
-//                          .flatMapSingle {  api.getRandomPost(name)}
-            .flatMapSingle {  api.getHotComments(name)}
-                .map{ x -> extractT3Field(x).take(number).map{it.toDbModel()}}
-                .doOnNext { t3.insertAll(it).subscribe() }
+                          .flatMapSingle {  api.getRandomPost(name)}
+   //         .flatMapSingle {  api.getHotComments(name)}
+                .map{ x -> extractT3Field(x).toDbModel()}
+                .doOnNext { t3.insertAll(listOf(it)).subscribe() }
 
 
 
@@ -55,13 +55,12 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
 
     private fun extractT3Field(it: List<Listing>): T3 = it[0].data.children[0].data as T3
 
-
-//    private fun extractT3Field(it: Listing): T3 = it.data.children[0].data as T3
-
+        private fun extractT3Field(it: Listing): T3 = it.data.children[0].data as T3
 
 
-    private fun extractT3Field(it: Listing): List<T3> =
-        it.data.children.take(2).map { it.data as T3 }
+
+    //private fun extractT3Field(it: Listing): List<T3> =
+     //   it.data.children.take(2).map { it.data as T3 }
 
 }
 

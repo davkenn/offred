@@ -45,21 +45,17 @@ package com.example.renewed.Screen2
                         .map { x.shuffled().take(1) }
                 }
                 .flatMapIterable { it }
-                .flatMap { repository.getRandomPosts(it.displayName, 20) }.take(5)
-                .flatMap {
-                    Observable.just(it[it.indices.random()], it[it.indices.random()])
-                    //       .flatMap{Observable.just(it[0],it[1])}
-                    //TODO need to also save it to the db here
-                }
-                        .doOnNext {
+                .flatMap{ repository.getRandomPosts(it.displayName,2) }.take(10)
 
-                            repository.insert(it.name)
-                                .subscribe({}, { Timber.e("dberr:${it.localizedMessage}") })
-                                .addTo(disposables)
-                        }.startWith(repository.clearPages().subscribeOn(Schedulers.io()))
-                        .subscribe({ Timber.d("observ" + it.url) },
-                            { Timber.e("observeerror: ${it.localizedMessage}") })
-                        .addTo(disposables)
+                    //TODO need to also save it to the db here
+                .doOnNext {
+                    repository.insert(it.name)
+                              .subscribe({}, { Timber.e("dberr:${it.localizedMessage}")})
+                              .addTo(disposables)
+                }.startWith( repository.clearPages().subscribeOn(Schedulers.io()))
+                .subscribe({ Timber.d("observ" + it.url) },
+                           { Timber.e("observeerror: ${it.localizedMessage}") })
+                .addTo(disposables)
 
                     vs = repository.observeCurrentPostList().replay(1)
                         .autoConnect(1) { disposables.add(it) }
