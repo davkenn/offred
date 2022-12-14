@@ -150,9 +150,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
                         if (x.effect != null){
                            when (x.effect) {
-                               EffectType.DELETE_OR_SAVE -> {popTopViewerElement()
+                               EffectType.DELETE_OR_SAVE -> {
+                                                             popTopViewerElement()
                                                              subredditAdapter.clearSelected()
-                                                             selectPos = -1}
+                                                             selectPos = -1
+                              }
                                EffectType.SNACKBAR -> Snackbar.make(binding.root,
                                    "Already in Stack. Press back to find it...", Snackbar.LENGTH_SHORT)
                                    .show()

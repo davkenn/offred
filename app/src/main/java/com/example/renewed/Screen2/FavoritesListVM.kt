@@ -72,7 +72,8 @@ package com.example.renewed.Screen2
                         .flatMapCompletable {
                             repository.deletePages(it.targets)
                                 .subscribeOn(Schedulers.io())
-                        }.subscribe()
+                        }.
+                        subscribe()
                 }
 
 
