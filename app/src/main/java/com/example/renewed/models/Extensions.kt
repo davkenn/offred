@@ -26,6 +26,7 @@ fun T3.toDbModel(): RoomT3 {
         //TODO whyd I go away from dash originally and how can I fix this so it works for all vids? another field? maybe load both?
                                                 address=
                                                     media?.reddit_video?.dash_url?:
+                                                    secure_media?.reddit_video?.dash_url?:
                                                     media?.reddit_video?.fallback_url
 
 
