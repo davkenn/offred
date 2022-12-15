@@ -2,22 +2,15 @@ package com.example.renewed.Screen2
 
 
  import androidx.lifecycle.ViewModel
- import androidx.test.core.app.canTakeScreenshot
- import com.example.renewed.Room.FavoritesDAO
  import com.example.renewed.models.*
  import com.example.renewed.repos.BaseFavoritesRepo
  import com.jakewharton.rxrelay3.PublishRelay
  import dagger.hilt.android.lifecycle.HiltViewModel
- import io.reactivex.rxjava3.core.Completable
  import io.reactivex.rxjava3.core.Observable
- import io.reactivex.rxjava3.core.ObservableOnSubscribe
- import io.reactivex.rxjava3.core.Single
  import io.reactivex.rxjava3.disposables.CompositeDisposable
  import io.reactivex.rxjava3.kotlin.addTo
- import io.reactivex.rxjava3.kotlin.mergeAll
  import io.reactivex.rxjava3.schedulers.Schedulers
  import timber.log.Timber
- import java.util.concurrent.TimeUnit
 
  import javax.inject.Inject
 
@@ -34,7 +27,7 @@ package com.example.renewed.Screen2
 
         init {
 
-            var a = repository.observeSavedSubreddits()
+            val newPostsObservable = repository.observeSavedSubreddits()
                 //get exactly 10 posts, even if loading fails for some
                 .flatMap { x ->
                     Observable.just(
@@ -45,10 +38,11 @@ package com.example.renewed.Screen2
                 }
                 .flatMapIterable { it }
                 .flatMap { repository.getRandomPosts(it.displayName, 2) }
-                .take(10)
-    //            .share()
+//Do I need this share? seems to work ok without it.
+                .share()
             //TODO need to also save it to the db here
-            a.doOnNext {
+            newPostsObservable . take(10)
+                .doOnNext {
                 repository.insert(it.name)
                     .subscribe({}, { Timber.e("dberr:${it.localizedMessage}") })
                     .addTo(disposables)
@@ -74,24 +68,10 @@ package com.example.renewed.Screen2
                         .subscribeOn(Schedulers.io())
                 }.map { PartialViewState.SnackbarEffect }
 
-            var b= a.flatMap { repository.getRandomPosts(it.name,2) }
             vs4= inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
 
-                    repository.observeSavedSubreddits()
-                        //get exactly 10 posts, even if loading fails for some reason on some
-                        .flatMap { x ->
-                            Observable.just(
-                                1, 1, 1, 1, 1,
-                                1, 1, 1, 1, 1
-                            )
-                                .map { x.shuffled().take(1) }
-                        }
-                        .flatMapIterable { it }
-                        .flatMap {
-                            repository.getRandomPosts(it.displayName, 2)
-                        }
-                        .take(4)
+                        newPostsObservable.take(4)
                         .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
 
                         .doOnNext {
