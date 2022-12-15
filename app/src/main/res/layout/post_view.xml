@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.35" />
+            app:layout_constraintGuide_percent="0.25" />
 
 
         <TextView
@@ -23,10 +23,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="4"
-            android:gravity="start"
+            android:maxLines="6"
+android:elevation = "10dp"
+            android:gravity="center"
             android:textColor="@color/yellow20"
-
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toTopOf="@id/barrier"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/guidelinea"
@@ -65,7 +66,9 @@
             app:layout_constraintBottom_toTopOf="@id/body_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/barrier"
+
+            app:layout_constraintTop_toTopOf="parent"
+
             android:visibility="gone"/>
 
         <ImageView

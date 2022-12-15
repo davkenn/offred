@@ -71,7 +71,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             vp = pager
             pager.adapter = adapter2
             //need to keep this as least as high as the number of pages
-            pager.offscreenPageLimit = 10
+            pager.offscreenPageLimit = 12
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             pager.setBackgroundColor(Color.parseColor("black"))
         }

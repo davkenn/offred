@@ -175,6 +175,7 @@ class PostFragment : ContentFragment() {
                     if (t3ViewState.isVideoPost()){
 
                         postBinding!!.timeCreated.visibility= GONE
+                        postBinding!!.postName
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
 
