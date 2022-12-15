@@ -44,8 +44,9 @@ package com.example.renewed.Screen2
                         .map { x.shuffled().take(1) }
                 }
                 .flatMapIterable { it }
-                .flatMap { repository.getRandomPosts(it.displayName, 2) }.take(10)
-                .share()
+                .flatMap { repository.getRandomPosts(it.displayName, 2) }
+                .take(10)
+    //            .share()
             //TODO need to also save it to the db here
             a.doOnNext {
                 repository.insert(it.name)
@@ -55,8 +56,6 @@ package com.example.renewed.Screen2
                 .subscribe({ Timber.d("observ" + it.url) },
                     { Timber.e("observeerror: ${it.localizedMessage}") })
                 .addTo(disposables)
-
-            //   a.flatMapCompletable {  }
 
             vs = repository.observeCurrentPostList().replay(1)
                 .autoConnect(1) { disposables.add(it) }
@@ -80,7 +79,7 @@ package com.example.renewed.Screen2
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
 
                     repository.observeSavedSubreddits()
-                        //get exactly 10 posts, even if loading fails for some
+                        //get exactly 10 posts, even if loading fails for some reason on some
                         .flatMap { x ->
                             Observable.just(
                                 1, 1, 1, 1, 1,
@@ -101,37 +100,31 @@ package com.example.renewed.Screen2
                         }
                         .map{PartialViewState.T3ForViewing(it.toViewState())}
 //STILL A BUG SOMETIMES THE DB GETS DOWN TO 9 then stops working
-                            //    .map{PartialViewState.T3ForViewing(it.toViewState())} }
-                            // }.doOnNextrepository.insert(it.targets[it.targets.indices.random()])
-                            //   .subscribeOn(Schedulers.io())
-                            //     }.map { PartialViewState.SnackbarEffect }
 
-                            //.doOnNext
-                            //     repository.deletePages(it.targets).subscribeOn(Schedulers.io()).subscribe()}
-
-                            //         .flatMapIterable { it.targets }.flatMap { repository.getRandomPosts(it,2).subscribeOn(Schedulers.io())}
-                            //                                                            .map{PartialViewState.T3ForViewing(it.toViewState())}}
-                            //      .take(4)
-                            //        .flatMap{ repository.getRandomPosts(it,2) }
-                            //          . take(4).doOnNext(repository.insert())
-                        //}
-
-
-                    //} //.compose( a.take(4)  )
-                    //    .subscribe({}, { Timber.e("dberr:${it.localizedMessage}")})
-                    //  .addTo(disposables)
-
-
-                    //  . subscribe()
                 }}}
 
-                    private fun Observable<MyFavsEvent.DeleteSubredditEvent>.updateViewingState(): Observable<PartialViewState.T3ForViewing> {
-                        return flatMapIterable { it.targets }
-                            .flatMap { repository.getRandomPosts(it, 2) }
-                            .take(4).map { PartialViewState.T3ForViewing(it.toViewState()) }
 
 
-                        // }
+                    private fun Observable<MyFavsEvent.DeleteSubredditEvent>.updateViewingState(): Observable<RoomT3> {
+                        return repository.observeSavedSubreddits()
+                            //get exactly 10 posts, even if loading fails for some
+                            .flatMap { x ->
+                                Observable.just(
+                                    1, 1, 1, 1, 1,
+                                    1, 1, 1, 1, 1
+                                )
+                                    .map { x.shuffled().take(1) }
+                            }
+                            .flatMapIterable { it }
+                            .flatMap { repository.getRandomPosts(it.displayName, 2) }
+
+
+               //         return flatMapIterable { it.targets }
+                 //           .flatMap { repository.getRandomPosts(it, 2) }
+                   //        //TODO theres a latent bug here if the db gets less than four emissions
+                                //need to make app work on wrong size list
+                      //      .take(4)
+                        //    .map { PartialViewState.T3ForViewing(it.toViewState()) }
 
                     }
 
