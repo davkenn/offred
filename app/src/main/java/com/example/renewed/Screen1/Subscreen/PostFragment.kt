@@ -140,21 +140,26 @@ class PostFragment : ContentFragment() {
                     postBinding!!.url.text = t3ViewState.url
 //TODO there is a bug here where if you click on the imageview to go to 2nd in gallery it jumps back to top
                     if (t3ViewState.isGalleryPost()){
-                        postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
+                        if (t3ViewState.galleryUrls!=null){
+                            postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
                             private var dex: Int = 1
                             override fun onClick(v: View?) {
+
                                 Glide.with(this@PostFragment).load(
-                                    t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size])
+                                    t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size]
+                                )
                                     .into(postBinding!!.fullImg)
                                 dex += 1
-                            }})
+                            }  })
 
-                        Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
-                        Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
-                            .into(postBinding!!.fullImg)
-                        postBinding!!.fullImg.visibility = VISIBLE
-                        val end = "\nGALLERY, click to to open..."
-                        postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
+                            Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
+
+                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
+                                .into(postBinding!!.fullImg)
+
+                            postBinding!!.fullImg.visibility = VISIBLE
+                            val end = "\nGALLERY, click to to open..."
+                            postBinding!!.postName.text = "${postBinding!!.postName.text}$end"}
                     }
                     if (t3ViewState.isUrlPost()) {
                         loadUrlClickListener(t3ViewState)

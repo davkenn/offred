@@ -28,7 +28,7 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
     }
 
     override fun clearPages(): Completable {
-        return favs.clearDb()
+        return favs.clearDb().startWith(t5.deleteUnsavedPosts())
     }
 
     override fun getRandomPosts(name:String,number:Int): Observable<RoomT3> {

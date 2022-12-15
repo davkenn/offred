@@ -71,11 +71,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             vp = pager
             pager.adapter = adapter2
             //need to keep this as least as high as the number of pages
-            pager.offscreenPageLimit = 12
+            pager.offscreenPageLimit = 10
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             pager.setBackgroundColor(Color.parseColor("black"))
         }
 //this filter is so I don't get adapter bugs for createfragment
+        //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
         favoritesVM.vs.filter{it.size>7}.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it) },
                 { Timber.e("FAVLISTERROR", it.stackTrace) })

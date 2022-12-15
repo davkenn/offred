@@ -40,7 +40,7 @@ fun T3.toDbModel(): RoomT3 {
         timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
         gallery_urls = media_metadata?.joinToString(separator = " ") {
                                                 it.p?.last()?.u?.
-                                                replace("amp;","")?:""})
+                                                replace("amp;","")?:""}, isSaved = false)
 }
 
 
@@ -60,7 +60,7 @@ fun RoomT3.toViewState(): ViewStateT3 =
         galleryUrls = gallery_urls?.split(" "))
 
 private fun Instant.instantToDateString() =
-    this.atZone(ZoneId.of("America/Los_Angeles"))
+        atZone(ZoneId.of("America/Los_Angeles"))
         .toLocalDateTime()
         .format(DateTimeFormatter.ofPattern("MM/dd/yyyy h:mm a"))
         .toString()
