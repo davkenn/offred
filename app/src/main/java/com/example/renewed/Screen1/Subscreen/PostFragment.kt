@@ -235,6 +235,7 @@ class PostFragment : ContentFragment() {
      //   val vid = MediaItem.fromUri(  "https://v.redd.it/5asdaux80k5a1/DASHPlaylist.mpd?a=1673596605%2CYTEzMDcyMjA4ZGY3ZDRlY2ViZmVmMmQ5ZGEyNTllNjVkOGVmMDIwOTE5NjBhYjc5MmRiYzk0YmUyNTA2MTM4Zg%3D%3D&amp;v=1&amp;f=sd"    )
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
+        Timber.e("VOLUME${exo.deviceVolume}")
         exo.prepare()
     }
 
