@@ -242,6 +242,7 @@ class PostFragment : ContentFragment() {
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         Timber.e("VOLUME${exo.deviceVolume}")
+        exo.playWhenReady= true
         exo.prepare()
     }
 

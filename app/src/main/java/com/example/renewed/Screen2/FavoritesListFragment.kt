@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
 import com.example.renewed.atomic
@@ -41,22 +42,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
-        exo.addListener(readyToPlayListener)
         p = savedInstanceState?.getInt("pos") ?: 0
-    }
-
-    private val readyToPlayListener = object : Player.Listener { // player listener
-        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            when (playbackState) { // check player play back state
-                Player.STATE_READY -> {
-                    exo.playWhenReady= true
-                }
-                Player.STATE_ENDED -> {}
-                Player.STATE_BUFFERING -> {}
-                Player.STATE_IDLE -> {}
-                else -> {}
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,9 +57,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             vp = pager
             pager.adapter = adapter2
             //need to keep this as least as high as the number of pages
-            pager.offscreenPageLimit = 10
+            pager.offscreenPageLimit = 8
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             pager.setBackgroundColor(Color.parseColor("black"))
+            pager.reduceDragSensitivity(2)
         }
 //this filter is so I don't get adapter bugs for createfragment
         //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
@@ -153,3 +140,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
     }}
 
+
+fun ViewPager2.reduceDragSensitivity(f: Int = 4) {
+    val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+    recyclerViewField.isAccessible = true
+    val recyclerView = recyclerViewField.get(this) as RecyclerView
+
+    val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+    touchSlopField.isAccessible = true
+    val touchSlop = touchSlopField.get(recyclerView) as Int
+    touchSlopField.set(recyclerView, touchSlop*f)       // "8" was obtained experimentally
+}
