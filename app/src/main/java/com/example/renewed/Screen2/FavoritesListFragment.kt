@@ -11,6 +11,7 @@ import com.example.renewed.R
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.MyFavsEvent
+import com.example.renewed.models.PartialViewState
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.jakewharton.rxbinding4.viewpager2.*
@@ -89,7 +90,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             .addTo(disposables)
 
     favoritesVM.vs3.observeOn(AndroidSchedulers.mainThread())
-    .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.addFragment(it.t3) },
+    .filter{ it is PartialViewState.SnackbarEffect }.subscribe({favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent)},
     { Timber.e("FAVLISTERROR", it.stackTrace) })
     .addTo(disposables)
     }

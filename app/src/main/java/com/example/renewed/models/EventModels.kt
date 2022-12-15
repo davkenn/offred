@@ -14,5 +14,6 @@ sealed class MyEvent{
 sealed class MyFavsEvent{
     data class UpdatePositionEvent(val newPosition: Int): MyFavsEvent()
     data class DeleteSubredditEvent(val targets:List<String>):MyFavsEvent()
+    object AddSubredditsEvent:MyFavsEvent()
 }
 
