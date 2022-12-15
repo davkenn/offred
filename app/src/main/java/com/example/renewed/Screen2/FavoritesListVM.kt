@@ -36,10 +36,20 @@ package com.example.renewed.Screen2
                     )
                         .map { x.shuffled().take(1) }
                 }
+
+                    //TODO my 11 bug is almost certainly that im adding a duplicate to the list
                 .flatMapIterable { it }
                 .flatMap { repository.getRandomPosts(it.displayName, 2) }
                 .share()  //Do I need this share? seems to work ok without it.
+
+
+
+
+
+
             //TODO need to also save it to the db here
+
+
             newPostsObservable . take(12)
                 .doOnNext {
                 repository.insert(it.name)
@@ -69,7 +79,7 @@ package com.example.renewed.Screen2
 
             vs4= inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
-                        newPostsObservable.take(6)
+                        newPostsObservable.take(it.count)
                         .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
                         .doOnNext {
                             repository.insert(it.name).subscribeOn(Schedulers.io())

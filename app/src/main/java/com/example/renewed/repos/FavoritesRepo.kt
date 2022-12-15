@@ -48,7 +48,8 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
                 2022-12-13 13:51:41.479 31104-31135/com.example.offred E/FavoritesListVM: observeerror:
                  * java.lang.IllegalStateException: unexpected type: more at $[1].data.children[8]
                 **/
-                      //    .map{ extractT3Field(it)}. take(number)
+                      //    .map{ extractT3Field(it)}.
+    //  take(number)
                    //       .doOnNext { t3.insertAll(it).subscribe() }
                 //TODO this seems to be crashing sometimes too
     }
