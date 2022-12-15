@@ -90,9 +90,15 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             .addTo(disposables)
 
     favoritesVM.vs3.observeOn(AndroidSchedulers.mainThread())
+        //can call adapter2.removeFirst here it works so even is coming back
     .filter{ it is PartialViewState.SnackbarEffect }.subscribe({favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent)},
     { Timber.e("FAVLISTERROR", it.stackTrace) })
     .addTo(disposables)
+
+    favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
+        .filter{ it is PartialViewState.T3ForViewing }.subscribe({},{}).addTo(disposables)
+
+
     }
 
 

@@ -26,6 +26,7 @@ package com.example.renewed.Screen2
         private val repository: BaseFavoritesRepo
     ): ViewModel() {
         val vs3: Observable<PartialViewState>
+        val vs4: Observable<PartialViewState>
         val vs: Observable<List<String>>
         val vsPos: Observable<Int>
         private val disposables: CompositeDisposable = CompositeDisposable()
@@ -75,7 +76,7 @@ package com.example.renewed.Screen2
                 }.map { PartialViewState.SnackbarEffect }
 
             var b= a.flatMap { repository.getRandomPosts(it.name,2) }
-            inputEvents.publish {
+            vs4= inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
 
                     repository.observeSavedSubreddits()
@@ -91,10 +92,14 @@ package com.example.renewed.Screen2
                         .flatMap {
                             repository.getRandomPosts(it.displayName, 2)
 
-                                .take(4).doOnNext {
-                                    repository.insert(it.name).subscribeOn(Schedulers.io())
-                                        .subscribe()
-                                }
+                                .take(4)
+                                .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
+
+                 //               .doOnNext {
+                   //                 repository.insert(it.name).subscribeOn(Schedulers.io())
+                     //                   .subscribe()
+                        //        }
+                        .map{PartialViewState.T3ForViewing(it.toViewState())}
 
                             //    .map{PartialViewState.T3ForViewing(it.toViewState())} }
                             // }.doOnNextrepository.insert(it.targets[it.targets.indices.random()])
