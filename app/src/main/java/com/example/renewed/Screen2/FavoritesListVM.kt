@@ -38,8 +38,7 @@ package com.example.renewed.Screen2
                 }
                 .flatMapIterable { it }
                 .flatMap { repository.getRandomPosts(it.displayName, 2) }
-//Do I need this share? seems to work ok without it.
-                .share()
+                .share()  //Do I need this share? seems to work ok without it.
             //TODO need to also save it to the db here
             newPostsObservable . take(10)
                 .doOnNext {
@@ -54,33 +53,29 @@ package com.example.renewed.Screen2
             vs = repository.observeCurrentPostList().replay(1)
                 .autoConnect(1) { disposables.add(it) }
 
-            vsPos = inputEvents.publish {
-                it.ofType(MyFavsEvent.UpdatePositionEvent::class.java)
-            }.map { it.newPosition }
-                .replay(1)
-                .autoConnect(1) { disposables.add(it) }
-            vs3 =
-                inputEvents.publish {
-                    it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).doOnNext {
-                        repository.deletePages(it.targets).subscribeOn(Schedulers.io()).subscribe()
-                    }
+            vsPos = inputEvents.publish {  it.ofType(MyFavsEvent.UpdatePositionEvent::class.java) }
+                               .map { it.newPosition }
+                               .replay(1)
+                               .autoConnect(1) { disposables.add(it) }
+
+            vs3 = inputEvents.publish { it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)
+                                           .doOnNext {
+                                                            repository.deletePages(it.targets)
+                                                                      .subscribeOn(Schedulers.io())
+                                                                      .subscribe() }
                         //     repository.insert(it.targets[it.targets.indices.random()])
-                        .subscribeOn(Schedulers.io())
-                }.map { PartialViewState.SnackbarEffect }
+                              }
+                             .map { PartialViewState.SnackbarEffect }
 
             vs4= inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
-
                         newPostsObservable.take(4)
                         .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
-
                         .doOnNext {
                             repository.insert(it.name).subscribeOn(Schedulers.io())
                                 .subscribe()
                         }
                         .map{PartialViewState.T3ForViewing(it.toViewState())}
-//STILL A BUG SOMETIMES THE DB GETS DOWN TO 9 then stops working
-
                 }}}
 
 
@@ -98,13 +93,7 @@ package com.example.renewed.Screen2
                             .flatMapIterable { it }
                             .flatMap { repository.getRandomPosts(it.displayName, 2) }
 
-
-               //         return flatMapIterable { it.targets }
-                 //           .flatMap { repository.getRandomPosts(it, 2) }
-                   //        //TODO theres a latent bug here if the db gets less than four emissions
-                                //need to make app work on wrong size list
-                      //      .take(4)
-                        //    .map { PartialViewState.T3ForViewing(it.toViewState()) }
+                          //TODO theres a latent bug here if the db gets less than four emissions
 
                     }
 
