@@ -36,6 +36,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         replaceList(copy)
         var copy2 = fragList.toMutableList()
         copy2.removeAt(0)
+        copy2.add(null)
 
         fragList=copy2
 
