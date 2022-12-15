@@ -31,14 +31,19 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
     fun removeFirst(){
         Timber.d("WELLSBEFORE $postIds")
         Timber.d("WELLSBEFORE2 ${fragList.map{it?.state?.name}}")
-        var copy = postIds.toMutableList()
-        copy.removeAt(0)
-        replaceList(copy)
+
+ //IMPORTANT DON'T SWAP THE ORDER OF THESE TWO I FIXED THE MIDLIST NULL BUG BY
+        //SWAPPING THE ORDER TO THIS
         var copy2 = fragList.toMutableList()
         copy2.removeAt(0)
         copy2.add(null)
 
         fragList=copy2
+
+        var copy = postIds.toMutableList()
+        copy.removeAt(0)
+        replaceList(copy)
+
 
         Timber.d("WELLSAFTER $postIds")
         Timber.d("WELLSAFTER2  ${fragList.map{it?.state?.name}}")
@@ -136,7 +141,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
             putString("key", name)
             putBoolean("isSubscreen",false)
         }
-     //   fragList.add(fragment)
+
         fragList[position] = fragment
         return fragment
 

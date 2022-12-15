@@ -92,15 +92,15 @@ package com.example.renewed.Screen2
                         .flatMap {
                             repository.getRandomPosts(it.displayName, 2)
                         }
-                                .take(4)
-                                .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
+                        .take(4)
+                        .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
 
-                                .doOnNext {
-                                    repository.insert(it.name).subscribeOn(Schedulers.io())
-                                        .subscribe()
-                                }
+                        .doOnNext {
+                            repository.insert(it.name).subscribeOn(Schedulers.io())
+                                .subscribe()
+                        }
                         .map{PartialViewState.T3ForViewing(it.toViewState())}
-
+//STILL A BUG SOMETIMES THE DB GETS DOWN TO 9 then stops working
                             //    .map{PartialViewState.T3ForViewing(it.toViewState())} }
                             // }.doOnNextrepository.insert(it.targets[it.targets.indices.random()])
                             //   .subscribeOn(Schedulers.io())
