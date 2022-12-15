@@ -84,7 +84,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     .addTo(disposables)
 
     favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
-        .filter{ it is PartialViewState.T3ForViewing }.subscribe({},{}).addTo(disposables)
+        .filter{ it is PartialViewState.T3ForViewing }.subscribe({vp.isUserInputEnabled=true},{}).addTo(disposables)
 
 
     }
@@ -121,7 +121,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //I think here is where the bug is. If the size isn't 12 it doesn't advance. but if size
             //isn't 12 still will have a null sneak in there so thats prob where the bug is
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == 12) {
-
+                vp.isUserInputEnabled=false
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
