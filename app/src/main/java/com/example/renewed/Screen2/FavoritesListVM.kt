@@ -95,10 +95,10 @@ package com.example.renewed.Screen2
                                 .take(4)
                                 .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
 
-                 //               .doOnNext {
-                   //                 repository.insert(it.name).subscribeOn(Schedulers.io())
-                     //                   .subscribe()
-                        //        }
+                      //          .doOnNext {
+                        //            repository.insert(it.name).subscribeOn(Schedulers.io())
+                          //              .subscribe()
+                            //    }
                         .map{PartialViewState.T3ForViewing(it.toViewState())}
 
                             //    .map{PartialViewState.T3ForViewing(it.toViewState())} }

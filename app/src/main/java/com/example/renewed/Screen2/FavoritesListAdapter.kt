@@ -36,6 +36,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         replaceList(copy)
         var copy2 = fragList.toMutableList()
         copy2.removeAt(0)
+
         fragList=copy2
 
         Timber.d("WELLSAFTER $postIds")
@@ -134,7 +135,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
             putString("key", name)
             putBoolean("isSubscreen",false)
         }
-     //   fragList.add(position,fragment)
+     //   fragList.add(fragment)
         fragList[position] = fragment
         return fragment
 
