@@ -76,7 +76,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             pager.setBackgroundColor(Color.parseColor("black"))
         }
 //this filter is so I don't get adapter bugs for createfragment
-        favoritesVM.vs.filter{it.size>5}.observeOn(AndroidSchedulers.mainThread())
+        favoritesVM.vs.filter{it.size>7}.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it) },
                 { Timber.e("FAVLISTERROR", it.stackTrace) })
             .addTo(disposables)
@@ -130,7 +130,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
-            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == 10) {
+            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == 12) {
 
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(4)))
                 vp.post { repeat(4) { adapter2.removeFirst() } }

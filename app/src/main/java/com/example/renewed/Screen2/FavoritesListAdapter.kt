@@ -15,8 +15,8 @@ import timber.log.Timber
 
 class FavoritesListAdapter(private val fragment: FavoritesListFragment): FragmentStateAdapter(fragment) {
     var postIds: MutableList<String> = mutableListOf<String>()
-    var fragList: MutableList<PostFragment?> = arrayOfNulls<PostFragment>(10).toMutableList()
-    var a = arrayOfNulls<PostFragment>(10).toMutableList()
+    var fragList: MutableList<PostFragment?> = arrayOfNulls<PostFragment>(12).toMutableList()
+    var a = arrayOfNulls<PostFragment>(12).toMutableList()
 
     override fun getItemCount(): Int = postIds.size
     override fun getItemId(position: Int): Long = postIds[position].hashCode().toLong()

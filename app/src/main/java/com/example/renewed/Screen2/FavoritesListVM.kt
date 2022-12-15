@@ -40,7 +40,7 @@ package com.example.renewed.Screen2
                 .flatMap { repository.getRandomPosts(it.displayName, 2) }
                 .share()  //Do I need this share? seems to work ok without it.
             //TODO need to also save it to the db here
-            newPostsObservable . take(10)
+            newPostsObservable . take(12)
                 .doOnNext {
                 repository.insert(it.name)
                     .subscribe({}, { Timber.e("dberr:${it.localizedMessage}") })

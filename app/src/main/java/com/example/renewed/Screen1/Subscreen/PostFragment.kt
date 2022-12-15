@@ -149,6 +149,7 @@ class PostFragment : ContentFragment() {
                                 dex += 1
                             }})
 
+                        Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
                         Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
                             .into(postBinding!!.fullImg)
                         postBinding!!.fullImg.visibility = VISIBLE
