@@ -134,9 +134,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //isn't 12 still will have a null sneak in there so thats prob where the bug is
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == 12) {
 
-                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(4)))
-                vp.post { repeat(4) { adapter2.removeFirst() } }
-                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 4))
+                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
+                vp.post { repeat(6) { adapter2.removeFirst() } }
+                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
             } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }

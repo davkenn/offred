@@ -69,7 +69,7 @@ package com.example.renewed.Screen2
 
             vs4= inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
-                        newPostsObservable.take(4)
+                        newPostsObservable.take(6)
                         .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
                         .doOnNext {
                             repository.insert(it.name).subscribeOn(Schedulers.io())
