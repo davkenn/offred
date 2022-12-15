@@ -1,4 +1,4 @@
-package com.example.renewed
+package com.example.renewed.Screen1
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

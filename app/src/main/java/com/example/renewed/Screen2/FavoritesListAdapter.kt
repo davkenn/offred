@@ -3,7 +3,7 @@ package com.example.renewed.Screen2
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.renewed.PostsAdapter
+import com.example.renewed.Screen1.PostsAdapter
 import com.example.renewed.Screen1.Subscreen.BlankFragment
 import com.example.renewed.Screen1.Subscreen.PostFragment
 import com.example.renewed.models.PartialViewState

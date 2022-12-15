@@ -3,6 +3,7 @@ package com.example.renewed.repos
 import com.example.renewed.API
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
+import com.example.renewed.SCREEN1_DB_SIZE
 import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -28,7 +29,7 @@ class SubredditsAndPostsRepo(
              .toObservable()
              .flatMapCompletable {  n-> loadSubredditsDb(
                                                       max(0,
-                                                          min(80, 80-n.toInt())))
+                                                          min(SCREEN1_DB_SIZE, SCREEN1_DB_SIZE-n.toInt())))
                                  }
 
     private fun loadSubredditsDb(needed: Int): Completable =
@@ -56,7 +57,7 @@ class SubredditsAndPostsRepo(
 
     //TODO fix this later just testing
     //TODO testing broke my program need that 3 here to match the other call maybe make a var
-    override fun deleteUninterestingSubreddits(): Completable= t5Dao.deleteUnwanted(maxViews = 3)
+    override fun deleteUninterestingSubreddits(): Completable= t5Dao.deleteUnwanted()
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable =
          Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
                    .concatMapCompletable{ callUpdate(it, shouldDelete) }

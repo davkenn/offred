@@ -1,11 +1,12 @@
 package com.example.renewed.Room
 
 import androidx.room.*
+import com.example.renewed.REPEATS
 import com.example.renewed.models.RoomT5
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-
+import com.example.renewed.SCREEN1_DB_SIZE
 
 @Dao
 interface T5DAO {
@@ -20,16 +21,13 @@ interface T5DAO {
         fun delete(name: String): Completable
 
         @Query("DELETE FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0 AND totalViews >= :maxViews")
-        fun deleteUnwanted(maxViews: Int): Completable
+        fun deleteUnwanted(maxViews: Int= REPEATS): Completable
 
         //TODO here I am cutting off before deleting, maybe should just remove totalviews
-        @Query("SELECT * FROM RoomT5 WHERE isSaved= 0 AND totalViews < 27 "+
+        @Query("SELECT * FROM RoomT5 WHERE isSaved= 0 AND totalViews < :repeats "+ //should be three
                 "ORDER BY displayName <= :startReturningAfter,  displayName LIMIT 20")
-        fun getSubredditsFromTable(startReturningAfter:String): Single<List<RoomT5>>
+        fun getSubredditsFromTable(startReturningAfter:String,repeats:Int= REPEATS): Single<List<RoomT5>>
 
-        @Query("SELECT * FROM RoomT5 WHERE isSaved= 1 AND totalViews < 3 "+
-                "ORDER BY totalViews LIMIT :returnCount")
-        fun getNextFavoriteSubreddits(returnCount:Int): Single<List<RoomT5>>
         @Query("SELECT * FROM RoomT5 WHERE isSaved= 1 ")
         fun observeSavedSubreddits(): Observable<List<RoomT5>>
 
@@ -38,8 +36,8 @@ interface T5DAO {
 
         //get subreddits yet to have any posts loaded for it
         @Query("SELECT roomT5.displayName FROM roomT5  LEFT JOIN roomT3  " +
-                "ON roomT5.name = subredditId WHERE subredditId IS NULL LIMIT 80")   //this num must be same as num loaded
-        fun getSubredditIDsNeedingPosts() : Single<List<String>>
+                "ON roomT5.name = subredditId WHERE subredditId IS NULL LIMIT :dbSize")   //this num must be same as num loaded
+        fun getSubredditIDsNeedingPosts(dbSize : Int= SCREEN1_DB_SIZE) : Single<List<String>>
 
         @Insert(onConflict = OnConflictStrategy.IGNORE)
         fun insertT5(t5: RoomT5): Completable
