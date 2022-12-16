@@ -4,28 +4,22 @@ package com.example.renewed.Screen1.Subscreen
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.R
-import com.example.renewed.Screen1.SubredditsSelectionFragment
-import com.example.renewed.Screen2.FavoritesListFragment
 import com.example.renewed.databinding.PostViewBinding
 import com.example.renewed.models.*
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Player.Listener
-import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.StyledPlayerView
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -139,10 +133,20 @@ class PostFragment : ContentFragment() {
                     Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
                     postBinding!!.url.text = t3ViewState.url
 //TODO there is a bug here where if you click on the imageview to go to 2nd in gallery it jumps back to top
-                    if (t3ViewState.isGalleryPost()){
-                        if (t3ViewState.galleryUrls!=null){
-                            postBinding!!.fullImg.setOnClickListener(object : View.OnClickListener{
+                    if (t3ViewState.isGalleryPost()) {
+                          if (t3ViewState.galleryUrls!=null){
+                         //     postBinding!!.fullImg.focusable= NOT_FOCUSABLE
+
+
+                         //     postBinding!!.fullImg.onFocusChangeListener =  View.OnFocusChangeListener { view, hasFocus ->
+                           //       if (hasFocus) {
+                             //         view.performClick()
+                               //   }
+                             // }
+                        postBinding!!.fullImg
+                            .setOnClickListener(object : View.OnClickListener {
                             private var dex: Int = 1
+
                             override fun onClick(v: View?) {
 
                                 Glide.with(this@PostFragment).load(
@@ -150,17 +154,20 @@ class PostFragment : ContentFragment() {
                                 )
                                     .into(postBinding!!.fullImg)
                                 dex += 1
-                            }  })
+                            }
+                        })
 
-                            Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
 
-                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
-                                .into(postBinding!!.fullImg)
+                        Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
 
+                        Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
+                            .into(postBinding!!.fullImg)
+                    }
                             postBinding!!.fullImg.visibility = VISIBLE
                             val end = "\nGALLERY, click to to open..."
-                            postBinding!!.postName.text = "${postBinding!!.postName.text}$end"}
+                            postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
                     }
+
                     if (t3ViewState.isUrlPost()) {
                         loadUrlClickListener(t3ViewState)
                         postBinding!!.url.visibility= VISIBLE
