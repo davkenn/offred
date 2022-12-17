@@ -28,6 +28,8 @@ import javax.inject.Inject
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
+    private lateinit var binding: FragmentFavoritesListBinding
+
     @Inject
     lateinit var exo: ExoPlayer
     private val favoritesVM: FavoritesListVM by viewModels()
@@ -52,7 +54,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         adapter2 = FavoritesListAdapter(this)
 
-        val binding = FragmentFavoritesListBinding.bind(view)
+        binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
             vp = pager
             pager.adapter = adapter2
@@ -60,7 +62,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             pager.offscreenPageLimit = 8
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             pager.setBackgroundColor(Color.parseColor("black"))
-            pager.reduceDragSensitivity(2)
+        //    pager.reduceDragSensitivity(3)
         }
 //this filter is so I don't get adapter bugs for createfragment
         //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
@@ -72,7 +74,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Timber.d("THELIISEVENTS $it"); selectPos = it
-                vp.post{vp.setCurrentItem( selectPos,false)}
+                //WEIRD THAT I NEED THIS TO BE TRUE FOR THE FRAGMENTS TO LOAD PROPERLY
+                vp.setCurrentItem( selectPos,true)
            },
                 { Timber.d("ERROR IN POS") })
             .addTo(disposables)
@@ -98,6 +101,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onDestroy() {
         Timber.d("onDestroy in FavoritesListFragment")
         super.onDestroy()
+
     }
 
     override fun onDestroyView() {
@@ -114,8 +118,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onResume() {
         Timber.d("onResume in FavoritesListFragment")
+
         super.onResume()
 
+
+        vp.pageScrollStateChanges().subscribe(){state-> if (state==ViewPager2.SCROLL_STATE_SETTLING)Timber.d("VP settling")
+
+            if (state==ViewPager2.SCROLL_STATE_IDLE)Timber.d("VP settling")
+            if (state==ViewPager2.SCROLL_STATE_DRAGGING)Timber.d("VP dragging")}
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
             //I think here is where the bug is. If the size isn't 12 it doesn't advance. but if size
@@ -126,13 +136,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //right before loading another list load one if there was a duplicate before
             //think i fixed this but keep in mind with less in list than pos will be less
             if (position == adapter2.postIds.size - 5 && adapter2.postIds.size !=12) {
-                vp.isUserInputEnabled=false
+               vp.isUserInputEnabled=false
 
                 favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size).toLong()))
             }
              if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
-
-                vp.isUserInputEnabled=false
+                 vp.isUserInputEnabled=false
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))

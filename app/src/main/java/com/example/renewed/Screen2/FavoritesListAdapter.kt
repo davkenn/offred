@@ -142,6 +142,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
             putBoolean("isSubscreen",false)
         }
 
+
         fragList[position] = fragment
         return fragment
 

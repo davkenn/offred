@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.core.view.postDelayed
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -21,6 +22,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.jakewharton.rxbinding4.view.focusChanges
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -55,12 +57,18 @@ class PostFragment : ContentFragment() {
         }
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
+
+    //    postBinding!!.fullImg.setOnClickListener(object:View.OnClickListener {
+      //      override fun onClick(v: View?) {
+        //        Timber.e("WOOOOODY")
+          //  }})
         return binding.root
     }
 
@@ -83,9 +91,42 @@ class PostFragment : ContentFragment() {
 
         super.onViewCreated(view, savedInstanceState)
         view.setBackgroundColor(Color.parseColor("black"))
+        isSubScreen = arguments?.getBoolean("isSubscreen")?: false
 
-    }
 
+        name = arguments?.getString("key") ?: "NONE"
+
+
+   //     postBinding!!.nestedScroll
+     //       .setOnFocusChangeListener { v, hasFocus -> Timber.e("FOCUS NEST CHANGED $hasFocus") ;if (hasFocus==false) v.requestFocus()}
+        postBinding!!.fullImg
+            .setOnFocusChangeListener { v, hasFocus -> Timber.e("FOCUS IMG CHANGED $hasFocus") ;if (hasFocus==false) v.requestFocus()}
+        var dex: Int = 0
+        postBinding!!.fullImg
+            .setOnClickListener(object : View.OnClickListener {
+
+
+                override fun onClick(v: View?) {
+                    dex += 1
+
+                    Timber.e("ONCLICK CALLED")
+                    Glide.with(this@PostFragment).load(
+                        state?.galleryUrls?.get(dex % state?.galleryUrls!!.size)
+                    )
+                        .into(postBinding!!.fullImg)
+
+
+
+
+
+                }
+            })
+
+}
+
+     //   postBinding!!.fullImg.setOnFocusChangeListener({ v, hasFocus ->if (hasFocus)
+       // {Timber.e("GOOOOOOT FOCUS")
+         //   v.performClick() }})
  /**   E/AndroidRuntime: FATAL EXCEPTION: main
     Process: com.example.offred, PID: 14675
     java.lang.NullPointerException
@@ -103,15 +144,7 @@ class PostFragment : ContentFragment() {
     at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
     at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
 **/
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
-        isSubScreen = arguments?.getBoolean("isSubscreen")?: false
-
-        name = arguments?.getString("key") ?: "NONE"
-
-    }
 
     override fun onPause() {
         Timber.d("onPause in Post Fragment")
@@ -136,6 +169,7 @@ class PostFragment : ContentFragment() {
                     if (t3ViewState.isGalleryPost()) {
                           if (t3ViewState.galleryUrls!=null){
                          //     postBinding!!.fullImg.focusable= NOT_FOCUSABLE
+                              postBinding!!.fullImg.visibility = VISIBLE
 
 
                          //     postBinding!!.fullImg.onFocusChangeListener =  View.OnFocusChangeListener { view, hasFocus ->
@@ -143,19 +177,7 @@ class PostFragment : ContentFragment() {
                              //         view.performClick()
                                //   }
                              // }
-                        postBinding!!.fullImg
-                            .setOnClickListener(object : View.OnClickListener {
-                            private var dex: Int = 1
 
-                            override fun onClick(v: View?) {
-
-                                Glide.with(this@PostFragment).load(
-                                    t3ViewState.galleryUrls!![dex % t3ViewState.galleryUrls.size]
-                                )
-                                    .into(postBinding!!.fullImg)
-                                dex += 1
-                            }
-                        })
 
 
                         Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
@@ -163,9 +185,10 @@ class PostFragment : ContentFragment() {
                         Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
                             .into(postBinding!!.fullImg)
                     }
-                            postBinding!!.fullImg.visibility = VISIBLE
+
                             val end = "\nGALLERY, click to to open..."
                             postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
+
                     }
 
                     if (t3ViewState.isUrlPost()) {
@@ -200,8 +223,25 @@ class PostFragment : ContentFragment() {
         super.onStart()
     }
     override fun onResume() {
-        Timber.d("onResume in Post Fragment")
+
+        Timber.d("onResume in Post Fragment $this")
         super.onResume()
+
+
+        postBinding!!.fullImg.isFocusable =false
+
+        postBinding!!.fullImg.isFocusableInTouchMode =false
+
+        postBinding!!.nestedScroll.isFocusableInTouchMode=false
+
+        postBinding!!.nestedScroll.isFocusable=false
+
+
+        Timber.e("ISFOCUSABLE ${postBinding!!.fullImg.isFocusable}")
+        Timber.e("ISFOCUSABLE ${postBinding!!.fullImg.isFocusableInTouchMode}")
+//        Timber.e("GAVE ME FOCUS? ${postBinding!!.fullImg.requestFocus()}")
+
+
     }
 
     override fun onDestroy() {
