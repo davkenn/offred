@@ -138,7 +138,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //think i fixed this but keep in mind with less in list than pos will be less
             if (position == adapter2.postIds.size - 5 && adapter2.postIds.size !=12) {
                vp.isUserInputEnabled=false
-
                 favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size).toLong()))
             }else
              if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
@@ -150,14 +149,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             if (p!=null && (p!=0)) {  var t=p;p=null;      favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(t?:0))}
              else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
-            }
 
-            vp.post {
-                var a = selectPos
-                Timber.d("THELIIS $a")
             }
-
             adapter2.startVideoAtPosition(position)
+
+
         }
 
 
