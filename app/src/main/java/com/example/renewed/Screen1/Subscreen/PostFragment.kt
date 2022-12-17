@@ -65,10 +65,7 @@ class PostFragment : ContentFragment() {
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
 
-    //    postBinding!!.fullImg.setOnClickListener(object:View.OnClickListener {
-      //      override fun onClick(v: View?) {
-        //        Timber.e("WOOOOODY")
-          //  }})
+
         return binding.root
     }
 
@@ -97,53 +94,10 @@ class PostFragment : ContentFragment() {
         name = arguments?.getString("key") ?: "NONE"
 
 
-   //     postBinding!!.nestedScroll
-     //       .setOnFocusChangeListener { v, hasFocus -> Timber.e("FOCUS NEST CHANGED $hasFocus") ;if (hasFocus==false) v.requestFocus()}
-        postBinding!!.fullImg
-            .setOnFocusChangeListener { v, hasFocus -> Timber.e("FOCUS IMG CHANGED $hasFocus") ;if (hasFocus==false) v.requestFocus()}
-        var dex: Int = 0
-        postBinding!!.fullImg
-            .setOnClickListener(object : View.OnClickListener {
 
-
-                override fun onClick(v: View?) {
-                    dex += 1
-
-                    Timber.e("ONCLICK CALLED")
-                    Glide.with(this@PostFragment).load(
-                        state?.galleryUrls?.get(dex % state?.galleryUrls!!.size)
-                    )
-                        .into(postBinding!!.fullImg)
-
-
-
-
-
-                }
-            })
 
 }
 
-     //   postBinding!!.fullImg.setOnFocusChangeListener({ v, hasFocus ->if (hasFocus)
-       // {Timber.e("GOOOOOOT FOCUS")
-         //   v.performClick() }})
- /**   E/AndroidRuntime: FATAL EXCEPTION: main
-    Process: com.example.offred, PID: 14675
-    java.lang.NullPointerException
-    at com.example.renewed.Screen1.Subscreen.PostFragment.onActivityCreated$lambda-3(PostFragment.kt:123)
-    at com.example.renewed.Screen1.Subscreen.PostFragment.$r8$lambda$S1vzCuUV1WPgskrHPj82n0CADGg(Unknown Source:0)
-    at com.example.renewed.Screen1.Subscreen.PostFragment$$ExternalSyntheticLambda2.accept(Unknown Source:4)
-    at io.reactivex.rxjava3.internal.observers.ConsumerSingleObserver.onSuccess(ConsumerSingleObserver.java:62)
-    at io.reactivex.rxjava3.internal.operators.single.SingleObserveOn$ObserveOnSingleObserver.run(SingleObserveOn.java:81)
-    at io.reactivex.rxjava3.android.schedulers.HandlerScheduler$ScheduledRunnable.run(HandlerScheduler.java:123)
-    at android.os.Handler.handleCallback(Handler.java:938)
-    at android.os.Handler.dispatchMessage(Handler.java:99)
-    at android.os.Looper.loop(Looper.java:223)
-    at android.app.ActivityThread.main(ActivityThread.java:7656)
-    at java.lang.reflect.Method.invoke(Native Method)
-    at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:592)
-    at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:947)
-**/
 
 
     override fun onPause() {
@@ -167,17 +121,28 @@ class PostFragment : ContentFragment() {
                     postBinding!!.url.text = t3ViewState.url
 //TODO there is a bug here where if you click on the imageview to go to 2nd in gallery it jumps back to top
                     if (t3ViewState.isGalleryPost()) {
+
+                        //makes gallery image clickable but still focusable on other post types
+                        postBinding!!.fullImg.isFocusable =false
+                        postBinding!!.fullImg.isFocusableInTouchMode =false
+
+                        postBinding!!.fullImg
+                            .setOnClickListener(object : View.OnClickListener {
+                                var dex: Int = 0
+                                override fun onClick(v: View?) {
+                                    dex += 1
+
+                                    Timber.e("ONCLICK CALLED")
+                                    Glide.with(this@PostFragment).load(
+                                        state?.galleryUrls?.get(dex % state?.galleryUrls!!.size)
+                                    )
+                                        .into(postBinding!!.fullImg)
+
+                                }
+                            })
                           if (t3ViewState.galleryUrls!=null){
                          //     postBinding!!.fullImg.focusable= NOT_FOCUSABLE
                               postBinding!!.fullImg.visibility = VISIBLE
-
-
-                         //     postBinding!!.fullImg.onFocusChangeListener =  View.OnFocusChangeListener { view, hasFocus ->
-                           //       if (hasFocus) {
-                             //         view.performClick()
-                               //   }
-                             // }
-
 
 
                         Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
@@ -226,28 +191,11 @@ class PostFragment : ContentFragment() {
 
         Timber.d("onResume in Post Fragment $this")
         super.onResume()
-
-
-        postBinding!!.fullImg.isFocusable =false
-
-        postBinding!!.fullImg.isFocusableInTouchMode =false
-
-        postBinding!!.nestedScroll.isFocusableInTouchMode=false
-
-        postBinding!!.nestedScroll.isFocusable=false
-
-
-        Timber.e("ISFOCUSABLE ${postBinding!!.fullImg.isFocusable}")
-        Timber.e("ISFOCUSABLE ${postBinding!!.fullImg.isFocusableInTouchMode}")
-//        Timber.e("GAVE ME FOCUS? ${postBinding!!.fullImg.requestFocus()}")
-
-
     }
 
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
-
     }
 
     override fun onStop() {
@@ -266,10 +214,11 @@ class PostFragment : ContentFragment() {
         }
 
     private fun loadImage(t3ViewState: ViewStateT3) {
-//makes work for imgur
-        if (t3ViewState.url.endsWith("gifv")) {
+        if (t3ViewState.url.endsWith("gifv")) {     //makes work for imgur
             val url = t3ViewState.url.substring(0,t3ViewState.url.length-1)
-            Glide.with(this@PostFragment).asGif().load(url).into(postBinding!!.fullImg)
+            Glide.with(this@PostFragment).asGif().load(url)
+
+                .into(postBinding!!.fullImg)
         }
         else{
             Glide.with(this@PostFragment).load(t3ViewState.url)
@@ -277,15 +226,16 @@ class PostFragment : ContentFragment() {
         }
     }
 
+
+
+
     fun loadVideo() {
         playerView?.player = null
         playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()
-
         if (state?.let{!it.isVideoPost()} == true)  return
         val vid = MediaItem.fromUri(state?.url?: "")
-     //   val vid = MediaItem.fromUri(  "https://v.redd.it/5asdaux80k5a1/DASHPlaylist.mpd?a=1673596605%2CYTEzMDcyMjA4ZGY3ZDRlY2ViZmVmMmQ5ZGEyNTllNjVkOGVmMDIwOTE5NjBhYjc5MmRiYzk0YmUyNTA2MTM4Zg%3D%3D&amp;v=1&amp;f=sd"    )
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         Timber.e("VOLUME${exo.deviceVolume}")
@@ -302,9 +252,9 @@ class PostFragment : ContentFragment() {
         }
         Glide.with(this).load(viewState.thumbnail.replace("&amp;", ""))
              .apply( RequestOptions().override(150, 150))
-             .placeholder(ColorDrawable(Color.BLACK))
-             .error(ColorDrawable(Color.RED))
-             .fallback(ColorDrawable(Color.YELLOW))
+            .placeholder(R.drawable.ic_loading)
+            .error(ColorDrawable(Color.RED))
+            .fallback(ColorDrawable(Color.YELLOW))
              .into(postBinding!!.thumb)
     }
 
