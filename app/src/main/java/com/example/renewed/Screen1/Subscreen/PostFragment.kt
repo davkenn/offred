@@ -40,7 +40,7 @@ class PostFragment : ContentFragment() {
     var playerView: StyledPlayerView? = null
     private val postsVM: PostVM by viewModels()
     private var name:String?= null
-    private var isSubScreen:Boolean = false
+
     var postBinding: PostViewBinding? = null
     var state: ViewStateT3? = null
     private val disposables = CompositeDisposable()
@@ -65,25 +65,17 @@ class PostFragment : ContentFragment() {
         super.onDestroyView()
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
         view.setBackgroundColor(Color.parseColor("black"))
-        isSubScreen = arguments?.getBoolean("isSubscreen")?: false
-
-
         name = arguments?.getString("key") ?: "NONE"
-
-
-
 
 }
 
     override fun onPause() {
         Timber.d("onPause in Post Fragment")
         super.onPause()
+        stopVideo()
     }
 
     override fun onStart() {
@@ -171,7 +163,7 @@ class PostFragment : ContentFragment() {
         Timber.d("onResume in Post Fragment $this")
         super.onResume()
 
-            loadVideo()
+        loadVideo()
 
     }
 
@@ -182,7 +174,7 @@ class PostFragment : ContentFragment() {
 
     override fun onStop() {
         //moved this to ondestroyview maybe thats better
-        stopVideo()
+
         Timber.d("onStop in Post Fragment")
         super.onStop()
         disposables.clear()

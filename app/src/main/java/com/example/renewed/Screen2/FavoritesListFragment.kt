@@ -131,6 +131,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }        }
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
+
             //I thinka here is where the bug is. If the size isn't 12 it doesn't advance. but if size
             //isn't 12 still will have a null sneak in there so thats prob where the bug is
 
@@ -147,10 +148,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             }
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
              //   vp.isUserInputEnabled=false
+
+                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
 
-                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
+
 
 
 
