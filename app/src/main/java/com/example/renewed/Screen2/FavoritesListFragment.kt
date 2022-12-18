@@ -128,7 +128,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }        }
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
-            //I think here is where the bug is. If the size isn't 12 it doesn't advance. but if size
+            //I thinkahere is where the bug is. If the size isn't 12 it doesn't advance. but if size
             //isn't 12 still will have a null sneak in there so thats prob where the bug is
 
             //TODO this works if its down to 11 but doesn't go back up to 12

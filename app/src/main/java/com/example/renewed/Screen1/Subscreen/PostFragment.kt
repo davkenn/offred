@@ -38,7 +38,6 @@ class PostFragment : ContentFragment() {
     @Inject
     lateinit var exo: ExoPlayer
     var playerView: StyledPlayerView? = null
-    var exoPosition: Long = 0
     private val postsVM: PostVM by viewModels()
     private var name:String?= null
     private var isSubScreen:Boolean = false
@@ -47,15 +46,6 @@ class PostFragment : ContentFragment() {
     private val disposables = CompositeDisposable()
     override fun getName() : String = postsVM.name
 
-    override fun onSaveInstanceState(outState: Bundle) {
-
-    //TODO am i shooting myself in the foot here by only saving instance state from fragmentadapter?
-        super.onSaveInstanceState(outState)
-        outState.run {
-                       putLong("player_pos", exo.currentPosition)
-                       putString("key",name)
-        }
-    }
 
 
     override fun onCreateView(
@@ -75,14 +65,7 @@ class PostFragment : ContentFragment() {
         super.onDestroyView()
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.let {
-            exoPosition= savedInstanceState.getLong("player_pos")
-            name=              savedInstanceState.getString("key")
-            isSubScreen = savedInstanceState.getBoolean("isSubscreen")
-        }
-    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -97,8 +80,6 @@ class PostFragment : ContentFragment() {
 
 
 }
-
-
 
     override fun onPause() {
         Timber.d("onPause in Post Fragment")
