@@ -20,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
+import okhttp3.internal.wait
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -44,7 +45,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) { // check player play back state
                 Player.STATE_READY -> {
-                    exo.playWhenReady= true
+            //        exo.playWhenReady= true
                 }
                 Player.STATE_ENDED -> {}
                 Player.STATE_BUFFERING -> {}
@@ -86,21 +87,22 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Timber.d("THELIISEVENTS $it"); selectPos = it
+                Timber.e("Position obs $it"); selectPos = it
                 //WEIRD THAT I NEED THIS TO BE TRUE FOR THE FRAGMENTS TO LOAD PROPERLY
-                vp.post{vp.setCurrentItem( selectPos,true)}
+                vp.post{vp.setCurrentItem( selectPos,true);   adapter2.startVideoAtPosition(it)
+                }
            },
                 { Timber.d("ERROR IN POS") })
             .addTo(disposables)
 
     favoritesVM.vs3.observeOn(AndroidSchedulers.mainThread())
         //can call adapter2.removeFirst here it works so even is coming back
-    .filter{ it is PartialViewState.SnackbarEffect }.subscribe({favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent())},
+    .filter{ it is PartialViewState.SnackbarEffect }.subscribe({Timber.e("DELETE STUFF obs $it");favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent())},
     { Timber.e("FAVLISTERROR", it.stackTrace) })
     .addTo(disposables)
 
     favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
-        .filter{ it is PartialViewState.T3ForViewing }.subscribe({vp.isUserInputEnabled=true},{}).addTo(disposables)
+        .filter{ it is PartialViewState.T3ForViewing }.subscribe({ Timber.e("NEW STUFF obs $it");adapter2.startVideoAtPosition(selectPos) /**vp.isUserInputEnabled=true**/},{}).addTo(disposables)
 
 
     }
@@ -148,12 +150,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //right before loading another list load one if there was a duplicate before
             //think i fixed this but keep in mind with less in list than pos will be less
             if (position == adapter2.postIds.size - 5 && adapter2.postIds.size !=12) {
-                vp.isUserInputEnabled=false
+           //     vp.isUserInputEnabled=false
 
                 favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size).toLong()))
+
+
             }
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
-                vp.isUserInputEnabled=false
+             //   vp.isUserInputEnabled=false
                 vp.post { repeat(6) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
 
@@ -163,14 +167,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
             } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+
+
             }
 
-            vp.post {
-                var a = selectPos
-                Timber.d("THELIIS $a")
-            }
+     //       vp.post {
+       //         var a = selectPos
+         //       Timber.d("THELIIS $a")
+           // }
 
-            adapter2.startVideoAtPosition(position)
+
         }
 
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))

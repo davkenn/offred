@@ -212,12 +212,12 @@ class PostFragment : ContentFragment() {
         playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()
-        if (state?.let{!it.isVideoPost()} == true)  return
+        if (state?.let{!it.isVideoPost()} == true)  { return}
         val vid = MediaItem.fromUri(state?.url?: "")
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         Timber.e("VOLUME${exo.deviceVolume}")
-     //   exo.playWhenReady= true
+        exo.playWhenReady= true
         exo.prepare()
 
     }
