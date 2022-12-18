@@ -75,7 +75,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             .subscribe({
                 Timber.d("THELIISEVENTS $it"); selectPos = it
                 //WEIRD THAT I NEED THIS TO BE TRUE FOR THE FRAGMENTS TO LOAD PROPERLY
-                vp.setCurrentItem( selectPos,true)
+                vp.post{vp.setCurrentItem( selectPos,true)}
            },
                 { Timber.d("ERROR IN POS") })
             .addTo(disposables)
@@ -131,32 +131,33 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //I think here is where the bug is. If the size isn't 12 it doesn't advance. but if size
             //isn't 12 still will have a null sneak in there so thats prob where the bug is
 
-
             //TODO this works if its down to 11 but doesn't go back up to 12
 
             //right before loading another list load one if there was a duplicate before
             //think i fixed this but keep in mind with less in list than pos will be less
             if (position == adapter2.postIds.size - 5 && adapter2.postIds.size !=12) {
-               vp.isUserInputEnabled=false
+                vp.isUserInputEnabled=false
+
                 favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size).toLong()))
-            }else
-             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
-                 vp.isUserInputEnabled=false
+            }
+            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
+                vp.isUserInputEnabled=false
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
-            }else
-            if (p!=null && (p!=0)) {  var t=p;p=null;      favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(t?:0))}
-             else {
+            } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
-
             }
+
+            vp.post {
+                var a = selectPos
+                Timber.d("THELIIS $a")
+            }
+
             adapter2.startVideoAtPosition(position)
-
-
         }
 
-
+        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
     }}
 
 
