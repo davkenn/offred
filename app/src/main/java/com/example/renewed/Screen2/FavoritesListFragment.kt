@@ -41,23 +41,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private var selectPos: Int by atomic(-1)
     var p :Int? = null
 
-    private val readyToPlayListener = object : Player.Listener { // player listener
-        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-            when (playbackState) { // check player play back state
-                Player.STATE_READY -> {
-            //        exo.playWhenReady= true
-                }
-                Player.STATE_ENDED -> {}
-                Player.STATE_BUFFERING -> {}
-                Player.STATE_IDLE -> {}
-                else -> {}
-            }
-        }}
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
-        exo.addListener(readyToPlayListener)
+
         p = savedInstanceState?.getInt("pos") ?: 0
     }
 
@@ -89,7 +78,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             .subscribe({
                 Timber.e("Position obs $it"); selectPos = it
                 //WEIRD THAT I NEED THIS TO BE TRUE FOR THE FRAGMENTS TO LOAD PROPERLY
-                vp.post{vp.setCurrentItem( selectPos,true);   adapter2.startVideoAtPosition(it)
+                vp.post{vp.setCurrentItem( selectPos,true);
                 }
            },
                 { Timber.d("ERROR IN POS") })
@@ -102,7 +91,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     .addTo(disposables)
 
     favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
-        .filter{ it is PartialViewState.T3ForViewing }.subscribe({ Timber.e("NEW STUFF obs $it");adapter2.startVideoAtPosition(selectPos) /**vp.isUserInputEnabled=true**/},{}).addTo(disposables)
+        .filter{ it is PartialViewState.T3ForViewing }.subscribe({ Timber.e("NEW STUFF obs $it") /**vp.isUserInputEnabled=true**/},{}).addTo(disposables)
 
 
     }

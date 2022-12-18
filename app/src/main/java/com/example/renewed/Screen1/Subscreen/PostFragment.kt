@@ -160,9 +160,7 @@ class PostFragment : ContentFragment() {
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
 
-                        if (isSubScreen){
-                            loadVideo()
-                        }
+
                     }
                 }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
 
@@ -172,6 +170,9 @@ class PostFragment : ContentFragment() {
 
         Timber.d("onResume in Post Fragment $this")
         super.onResume()
+
+            loadVideo()
+
     }
 
     override fun onDestroy() {
