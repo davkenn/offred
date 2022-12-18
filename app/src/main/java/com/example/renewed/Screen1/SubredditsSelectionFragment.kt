@@ -37,7 +37,6 @@ import java.util.concurrent.TimeUnit
 @AndroidEntryPoint
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
-
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
 
     private lateinit var subRV: RecyclerView

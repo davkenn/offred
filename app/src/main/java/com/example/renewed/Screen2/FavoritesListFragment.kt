@@ -40,10 +40,23 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private var selectPos: Int by atomic(-1)
     var p :Int? = null
 
+    private val readyToPlayListener = object : Player.Listener { // player listener
+        override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+            when (playbackState) { // check player play back state
+                Player.STATE_READY -> {
+                    exo.playWhenReady= true
+                }
+                Player.STATE_ENDED -> {}
+                Player.STATE_BUFFERING -> {}
+                Player.STATE_IDLE -> {}
+                else -> {}
+            }
+        }}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
+        exo.addListener(readyToPlayListener)
         p = savedInstanceState?.getInt("pos") ?: 0
     }
 
@@ -122,13 +135,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onResume()
 
 
-        vp.pageScrollStateChanges().subscribe(){state-> if (state==ViewPager2.SCROLL_STATE_SETTLING){
-
+        vp.pageScrollStateChanges().subscribe(){state-> if (state==ViewPager2.SCROLL_STATE_IDLE){
 
         }        }
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
-            //I thinkahere is where the bug is. If the size isn't 12 it doesn't advance. but if size
+            //I thinka here is where the bug is. If the size isn't 12 it doesn't advance. but if size
             //isn't 12 still will have a null sneak in there so thats prob where the bug is
 
             //TODO this works if its down to 11 but doesn't go back up to 12
@@ -142,9 +154,13 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             }
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
                 vp.isUserInputEnabled=false
-                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
+                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
+
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
+
+
+
             } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
@@ -159,6 +175,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
     }}
+
+
+
+
+
 
 
 fun ViewPager2.reduceDragSensitivity(f: Int = 4) {

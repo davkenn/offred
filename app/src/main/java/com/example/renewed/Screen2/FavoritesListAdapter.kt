@@ -38,6 +38,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         copy2.removeAt(0)
         copy2.add(null)
 
+
         fragList=copy2
 
         var copy = postIds.toMutableList()

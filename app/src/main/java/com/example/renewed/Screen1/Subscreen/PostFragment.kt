@@ -207,9 +207,6 @@ class PostFragment : ContentFragment() {
         }
     }
 
-
-
-
     fun loadVideo() {
         playerView?.player = null
         playerView = postBinding?.exoplayer
@@ -220,8 +217,9 @@ class PostFragment : ContentFragment() {
         exo.setMediaItem(vid)
         exo.repeatMode = Player.REPEAT_MODE_ALL
         Timber.e("VOLUME${exo.deviceVolume}")
-        exo.playWhenReady= true
+     //   exo.playWhenReady= true
         exo.prepare()
+
     }
 
     private fun loadThumbNail(viewState: ViewStateT3)     {
