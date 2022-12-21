@@ -39,7 +39,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
     //-1 as a test its correctly loading position state
-    private var selectPos: Int by atomic(-1)
+    private var selectPos: Int by atomic(0)
     var p :Int? = null
 
 
@@ -70,7 +70,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }
 //this filter is so I don't get adapter bugs for createfragment
         //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
-        favoritesVM.vs.filter{it.size>10}.observeOn(AndroidSchedulers.mainThread())
+        favoritesVM.vs.filter{it.size>10 }.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it) },
                 { Timber.e("FAVLISTERROR", it.stackTrace) })
             .addTo(disposables)

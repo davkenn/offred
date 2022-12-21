@@ -13,8 +13,7 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val fav
 
     override fun insert(s: String): Completable {
          //TODO bug where if you add list again all things in twice
-      //  if (s in favs.getPosts1()) return Completable.complete()
-        return  favs.insert(CurrentFavoritesList(s))
+        return favs.getPosts1(s).andThen(favs.insert(CurrentFavoritesList(s)))
 
     }
     override fun observeSavedSubreddits(): Observable<List<RoomT5>>{

@@ -16,11 +16,13 @@ interface FavoritesDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(elem: CurrentFavoritesList): Completable
 
+
+
     @Query("SELECT postId FROM CurrentFavoritesList order by foodId ")
     fun getPosts(): Observable<List<String>>
 
-    @Query("SELECT postId FROM CurrentFavoritesList order by foodId ")
-    fun getPosts1(): List<String>
+    @Query("DELETE FROM CurrentFavoritesList WHERE postId = :name ")
+    fun getPosts1(name:String): Completable
 
 
     @Query("DELETE FROM CurrentFavoritesList ")
