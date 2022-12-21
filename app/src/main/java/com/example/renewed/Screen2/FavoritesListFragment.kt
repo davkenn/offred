@@ -63,7 +63,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             vp = pager
             pager.adapter = adapter2
             //need to keep this as least as high as the number of pages
-            pager.offscreenPageLimit = 3
+            pager.offscreenPageLimit = 6
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             pager.setBackgroundColor(Color.parseColor("black"))
             pager.reduceDragSensitivity(2)
@@ -92,7 +92,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     .addTo(disposables)
 
     favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
-        .filter{ it is PartialViewState.T3ForViewing }.subscribe({ Timber.e("NEW STUFF obs $it") /**vp.isUserInputEnabled=true**/},{}).addTo(disposables)
+        .filter{ it is PartialViewState.T3ForViewing }.subscribe({ Timber.e("NEW STUFF obs $it") ;vp.isUserInputEnabled=true},{}).addTo(disposables)
 
 
     }
@@ -144,14 +144,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //right before loading another list load one if there was a duplicate before
             //think i fixed this but keep in mind with less in list than pos will be less
             if (position == adapter2.postIds.size - 5 && adapter2.postIds.size !=12) {
-           //     vp.isUserInputEnabled=false
+                vp.isUserInputEnabled=false
 
                 favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size).toLong()))
 
 
             }
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
-             //   vp.isUserInputEnabled=false
+                vp.isUserInputEnabled=false
 
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
@@ -176,6 +176,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onStop() {
         super.onStop()
         p = selectPos
+
+
     }
 }
 

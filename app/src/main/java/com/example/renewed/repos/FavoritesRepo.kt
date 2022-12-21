@@ -12,6 +12,8 @@ import retrofit2.http.Path
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val favs:FavoritesDAO,private val api: API): BaseFavoritesRepo {
 
     override fun insert(s: String): Completable {
+         //TODO bug where if you add list again all things in twice
+      //  if (s in favs.getPosts1()) return Completable.complete()
         return  favs.insert(CurrentFavoritesList(s))
 
     }

@@ -83,6 +83,8 @@ package com.example.renewed.Screen2
                         newPostsObservable.take(it.count)
                         .doOnNext{Timber.e("SUCCESS!!! ${it.name}")}
                         .doOnNext {
+
+
                             repository.insert(it.name).subscribeOn(Schedulers.io())
                                 .subscribe()
                         }
@@ -107,6 +109,7 @@ package com.example.renewed.Screen2
                           //TODO theres a latent bug here if the db gets less than four emissions
 
                     }
+fun clearPages()= repository.clearPages()
 
 
         override fun onCleared() {
