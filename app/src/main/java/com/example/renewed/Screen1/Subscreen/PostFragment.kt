@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
-import androidx.core.view.postDelayed
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -22,7 +21,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import com.jakewharton.rxbinding4.view.focusChanges
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -40,10 +38,10 @@ class PostFragment : ContentFragment() {
     lateinit var exo: ExoPlayer
     var playerView: StyledPlayerView? = null
     private val postsVM: PostVM by viewModels()
-    private var name:String?= null
+     var t3Name:String?= null
 
     var postBinding: PostViewBinding? = null
-    var state: ViewStateT3? = null
+  //  var state: ViewStateT3? = null
     private val disposables = CompositeDisposable()
     override fun getName() : String = postsVM.name
 
@@ -69,7 +67,7 @@ class PostFragment : ContentFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.setBackgroundColor(Color.parseColor("black"))
-        name = arguments?.getString("key") ?: "NONE"
+        t3Name = arguments?.getString("key") ?: "NONE"
 
 }
 
@@ -89,12 +87,12 @@ class PostFragment : ContentFragment() {
     }
     override fun onResume() {
 
-        Timber.d("onResume in Post Fragment ${this.state}")
+        Timber.d("onResume in Post Fragment ${this.t3Name}")
         super.onResume()
 
 
-        postsVM.setPost(name!!)
-            .map{state=it ;it}
+        postsVM.setPost(t3Name!!)
+    //        .map{state=it ;it}
             //     .doOnEvent{x,_ -> state=x}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -122,7 +120,7 @@ class PostFragment : ContentFragment() {
 
                                     Timber.e("ONCLICK CALLED")
                                     Glide.with(this@PostFragment).load(
-                                        state?.galleryUrls?.get(dex % state?.galleryUrls!!.size)
+                                        t3ViewState?.galleryUrls?.get(dex % t3ViewState?.galleryUrls!!.size)
                                     )
                                         .into(postBinding!!.fullImg)
 
@@ -165,7 +163,7 @@ class PostFragment : ContentFragment() {
                         postBinding!!.timeCreated.visibility= GONE
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
-                        loadVideo()
+                        loadVideo(t3ViewState)
 
                     }
                 }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
@@ -208,7 +206,7 @@ class PostFragment : ContentFragment() {
         }
     }
 
-    fun loadVideo() {
+    fun loadVideo(state:ViewStateT3?) {
 Timber.e("VWA IS ${state?.url}")
 
         playerView?.player = null
