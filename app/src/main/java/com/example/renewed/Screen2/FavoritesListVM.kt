@@ -66,6 +66,7 @@ package com.example.renewed.Screen2
             vsPos = inputEvents.publish {  it.ofType(MyFavsEvent.UpdatePositionEvent::class.java) }
                                .map { it.newPosition }
                                .replay(1)
+
                                .autoConnect(1) { disposables.add(it) }
 
             vs3 = inputEvents.publish { it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)

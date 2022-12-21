@@ -127,6 +127,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onResume()
 
 
+
         vp.pageScrollStateChanges().subscribe(){state-> if (state==ViewPager2.SCROLL_STATE_IDLE){
 
         }        }
@@ -168,9 +169,15 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
         }
-
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
-    }}
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        p = selectPos
+    }
+}
 
 
 

@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.core.Single
 @Dao
 interface FavoritesDAO {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(elem: CurrentFavoritesList): Completable
 
     @Query("SELECT postId FROM CurrentFavoritesList order by foodId ")
