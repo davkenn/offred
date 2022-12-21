@@ -72,9 +72,10 @@ class PostFragment : ContentFragment() {
 }
 
     override fun onPause() {
+        stopVideo()
         Timber.d("onPause in Post Fragment")
         super.onPause()
-        stopVideo()
+
     }
 
     override fun onStart() {
@@ -90,7 +91,7 @@ class PostFragment : ContentFragment() {
         Timber.d("onResume in Post Fragment ${this.t3Name}")
         super.onResume()
 
-
+stopVideo()
         postsVM.setPost(t3Name!!)
     //        .map{state=it ;it}
             //     .doOnEvent{x,_ -> state=x}
