@@ -35,6 +35,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
 
+
     @Inject
     lateinit var exo: ExoPlayer
     var playerView: StyledPlayerView? = null
@@ -79,13 +80,27 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onStart() {
+
+        super.onStart()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+    }
+    override fun onResume() {
+
+        Timber.d("onResume in Post Fragment ${this.state}")
+        super.onResume()
+
+
         postsVM.setPost(name!!)
-            .doOnEvent{x,_ -> state=x}
+            .map{state=it ;it}
+            //     .doOnEvent{x,_ -> state=x}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { t3ViewState ->
-                    state = t3ViewState
+
                     postBinding!!.postName.text = t3ViewState.displayName
                     val text = t3ViewState.created + ": "
                     postBinding!!.timeCreated.text = text
@@ -113,19 +128,19 @@ class PostFragment : ContentFragment() {
 
                                 }
                             })
-                          if (t3ViewState.galleryUrls!=null){
-                         //     postBinding!!.fullImg.focusable= NOT_FOCUSABLE
-                              postBinding!!.fullImg.visibility = VISIBLE
+                        if (t3ViewState.galleryUrls!=null){
+                            //     postBinding!!.fullImg.focusable= NOT_FOCUSABLE
+                            postBinding!!.fullImg.visibility = VISIBLE
 
 
-                        Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
+                            Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
 
-                        Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
-                            .into(postBinding!!.fullImg)
-                    }
+                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
+                                .into(postBinding!!.fullImg)
+                        }
 
-                            val end = "\nGALLERY, click to to open..."
-                            postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
+                        val end = "\nGALLERY, click to to open..."
+                        postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
 
                     }
 
@@ -148,24 +163,17 @@ class PostFragment : ContentFragment() {
                     if (t3ViewState.isVideoPost()){
 
                         postBinding!!.timeCreated.visibility= GONE
-                        postBinding!!.postName
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
-
+                        loadVideo()
 
                     }
                 }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
 
-        super.onStart()
-    }
-    override fun onResume() {
-
-        Timber.d("onResume in Post Fragment $this")
-        super.onResume()
-
-        loadVideo()
 
     }
+
+
 
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
@@ -201,16 +209,21 @@ class PostFragment : ContentFragment() {
     }
 
     fun loadVideo() {
+Timber.e("VWA IS ${state?.url}")
+
         playerView?.player = null
         playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()
         if (state?.let{!it.isVideoPost()} == true)  { return}
-        val vid = MediaItem.fromUri(state?.url?: "")
-        exo.setMediaItem(vid)
+
         exo.repeatMode = Player.REPEAT_MODE_ALL
         Timber.e("VOLUME${exo.deviceVolume}")
         exo.playWhenReady= true
+        val vid = MediaItem.fromUri(state?.url?: "")
+        exo.setMediaItem(vid)
+
+
         exo.prepare()
 
     }

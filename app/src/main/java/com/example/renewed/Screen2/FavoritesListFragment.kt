@@ -29,6 +29,7 @@ import javax.inject.Inject
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
+
     private lateinit var binding: FragmentFavoritesListBinding
 
     @Inject
@@ -46,7 +47,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
-
+  //      exo.addListener(readyToPlayListener)
         p = savedInstanceState?.getInt("pos") ?: 0
     }
 
@@ -62,14 +63,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             vp = pager
             pager.adapter = adapter2
             //need to keep this as least as high as the number of pages
-            pager.offscreenPageLimit = 8
+            pager.offscreenPageLimit = 5
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             pager.setBackgroundColor(Color.parseColor("black"))
         //    pager.reduceDragSensitivity(3)
         }
 //this filter is so I don't get adapter bugs for createfragment
         //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
-        favoritesVM.vs.filter{it.size>7}.observeOn(AndroidSchedulers.mainThread())
+        favoritesVM.vs.filter{it.size==12}.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it) },
                 { Timber.e("FAVLISTERROR", it.stackTrace) })
             .addTo(disposables)
@@ -132,6 +133,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
 
+
             //I thinka here is where the bug is. If the size isn't 12 it doesn't advance. but if size
             //isn't 12 still will have a null sneak in there so thats prob where the bug is
 
@@ -152,11 +154,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
-
-
-
-
-
             } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
 
