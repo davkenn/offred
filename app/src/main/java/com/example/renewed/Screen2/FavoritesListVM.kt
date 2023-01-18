@@ -35,11 +35,8 @@ package com.example.renewed.Screen2
                     Observable.just(
                         1
                     ).repeat(10)
-                        .map { x.shuffled().take(1) }
+                        .map { x.shuffled().first()}
                 }
-
-                //TODO my 11 bug is almost certainly that im adding a duplicate to the list
-                .flatMapIterable { it }
                 .flatMap { repository.getRandomPosts(it.displayName, 2) }
                 .share()  //Do I need this share? seems to work ok without it.
 
