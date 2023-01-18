@@ -31,10 +31,10 @@ package com.example.renewed.Screen2
             val newPostsObservable = repository.observeSavedSubreddits()
                 //get exactly 10 posts, even if loading fails for some
                 .flatMap { x ->
+
                     Observable.just(
-                        1, 1, 1, 1, 1,
-                        1, 1, 1, 1, 1
-                    )
+                        1
+                    ).repeat(10)
                         .map { x.shuffled().take(1) }
                 }
 

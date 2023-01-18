@@ -66,7 +66,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             pager.offscreenPageLimit = 6
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             pager.setBackgroundColor(Color.parseColor("black"))
-            pager.reduceDragSensitivity(2)
+    //        pager.reduceDragSensitivity(2)
         }
 //this filter is so I don't get adapter bugs for createfragment
         //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
@@ -87,14 +87,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     favoritesVM.vs3.observeOn(AndroidSchedulers.mainThread())
         //can call adapter2.removeFirst here it works so even is coming back
-    .filter{ it is PartialViewState.SnackbarEffect }.subscribe({Timber.e("DELETE STUFF obs $it");favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent())},
+    .filter{ it is PartialViewState.SnackbarEffect }.subscribe({Timber.e("DELETE STUFF obs $it");
+            favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent())},
     { Timber.e("FAVLISTERROR", it.stackTrace) })
     .addTo(disposables)
 
     favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
-        .filter{ it is PartialViewState.T3ForViewing }.subscribe({ Timber.e("NEW STUFF obs $it") ;vp.isUserInputEnabled=true},{}).addTo(disposables)
-
-
+        .filter{ it is PartialViewState.T3ForViewing }
+        .subscribe({ Timber.e("NEW STUFF obs $it") ;
+                        vp.isUserInputEnabled=true},{})
+            .addTo(disposables)
     }
 
 
@@ -126,16 +128,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         super.onResume()
 
-
-
         vp.pageScrollStateChanges().subscribe(){state-> if (state==ViewPager2.SCROLL_STATE_IDLE){
 
         }        }
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
-
-
-
-
             //I thinka here is where the bug is. If the size isn't 12 it doesn't advance. but if size
             //isn't 12 still will have a null sneak in there so thats prob where the bug is
 
@@ -158,16 +154,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
             } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
-
-
             }
-
-     //       vp.post {
-       //         var a = selectPos
-         //       Timber.d("THELIIS $a")
-           // }
-
-
         }
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
 

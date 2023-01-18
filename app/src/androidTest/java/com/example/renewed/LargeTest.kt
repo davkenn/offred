@@ -15,6 +15,7 @@ import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.RedditDatabase
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
+import com.example.renewed.Screen1.PostsAdapter
 
 import com.example.renewed.Screen1.SubredditsSelectionFragment
 import com.example.renewed.di.DbModule
@@ -241,9 +242,6 @@ class LargeTest {
         onView(withId(R.id.subreddits_rv)).check(
             matches(not(hasDescendant(withText("ATT")))))
     }
-
-
-
 
 
 
