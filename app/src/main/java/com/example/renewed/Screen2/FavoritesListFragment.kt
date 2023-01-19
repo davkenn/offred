@@ -78,7 +78,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Timber.e("Position obs $it"); selectPos = it
-                //WEIRD THAT I NEED THIS TO BE TRUE FOR THE FRAGMENTS TO LOAD PROPERLY
                 vp.post{vp.setCurrentItem( selectPos,true);
                 }
            },
@@ -141,14 +140,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //think i fixed this but keep in mind with less in list than pos will be less
             if (position == adapter2.postIds.size - 5 && adapter2.postIds.size !=12) {
                 vp.isUserInputEnabled=false
-
                 favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size).toLong()))
 
 
             }
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
                 vp.isUserInputEnabled=false
-
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
@@ -167,12 +164,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     }
 }
-
-
-
-
-
-
 
 fun ViewPager2.reduceDragSensitivity(f: Int = 4) {
     val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")

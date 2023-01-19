@@ -7,7 +7,6 @@ package com.example.renewed.Screen2
  import com.jakewharton.rxrelay3.PublishRelay
  import dagger.hilt.android.lifecycle.HiltViewModel
  import io.reactivex.rxjava3.core.Observable
- import io.reactivex.rxjava3.core.Single
  import io.reactivex.rxjava3.disposables.CompositeDisposable
  import io.reactivex.rxjava3.kotlin.addTo
  import io.reactivex.rxjava3.schedulers.Schedulers
@@ -17,7 +16,7 @@ package com.example.renewed.Screen2
 
     @HiltViewModel
     class FavoritesListVM @Inject constructor(
-        private val repository: BaseFavoritesRepo
+        private val currentlyDisplayedRepo: BaseFavoritesRepo
     ): ViewModel() {
         val vs3: Observable<PartialViewState>
         val vs4: Observable<PartialViewState>
@@ -27,35 +26,24 @@ package com.example.renewed.Screen2
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
 
         init {
-
-            val newPostsObservable = repository.observeSavedSubreddits()
-                //get exactly 10 posts, even if loading fails for some
-                .flatMap { x ->
-
-                    Observable.just(
-                        1
-                    ).repeat(10)
-                        .map { x.shuffled().first()}
-                }
-                .flatMap { repository.getRandomPosts(it.displayName, 2) }
+            val newPostsObservable = currentlyDisplayedRepo.observeSavedSubreddits()
+                .flatMap { x -> Observable.just(1).repeat(10)
+                                .map { x.shuffled().first()}
+                         }
+                .flatMap { currentlyDisplayedRepo.getRandomPosts(it.displayName, 2) }
                 .share()  //Do I need this share? seems to work ok without it.
-
-
             //TODO need to also save it to the db here
 
 
-            newPostsObservable.take(12).flatMap { x ->
+            newPostsObservable.take(12)
+                              .flatMapCompletable { x -> currentlyDisplayedRepo.insert(x.name) }
+                              .startWith(currentlyDisplayedRepo.clearPages()
+                              .subscribeOn(Schedulers.io()))
+                              .subscribe({ Timber.d("observ" ) },
+                                          { Timber.e("error: ${it.localizedMessage}") })
+                              .addTo(disposables)
 
-
-                repository.insert(x.name).andThen(Observable.just(x))
-
-            }
-                .startWith(repository.clearPages().subscribeOn(Schedulers.io()))
-                .subscribe({ Timber.d("observ" + it.url) },
-                    { Timber.e("observeerror: ${it.localizedMessage}") })
-                .addTo(disposables)
-
-            vs = repository.observeCurrentPostList().replay(1)
+            vs = currentlyDisplayedRepo.observeCurrentPostList().replay(1)
                 .autoConnect(1) { disposables.add(it) }
 
             vsPos = inputEvents.publish { it.ofType(MyFavsEvent.UpdatePositionEvent::class.java) }
@@ -67,7 +55,7 @@ package com.example.renewed.Screen2
             vs3 = inputEvents.publish {
                 it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)
                     .doOnNext {
-                        repository.deletePages(it.targets)
+                        currentlyDisplayedRepo.deletePages(it.targets)
                             .subscribeOn(Schedulers.io())
                             .subscribe()
                     }
@@ -81,34 +69,28 @@ package com.example.renewed.Screen2
                         .doOnNext { Timber.e("SUCCESS!!! ${it.name}") }
                         .doOnNext {
 
-
-                            repository.insert(it.name).subscribeOn(Schedulers.io())
+                            currentlyDisplayedRepo.insert(it.name).subscribeOn(Schedulers.io())
                                 .subscribe()
                         }
                         .map { PartialViewState.T3ForViewing(it.toViewState()) }
                 }
             }
-
-
         }
-            private fun Observable<MyFavsEvent.DeleteSubredditEvent>.updateViewingState(): Observable<RoomT3> {
-                return repository.observeSavedSubreddits()
+         //   private fun Observable<MyFavsEvent.DeleteSubredditEvent>.updateViewingState(): Observable<RoomT3> {
+           //     return repository.observeSavedSubreddits()
                     //get exactly 10 posts, even if loading fails for some
-                    .flatMap { x ->
-                        Observable.just(
-                            1, 1, 1, 1, 1,
-                            1, 1, 1, 1, 1
-                        )
-                            .map { x.shuffled().take(1) }
-                    }
-                    .flatMapIterable { it }
-                    .flatMap { repository.getRandomPosts(it.displayName, 2) }
+             //       .flatMap { x ->
+               //         Observable.just(
+                 //           1, 1, 1, 1, 1,
+                   //         1, 1, 1, 1, 1
+                     //   )
+                       //     .map { x.shuffled().take(1) }
+                  //  }
+                   // .flatMapIterable { it }
+                  //  .flatMap { repository.getRandomPosts(it.displayName, 2) }
 
-                //TODO theres a latent bug here if the db gets less than four emissions
 
-            }
-
-            fun clearPages() = repository.clearPages()
+            fun clearPages() = currentlyDisplayedRepo.clearPages()
 
 
             override fun onCleared() {
