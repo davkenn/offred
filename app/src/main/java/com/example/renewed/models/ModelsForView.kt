@@ -64,7 +64,7 @@ fun ViewStateT3.isUrlPost() =
 fun ViewStateT3.isImagePost() =  "i.redd.it" in url || "imgur" in url
 
 fun ViewStateT3.isVideoPost() =  "v.redd.it" in url
-//TODO gfycat should be in thumbnail posts bc need a link
+
 fun ViewStateT3.hasNoThumbnail() =  thumbnail.isBlank() || thumbnail == "self" ||
                              isGalleryPost() || isImagePost() || isVideoPost() ||
                              thumbnail == "default"||  thumbnail == "spoiler" //|| thumbnail == nsfw

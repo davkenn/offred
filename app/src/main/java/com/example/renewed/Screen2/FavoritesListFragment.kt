@@ -72,17 +72,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 //this filter is so I don't get adapter bugs for createfragment
         //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
         favoritesVM.vs.filter{it.size>10 }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ Timber.d("FavoritesListVM::$it"); adapter2.replaceList(it) },
-                { Timber.e("FAVLISTERROR", it.stackTrace) })
+            .subscribe({adapter2.replaceList(it) },
+                       { Timber.e("FAVLISTERROR", it.stackTrace) })
             .addTo(disposables)
 
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Timber.e("Position obs $it"); selectPos = it
-                vp.post{vp.setCurrentItem( selectPos,true);
-                }
-           },
-                { Timber.d("ERROR IN POS") })
+            .subscribe({ selectPos = it
+                        vp.post{vp.setCurrentItem( selectPos,true) } },
+                       { Timber.d("ERROR IN POS") })
             .addTo(disposables)
 
     favoritesVM.vs3.observeOn(AndroidSchedulers.mainThread())
@@ -94,9 +91,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
         .filter{ it is PartialViewState.T3ForViewing }
-        .subscribe({ Timber.e("NEW STUFF obs $it") ;
-                        vp.isUserInputEnabled=true},{})
-            .addTo(disposables)
+        .subscribe({ vp.isUserInputEnabled=true},{})
+        .addTo(disposables)
     }
 
 
