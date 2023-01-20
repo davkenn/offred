@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
+import com.example.renewed.VIEWPAGER_PAGES
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.MyFavsEvent
@@ -138,11 +139,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
             //right before loading another list load one if there was a duplicate before
             //think i fixed this but keep in mind with less in list than pos will be less
-            if (position == adapter2.postIds.size - 5 && adapter2.postIds.size !=12) {
+            if (position == adapter2.postIds.size - 5 && adapter2.postIds.size != VIEWPAGER_PAGES) {
                 vp.isUserInputEnabled=false
-                favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size)))
+                favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((VIEWPAGER_PAGES - adapter2.postIds.size)))
             }
-            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
+            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == VIEWPAGER_PAGES) {
                 vp.isUserInputEnabled=false
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
                 vp.post { repeat(6) { adapter2.removeFirst() } }

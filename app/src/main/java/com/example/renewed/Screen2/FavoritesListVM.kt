@@ -65,7 +65,7 @@ package com.example.renewed.Screen2
 
             vs4 = inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
-                    newPostsObservable.take(it.count)
+                    newPostsObservable.take(it.count.toLong())
                         .doOnNext { Timber.e("SUCCESS!!! ${it.name}") }
                         .doOnNext {
 
