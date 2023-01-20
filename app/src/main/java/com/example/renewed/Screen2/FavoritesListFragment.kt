@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
 import com.example.renewed.VIEWPAGER_PAGES
@@ -15,13 +14,11 @@ import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.MyFavsEvent
 import com.example.renewed.models.PartialViewState
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.Player
 import com.jakewharton.rxbinding4.viewpager2.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
-import okhttp3.internal.wait
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -67,32 +64,32 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             pager.offscreenPageLimit = 6
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             pager.setBackgroundColor(Color.parseColor("black"))
-    //        pager.reduceDragSensitivity(2)
+
         }
 //this filter is so I don't get adapter bugs for createfragment
         //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
-        favoritesVM.vs.filter{it.size>10 }.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({adapter2.replaceList(it) },
-                       { Timber.e("FAVLISTERROR", it.stackTrace) })
-            .addTo(disposables)
+        favoritesVM.currentlyDisplayedPosts.filter{it.size>10 }
+                                           .observeOn(AndroidSchedulers.mainThread())
+                                           .subscribe({adapter2.replaceList(it) },
+                                               { Timber.e("FAVLISTERROR", it.stackTrace) })
+                                           .addTo(disposables)
 
         favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ selectPos = it
-                        vp.post{vp.setCurrentItem( selectPos,true) } },
-                       { Timber.d("ERROR IN POS") })
-            .addTo(disposables)
+                         .subscribe({ selectPos = it
+                                      vp.post{vp.setCurrentItem( selectPos,true) } },
+                                    { Timber.d("ERROR IN POS") })
+                        .addTo(disposables)
 
-    favoritesVM.vs3.observeOn(AndroidSchedulers.mainThread())
-        //can call adapter2.removeFirst here it works so even is coming back
-    .filter{ it is PartialViewState.SnackbarEffect }.subscribe({Timber.e("DELETE STUFF obs $it");
-            favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent())},
-    { Timber.e("FAVLISTERROR", it.stackTrace) })
-    .addTo(disposables)
+        favoritesVM.vs3.observeOn(AndroidSchedulers.mainThread())
+                       .filter{ it is PartialViewState.SnackbarEffect }
+                       .subscribe({ favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent())},
+                                  { Timber.e("FAVLISTERROR", it.stackTrace) })
+                       .addTo(disposables)
 
-    favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
-        .filter{ it is PartialViewState.T3ForViewing }
-        .subscribe({ vp.isUserInputEnabled=true},{})
-        .addTo(disposables)
+        favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
+                       .filter{ it is PartialViewState.T3ForViewing }
+                       .subscribe({ vp.isUserInputEnabled=true},{})
+                       .addTo(disposables)
     }
 
 
@@ -155,18 +152,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onStop() {
         super.onStop()
         p = selectPos
-
-
     }
 }
 
-fun ViewPager2.reduceDragSensitivity(f: Int = 4) {
-    val recyclerViewField = ViewPager2::class.java.getDeclaredField("mRecyclerView")
-    recyclerViewField.isAccessible = true
-    val recyclerView = recyclerViewField.get(this) as RecyclerView
-
-    val touchSlopField = RecyclerView::class.java.getDeclaredField("mTouchSlop")
-    touchSlopField.isAccessible = true
-    val touchSlop = touchSlopField.get(recyclerView) as Int
-    touchSlopField.set(recyclerView, touchSlop*f)       // "8" was obtained experimentally
-}

@@ -21,7 +21,7 @@ package com.example.renewed.Screen2
     ): ViewModel() {
         val vs3: Observable<PartialViewState>
         val vs4: Observable<PartialViewState>
-        val vs: Observable<List<String>>
+        val currentlyDisplayedPosts: Observable<List<String>>
         val vsPos: Observable<Int>
         private val disposables: CompositeDisposable = CompositeDisposable()
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
@@ -44,7 +44,7 @@ package com.example.renewed.Screen2
                                           { Timber.e("error: ${it.localizedMessage}") })
                               .addTo(disposables)
 
-            vs = favsRepo.observeCurrentPostList().replay(1)
+            currentlyDisplayedPosts = favsRepo.observeCurrentPostList().replay(1)
                 .autoConnect(1) { disposables.add(it) }
 
             vsPos = inputEvents.publish { it.ofType(MyFavsEvent.UpdatePositionEvent::class.java) }
