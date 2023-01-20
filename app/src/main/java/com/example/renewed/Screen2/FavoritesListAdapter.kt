@@ -56,8 +56,6 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         fragment.arguments = Bundle().apply {
             putString("key", name)
         }
-
-
         fragList[position] = fragment
         return fragment
 
@@ -67,7 +65,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         t3.name?.let { copy.add(it) }
 
         replaceList(copy)
-  notifyDataSetChanged()
+        notifyDataSetChanged()
 
     }
     fun startVideoAtPosition(position: Int) {

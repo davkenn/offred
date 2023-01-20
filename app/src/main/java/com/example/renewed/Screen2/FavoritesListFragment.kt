@@ -140,9 +140,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //think i fixed this but keep in mind with less in list than pos will be less
             if (position == adapter2.postIds.size - 5 && adapter2.postIds.size !=12) {
                 vp.isUserInputEnabled=false
-                favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size).toLong()))
-
-
+                favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((12 - adapter2.postIds.size)))
             }
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size ==12) {
                 vp.isUserInputEnabled=false

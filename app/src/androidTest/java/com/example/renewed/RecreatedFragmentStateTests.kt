@@ -10,7 +10,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.renewed.Screen1.SubredditsAdapter
+import com.example.renewed.Screen1.PostsAdapter
+
 import com.example.renewed.Screen1.SubredditsSelectionFragment
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

@@ -22,8 +22,8 @@ class HiltFragmentScenario<F : Fragment> private constructor(
     var fragment: F?=null
         get() =
             getTheActivity<HiltTestActivity>()
-            ?.supportFragmentManager
-            ?.findFragmentByTag(FRAGMENT_TAG)as? F?
+                .supportFragmentManager
+                .findFragmentByTag(FRAGMENT_TAG) as? F?
 
 
 private fun <T:Activity> getTheActivity(): T    {
@@ -48,6 +48,7 @@ private fun <T:Activity> getTheActivity(): T    {
         if (newState == Lifecycle.State.DESTROYED) {
             activityScenario.onActivity { activity ->
                 val fragment = activity.supportFragmentManager
+                        //TODO why have this ref?
                     .findFragmentByTag("subscreen_nav_container")
                 // Null means the fragment has been destroyed already.
                 if (fragment != null) {
