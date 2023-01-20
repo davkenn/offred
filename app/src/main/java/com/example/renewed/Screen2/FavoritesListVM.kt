@@ -2,6 +2,7 @@ package com.example.renewed.Screen2
 
 
  import androidx.lifecycle.ViewModel
+ import com.example.renewed.VIEWPAGER_PAGES
  import com.example.renewed.models.*
  import com.example.renewed.repos.BaseFavoritesRepo
  import com.jakewharton.rxrelay3.PublishRelay
@@ -16,7 +17,7 @@ package com.example.renewed.Screen2
 
     @HiltViewModel
     class FavoritesListVM @Inject constructor(
-        private val currentlyDisplayedRepo: BaseFavoritesRepo
+        private val favsRepo: BaseFavoritesRepo
     ): ViewModel() {
         val vs3: Observable<PartialViewState>
         val vs4: Observable<PartialViewState>
@@ -26,24 +27,24 @@ package com.example.renewed.Screen2
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
 
         init {
-            val newPostsObservable = currentlyDisplayedRepo.observeSavedSubreddits()
-                .flatMap { x -> Observable.just(1).repeat(10)
+            val newPostsObservable = favsRepo.observeSavedSubreddits()
+                .flatMap { x -> Observable.just(Unit).repeat(10)
                                 .map { x.shuffled().first()}
                          }
-                .flatMap { currentlyDisplayedRepo.getRandomPosts(it.displayName, 2) }
+                .flatMap { favsRepo.getRandomPosts(it.displayName, 2) }
                 .share()  //Do I need this share? seems to work ok without it.
             //TODO need to also save it to the db here
 
 
-            newPostsObservable.take(12)
-                              .flatMapCompletable { x -> currentlyDisplayedRepo.insert(x.name) }
-                              .startWith(currentlyDisplayedRepo.clearPages()
+            newPostsObservable.take(VIEWPAGER_PAGES.toLong())
+                              .flatMapCompletable { x -> favsRepo.insert(x.name) }
+                              .startWith(favsRepo.clearPages()
                               .subscribeOn(Schedulers.io()))
                               .subscribe({ Timber.d("observ" ) },
                                           { Timber.e("error: ${it.localizedMessage}") })
                               .addTo(disposables)
 
-            vs = currentlyDisplayedRepo.observeCurrentPostList().replay(1)
+            vs = favsRepo.observeCurrentPostList().replay(1)
                 .autoConnect(1) { disposables.add(it) }
 
             vsPos = inputEvents.publish { it.ofType(MyFavsEvent.UpdatePositionEvent::class.java) }
@@ -55,11 +56,10 @@ package com.example.renewed.Screen2
             vs3 = inputEvents.publish {
                 it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)
                     .doOnNext {
-                        currentlyDisplayedRepo.deletePages(it.targets)
+                        favsRepo.deletePages(it.targets)
                             .subscribeOn(Schedulers.io())
                             .subscribe()
                     }
-                //     repository.insert(it.targets[it.targets.indices.random()])
             }
                 .map { PartialViewState.SnackbarEffect }
 
@@ -69,7 +69,7 @@ package com.example.renewed.Screen2
                         .doOnNext { Timber.e("SUCCESS!!! ${it.name}") }
                         .doOnNext {
 
-                            currentlyDisplayedRepo.insert(it.name).subscribeOn(Schedulers.io())
+                            favsRepo.insert(it.name).subscribeOn(Schedulers.io())
                                 .subscribe()
                         }
                         .map { PartialViewState.T3ForViewing(it.toViewState()) }
@@ -90,7 +90,7 @@ package com.example.renewed.Screen2
                   //  .flatMap { repository.getRandomPosts(it.displayName, 2) }
 
 
-            fun clearPages() = currentlyDisplayedRepo.clearPages()
+            fun clearPages() = favsRepo.clearPages()
 
 
             override fun onCleared() {
