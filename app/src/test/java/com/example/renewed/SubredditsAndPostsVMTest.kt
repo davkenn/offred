@@ -147,7 +147,9 @@ class SubredditsAndPostsVMTest {
         res.await(3,TimeUnit.SECONDS)
         res.assertValueCount(2)
         //loads 3 images for galeery
-        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].galleryUrls!!.size == 3}
+        res.assertValueAt(1) {
+
+            it.t3ListForRV!!.vsT3!![3].galleryUrls!!.size == 3}
         res.assertNotComplete()
     }
 

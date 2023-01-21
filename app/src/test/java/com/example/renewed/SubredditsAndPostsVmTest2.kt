@@ -1,5 +1,6 @@
 package com.example.renewed
 
+import com.example.renewed.Screen1.SubredditsAndPostsVM
 import com.example.renewed.models.MyEvent
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import org.hamcrest.MatcherAssert

@@ -74,7 +74,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                                { Timber.e("FAVLISTERROR", it.stackTrace) })
                                            .addTo(disposables)
 
-        favoritesVM.vsPos.observeOn(AndroidSchedulers.mainThread())
+        favoritesVM.currentPosition.observeOn(AndroidSchedulers.mainThread())
                          .subscribe({ selectPos = it
                                       vp.post{vp.setCurrentItem( selectPos,true) } },
                                     { Timber.d("ERROR IN POS") })
@@ -125,22 +125,13 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         }        }
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
-            //I thinka here is where the bug is. If the size isn't 12 it doesn't advance. but if size
-            //isn't 12 still will have a null sneak in there so thats prob where the bug is
 
-            //TODO this works if its down to 11 but doesn't go back up to 12
-
-            //right before loading another list load one if there was a duplicate before
-            //think i fixed this but keep in mind with less in list than pos will be less
-            if (position == adapter2.postIds.size - 5 && adapter2.postIds.size != VIEWPAGER_PAGES) {
-                vp.isUserInputEnabled=false
-                favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent((VIEWPAGER_PAGES - adapter2.postIds.size)))
-            }
             if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == VIEWPAGER_PAGES) {
                 vp.isUserInputEnabled=false
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
                 vp.post { repeat(6) { adapter2.removeFirst() } }
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
+
             } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
