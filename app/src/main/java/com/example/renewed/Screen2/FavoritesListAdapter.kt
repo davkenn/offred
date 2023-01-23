@@ -28,27 +28,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         notifyDataSetChanged()
     }
 
-    fun removeFirst(){
-        Timber.d("WELLSBEFORE $postIds")
-        Timber.d("WELLSBEFORE2 ${fragList.map{it?.t3Name}}")
 
- //IMPORTANT DON'T SWAP THE ORDER OF THESE TWO I FIXED THE MIDLIST NULL BUG BY
-        //SWAPPING THE ORDER TO THIS
-        var copy2 = fragList.toMutableList()
-        copy2.removeAt(0)
-        copy2.add(null)
-
-
-        fragList=copy2
-
-        var copy = postIds.toMutableList()
-        copy.removeAt(0)
-        replaceList(copy)
-
-
-        Timber.d("WELLSAFTER $postIds")
-        Timber.d("WELLSAFTER2  ${fragList.map{it?.t3Name}}")
-    }
 
     override fun createFragment(position: Int): Fragment {
         val name = postIds[position]
@@ -60,14 +40,9 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         return fragment
 
     }
-    fun addFragment(t3: ViewStateT3){
-        var copy = postIds.toMutableList()
-        t3.name?.let { copy.add(it) }
 
-        replaceList(copy)
-        notifyDataSetChanged()
 
-    }
+
     fun startVideoAtPosition(position: Int) {
         if (position <0|| position >=  fragList.size) return
       //  fragList[position]?.loadVideo()

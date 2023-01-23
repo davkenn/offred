@@ -68,7 +68,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         }
 
-        favoritesVM.currentlyDisplayedPosts.filter{it.size==12 }
+        favoritesVM.currentlyDisplayedPosts.filter{it.size== VIEWPAGER_PAGES_TOTAL }
                                            .observeOn(AndroidSchedulers.mainThread())
                                            .subscribe({adapter2.replaceList(it) },
                                                { Timber.e("FAVLISTERROR", it.stackTrace) })
