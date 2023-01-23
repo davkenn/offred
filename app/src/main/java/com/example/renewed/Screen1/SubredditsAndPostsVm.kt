@@ -32,7 +32,7 @@ class SubredditsAndPostsVM @Inject constructor(
     fun processInput(name: MyEvent) {
         inputEvents.accept(name)
     }
-    val vs: Observable<FullViewState> = inputEvents
+    val vs: Observable<FullViewStateScreen1> = inputEvents
         .doOnNext { Timber.d("---- Event is $it") }
         .eventToResult()
         .doOnNext { Timber.d("---- Result is $it") }
@@ -62,9 +62,9 @@ class SubredditsAndPostsVM @Inject constructor(
         }
     }
 
-    private fun Observable<PartialViewState>.combineResults(): Observable<FullViewState> {
+    private fun Observable<PartialViewState>.combineResults(): Observable<FullViewStateScreen1> {
 
-        return scan(FullViewState()) { state, event ->
+        return scan(FullViewStateScreen1()) { state, event ->
             when (event) {
                 is PartialViewState.T5ListForRV -> state.copy(
                                                         t5ListForRV = event, latestEvent5 = null,

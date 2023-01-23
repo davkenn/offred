@@ -209,7 +209,7 @@ class SubredditsAndPostsVMTest {
         val res = viewModel.vs.test()
         viewModel.processInput(MyEvent.ScreenLoadEvent(""))
         var n = res.await(1,TimeUnit.SECONDS)
-        res.assertValueAt(0) { it != FullViewState() }
+        res.assertValueAt(0) { it != FullViewStateScreen1() }
     }
 
 /**

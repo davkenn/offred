@@ -3,7 +3,14 @@ package com.example.renewed.models
 import io.reactivex.rxjava3.core.Observable
 import java.time.Instant
 
-data class FullViewState(
+data class FullViewStateScreen2(
+
+    val currentlyDisplayedList: List<String>,
+    val position : Int,
+    val effect: EffectType?=null)
+
+
+data class FullViewStateScreen1(
     val t3ListForRV: PartialViewState.T3ListForRV?=null,
     val t5ListForRV: PartialViewState.T5ListForRV?=null,
     val latestEvent5: PartialViewState.T5ForViewing?=null,
@@ -27,7 +34,9 @@ enum class EffectType{
 data class ViewStateT5(val name: String, val displayName: String, val description: String,
                        val thumbnail: String, val bannerImg: String, val subscribers: Int,
                        val created: String, val timeLastAccessed: Instant) {
+
         override fun toString(): String = "ViewStateT5($name) "
+
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (javaClass != other?.javaClass) return false
@@ -37,8 +46,6 @@ data class ViewStateT5(val name: String, val displayName: String, val descriptio
         override fun hashCode(): Int {
             var result = name.hashCode()
             result = 31 * result + displayName.hashCode()
-            result = 31 * result + thumbnail.hashCode()
-            result = 31 * result + bannerImg.hashCode()
             result = 31 * result + subscribers
             result = 31 * result + created.hashCode()
             return result

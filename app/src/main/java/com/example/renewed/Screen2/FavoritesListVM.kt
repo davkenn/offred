@@ -2,7 +2,7 @@ package com.example.renewed.Screen2
 
 
  import androidx.lifecycle.ViewModel
- import com.example.renewed.VIEWPAGER_PAGES
+ import com.example.renewed.VIEWPAGER_PAGES_TOTAL
  import com.example.renewed.models.*
  import com.example.renewed.repos.BaseFavoritesRepo
  import com.jakewharton.rxrelay3.PublishRelay
@@ -19,8 +19,8 @@ package com.example.renewed.Screen2
     class FavoritesListVM @Inject constructor(
         private val favsRepo: BaseFavoritesRepo
     ): ViewModel() {
-        val vs3: Observable<PartialViewState>
-        val vs4: Observable<PartialViewState>
+        val deletePostsComplete: Observable<PartialViewState>
+        val addPostsComplete: Observable<PartialViewState>
         val currentlyDisplayedPosts: Observable<List<String>>
         val currentPosition: Observable<Int>
         private val disposables: CompositeDisposable = CompositeDisposable()
@@ -36,7 +36,7 @@ package com.example.renewed.Screen2
             //TODO need to also save it to the db here
 
 
-            newPostsObservable.take(VIEWPAGER_PAGES.toLong())
+            newPostsObservable.take(VIEWPAGER_PAGES_TOTAL.toLong())
                               .flatMapCompletable { x -> favsRepo.insert(x.name) }
                               .startWith(favsRepo.clearPages()
                               .subscribeOn(Schedulers.io()))
@@ -54,7 +54,8 @@ package com.example.renewed.Screen2
 
                 .autoConnect(1) { disposables.add(it) }
 
-            vs3 = inputEvents.publish {
+            deletePostsComplete = inputEvents.publish {
+             //   it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).deleteThenReturn()
                 it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)
                     .doOnNext {
                         favsRepo.deletePages(it.targets)
@@ -64,7 +65,7 @@ package com.example.renewed.Screen2
             }
                 .map { PartialViewState.SnackbarEffect }
 
-            vs4 = inputEvents.publish {
+            addPostsComplete = inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
                     newPostsObservable.take(it.count.toLong())
                         .doOnNext { Timber.e("SUCCESS!!! ${it.name}") }
@@ -77,7 +78,23 @@ package com.example.renewed.Screen2
                 }
             }
         }
-         //   private fun Observable<MyFavsEvent.DeleteSubredditEvent>.updateViewingState(): Observable<RoomT3> {
+   //     val vs: Observable<FullViewStateScreen2> = inputEvents
+     //       .doOnNext { Timber.d("---- Event is $it") }
+
+          //  .doOnNext { Timber.d("---- Result is $it") }
+            //.combineResults()
+          //  .doOnNext { Timber.d("----Combined is $it") }
+       //     .replay(1)
+         //   .autoConnect(1){disposables.add(it)}
+            private fun Observable<MyFavsEvent.DeleteSubredditEvent>.deleteThenReturn() : Observable<PartialViewState.SnackbarEffect> {
+                return doOnNext {
+                    favsRepo.deletePages(it.targets)
+                        .subscribeOn(Schedulers.io())
+                        .subscribe()
+                }
+
+                    .map { PartialViewState.SnackbarEffect }
+            }
            //     return repository.observeSavedSubreddits()
                     //get exactly 10 posts, even if loading fails for some
              //       .flatMap { x ->
@@ -104,3 +121,5 @@ package com.example.renewed.Screen2
                 inputEvents.accept(name)
             }
         }
+
+

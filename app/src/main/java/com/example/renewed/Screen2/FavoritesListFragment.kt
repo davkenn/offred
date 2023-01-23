@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renewed.R
-import com.example.renewed.VIEWPAGER_PAGES
+import com.example.renewed.VIEWPAGER_PAGES_TOTAL
+import com.example.renewed.VP_PAGES_PER_LOAD
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.MyFavsEvent
@@ -45,7 +46,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
-  //      exo.addListener(readyToPlayListener)
+
         p = savedInstanceState?.getInt("pos") ?: 0
     }
 
@@ -66,9 +67,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             pager.setBackgroundColor(Color.parseColor("black"))
 
         }
-//this filter is so I don't get adapter bugs for createfragment
-        //did I change this to 7 from 5 when I went to 12 and 6? Is this ok?
-        favoritesVM.currentlyDisplayedPosts.filter{it.size>10 }
+
+        favoritesVM.currentlyDisplayedPosts.filter{it.size==12 }
                                            .observeOn(AndroidSchedulers.mainThread())
                                            .subscribe({adapter2.replaceList(it) },
                                                { Timber.e("FAVLISTERROR", it.stackTrace) })
@@ -80,13 +80,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                     { Timber.d("ERROR IN POS") })
                         .addTo(disposables)
 
-        favoritesVM.vs3.observeOn(AndroidSchedulers.mainThread())
+        favoritesVM.deletePostsComplete.observeOn(AndroidSchedulers.mainThread())
                        .filter{ it is PartialViewState.SnackbarEffect }
-                       .subscribe({ favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent())},
+                       .subscribe({ favoritesVM.processInput(
+                                                MyFavsEvent.AddSubredditsEvent(VP_PAGES_PER_LOAD))},
                                   { Timber.e("FAVLISTERROR", it.stackTrace) })
                        .addTo(disposables)
 
-        favoritesVM.vs4.observeOn(AndroidSchedulers.mainThread())
+        favoritesVM.addPostsComplete.observeOn(AndroidSchedulers.mainThread())
                        .filter{ it is PartialViewState.T3ForViewing }
                        .subscribe({ vp.isUserInputEnabled=true},{})
                        .addTo(disposables)
@@ -121,21 +122,22 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         super.onResume()
 
-        vp.pageScrollStateChanges().subscribe(){state-> if (state==ViewPager2.SCROLL_STATE_IDLE){
-
-        }        }
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
-            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == VIEWPAGER_PAGES) {
-                vp.isUserInputEnabled=false
-                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position - 6))
-                vp.post { repeat(6) { adapter2.removeFirst() } }
-                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(adapter2.postIds.take(6)))
+            if (position == adapter2.postIds.size - 4
+                                                && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
 
+                vp.isUserInputEnabled=false
+                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(
+                                                          position - VP_PAGES_PER_LOAD))
+         //       vp.post { repeat(VP_PAGES_PER_LOAD) { adapter2.removeFirst() } }
+                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(
+                                                         adapter2.postIds.take(VP_PAGES_PER_LOAD)))
             } else {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
         }
+
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
 
     }
