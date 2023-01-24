@@ -39,7 +39,7 @@ class PostFragment : ContentFragment() {
     var playerView: StyledPlayerView? = null
     private val postsVM: PostVM by viewModels()
      var t3Name:String?= null
-
+    var dex: Int = 0
     var postBinding: PostViewBinding? = null
   //  var state: ViewStateT3? = null
     private val disposables = CompositeDisposable()
@@ -51,6 +51,9 @@ class PostFragment : ContentFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
+
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
 
@@ -58,6 +61,14 @@ class PostFragment : ContentFragment() {
         return binding.root
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dex=savedInstanceState?.getInt("dex")?:0
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("dex",dex)
+    }
     override fun onDestroyView() {
         //TODO need to not do this if I don't want crashes
         postBinding = null
@@ -66,6 +77,7 @@ class PostFragment : ContentFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         view.setBackgroundColor(Color.parseColor("black"))
         t3Name = arguments?.getString("key") ?: "NONE"
 
@@ -85,13 +97,14 @@ class PostFragment : ContentFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
     }
     override fun onResume() {
 
         Timber.d("onResume in Post Fragment ${this.t3Name}")
         super.onResume()
 
-stopVideo()
+        stopVideo()
         postsVM.setPost(t3Name!!)
     //        .map{state=it ;it}
             //     .doOnEvent{x,_ -> state=x}
@@ -114,19 +127,14 @@ stopVideo()
                         postBinding!!.fullImg.isFocusableInTouchMode =false
 
                         postBinding!!.fullImg
-                            .setOnClickListener(object : View.OnClickListener {
-                                var dex: Int = 0
-                                override fun onClick(v: View?) {
-                                    dex += 1
-
-                                    Timber.e("ONCLICK CALLED")
-                                    Glide.with(this@PostFragment).load(
-                                        t3ViewState?.galleryUrls?.get(dex % t3ViewState?.galleryUrls!!.size)
-                                    )
-                                        .into(postBinding!!.fullImg)
-
-                                }
-                            })
+                            .setOnClickListener {
+                                dex += 1
+                                Timber.e("ONCLICK CALLED")
+                                Glide.with(this@PostFragment).load(
+                                    t3ViewState?.galleryUrls?.get(dex % t3ViewState?.galleryUrls.size)
+                                )
+                                    .into(postBinding!!.fullImg)
+                            }
                         if (t3ViewState.galleryUrls!=null){
                             //     postBinding!!.fullImg.focusable= NOT_FOCUSABLE
                             postBinding!!.fullImg.visibility = VISIBLE
@@ -134,7 +142,7 @@ stopVideo()
 
                             Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
 
-                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls!![0])
+                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls[dex% t3ViewState.galleryUrls.size])
                                 .into(postBinding!!.fullImg)
                         }
 

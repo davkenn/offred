@@ -67,10 +67,10 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         return SubredditViewHolder(elementBinding)
     }
 
-    override fun onViewRecycled(holder: SubredditViewHolder) {
+ /**   override fun onViewRecycled(holder: SubredditViewHolder) {
         if (selected == holder.adapterPosition) selected = -1
         super.onViewRecycled(holder)
-    }
+    }**/
 
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
         holder.bind(getItem(position), onClick)

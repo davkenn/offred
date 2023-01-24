@@ -24,6 +24,7 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
     fun replaceList(idList:List<String>){
         postIds.clear()
+     //   notifyDataSetChanged()
         postIds.addAll(idList)
         notifyDataSetChanged()
     }
@@ -39,12 +40,5 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         fragList[position] = fragment
         return fragment
 
-    }
-
-
-
-    fun startVideoAtPosition(position: Int) {
-        if (position <0|| position >=  fragList.size) return
-      //  fragList[position]?.loadVideo()
     }
 }
