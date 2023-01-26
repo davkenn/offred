@@ -55,15 +55,9 @@ package com.example.renewed.Screen2
                 .autoConnect(1) { disposables.add(it) }
 
             deletePostsComplete = inputEvents.publish {
-             //   it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).deleteThenReturn()
-                it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java)
-                    .doOnNext {
-                        favsRepo.deletePages(it.targets)
-                            .subscribeOn(Schedulers.io())
-                            .subscribe()
-                    }
+                //   it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).deleteThenReturn()
+                it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).deleteThenReturn()
             }
-                .map { EffectType2.DELETE }
 
             addPostsComplete = inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {

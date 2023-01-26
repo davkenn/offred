@@ -14,6 +14,7 @@ import com.example.renewed.VIEWPAGER_PAGES_TOTAL
 import com.example.renewed.VP_PAGES_PER_LOAD
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
+import com.example.renewed.models.EffectType2
 import com.example.renewed.models.MyFavsEvent
 import com.example.renewed.models.PartialViewState
 import com.google.android.exoplayer2.ExoPlayer
@@ -22,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
+import retrofit2.http.DELETE
 import timber.log.Timber
 import java.lang.Math.abs
 import javax.inject.Inject
@@ -81,14 +83,14 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                         .addTo(disposables)
 
         favoritesVM.deletePostsComplete.observeOn(AndroidSchedulers.mainThread())
-                       .filter{ it is PartialViewState.SnackbarEffect }
+                       .filter{ it ==EffectType2.DELETE }
                        .subscribe({ favoritesVM.processInput(
                                                 MyFavsEvent.AddSubredditsEvent(VP_PAGES_PER_LOAD))},
                                   { Timber.e("FAVLISTERROR", it.stackTrace) })
                        .addTo(disposables)
 
         favoritesVM.addPostsComplete.observeOn(AndroidSchedulers.mainThread())
-                       .filter{ it is PartialViewState.T3ForViewing }
+                       .filter{ it==EffectType2.LOAD }
                        .subscribe({ vp.post{}},{})
                        .addTo(disposables)
     }
