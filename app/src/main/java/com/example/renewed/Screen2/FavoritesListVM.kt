@@ -10,6 +10,7 @@ package com.example.renewed.Screen2
  import io.reactivex.rxjava3.core.Observable
  import io.reactivex.rxjava3.disposables.CompositeDisposable
  import io.reactivex.rxjava3.kotlin.addTo
+ import io.reactivex.rxjava3.kotlin.mergeAll
  import io.reactivex.rxjava3.schedulers.Schedulers
  import timber.log.Timber
 
@@ -19,15 +20,15 @@ package com.example.renewed.Screen2
     class FavoritesListVM @Inject constructor(
         private val favsRepo: BaseFavoritesRepo
     ): ViewModel() {
-        val deletePostsComplete: Observable<EffectType2>
-        val addPostsComplete: Observable<EffectType2>
+        val eventCompleteEvent: Observable<EffectType2>
+        val newPostsObservable:Observable<RoomT3>
         val currentlyDisplayedPosts: Observable<List<String>>
         val currentPosition: Observable<Int>
         private val disposables: CompositeDisposable = CompositeDisposable()
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
 
         init {
-            val newPostsObservable = favsRepo.observeSavedSubreddits()
+            newPostsObservable = favsRepo.observeSavedSubreddits()
                 .flatMap { x -> Observable.just(Unit).repeat(10)
                                 .map { x.shuffled().first()}
                          }
@@ -49,61 +50,39 @@ package com.example.renewed.Screen2
 
             currentPosition = inputEvents.publish { it.ofType(MyFavsEvent.UpdatePositionEvent::class.java) }
                 .map { it.newPosition }
-
                 .replay(1)
-
                 .autoConnect(1) { disposables.add(it) }
 
-            deletePostsComplete = inputEvents.publish {
-                //   it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).deleteThenReturn()
-                it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).deleteThenReturn()
-            }
-
-            addPostsComplete = inputEvents.publish {
-                it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
-                    newPostsObservable.take(it.count.toLong())
-                        .doOnNext { Timber.e("SUCCESS!!! ${it.name}") }
-                        .doOnNext {
-
-                            favsRepo.insert(it.name).subscribeOn(Schedulers.io())
-                                .subscribe()
-                        }
-                        .map { EffectType2.LOAD }
+            eventCompleteEvent = inputEvents.publish {
+                val a = Observable.fromArray(
+                    it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).deleteThenReturn(),
+                    it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).loadThenReturn(newPostsObservable))
+                a.mergeAll()
                 }
             }
-        }
-   //     val vs: Observable<FullViewStateScreen2> = inputEvents
-     //       .doOnNext { Timber.d("---- Event is $it") }
 
-          //  .doOnNext { Timber.d("---- Result is $it") }
-            //.combineResults()
-          //  .doOnNext { Timber.d("----Combined is $it") }
-       //     .replay(1)
-         //   .autoConnect(1){disposables.add(it)}
             private fun Observable<MyFavsEvent.DeleteSubredditEvent>.deleteThenReturn() : Observable<EffectType2> {
                 return doOnNext {
                     favsRepo.deletePages(it.targets)
                         .subscribeOn(Schedulers.io())
                         .subscribe()
                 }
-
                     .map {EffectType2.DELETE }
             }
-           //     return repository.observeSavedSubreddits()
-                    //get exactly 10 posts, even if loading fails for some
-             //       .flatMap { x ->
-               //         Observable.just(
-                 //           1, 1, 1, 1, 1,
-                   //         1, 1, 1, 1, 1
-                     //   )
-                       //     .map { x.shuffled().take(1) }
-                  //  }
-                   // .flatMapIterable { it }
-                  //  .flatMap { repository.getRandomPosts(it.displayName, 2) }
 
 
+private fun Observable<MyFavsEvent.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>) : Observable<EffectType2> {
+    return flatMap {
+        arg.take(it.count.toLong())
+            .doOnNext { Timber.e("SUCCESS!!! ${it.name}") }
+            .doOnNext {
+                favsRepo.insert(it.name).subscribeOn(Schedulers.io())
+                    .subscribe()
+            }
+    }
+        .map { EffectType2.LOAD }
+}
             fun clearPages() = favsRepo.clearPages()
-
 
             override fun onCleared() {
                 super.onCleared()

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.renewed.R
@@ -16,16 +15,13 @@ import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.EffectType2
 import com.example.renewed.models.MyFavsEvent
-import com.example.renewed.models.PartialViewState
 import com.google.android.exoplayer2.ExoPlayer
 import com.jakewharton.rxbinding4.viewpager2.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
-import retrofit2.http.DELETE
 import timber.log.Timber
-import java.lang.Math.abs
 import javax.inject.Inject
 
 
@@ -40,7 +36,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private val disposables = CompositeDisposable()
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
-    //-1 as a test its correctly loading position state
     private var selectPos: Int by atomic(0)
     var p :Int? = null
 
@@ -62,7 +57,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         binding.apply {
             vp = pager
             pager.adapter = adapter2
-            //need to keep this as least as high as the number of pages
             pager.offscreenPageLimit = 6
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             favorites.setBackgroundColor(Color.parseColor("black"))
@@ -82,16 +76,16 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                     { Timber.d("ERROR IN POS") })
                         .addTo(disposables)
 
-        favoritesVM.deletePostsComplete.observeOn(AndroidSchedulers.mainThread())
-                       .filter{ it ==EffectType2.DELETE }
-                       .subscribe({ favoritesVM.processInput(
-                                                MyFavsEvent.AddSubredditsEvent(VP_PAGES_PER_LOAD))},
-                                  { Timber.e("FAVLISTERROR", it.stackTrace) })
-                       .addTo(disposables)
+        favoritesVM.eventCompleteEvent.observeOn(AndroidSchedulers.mainThread())
+                       .subscribe({ when (it){
+                                    EffectType2.DELETE ->
+                                        favoritesVM.processInput(
+                                                 MyFavsEvent.AddSubredditsEvent(VP_PAGES_PER_LOAD))
+                                    EffectType2.LOAD ->
+                                            vp.post{}
 
-        favoritesVM.addPostsComplete.observeOn(AndroidSchedulers.mainThread())
-                       .filter{ it==EffectType2.LOAD }
-                       .subscribe({ vp.post{}},{})
+                       }},
+                                  { Timber.e("FAVLISTERROR", it.stackTrace) })
                        .addTo(disposables)
     }
 
@@ -104,13 +98,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onDestroy() {
         Timber.d("onDestroy in FavoritesListFragment")
         super.onDestroy()
-
     }
 
     override fun onDestroyView() {
         Timber.d("onDestroyView in FavoritesListFragment")
-    //here or in ondestroy?
-        disposables.clear()
+        disposables.clear()     //here or in ondestroy?
         super.onDestroyView()
     }
 
@@ -147,7 +139,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
         }
-
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
     }
 
