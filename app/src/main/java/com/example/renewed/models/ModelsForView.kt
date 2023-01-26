@@ -27,6 +27,9 @@ sealed class PartialViewState(val name: String?){
     object SnackbarEffect:PartialViewState("SnackbarEffect")
 }
 
+enum class EffectType2{
+    DELETE,LOAD
+}
 enum class EffectType{
     DELETE_OR_SAVE,SNACKBAR
 }

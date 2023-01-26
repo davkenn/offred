@@ -19,8 +19,8 @@ package com.example.renewed.Screen2
     class FavoritesListVM @Inject constructor(
         private val favsRepo: BaseFavoritesRepo
     ): ViewModel() {
-        val deletePostsComplete: Observable<PartialViewState>
-        val addPostsComplete: Observable<PartialViewState>
+        val deletePostsComplete: Observable<EffectType2>
+        val addPostsComplete: Observable<EffectType2>
         val currentlyDisplayedPosts: Observable<List<String>>
         val currentPosition: Observable<Int>
         private val disposables: CompositeDisposable = CompositeDisposable()
@@ -63,7 +63,7 @@ package com.example.renewed.Screen2
                             .subscribe()
                     }
             }
-                .map { PartialViewState.SnackbarEffect }
+                .map { EffectType2.DELETE }
 
             addPostsComplete = inputEvents.publish {
                 it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).flatMap {
@@ -74,7 +74,7 @@ package com.example.renewed.Screen2
                             favsRepo.insert(it.name).subscribeOn(Schedulers.io())
                                 .subscribe()
                         }
-                        .map { PartialViewState.T3ForViewing(it.toViewState()) }
+                        .map { EffectType2.LOAD }
                 }
             }
         }
@@ -86,14 +86,14 @@ package com.example.renewed.Screen2
           //  .doOnNext { Timber.d("----Combined is $it") }
        //     .replay(1)
          //   .autoConnect(1){disposables.add(it)}
-            private fun Observable<MyFavsEvent.DeleteSubredditEvent>.deleteThenReturn() : Observable<PartialViewState.SnackbarEffect> {
+            private fun Observable<MyFavsEvent.DeleteSubredditEvent>.deleteThenReturn() : Observable<EffectType2> {
                 return doOnNext {
                     favsRepo.deletePages(it.targets)
                         .subscribeOn(Schedulers.io())
                         .subscribe()
                 }
 
-                    .map { PartialViewState.SnackbarEffect }
+                    .map {EffectType2.DELETE }
             }
            //     return repository.observeSavedSubreddits()
                     //get exactly 10 posts, even if loading fails for some

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.renewed.R
@@ -54,6 +55,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         adapter2 = FavoritesListAdapter(this)
 
+       // adapter2.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
             vp = pager

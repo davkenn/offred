@@ -38,7 +38,6 @@ class PostFragment : ContentFragment() {
     var playerView: StyledPlayerView? = null
     private val postsVM: PostVM by viewModels()
     var t3Name:String?= null
-    var dex: Int =0
     var postBinding: PostViewBinding? = null
     private val disposables = CompositeDisposable()
     override fun getName() : String = postsVM.name
@@ -53,13 +52,12 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+    //    retainInstance=true
         super.onCreate(savedInstanceState)
-        dex=savedInstanceState?.getInt("dex")?:0
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("dex",1)
     }
 
     override fun onDestroyView() {
@@ -84,10 +82,6 @@ class PostFragment : ContentFragment() {
         super.onStart()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onResume() {
         Timber.d("onResume in Post Fragment ${this.t3Name}")
         super.onResume()
@@ -107,16 +101,16 @@ class PostFragment : ContentFragment() {
                                            postBinding!!.fullImg.isFocusable =false
                                            postBinding!!.fullImg.isFocusableInTouchMode =false
                                            postBinding!!.fullImg.setOnClickListener {
-                                               dex += 1
+                                               this@PostFragment.postsVM.pos+=1
                                                Glide.with(this@PostFragment).load(
                                                                     t3ViewState.galleryUrls
-                                                         ?.get(dex % t3ViewState.galleryUrls.size)
+                                                         ?.get(this@PostFragment.postsVM.pos % t3ViewState.galleryUrls.size)
                                                         ).into(postBinding!!.fullImg)
                             }
                         if (t3ViewState.galleryUrls!=null){
                             postBinding!!.fullImg.visibility = VISIBLE
                             Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
-                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls[dex% t3ViewState.galleryUrls.size])
+                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls[postsVM.pos% t3ViewState.galleryUrls.size])
                                 .into(postBinding!!.fullImg)
                         }
                         val end = "\nGALLERY, click to to open..."
@@ -145,6 +139,7 @@ class PostFragment : ContentFragment() {
                     }
                 }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
     }
+
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
@@ -204,8 +199,6 @@ class PostFragment : ContentFragment() {
             .fallback(ColorDrawable(Color.YELLOW))
              .into(postBinding!!.thumb)
     }
-
-    fun isPlaying() = playerView?.player?.isPlaying?:false
 
     fun stopVideo() {
         playerView?.player?.stop()

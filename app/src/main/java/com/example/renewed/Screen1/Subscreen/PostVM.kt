@@ -14,6 +14,7 @@ import javax.inject.Inject
 class PostVM @Inject constructor(
 private val repository: BaseSubredditsAndPostsRepo
 ): ViewModel() {
+    var pos: Int=0
     lateinit var name: String
         private set
 
