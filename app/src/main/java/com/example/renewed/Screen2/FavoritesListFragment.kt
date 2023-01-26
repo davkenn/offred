@@ -21,6 +21,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
+import java.lang.Math.abs
 import javax.inject.Inject
 
 
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
 
-
+    private var makeVisible: Boolean=false
     private lateinit var binding: FragmentFavoritesListBinding
 
     @Inject
@@ -64,7 +65,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //need to keep this as least as high as the number of pages
             pager.offscreenPageLimit = 6
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
-            pager.setBackgroundColor(Color.parseColor("black"))
+            favorites.setBackgroundColor(Color.parseColor("black"))
 
         }
 
@@ -75,8 +76,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                            .addTo(disposables)
 
         favoritesVM.currentPosition.observeOn(AndroidSchedulers.mainThread())
-                         .subscribe({ selectPos = it
-                                      vp.post{vp.setCurrentItem( selectPos,true) } },
+                         .subscribe({
+                                        selectPos = it
+                                      vp.post{vp.setCurrentItem( selectPos,true)} },
                                     { Timber.d("ERROR IN POS") })
                         .addTo(disposables)
 
@@ -89,7 +91,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         favoritesVM.addPostsComplete.observeOn(AndroidSchedulers.mainThread())
                        .filter{ it is PartialViewState.T3ForViewing }
-                       .subscribe({ vp.isUserInputEnabled=true},{})
+                       .subscribe({ vp.post{}},{})
                        .addTo(disposables)
     }
 
@@ -122,18 +124,28 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         super.onResume()
 
+        vp.pageScrollStateChanges().subscribe(){if (vp.scrollState==ViewPager2.SCROLL_STATE_IDLE) {
+            vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;
+        }}
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
+            if (position == 2) makeVisible=true
+            //also called when rotate but it doesn't matter because already set to visibile vp.visibility=View.VISIBLE
             if (position == adapter2.postIds.size - 4
                                                 && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
 
+                vp.visibility=View.GONE
                 vp.isUserInputEnabled=false
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(
                                                           position - VP_PAGES_PER_LOAD))
-         //       vp.post { repeat(VP_PAGES_PER_LOAD) { adapter2.removeFirst() } }
+                //once DeleteSubredditEvent returns to the Fragment, SaveSubredditEvent will be
+                //called in response
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(
                                                          adapter2.postIds.take(VP_PAGES_PER_LOAD)))
-            } else {
+            }
+            else {
+
+
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
         }

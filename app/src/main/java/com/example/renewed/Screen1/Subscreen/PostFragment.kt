@@ -39,7 +39,7 @@ class PostFragment : ContentFragment() {
     var playerView: StyledPlayerView? = null
     private val postsVM: PostVM by viewModels()
      var t3Name:String?= null
-    var dex: Int = 0
+    var dex: Int =0
     var postBinding: PostViewBinding? = null
   //  var state: ViewStateT3? = null
     private val disposables = CompositeDisposable()
@@ -64,10 +64,18 @@ class PostFragment : ContentFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dex=savedInstanceState?.getInt("dex")?:0
+
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
     }
     override fun onSaveInstanceState(outState: Bundle) {
+
         super.onSaveInstanceState(outState)
-        outState.putInt("dex",dex)
+        outState.putInt("dex",1)
+
     }
     override fun onDestroyView() {
         //TODO need to not do this if I don't want crashes
@@ -97,6 +105,7 @@ class PostFragment : ContentFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
 
     }
     override fun onResume() {
