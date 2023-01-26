@@ -7,6 +7,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.renewed.R
 import com.example.renewed.VIEWPAGER_PAGES_TOTAL
 import com.example.renewed.VP_PAGES_PER_LOAD
@@ -47,6 +48,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onCreate(savedInstanceState)
 
         p = savedInstanceState?.getInt("pos") ?: 0
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,6 +67,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             favorites.setBackgroundColor(Color.parseColor("black"))
 
+            Glide.with(this@FavoritesListFragment).load(R.drawable.ic_loading).into(loading)
         }
 
         favoritesVM.currentlyDisplayedPosts.filter{it.size== VIEWPAGER_PAGES_TOTAL }
@@ -123,7 +126,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onResume()
 
         vp.pageScrollStateChanges().subscribe(){if (vp.scrollState==ViewPager2.SCROLL_STATE_IDLE) {
-            vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;
+            binding.loading.visibility=View.INVISIBLE;vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;
         }}
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
@@ -132,7 +135,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                                 && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
 
                 vp.visibility=View.INVISIBLE
+                binding.loading.visibility= View.VISIBLE
                 vp.isUserInputEnabled=false
+
 
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(
                     position - VP_PAGES_PER_LOAD))
