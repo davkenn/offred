@@ -131,14 +131,17 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             if (position == adapter2.postIds.size - 4
                                                 && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
 
-                vp.visibility=View.GONE
+                vp.visibility=View.INVISIBLE
                 vp.isUserInputEnabled=false
+
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(
-                                                          position - VP_PAGES_PER_LOAD))
+                    position - VP_PAGES_PER_LOAD))
+
                 //once DeleteSubredditEvent returns to the Fragment, SaveSubredditEvent will be
                 //called in response
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(
                                                          adapter2.postIds.take(VP_PAGES_PER_LOAD)))
+
             }
             else {
 
