@@ -28,8 +28,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
-
-    private var makeVisible: Boolean=false
     private lateinit var binding: FragmentFavoritesListBinding
 
     @Inject
@@ -129,7 +127,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }}
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
 
-            if (position == 2) makeVisible=true
             //also called when rotate but it doesn't matter because already set to visibile vp.visibility=View.VISIBLE
             if (position == adapter2.postIds.size - 4
                                                 && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
