@@ -33,50 +33,35 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
 
-
     @Inject
     lateinit var exo: ExoPlayer
     var playerView: StyledPlayerView? = null
     private val postsVM: PostVM by viewModels()
-     var t3Name:String?= null
+    var t3Name:String?= null
     var dex: Int =0
     var postBinding: PostViewBinding? = null
-  //  var state: ViewStateT3? = null
     private val disposables = CompositeDisposable()
     override fun getName() : String = postsVM.name
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
-
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
-
-
         return binding.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dex=savedInstanceState?.getInt("dex")?:0
-
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-    }
     override fun onSaveInstanceState(outState: Bundle) {
-
         super.onSaveInstanceState(outState)
         outState.putInt("dex",1)
-
     }
+
     override fun onDestroyView() {
         //TODO need to not do this if I don't want crashes
         postBinding = null
@@ -85,79 +70,57 @@ class PostFragment : ContentFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         view.setBackgroundColor(Color.parseColor("black"))
         t3Name = arguments?.getString("key") ?: "NONE"
-
-}
+    }
 
     override fun onPause() {
         stopVideo()
         Timber.d("onPause in Post Fragment")
         super.onPause()
-
     }
 
     override fun onStart() {
-
         super.onStart()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-
     }
-    override fun onResume() {
 
+    override fun onResume() {
         Timber.d("onResume in Post Fragment ${this.t3Name}")
         super.onResume()
-
         stopVideo()
         postsVM.setPost(t3Name!!)
-    //        .map{state=it ;it}
-            //     .doOnEvent{x,_ -> state=x}
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { t3ViewState ->
+               .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe({ t3ViewState -> postBinding!!.postName.text = t3ViewState.displayName
+                                           val text = t3ViewState.created + ": "
+                                           postBinding!!.timeCreated.text = text
+                                           postBinding!!.bodyText.text = t3ViewState.selftext
+                                           Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
+                                           postBinding!!.url.text = t3ViewState.url
+                        if (t3ViewState.isGalleryPost()) {
 
-                    postBinding!!.postName.text = t3ViewState.displayName
-                    val text = t3ViewState.created + ": "
-                    postBinding!!.timeCreated.text = text
-                    postBinding!!.bodyText.text = t3ViewState.selftext
-                    Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
-                    postBinding!!.url.text = t3ViewState.url
-//TODO there is a bug here where if you click on the imageview to go to 2nd in gallery it jumps back to top
-                    if (t3ViewState.isGalleryPost()) {
-
-                        //makes gallery image clickable but still focusable on other post types
-                        postBinding!!.fullImg.isFocusable =false
-                        postBinding!!.fullImg.isFocusableInTouchMode =false
-
-                        postBinding!!.fullImg
-                            .setOnClickListener {
-                                dex += 1
-                                Timber.e("ONCLICK CALLED")
-                                Glide.with(this@PostFragment).load(
-                                    t3ViewState?.galleryUrls?.get(dex % t3ViewState?.galleryUrls.size)
-                                )
-                                    .into(postBinding!!.fullImg)
+                            //makes gallery image clickable but still focusable on other post types
+                                           postBinding!!.fullImg.isFocusable =false
+                                           postBinding!!.fullImg.isFocusableInTouchMode =false
+                                           postBinding!!.fullImg.setOnClickListener {
+                                               dex += 1
+                                               Glide.with(this@PostFragment).load(
+                                                                    t3ViewState.galleryUrls
+                                                         ?.get(dex % t3ViewState.galleryUrls.size)
+                                                        ).into(postBinding!!.fullImg)
                             }
                         if (t3ViewState.galleryUrls!=null){
-                            //     postBinding!!.fullImg.focusable= NOT_FOCUSABLE
                             postBinding!!.fullImg.visibility = VISIBLE
-
-
                             Timber.d("RIGHT BEFORE ERROR: pf:$this  vs:$t3ViewState")
-
                             Glide.with(this@PostFragment).load(t3ViewState.galleryUrls[dex% t3ViewState.galleryUrls.size])
                                 .into(postBinding!!.fullImg)
                         }
-
                         val end = "\nGALLERY, click to to open..."
                         postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
-
                     }
 
                     if (t3ViewState.isUrlPost()) {
@@ -169,28 +132,19 @@ class PostFragment : ContentFragment() {
                         postBinding!!.fullImg.visibility = VISIBLE
                     }
                     //TODO not handling great if its both a thumb and certain kinds of reddit urls
-                    //Latina Teen Short Shorts from tiktokthots_2
                     if (!t3ViewState.hasNoThumbnail()) {
                         loadThumbNail(t3ViewState)
                         postBinding!!.thumb.visibility = VISIBLE
                     }
-                    //FOr now get rid of all state
-
                     if (t3ViewState.isVideoPost()){
 
                         postBinding!!.timeCreated.visibility= GONE
                         postBinding!!.bodyText.visibility=GONE
                         postBinding!!.exoplayer.visibility=VISIBLE
                         loadVideo(t3ViewState)
-
                     }
                 }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
-
-
     }
-
-
-
     override fun onDestroy() {
         Timber.d("onDestroy in Post Fragment")
         super.onDestroy()
@@ -198,7 +152,6 @@ class PostFragment : ContentFragment() {
 
     override fun onStop() {
         //moved this to ondestroyview maybe thats better
-
         Timber.d("onStop in Post Fragment")
         super.onStop()
         disposables.clear()
@@ -208,8 +161,7 @@ class PostFragment : ContentFragment() {
     private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
         postBinding!!.url.setOnClickListener {
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(t3ViewState.url))
-                    startActivity(browserIntent)
-        }
+                    startActivity(browserIntent) }
 
     private fun loadImage(t3ViewState: ViewStateT3) {
         if (t3ViewState.url.endsWith("gifv")) {     //makes work for imgur
@@ -225,23 +177,17 @@ class PostFragment : ContentFragment() {
     }
 
     fun loadVideo(state:ViewStateT3?) {
-Timber.e("VWA IS ${state?.url}")
-
         playerView?.player = null
         playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()
         if (state?.let{!it.isVideoPost()} == true)  { return}
-
         exo.repeatMode = Player.REPEAT_MODE_ALL
         Timber.e("VOLUME${exo.deviceVolume}")
         exo.playWhenReady= true
         val vid = MediaItem.fromUri(state?.url?: "")
         exo.setMediaItem(vid)
-
-
         exo.prepare()
-
     }
 
     private fun loadThumbNail(viewState: ViewStateT3)     {

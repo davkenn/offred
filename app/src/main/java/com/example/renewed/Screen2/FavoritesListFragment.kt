@@ -41,14 +41,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private var selectPos: Int by atomic(0)
     var p :Int? = null
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
-
         p = savedInstanceState?.getInt("pos") ?: 0
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,7 +62,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             pager.offscreenPageLimit = 6
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             favorites.setBackgroundColor(Color.parseColor("black"))
-
             Glide.with(this@FavoritesListFragment).load(R.drawable.ic_loading).into(loading)
         }
 
@@ -133,30 +128,23 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             //also called when rotate but it doesn't matter because already set to visibile vp.visibility=View.VISIBLE
             if (position == adapter2.postIds.size - 4
                                                 && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
-
                 vp.visibility=View.INVISIBLE
                 binding.loading.visibility= View.VISIBLE
                 vp.isUserInputEnabled=false
 
-
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(
                     position - VP_PAGES_PER_LOAD))
 
-                //once DeleteSubredditEvent returns to the Fragment, SaveSubredditEvent will be
-                //called in response
+                //when DeleteSubredditEvent returns t, SaveSubredditEvent will be called
                 favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(
                                                          adapter2.postIds.take(VP_PAGES_PER_LOAD)))
-
             }
             else {
-
-
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
         }
 
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
-
     }
 
     override fun onStop() {
