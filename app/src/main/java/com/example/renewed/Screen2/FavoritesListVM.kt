@@ -35,8 +35,6 @@ package com.example.renewed.Screen2
                 .flatMap { favsRepo.getRandomPosts(it.displayName, 2) }
                 .share()  //Do I need this share? seems to work ok without it.
             //TODO need to also save it to the db here
-
-
             newPostsObservable.take(VIEWPAGER_PAGES_TOTAL.toLong())
                               .flatMapCompletable { x -> favsRepo.insert(x.name) }
                               .startWith(favsRepo.clearPages()
@@ -70,16 +68,14 @@ package com.example.renewed.Screen2
             }
 
 
-private fun Observable<MyFavsEvent.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>) : Observable<EffectType2> {
-    return flatMap {
-        arg.take(it.count.toLong())
-            .flatMapCompletable {
-                favsRepo.insert(it.name).subscribeOn(Schedulers.io())
-            }.andThen(Observable.just(EffectType2.LOAD))
-    }
-
-}
-            fun clearPages() = favsRepo.clearPages()
+            private fun Observable<MyFavsEvent.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>) : Observable<EffectType2> {
+                     return flatMap { arg.take(it.count.toLong())
+                                         .flatMapCompletable { favsRepo.insert(it.name)
+                                                                       .subscribeOn(Schedulers.io())
+                                          }
+                                          .andThen(Observable.just(EffectType2.LOAD))
+                                     }
+            }
 
             override fun onCleared() {
                 super.onCleared()
