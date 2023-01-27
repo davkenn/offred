@@ -62,24 +62,22 @@ package com.example.renewed.Screen2
             }
 
             private fun Observable<MyFavsEvent.DeleteSubredditEvent>.deleteThenReturn() : Observable<EffectType2> {
-                return doOnNext {
+                return flatMap {
                     favsRepo.deletePages(it.targets)
                         .subscribeOn(Schedulers.io())
-                        .subscribe()
+                        .andThen(Observable.just(EffectType2.DELETE))
                 }
-                    .map {EffectType2.DELETE }
             }
 
 
 private fun Observable<MyFavsEvent.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>) : Observable<EffectType2> {
     return flatMap {
         arg.take(it.count.toLong())
-            .doOnNext { Timber.e("SUCCESS!!! ${it.name}") }
             .flatMapCompletable {
                 favsRepo.insert(it.name).subscribeOn(Schedulers.io())
             }.andThen(Observable.just(EffectType2.LOAD))
     }
-    //    .map { EffectType2.LOAD }
+
 }
             fun clearPages() = favsRepo.clearPages()
 
