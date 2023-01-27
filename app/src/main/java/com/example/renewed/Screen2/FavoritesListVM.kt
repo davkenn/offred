@@ -75,12 +75,11 @@ private fun Observable<MyFavsEvent.AddSubredditsEvent>.loadThenReturn(arg:Observ
     return flatMap {
         arg.take(it.count.toLong())
             .doOnNext { Timber.e("SUCCESS!!! ${it.name}") }
-            .doOnNext {
+            .flatMapCompletable {
                 favsRepo.insert(it.name).subscribeOn(Schedulers.io())
-                    .subscribe()
-            }
+            }.andThen(Observable.just(EffectType2.LOAD))
     }
-        .map { EffectType2.LOAD }
+    //    .map { EffectType2.LOAD }
 }
             fun clearPages() = favsRepo.clearPages()
 

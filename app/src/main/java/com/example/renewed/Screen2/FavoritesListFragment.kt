@@ -47,9 +47,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         Timber.d("onViewCreated in FavoritesListFragment")
-
         adapter2 = FavoritesListAdapter(this)
 
        // adapter2.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
@@ -70,8 +68,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                            .addTo(disposables)
 
         favoritesVM.currentPosition.observeOn(AndroidSchedulers.mainThread())
-                         .subscribe({
-                                        selectPos = it
+                         .subscribe({ selectPos = it
                                       vp.post{vp.setCurrentItem( selectPos,true)} },
                                     { Timber.d("ERROR IN POS") })
                         .addTo(disposables)
@@ -88,7 +85,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                   { Timber.e("FAVLISTERROR", it.stackTrace) })
                        .addTo(disposables)
     }
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -113,9 +109,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onResume() {
         Timber.d("onResume in FavoritesListFragment")
-
         super.onResume()
-
         vp.pageScrollStateChanges().subscribe(){if (vp.scrollState==ViewPager2.SCROLL_STATE_IDLE) {
             binding.loading.visibility=View.INVISIBLE;vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;
         }}
