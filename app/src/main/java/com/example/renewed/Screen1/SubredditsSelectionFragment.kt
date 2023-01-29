@@ -61,7 +61,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//TODO justify not having to add the listener to autoplay. seems to work on reddit vids but not outside
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
         if (savedInstanceState==null){
@@ -75,7 +74,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 { Timber.e("----error fetching is ${it.localizedMessage}") })
         }
 
-        selectPos = savedInstanceState?.getInt("selected_pos") ?: -2
+        selectPos = savedInstanceState?.getInt("selected_pos") ?: -1
         saveAndDeleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
     }
@@ -85,7 +84,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         outState.run {
             saveAndDeleteEnabled?.let { putBoolean("delete_enabled", it) }
             backEnabled?.let { putBoolean("back_enabled", it) }
-            putInt("selected_pos", selectPos)
+            putInt("selected_pos", subredditAdapter._selected)
         }
     }
 
@@ -101,8 +100,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
         subredditAdapter = SubredditsAdapter { x ->
-//should these be reversed?
-            selectPos = subredditAdapter._selected
             subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
         }
 
@@ -127,7 +124,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val backClicks :Observable<MyEvent> = backButton1.clicks().map{MyEvent.UpdateViewingState(getSubNameOrNull())}
 
         val refreshClicks :Observable<MyEvent> = refreshButton1.clicks()
-                                     .doOnNext { subredditAdapter.clearSelected(); selectPos = -1 }
+                                     .doOnNext { subredditAdapter.clearSelected() }
                                      .map{ MyEvent.RemoveAllSubreddits(
                                               subredditAdapter.currentList.map { it.displayName })}
 
@@ -151,8 +148,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Observable.merge(backRefreshClicks, deleteClicks,saveClicks)
                   .subscribe { subsAndPostsVM.processInput(it) }
 
-
-
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
                         { x -> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
                         postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
@@ -163,7 +158,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                                EffectType.DELETE_OR_SAVE -> {
                                                              popTopViewerElement()
                                                              subredditAdapter.clearSelected()
-                                                             selectPos = -1
                               }
                                EffectType.SNACKBAR -> Snackbar.make(binding.root,
                                    "Already in Stack. Press back to find it...", Snackbar.LENGTH_SHORT)
@@ -207,9 +201,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         t3OrT5: PartialViewState
     ) {
         //TODO right now it is giving error if add again but bring up the posts
-        //is that right or wrong?
-
-        //ANOTHER GOOD OPTION IS TO JUST MOVE IT TO THE FRONT OF THE
+        //is that right or wrong? //ANOTHER GOOD OPTION IS TO JUST MOVE IT TO THE FRONT
         val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
 
@@ -256,25 +248,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onStart() {
         super.onStart()
         Timber.d("onStart in home Fragment")
-        //if first time loaded
-    //    if (selectPos == -2) {
-      //      disposable = subsAndPostsVM.prefetch()
-        //        .andThen{
-          //          subsAndPostsVM.processInput(
-            //            MyEvent.ScreenLoadEvent("")
-              //      ) }
-                //.subscribeOn(Schedulers.io())
-               // .subscribe({ Timber.d("----done fetching both ") },
-                 //    { Timber.e("----error fetching is ${it.localizedMessage}") })
-       //     selectPos = -1
-      //  }
-        //if has been loaded but no subreddit selected
         if (selectPos != -1) {
             subredditAdapter.setSelect(selectPos)
         }
     }
 
-//TODO its fucked up that im not pausing the disposable here I think FIX THISSS
     override fun onPause() {
         Timber.d("onResume in home Fragment")
         super.onPause()
@@ -298,7 +276,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onDestroy() {
         Timber.d("onDestroy in home Fragment")
-        //should I use this? how do I still have a
         disposable?.dispose()
         super.onDestroy()
     }}

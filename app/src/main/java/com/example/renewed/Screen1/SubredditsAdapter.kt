@@ -28,7 +28,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
     fun setSelect(num: Int) {
         selected= num
-
     }
 
     val _selected : Int
@@ -68,11 +67,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         return SubredditViewHolder(elementBinding)
     }
 
- /**   override fun onViewRecycled(holder: SubredditViewHolder) {
-        if (selected == holder.adapterPosition) selected = -1
-        super.onViewRecycled(holder)
-    }**/
-
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
         holder.bind(getItem(position), onClick)
         if (position == selected){
@@ -85,7 +79,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         }
     }
 }
-//TODO not doing this kind of diffing yet maybe remove
 object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
     override fun areItemsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem.name == newItem.name
