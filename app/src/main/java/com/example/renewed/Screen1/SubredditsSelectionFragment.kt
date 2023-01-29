@@ -49,7 +49,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var disposable: Disposable? = null
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
-    private var selectPos: Int by atomic(-2)
+    private var selectPos: Int by atomic(-1)
 
     private lateinit var saveButton1: Button
     private lateinit var deleteButton1: Button
@@ -64,6 +64,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 //TODO justify not having to add the listener to autoplay. seems to work on reddit vids but not outside
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
+        if (savedInstanceState==null){
+                  disposable = subsAndPostsVM.prefetch()
+                    .andThen{
+                      subsAndPostsVM.processInput(
+                        MyEvent.ScreenLoadEvent("")
+                  ) }
+            .subscribeOn(Schedulers.io())
+             .subscribe({ Timber.d("----done fetching both ") },
+                { Timber.e("----error fetching is ${it.localizedMessage}") })
+        }
 
         selectPos = savedInstanceState?.getInt("selected_pos") ?: -2
         saveAndDeleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
@@ -247,20 +257,20 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onStart()
         Timber.d("onStart in home Fragment")
         //if first time loaded
-        if (selectPos == -2) {
-            disposable = subsAndPostsVM.prefetch()
-                .andThen{
-                    subsAndPostsVM.processInput(
-                        MyEvent.ScreenLoadEvent("")
-                    ) }
-                .subscribeOn(Schedulers.io())
-                .subscribe({ Timber.d("----done fetching both ") },
-                     { Timber.e("----error fetching is ${it.localizedMessage}") })
-            selectPos = -1
-        }
+    //    if (selectPos == -2) {
+      //      disposable = subsAndPostsVM.prefetch()
+        //        .andThen{
+          //          subsAndPostsVM.processInput(
+            //            MyEvent.ScreenLoadEvent("")
+              //      ) }
+                //.subscribeOn(Schedulers.io())
+               // .subscribe({ Timber.d("----done fetching both ") },
+                 //    { Timber.e("----error fetching is ${it.localizedMessage}") })
+       //     selectPos = -1
+      //  }
         //if has been loaded but no subreddit selected
         if (selectPos != -1) {
-            subredditAdapter.setSelect(selectPos, subRV.findViewHolderForAdapterPosition(selectPos))
+            subredditAdapter.setSelect(selectPos)
         }
     }
 

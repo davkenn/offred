@@ -54,12 +54,10 @@ class SubredditsAndPostsRepo(
     override fun getPost(name:String) : Single<RoomT3> = t3Dao.getPost(name)
     override fun getPosts(name:String) : Single<List<RoomT3>> = t3Dao.getPosts(name).subscribeOn(Schedulers.io())
 
-    //TODO fix this later just testing
-    //TODO testing broke my program need that 3 here to match the other call maybe make a var
     override fun deleteUninterestingSubreddits(): Completable= t5Dao.deleteUnwanted()
     override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable =
          Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
-                   .concatMapCompletable{ callUpdate(it, shouldDelete) }
+                   .concatMapCompletable{ callUpdate(it, shouldDelete) }.subscribeOn(Schedulers.io())
 
     private fun callUpdate(l: RoomT5, shouldDelete: Boolean)  :Completable =
           if (!shouldDelete)  t5Dao.saveSubreddit(l.name)
@@ -76,6 +74,6 @@ class SubredditsAndPostsRepo(
                                 totalViews= if (isDisplayedInAdapter) it.totalViews+1  else it.totalViews,
                                 isDisplayed =  if (shouldToggleDisplayedColumnInDb) (it.isDisplayed+1) % 2
                                                                             else it.isDisplayed))
-                                    }
+                                    }.subscribeOn(Schedulers.io())
     override fun clearDisplayed(): Completable = t5Dao.clearDisplayed().subscribeOn(Schedulers.io())
 }

@@ -19,16 +19,16 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     private var selected = -1
     var previousSelected :RecyclerView.ViewHolder? = null
 
+
     fun clearSelected() {
         previousSelected?.let{it.itemView.isSelected=false}
         selected=-1
         previousSelected=null
     }
 
-    fun setSelect(num: Int, adapterForPos: RecyclerView.ViewHolder?) {
+    fun setSelect(num: Int) {
         selected= num
-        adapterForPos?.itemView?.isSelected= true
-        previousSelected = adapterForPos
+
     }
 
     val _selected : Int
@@ -62,6 +62,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubredditViewHolder {
+
         val elementBinding = RvSubredditElemBinding.inflate(LayoutInflater.from(parent.context),
                                                                       parent, false)
         return SubredditViewHolder(elementBinding)
