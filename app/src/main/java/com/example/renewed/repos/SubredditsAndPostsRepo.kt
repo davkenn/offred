@@ -50,10 +50,9 @@ class SubredditsAndPostsRepo(
                     shouldToggleDisplayedColumnInDb = false
                 )
                 .andThen(Single.just(it))
-            }
-
+            }.subscribeOn(Schedulers.io())
     override fun getPost(name:String) : Single<RoomT3> = t3Dao.getPost(name)
-    override fun getPosts(name:String) : Single<List<RoomT3>> = t3Dao.getPosts(name)
+    override fun getPosts(name:String) : Single<List<RoomT3>> = t3Dao.getPosts(name).subscribeOn(Schedulers.io())
 
     //TODO fix this later just testing
     //TODO testing broke my program need that 3 here to match the other call maybe make a var

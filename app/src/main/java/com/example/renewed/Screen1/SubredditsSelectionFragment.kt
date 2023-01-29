@@ -31,6 +31,7 @@ import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 
@@ -248,15 +249,13 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         //if first time loaded
         if (selectPos == -2) {
             disposable = subsAndPostsVM.prefetch()
-                .concatWith {
+                .andThen{
                     subsAndPostsVM.processInput(
                         MyEvent.ScreenLoadEvent("")
                     ) }
+                .subscribeOn(Schedulers.io())
                 .subscribe({ Timber.d("----done fetching both ") },
-                    {
-                        Timber.e("----error fetching is ${it.localizedMessage}")
-                    })
-
+                     { Timber.e("----error fetching is ${it.localizedMessage}") })
             selectPos = -1
         }
         //if has been loaded but no subreddit selected
@@ -266,7 +265,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
 //TODO its fucked up that im not pausing the disposable here I think FIX THISSS
-
     override fun onPause() {
         Timber.d("onResume in home Fragment")
         super.onPause()

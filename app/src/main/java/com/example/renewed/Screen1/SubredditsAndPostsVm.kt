@@ -111,10 +111,10 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMap{ Observable.just(PartialViewState.T3ListForRV(null))},
             flatMap {
                repo.getSubreddits(it.srList.lastOrNull()).toObservable()
-                   .subscribeOn(Schedulers.io())
+
                    .map { list -> list.map { it.toViewState() } }
                    .map { PartialViewState.T5ListForRV(it) }
-                   .startWith(prefetch().subscribeOn(Schedulers.io()))
+                   .startWith(prefetch()).subscribeOn(Schedulers.io())
            })
     }
 
@@ -180,8 +180,6 @@ class SubredditsAndPostsVM @Inject constructor(
                 .doOnError { Timber.e("----error getting posts ${it.stackTraceToString()}") }
                 .onErrorComplete()
                 .doOnComplete { Timber.d("---- done fetching posts") })
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
 
     private fun Observable<MyEvent.MakeSnackBarEffect>.onSnackbar(): Observable<PartialViewState> {
         return flatMap{Observable.just(PartialViewState.SnackbarEffect)}
