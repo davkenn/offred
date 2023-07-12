@@ -5,10 +5,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.http.GET
 import retrofit2.http.POST
 
-interface LoginAPI {
+interface AuthAPI {
 
 
 //u3MaMah0dOe1IA
@@ -20,7 +19,7 @@ interface LoginAPI {
 
         //private const val BASE_URL = "https://www.reddit.com/api/v1/authorize?"
        private const val BASE_URL = "https://www.reddit.com"
-        fun create(): LoginAPI {
+        fun create(): AuthAPI {
             val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 
             val client = OkHttpClient.Builder()
@@ -32,7 +31,7 @@ interface LoginAPI {
                 .client(client)
 
                 .build()
-                .create(LoginAPI::class.java)
+                .create(AuthAPI::class.java)
         }
     }
 }

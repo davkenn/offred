@@ -1,6 +1,7 @@
 package com.example.renewed.repos
 
 import com.example.renewed.API
+import com.example.renewed.AuthAPI
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.SCREEN1_DB_SIZE
@@ -14,7 +15,7 @@ import java.lang.Integer.min
 import java.time.Instant
 
 class SubredditsAndPostsRepo(
-    private val api: API, private val t5Dao: T5DAO, private val t3Dao: T3DAO
+    private val api: API, private val auth: AuthAPI, private val t5Dao: T5DAO, private val t3Dao: T3DAO
 ): BaseSubredditsAndPostsRepo {
 
     override fun prefetchPosts(): Completable =

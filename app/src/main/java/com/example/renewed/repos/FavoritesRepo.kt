@@ -1,6 +1,7 @@
 package com.example.renewed.repos
 
 import com.example.renewed.API
+import com.example.renewed.AuthAPI
 import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
@@ -9,9 +10,12 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Path
 
-class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,private val favs:FavoritesDAO,private val api: API): BaseFavoritesRepo {
+class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
+                    private val favs:FavoritesDAO,private val api: API,private val auth: AuthAPI
+): BaseFavoritesRepo {
 
     override fun insert(s: String): Completable {
+
          //TODO bug where if you add list again all things in twice
         return favs.getPosts1(s).andThen(favs.insert(CurrentFavoritesList(s)))
 

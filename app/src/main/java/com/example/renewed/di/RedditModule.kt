@@ -89,8 +89,8 @@ object RedditModule {
 
     @Singleton
     @Provides
-    fun provideLoginInterface(retrofit: Retrofit): LoginAPI =
-        retrofit.create(LoginAPI::class.java)
+    fun provideLoginInterface(retrofit: Retrofit): AuthAPI =
+        retrofit.create(AuthAPI::class.java)
 }
 
 
