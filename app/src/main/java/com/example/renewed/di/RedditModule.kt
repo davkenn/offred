@@ -99,8 +99,8 @@ object RedditModule {
 object RepoModule {
     @Singleton
     @Provides
-    fun providePostsRepository(api: API, t5Dao: T5DAO, t3Dao: T3DAO): BaseSubredditsAndPostsRepo =
-                        SubredditsAndPostsRepo(api, t5Dao, t3Dao)
+    fun providePostsRepository(api: API,auth:AuthAPI, t5Dao: T5DAO, t3Dao: T3DAO): BaseSubredditsAndPostsRepo =
+                        SubredditsAndPostsRepo(api,auth, t5Dao, t3Dao)
 }
 
 @InstallIn(SingletonComponent::class)
@@ -118,7 +118,7 @@ object ExoPlayerModule {
 object FavsRepoModule {
     @Singleton
     @Provides
-    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO, favs: FavoritesDAO, api:API): BaseFavoritesRepo =
-        FavoritesRepo(t5Dao, t3Dao,favs, api)
+    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO, favs: FavoritesDAO, api:API,auth:AuthAPI): BaseFavoritesRepo =
+        FavoritesRepo(t5Dao, t3Dao,favs, api,auth)
 
 }
