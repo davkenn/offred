@@ -7,7 +7,8 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
-interface BaseFavoritesRepo{
+interface BaseFavoritesRepo:BaseRepo{
+
 
     fun observeSavedSubreddits(): Observable<List<RoomT5>>
     fun getRandomPosts(name: String,number:Int): Observable<RoomT3>

@@ -32,7 +32,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object RedditModule {
-    //private const val BASE_URL = "https://www.reddit.com/api/v1/authorize?"
     private const val BASE_URL = "https://www.reddit.com/"
 
 
@@ -41,6 +40,11 @@ object RedditModule {
     fun provideAPICallInterface(retrofit: Retrofit): API =
         retrofit.create(API::class.java)
 
+
+    @Singleton
+    @Provides
+    fun provideLoginInterface(retrofit: Retrofit): AuthAPI =
+        retrofit.create(AuthAPI::class.java)
 
     @Provides
     @Singleton
@@ -96,10 +100,7 @@ object RedditModule {
         .build()
 
 
-    @Singleton
-    @Provides
-    fun provideLoginInterface(retrofit: Retrofit): AuthAPI =
-        retrofit.create(AuthAPI::class.java)
+
 }
 
 

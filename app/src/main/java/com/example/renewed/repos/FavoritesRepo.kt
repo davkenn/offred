@@ -8,6 +8,7 @@ import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Path
 
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
@@ -30,6 +31,13 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
 
     override fun deletePages(s:List<String>): Completable {
         return favs.deleteList(s)
+    }
+
+    override fun login(): Single<String> {
+        auth.installedClient(        "https://oauth.reddit.com/grants/installed_client",
+            "DO_NOT_TRACK_THIS_DEVICE")
+        return Single.just("AAAA")
+
     }
 
     override fun clearPages(): Completable {

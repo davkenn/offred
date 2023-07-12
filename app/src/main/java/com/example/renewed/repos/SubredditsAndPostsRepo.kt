@@ -9,6 +9,7 @@ import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.lang.Integer.max
 import java.lang.Integer.min
@@ -17,6 +18,12 @@ import java.time.Instant
 class SubredditsAndPostsRepo(
     private val api: API, private val auth: AuthAPI, private val t5Dao: T5DAO, private val t3Dao: T3DAO
 ): BaseSubredditsAndPostsRepo {
+
+    override fun login():Single<String>{
+        var a=emptyMap<String,String>()
+                auth.installedClient(        "https://oauth.reddit.com/grants/installed_client",
+            "DO_NOT_TRACK_THIS_DEVICE").subscribeBy { a=it }
+        return Single.just(a.toString())}
 
     override fun prefetchPosts(): Completable =
         t5Dao.getSubredditIDsNeedingPosts()
@@ -46,12 +53,11 @@ class SubredditsAndPostsRepo(
         t5Dao.getSubredditsFromTable(if (startFeedAfterThis.isNullOrEmpty()) ""
                                     else startFeedAfterThis)
             .flatMap { it ->
-                updateSubreddits(
-                    it.map { it.name }, isDisplayedInAdapter = true,
-                    shouldToggleDisplayedColumnInDb = false
-                )
+                updateSubreddits(it.map { it.name }, isDisplayedInAdapter = true,
+                                          shouldToggleDisplayedColumnInDb = false)
                 .andThen(Single.just(it))
             }.subscribeOn(Schedulers.io())
+
     override fun getPost(name:String) : Single<RoomT3> = t3Dao.getPost(name)
     override fun getPosts(name:String) : Single<List<RoomT3>> = t3Dao.getPosts(name).subscribeOn(Schedulers.io())
 

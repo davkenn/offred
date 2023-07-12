@@ -26,6 +26,7 @@ class SubredditsAndPostsVM @Inject constructor(
     private val inputEvents: PublishRelay<MyEvent> = PublishRelay.create()
 
     init {
+        repo.login()
         disposables.add(repo.clearDisplayed().subscribe())
     }
 
