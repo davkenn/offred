@@ -52,9 +52,11 @@ object RedditModule {
         .build()
 
 
+
+
     @Singleton
     @Provides
-    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor,redirect: RedirectInterceptor):
+    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor,redirect: RedirectInterceptor,auth:AuthInterceptor):
             OkHttpClient = OkHttpClient
         .Builder()
             //set these to false so I can handle redirects my own way
@@ -62,6 +64,7 @@ object RedditModule {
         .followSslRedirects(false)
         .addInterceptor(httpLoggingInterceptor)
         .addInterceptor(redirect)
+        .addInterceptor(auth)
         .build()
 
 
@@ -75,6 +78,12 @@ object RedditModule {
     @Singleton
     @Provides
     fun provideRedirectInterceptor() = RedirectInterceptor()
+
+
+    @Singleton
+    @Provides
+    fun provideAuthInterceptor() = AuthInterceptor()
+
 
 
     @Singleton
