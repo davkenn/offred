@@ -22,8 +22,8 @@ class SubredditsAndPostsRepo(
     override fun login():Single<String>{
         var a=emptyMap<String,String>()
                 auth.installedClient(        "https://oauth.reddit.com/grants/installed_client",
-            "DO_NOT_TRACK_THIS_DEVICE").subscribeBy { a=it }
-        return Single.just(a.toString())}
+            "DO_NOT_TRACK_THIS_DEViCE").subscribeBy { a=it }
+        return Single.just(a["access_token"])}
 
     override fun prefetchPosts(): Completable =
         t5Dao.getSubredditIDsNeedingPosts()
