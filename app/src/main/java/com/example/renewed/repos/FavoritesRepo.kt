@@ -9,12 +9,13 @@ import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import retrofit2.http.Path
 
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
                     private val favs:FavoritesDAO,private val api: API,private val auth: AuthAPI
 ): BaseFavoritesRepo {
-
+    var a=emptyMap<String,String>()
     override fun insert(s: String): Completable {
 
          //TODO bug where if you add list again all things in twice
@@ -34,10 +35,11 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
     }
 
     override fun login(): Single<String> {
-        auth.installedClient(        "https://oauth.reddit.com/grants/installed_client",
-            "DO_NOT_TRACK_THIS_DEVICE")
-        return Single.just("AAAA")
 
+ //       auth.installedClient(        "https://oauth.reddit.com/grants/installed_client",
+   //         "DO_NOT_TRACK_THIS_DEViCE").subscribeBy { a=it }
+       // return Single.just(a["access_token"])
+        return Single.just("AAA")
     }
 
     override fun clearPages(): Completable {

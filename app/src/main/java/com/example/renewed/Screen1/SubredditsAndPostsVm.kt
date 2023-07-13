@@ -11,6 +11,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.mergeAll
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.time.Instant
@@ -27,6 +28,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
     init {
         repo.login()
+
         disposables.add(repo.clearDisplayed().subscribe())
     }
 

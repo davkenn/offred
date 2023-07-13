@@ -33,7 +33,7 @@ import javax.inject.Singleton
 @Module
 object RedditModule {
     private const val BASE_URL = "https://www.reddit.com/"
-
+ //   private const val BASE_URL="https://oauth.reddit.com/"
 
     @Singleton
     @Provides
@@ -53,6 +53,7 @@ object RedditModule {
         .addConverterFactory(MoshiConverterFactory.create(mosh))
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .baseUrl(BASE_URL)
+
         .build()
 
 
