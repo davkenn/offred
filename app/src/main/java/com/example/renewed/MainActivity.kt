@@ -23,6 +23,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
+
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
 

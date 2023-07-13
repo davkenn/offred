@@ -28,8 +28,11 @@ class SubredditsAndPostsRepo(
 
     }
     override fun login():Single<String>{
+         val credentials = "u3MaMah0dOe1IA:"
 
-                  auth.installedClient(        "https://oauth.reddit.com/grants/installed_client",
+        val encodedCredentials: String = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
+
+                  auth.installedClient(   "Basic $encodedCredentials",     "https://oauth.reddit.com/grants/installed_client",
             "DO_NOT_TRACK_THIS_DEViCE").subscribeBy { a=it.getOrDefault("access_token","") }
         return Single.just("AAAA")
    }
@@ -51,7 +54,7 @@ class SubredditsAndPostsRepo(
 
     private fun loadSubredditsDb(needed: Int): Completable =
         Observable.fromIterable(List(needed){0})
-            .flatMap ( {  api.getRandomSubreddit("Bearer $a").toObservable()} , 1)
+            .flatMap ( {  api.getRandomSubreddit("bearer $a").toObservable()} , 1)
             .map { (it as T5).toDbModel() }
             .flatMapCompletable { roomT5 -> t5Dao.insertT5(roomT5)}
 
