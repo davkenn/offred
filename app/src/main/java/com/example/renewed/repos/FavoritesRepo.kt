@@ -13,8 +13,7 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import retrofit2.http.Path
 
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
-                    private val favs:FavoritesDAO,private val api: API,private val auth: AuthAPI
-): BaseFavoritesRepo {
+                    private val favs:FavoritesDAO,private val api: API): BaseFavoritesRepo {
 
 
     override fun insert(s: String): Completable {

@@ -24,6 +24,9 @@ android {
         targetSdk 31
     }
 
+ //   dexOptions {
+   //     javaMaxHeapSize "4g"
+   // }
 
     buildFeatures {
         viewBinding true

@@ -32,12 +32,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class SharedPreferencesModule {
-
     @Singleton
     @Provides
     fun provideSharedPreference(@ApplicationContext context: Context): SessionManager {
         return SessionManager(context)
-
     }
 }
 
@@ -57,51 +55,41 @@ object RedditModule {
     fun provideLoginInterface(retrofit: Retrofit): AuthAPI =
         retrofit.create(AuthAPI::class.java)
 
-    @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, mosh: Moshi): Retrofit = Retrofit.Builder()
-        .client(okHttpClient)
-        .addConverterFactory(MoshiConverterFactory.create(mosh))
-        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .baseUrl(BASE_URL)
-
-        .build()
-
-
-
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient, mosh: Moshi): Retrofit =
+        Retrofit.Builder()
+                .client(okHttpClient)
+                .addConverterFactory(MoshiConverterFactory.create(mosh))
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .baseUrl(BASE_URL)
+                .build()
 
     @Singleton
     @Provides
-    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor,redirect: RedirectInterceptor,auth:AuthInterceptor):
+    fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor,
+                            redirect: RedirectInterceptor,auth:AuthInterceptor):OkHttpClient =
 
-            OkHttpClient = OkHttpClient
-        .Builder()
-            //set these to false so I can handle redirects my own way
-        .followRedirects(false)
-        .followSslRedirects(false)
-        .addInterceptor(httpLoggingInterceptor)
-
-        .addInterceptor(redirect)
-        .addInterceptor(auth)
-        .build()
+            OkHttpClient.Builder()
+                        .followRedirects(false)
+                        .followSslRedirects(false)
+                        .addInterceptor(redirect)
+                        .addInterceptor(auth)
+                        .addInterceptor(httpLoggingInterceptor)
+                        .build()
 
     @Singleton
     @Provides
-    fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor()
-        .apply {
-            level = HttpLoggingInterceptor.Level.HEADERS
-        }
+    fun provideHttpLoggingInterceptor() =
+        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.HEADERS }
 
     @Singleton
     @Provides
     fun provideRedirectInterceptor() = RedirectInterceptor()
 
-
     @Singleton
     @Provides
     fun provideAuthInterceptor(sm:SessionManager) = AuthInterceptor(sm)
-
-
 
     @Singleton
     @Provides
@@ -111,19 +99,15 @@ object RedditModule {
         .add(DescriptionAdapter())
         .add(MediaList())
         .build()
-
-
-
 }
-
 
 @InstallIn(SingletonComponent::class)
 @Module
 object RepoModule {
     @Singleton
     @Provides
-    fun providePostsRepository(api: API,auth:AuthAPI, t5Dao: T5DAO, t3Dao: T3DAO):
-            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepo(api,auth, t5Dao, t3Dao)
+    fun providePostsRepository(t5Dao: T5DAO, t3Dao: T3DAO,api: API ):
+            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepo( t5Dao, t3Dao,api)
 }
 
 @InstallIn(SingletonComponent::class)
@@ -141,7 +125,6 @@ object ExoPlayerModule {
 object FavsRepoModule {
     @Singleton
     @Provides
-    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO, favs: FavoritesDAO, api:API,auth:AuthAPI): BaseFavoritesRepo =
-        FavoritesRepo(t5Dao, t3Dao,favs, api,auth)
-
+    fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO, favs: FavoritesDAO, api:API)
+                                : BaseFavoritesRepo = FavoritesRepo(t5Dao, t3Dao,favs, api)
 }
