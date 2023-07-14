@@ -13,7 +13,7 @@ import retrofit2.http.Query
 
 interface API {
 
-    @GET("https://oauth.reddit.com/r/random.json")//
+    @GET("/r/random.json")//
     fun getRandomSubreddit(): Single<RedditPostType>
 
     @GET("/r/{subName}/random.json")//

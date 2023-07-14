@@ -27,7 +27,6 @@ class SubredditsAndPostsVM @Inject constructor(
     private val inputEvents: PublishRelay<MyEvent> = PublishRelay.create()
 
     init {
-        repo.login()
 
         disposables.add(repo.clearDisplayed().subscribe())
     }
@@ -179,10 +178,10 @@ class SubredditsAndPostsVM @Inject constructor(
                 .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") }
                 .onErrorComplete()
                 .doOnComplete { Timber.d("---- done fetching subreddits") })
-       //     .andThen(repo.prefetchPosts()
-         //       .doOnError { Timber.e("----error getting posts ${it.stackTraceToString()}") }
-           //     .onErrorComplete()
-             //   .doOnComplete { Timber.d("---- done fetching posts") })
+            .andThen(repo.prefetchPosts()
+                .doOnError { Timber.e("----error getting posts ${it.stackTraceToString()}") }
+                .onErrorComplete()
+                .doOnComplete { Timber.d("---- done fetching posts") })
 
     private fun Observable<MyEvent.MakeSnackBarEffect>.onSnackbar(): Observable<PartialViewState> {
         return flatMap{Observable.just(PartialViewState.SnackbarEffect)}

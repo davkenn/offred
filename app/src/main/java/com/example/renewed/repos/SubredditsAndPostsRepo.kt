@@ -20,22 +20,6 @@ import java.time.Instant
 class SubredditsAndPostsRepo(
     private val api: API, private val auth: AuthAPI, private val t5Dao: T5DAO, private val t3Dao: T3DAO
 ): BaseSubredditsAndPostsRepo {
-    var a=""
-//var a = "eyJhbGciOiJSUzI1NiIsImtpZCI6IlNIQTI1NjpzS3dsMnlsV0VtMjVmcXhwTU40cWY4MXE2OWFFdWFyMnpLMUdhVGxjdWNZIiwidHlwIjoiSldUIn0.eyJzdWIiOiJsb2lkIiwiZXhwIjoxNjg5Mjk1NTM2LjA0NTkxNCwiaWF0IjoxNjg5MjA5MTM2LjA0NTkxNCwianRpIjoiVnc2dUZ3TkxRYk5JWEhlLV85LVFrU2duSkhNd0l3IiwiY2lkIjoidTNNYU1haDBkT2UxSUEiLCJsaWQiOiJ0Ml9mY2pmeDdld2UiLCJsY2EiOjE2ODkyMDkxMzYwNDQsInNjcCI6ImVKeUtWdEpTaWdVRUFBRF9fd056QVNjIiwiZmxvIjo2fQ.gPm2G7g20KLFCQ-hNeLcHPflEJJBWtynv1esI8ej3jPUeobeDwK7omPOlYR3WOkg-JVlfK2CX5QlfpV1E6D624at7cQxvd8mJLx3JA7mAA7iKX7AK-OWsU0BDVh65cotuAKKytk2qvUyQCJMcy7QnRWnTxRp276jP77ZMAtgjMtgiSmbxcm96OR8Wv-6UPo_FshvHmSLa8e1K1UE9bt0JDL6owdCYTyT-rb06IRZKNGKYgd7xMYPFcp-T6iJcG-_kd06NsGeFiJXRfCP8Yd1zo3Ja1ey7tzhTdWx3dubOpifcu9WR0zndCcCuAoc4bhOFaLVJ9rT92rARqcLRSOt9A"
-
-    init{
-
-
-    }
-    override fun login():Single<String>{
-         val credentials = "u3MaMah0dOe1IA:"
-
-        val encodedCredentials: String = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
-
-                  auth.installedClient(   "Basic $encodedCredentials",     "https://oauth.reddit.com/grants/installed_client",
-            "DO_NOT_TRACK_THIS_DEViCE").subscribeBy { a=it.getOrDefault("access_token","") }
-        return Single.just("AAAA")
-   }
 
     override fun prefetchPosts(): Completable =
         t5Dao.getSubredditIDsNeedingPosts()

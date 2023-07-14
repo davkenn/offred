@@ -15,7 +15,8 @@ import retrofit2.http.Path
 class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
                     private val favs:FavoritesDAO,private val api: API,private val auth: AuthAPI
 ): BaseFavoritesRepo {
-    var a=emptyMap<String,String>()
+
+
     override fun insert(s: String): Completable {
 
          //TODO bug where if you add list again all things in twice
@@ -34,13 +35,7 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
         return favs.deleteList(s)
     }
 
-    override fun login(): Single<String> {
 
- //       auth.installedClient(        "https://oauth.reddit.com/grants/installed_client",
-   //         "DO_NOT_TRACK_THIS_DEViCE").subscribeBy { a=it }
-       // return Single.just(a["access_token"])
-        return Single.just("AAA")
-    }
 
     override fun clearPages(): Completable {
         return favs.clearDb().startWith(t5.deleteUnsavedPosts())

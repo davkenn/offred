@@ -44,8 +44,8 @@ class SharedPreferencesModule {
 @InstallIn(SingletonComponent::class)
 @Module
 object RedditModule {
-    private const val BASE_URL = "https://www.reddit.com/"
- //   private const val BASE_URL="https://oauth.reddit.com/"
+ //   private const val BASE_URL = "https://www.reddit.com/"
+    private const val BASE_URL="https://oauth.reddit.com/"
 
     @Singleton
     @Provides

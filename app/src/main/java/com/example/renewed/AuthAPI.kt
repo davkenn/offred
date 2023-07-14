@@ -14,7 +14,7 @@ import retrofit2.http.POST
 
 interface AuthAPI {
         @FormUrlEncoded
-        @POST("/api/v1/access_token")
+        @POST("https://www.reddit.com/api/v1/access_token")
         fun installedClient(
             @Header("Authorization") token: String,
             @Field("grant_type") grantType: String,

@@ -7,7 +7,7 @@ import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
-interface BaseFavoritesRepo:BaseRepo{
+interface BaseFavoritesRepo{
 
 
     fun observeSavedSubreddits(): Observable<List<RoomT5>>

@@ -6,7 +6,7 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
-interface BaseSubredditsAndPostsRepo:BaseRepo {
+interface BaseSubredditsAndPostsRepo {
 
     fun prefetchSubreddits(): Completable
     fun prefetchPosts(): Completable
