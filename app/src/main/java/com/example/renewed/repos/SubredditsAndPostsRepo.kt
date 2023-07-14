@@ -54,7 +54,7 @@ class SubredditsAndPostsRepo(
 
     private fun loadSubredditsDb(needed: Int): Completable =
         Observable.fromIterable(List(needed){0})
-            .flatMap ( {  api.getRandomSubreddit("bearer $a").toObservable()} , 1)
+            .flatMap ( {  api.getRandomSubreddit().toObservable()} , 1)
             .map { (it as T5).toDbModel() }
             .flatMapCompletable { roomT5 -> t5Dao.insertT5(roomT5)}
 

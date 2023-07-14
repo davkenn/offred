@@ -45,7 +45,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        sm.clearAuthToken()
+//this destroys the app for now but maybe need it
+//        sm.clearAuthToken()
         login().subscribe()
     //    sm.saveAuthToken(token)
 
