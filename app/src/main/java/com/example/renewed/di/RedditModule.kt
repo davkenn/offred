@@ -44,7 +44,6 @@ class SharedPreferencesModule {
 @InstallIn(SingletonComponent::class)
 @Module
 object RedditModule {
- //   private const val BASE_URL = "https://www.reddit.com/"
     private const val BASE_URL="https://oauth.reddit.com/"
 
     @Singleton
@@ -123,8 +122,8 @@ object RedditModule {
 object RepoModule {
     @Singleton
     @Provides
-    fun providePostsRepository(api: API,auth:AuthAPI, t5Dao: T5DAO, t3Dao: T3DAO): BaseSubredditsAndPostsRepo =
-                        SubredditsAndPostsRepo(api,auth, t5Dao, t3Dao)
+    fun providePostsRepository(api: API,auth:AuthAPI, t5Dao: T5DAO, t3Dao: T3DAO):
+            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepo(api,auth, t5Dao, t3Dao)
 }
 
 @InstallIn(SingletonComponent::class)

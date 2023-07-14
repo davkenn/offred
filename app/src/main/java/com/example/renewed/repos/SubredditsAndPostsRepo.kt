@@ -31,14 +31,15 @@ class SubredditsAndPostsRepo(
     override fun prefetchSubreddits() : Completable =
         t5Dao.howManySubredditsInDb()
              .toObservable()
-             .flatMapCompletable {  n-> loadSubredditsDb(
-                                                      max(0,
-                                                          min(SCREEN1_DB_SIZE, SCREEN1_DB_SIZE-n.toInt())))
+             .flatMapCompletable {  n->
+                                        loadSubredditsDb(max(0,
+                                            min(SCREEN1_DB_SIZE, SCREEN1_DB_SIZE-n.toInt())))
                                  }
 
+    //TODO theres a bug still i think when you start after an hour probably need to handle invalid token
     private fun loadSubredditsDb(needed: Int): Completable =
         Observable.fromIterable(List(needed){0})
-            .flatMap ( {  api.getRandomSubreddit().toObservable()} , 1)
+            .flatMap ( {  api.getRandomSubreddit().toObservable()} , 20)
             .map { (it as T5).toDbModel() }
             .flatMapCompletable { roomT5 -> t5Dao.insertT5(roomT5)}
 
