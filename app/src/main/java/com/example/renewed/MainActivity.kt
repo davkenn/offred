@@ -1,6 +1,7 @@
 package com.example.renewed
 
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.view.WindowInsetsController
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,8 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -24,11 +27,24 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
+    @Inject lateinit var auth:AuthAPI
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var token:String
 
+     fun login(): Single<String> {
+        val credentials = "u3MaMah0dOe1IA:"
+
+        val encodedCredentials: String = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
+
+        auth.installedClient(   "Basic $encodedCredentials",     "https://oauth.reddit.com/grants/installed_client",
+            "DO_NOT_TRACK_THIS_DEViCE").subscribeBy { token=it.getOrDefault("access_token","") }
+        return Single.just("AAAA")
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        login().subscribe()
         Timber.d("onCreate called")
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
