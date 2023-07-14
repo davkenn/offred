@@ -1,6 +1,7 @@
 package com.example.renewed.di
 
 import android.content.Context
+import android.content.SharedPreferences
 
 import com.example.renewed.*
 import com.example.renewed.Room.FavoritesDAO
@@ -28,6 +29,17 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
+@Module
+@InstallIn(SingletonComponent::class)
+class SharedPreferencesModule {
+
+    @Singleton
+    @Provides
+    fun provideSharedPreference(@ApplicationContext context: Context): SessionManager {
+        return SessionManager(context)
+
+    }
+}
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -62,16 +74,17 @@ object RedditModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor,redirect: RedirectInterceptor,auth:AuthInterceptor):
+
             OkHttpClient = OkHttpClient
         .Builder()
             //set these to false so I can handle redirects my own way
         .followRedirects(false)
         .followSslRedirects(false)
         .addInterceptor(httpLoggingInterceptor)
+
         .addInterceptor(redirect)
         .addInterceptor(auth)
         .build()
-
 
     @Singleton
     @Provides
@@ -87,7 +100,7 @@ object RedditModule {
 
     @Singleton
     @Provides
-    fun provideAuthInterceptor() = AuthInterceptor()
+    fun provideAuthInterceptor(sm:SessionManager) = AuthInterceptor(sm)
 
 
 

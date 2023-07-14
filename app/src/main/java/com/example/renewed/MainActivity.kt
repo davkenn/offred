@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import timber.log.Timber
@@ -28,26 +29,25 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
     @Inject lateinit var auth:AuthAPI
+    @Inject lateinit var sm:SessionManager
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
     private var token:String=""
-    private var sm:SessionManager?=null
-
-     fun login(): Single<String> {
+     fun login(): Completable {
         val credentials = "u3MaMah0dOe1IA:"
 
         val encodedCredentials: String = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
 
         auth.installedClient(   "Basic $encodedCredentials",     "https://oauth.reddit.com/grants/installed_client",
-            "DO_NOT_TRACK_THIS_DEViCE").subscribeBy { token=it.getOrDefault("access_token","");sm?.saveAuthToken(token) }
-        return Single.just("AAAA")
+            "DO_NOT_TRACK_THIS_DEViCE").subscribeBy { token=it.getOrDefault("access_token","");sm.saveAuthToken(token) }
+        return Completable.complete()
     }
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        sm= SessionManager(this)
+        sm.clearAuthToken()
         login().subscribe()
-        sm?.saveAuthToken(token)
+    //    sm.saveAuthToken(token)
 
         Timber.d("onCreate called")
         val navHostFragment = supportFragmentManager
@@ -78,5 +78,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
            ctrl.show(WindowInsetsCompat.Type.navigationBars())
          }
     }
+
 
 }
