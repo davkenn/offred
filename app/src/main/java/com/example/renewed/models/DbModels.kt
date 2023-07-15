@@ -36,5 +36,6 @@ data class RoomT3(@PrimaryKey val name: String, @ColumnInfo(index = true) val su
 **/
 @Entity
 data class CurrentFavoritesList( val postId: String){
-@PrimaryKey(autoGenerate = true)
-var foodId: Int = 0}
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}

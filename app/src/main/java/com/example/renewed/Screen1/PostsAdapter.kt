@@ -37,8 +37,6 @@ object PostDiffCallback : DiffUtil.ItemCallback<ViewStateT3>() {
         return oldItem.name == newItem.name
     }
     override fun areContentsTheSame(oldItem: ViewStateT3, newItem: ViewStateT3): Boolean {
-        //TODO what to do here
-        //  return oldItem.timeLastAccessed == newItem.timeLastAccessed
         return oldItem.displayName == newItem.displayName
     }
 }

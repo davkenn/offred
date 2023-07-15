@@ -6,8 +6,8 @@ import okhttp3.Response
 
 
 class RedirectInterceptor : Interceptor {
-    override fun intercept(chain: Interceptor.Chain): Response {
 
+    override fun intercept(chain: Interceptor.Chain): Response {
         val request: Request = chain.request()
         var response = chain.proceed(request)
         val url = response.headers["location"]

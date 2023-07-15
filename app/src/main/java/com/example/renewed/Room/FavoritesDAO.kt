@@ -18,7 +18,7 @@ interface FavoritesDAO {
 
 
 
-    @Query("SELECT postId FROM CurrentFavoritesList order by foodId ")
+    @Query("SELECT postId FROM CurrentFavoritesList order by id ")
     fun getPosts(): Observable<List<String>>
 
     @Query("DELETE FROM CurrentFavoritesList WHERE postId = :name ")
