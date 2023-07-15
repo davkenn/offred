@@ -205,7 +205,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         //TODO right now it is giving error if add again but bring up the posts
         //is that right or wrong?
 
-        //ANOTHER GOOD OPTION IS TO JUST MOVE IT TO THE FRONT OF THE
+        //ANOTHER GOOD OPTION IS TO JUST MOVE IT TO THE FRONT OF THE queue
         val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
 
@@ -252,15 +252,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onStart() {
         super.onStart()
         Timber.d("onStart in home Fragment")
-
-        //if has been loaded but no subreddit selected
-        if (selectPos != -1) {
+        if (selectPos != -1) {         //if has been loaded but no subreddit selected
             subredditAdapter.setSelect(selectPos)
         }
     }
 
     override fun onPause() {
-//TODO its fucked up that im not pausing the disposable here I think FIX THISSS
         Timber.d("onResume in home Fragment")
         super.onPause()
     }
@@ -283,7 +280,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onDestroy() {
         Timber.d("onDestroy in home Fragment")
-        //should I use this? how do I still have a
         disposable?.dispose()
         super.onDestroy()
     }}
