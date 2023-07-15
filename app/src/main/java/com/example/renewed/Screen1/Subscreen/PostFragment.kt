@@ -96,7 +96,6 @@ class PostFragment : ContentFragment() {
                                            Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
                                            postBinding!!.url.text = t3ViewState.url
                         if (t3ViewState.isGalleryPost()) {
-
                             //makes gallery image clickable but still focusable on other post types
                                            postBinding!!.fullImg.isFocusable =false
                                            postBinding!!.fullImg.isFocusableInTouchMode =false
@@ -145,11 +144,9 @@ class PostFragment : ContentFragment() {
     }
 
     override fun onStop() {
-        //moved this to ondestroyview maybe thats better
         Timber.d("onStop in Post Fragment")
         super.onStop()
         disposables.clear()
-     //is this ok? can onstop and onstart in the next fragment get mixed up? should I do this in onpause?
     }
 
     private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
@@ -161,8 +158,7 @@ class PostFragment : ContentFragment() {
         if (t3ViewState.url.endsWith("gifv")) {     //makes work for imgur
             val url = t3ViewState.url.substring(0,t3ViewState.url.length-1)
             Glide.with(this@PostFragment).asGif().load(url)
-
-                .into(postBinding!!.fullImg)
+                 .into(postBinding!!.fullImg)
         }
         else{
             Glide.with(this@PostFragment).load(t3ViewState.url)
@@ -170,23 +166,9 @@ class PostFragment : ContentFragment() {
         }
     }
 
-    fun loadVideo(state:ViewStateT3?) {
-        playerView?.player = null
-        playerView = postBinding?.exoplayer
-        playerView?.player=exo
-        exo.stop()
-        if (state?.let{!it.isVideoPost()} == true)  { return}
-        exo.repeatMode = Player.REPEAT_MODE_ALL
-        Timber.e("VOLUME${exo.deviceVolume}")
-        exo.playWhenReady= true
-        val vid = MediaItem.fromUri(state?.url?: "")
-        exo.setMediaItem(vid)
-        exo.prepare()
-    }
-
     private fun loadThumbNail(viewState: ViewStateT3)     {
         postBinding!!.thumb.visibility = VISIBLE
-        if (viewState.thumbnail == "spoiler"){ postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
+        if (viewState.thumbnail == "spoiler") {postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
                                                 return}
         if (viewState.thumbnail == "nsfw") {postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
             return
@@ -199,7 +181,19 @@ class PostFragment : ContentFragment() {
              .into(postBinding!!.thumb)
     }
 
-    fun stopVideo() {
+    private fun loadVideo(state:ViewStateT3?) {
+        playerView?.player = null
+        playerView = postBinding?.exoplayer
+        playerView?.player=exo
+        exo.stop()
+        if (state?.let{!it.isVideoPost()} == true)  { return}
+        exo.repeatMode = Player.REPEAT_MODE_ALL
+        exo.playWhenReady= true
+        exo.setMediaItem(MediaItem.fromUri(state?.url?: ""))
+        exo.prepare()
+    }
+
+    private fun stopVideo() {
         playerView?.player?.stop()
         playerView?.player = null
     }
