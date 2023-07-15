@@ -23,7 +23,7 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
     override fun prefetchPosts(): Completable =
         t5Dao.getSubredditIDsNeedingPosts()
              .flattenAsObservable { it }
-             .flatMap( { api.getPostsInDateRange(it).toObservable() }, 6)
+             .flatMap( { api.getPostsInDateRange(it).toObservable() }, 20)
              .map { list -> list.data.children.map {(it.data as T3).toDbModel()} }
              .flatMapCompletable { roomT3s -> t3Dao.insertAll(roomT3s) }
 
