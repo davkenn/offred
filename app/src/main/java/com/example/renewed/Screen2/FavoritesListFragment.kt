@@ -37,12 +37,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private lateinit var vp: ViewPager2
     private lateinit var adapter2 : FavoritesListAdapter
     private var selectPos: Int by atomic(0)
-    var p :Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
-        p = savedInstanceState?.getInt("pos") ?: 0
+        selectPos = savedInstanceState?.getInt("pos") ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,7 +49,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         Timber.d("onViewCreated in FavoritesListFragment")
         adapter2 = FavoritesListAdapter(this)
 
-       // adapter2.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
             vp = pager
@@ -114,14 +112,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             binding.loading.visibility=View.INVISIBLE;vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;
         }}
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
-
-            //also called when rotate but it doesn't matter because already set to visibile vp.visibility=View.VISIBLE
-            if (position == adapter2.postIds.size - 4
-                                                && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
+            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
                 vp.visibility=View.INVISIBLE
                 binding.loading.visibility= View.VISIBLE
                 vp.isUserInputEnabled=false
-
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(
                     position - VP_PAGES_PER_LOAD))
 
@@ -133,12 +127,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
             }
         }
-        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(p?:0))
+        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(selectPos))
     }
 
     override fun onStop() {
         super.onStop()
-        p = selectPos
     }
 }
 
