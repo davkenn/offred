@@ -91,21 +91,12 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewState> {
-        return  Observable.merge(
-
-                                flatMapSingle {
-                                                repo.getSubreddits()
-                                                    .subscribeOn(Schedulers.io())
-                                                    .map { list -> list.map { x->x.toViewState() } }
-                                                    .map { PartialViewState.T5ListForRV(it) }
-                                              },
-                                flatMapSingle {
-                                                repo.getPosts(it.name ?: "")
-                                                    .subscribeOn(Schedulers.io())
-                                                    .map { list -> list.map { x -> x.toViewState() } }
-                                                    .map { x -> PartialViewState.T3ListForRV(x) }
-
-    })
+        return flatMapSingle {
+                repo.getSubreddits()
+                    .subscribeOn(Schedulers.io())
+                    .map { list -> list.map { x -> x.toViewState() } }
+                    .map { PartialViewState.T5ListForRV(it) }
+        }
     }
 
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewState> {

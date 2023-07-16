@@ -20,16 +20,7 @@ private var selected = -1
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
-
     var previousSelected :RecyclerView.ViewHolder? = null
-
-
-
-    init {
-        Timber.d("subreddit adapter constructed")
-        stateRestorationPolicy
-   //         stateRestorationPolicy=StateRestorationPolicy.PREVENT
-    }
 
     fun clearSelected() {
         previousSelected?.let{it.itemView.isSelected=false}

@@ -34,7 +34,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-
 @AndroidEntryPoint
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
@@ -61,21 +60,18 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
-        if (savedInstanceState==null){
+        if (savedInstanceState==null) {
                   disposable = subsAndPostsVM.prefetch()
                     .andThen{
                       subsAndPostsVM.processInput(
                         MyEvent.ScreenLoadEvent("")
                   ) }
             .subscribeOn(Schedulers.io())
-             .subscribe({ Timber.d("----done fetching both ") },
+            .subscribe({ Timber.d("----done fetching both ") },
                 { Timber.e("----error fetching is ${it.localizedMessage}") })
         }
         saveAndDeleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
-
-
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -83,7 +79,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         outState.run {
             saveAndDeleteEnabled?.let { putBoolean("delete_enabled", it) }
             backEnabled?.let { putBoolean("back_enabled", it) }
-            putInt("selected_pos", subredditAdapter._selected)
         }
     }
 
@@ -91,7 +86,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated in home Fragment")
-
 
         navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
@@ -199,10 +193,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         return name
     }
 
-    private fun navigateToPostOrSubreddit(
-        @IdRes resId: Int,
-        t3OrT5: PartialViewState
-    ) {
+    private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewState) {
         //TODO right now it is giving error if add again but bring up the posts
         //is that right or wrong?
 
@@ -210,8 +201,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
 
-        if (inBackStack && (t3OrT5 is PartialViewState.T5ForViewing))
-        {
+        if (inBackStack && (t3OrT5 is PartialViewState.T5ForViewing)) {
             subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
             return
         }
@@ -219,7 +209,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
         if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(includingBack = false)
                                                             else enableButtons(onlyBack = false)
-
     }
 
     private fun disableButtons(includingBack:Boolean) {
@@ -263,17 +252,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onResume() {
         Timber.d("onResume in SubredditSelectionFragment")
         super.onResume()
-     //   if (selectPos != -1) {         //if has been loaded but no subreddit selected
-   //         subredditAdapter.restoreSelected()
-     //              subredditAdapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.ALLOW
-
-       // }
-
-         saveAndDeleteEnabled?.let {
-           if (it)enableButtons(onlyBack = false)
-         else if (backEnabled != null && backEnabled as Boolean)
-           enableButtons(onlyBack = true)
-          else disableButtons(true)
+        saveAndDeleteEnabled?.let { if (it)enableButtons(onlyBack = false)
+                                    else if (backEnabled != null && backEnabled as Boolean)
+                                        enableButtons(onlyBack = true)
+                                 else disableButtons(true)
         }
     }
     override fun onDestroyView() {
@@ -287,10 +269,4 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         disposable?.dispose()
         super.onDestroy()
     }}
-
-
-
-
-
-
 
