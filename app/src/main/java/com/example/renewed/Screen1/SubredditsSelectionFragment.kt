@@ -49,8 +49,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var disposable: Disposable? = null
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
 
-    private var selectPos: Int by atomic(-1)
-
     private lateinit var saveButton1: Button
     private lateinit var deleteButton1: Button
     private lateinit var backButton1: Button
@@ -73,10 +71,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
              .subscribe({ Timber.d("----done fetching both ") },
                 { Timber.e("----error fetching is ${it.localizedMessage}") })
         }
-
-        selectPos = savedInstanceState?.getInt("selected_pos") ?: -1
         saveAndDeleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
+
+
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -89,8 +88,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated in home Fragment")
+
 
         navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
@@ -100,7 +101,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
         }
         subredditAdapter = SubredditsAdapter { x ->
-            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
+            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name)
+            )
         }
 
         fragmentSelectionBinding = binding.apply {
@@ -147,7 +149,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         Observable.merge(backRefreshClicks, deleteClicks,saveClicks)
                   .subscribe { subsAndPostsVM.processInput(it) }
-
 
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
@@ -252,9 +253,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onStart() {
         super.onStart()
         Timber.d("onStart in home Fragment")
-        if (selectPos != -1) {         //if has been loaded but no subreddit selected
-            subredditAdapter.setSelect(selectPos)
-        }
     }
 
     override fun onPause() {
@@ -263,15 +261,21 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     override fun onResume() {
-        Timber.d("onResume in home Fragment")
+        Timber.d("onResume in SubredditSelectionFragment")
         super.onResume()
-        saveAndDeleteEnabled?.let {
-            if (it)enableButtons(onlyBack = false)
-            else if (backEnabled != null && backEnabled as Boolean)
-                enableButtons(onlyBack = true)
-            else disableButtons(true)
-    }}
+     //   if (selectPos != -1) {         //if has been loaded but no subreddit selected
+   //         subredditAdapter.restoreSelected()
+     //              subredditAdapter.stateRestorationPolicy=RecyclerView.Adapter.StateRestorationPolicy.ALLOW
 
+       // }
+
+         saveAndDeleteEnabled?.let {
+           if (it)enableButtons(onlyBack = false)
+         else if (backEnabled != null && backEnabled as Boolean)
+           enableButtons(onlyBack = true)
+          else disableButtons(true)
+        }
+    }
     override fun onDestroyView() {
         fragmentSelectionBinding = null
         disposables.clear()

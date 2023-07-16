@@ -18,10 +18,10 @@ sealed class RedditPostType {
 data class RedditListing(val children: List<Holder>, val before: String?, val after: String?)
 
 @JsonClass(generateAdapter = true)
-data class PostAndComments(  val data: List<RedditListing>)
+data class PostAndComments(val data: List<RedditListing>)
 
 @JsonClass(generateAdapter = true)
-data class Listing(  val data: RedditListing)
+data class Listing(val data: RedditListing)
 
 @JsonClass(generateAdapter = true)
 data class T5 (override val name: String, val display_name: String, val icon_img: String?,
@@ -47,7 +47,6 @@ data class PicsAndDimens (val y:Int,val x:Int, val u:String)
 
 @JsonClass(generateAdapter = true)
 data class Media2(val e:String?, val m:String?, val p: List<PicsAndDimens>?)
-
 
 @JsonClass(generateAdapter = true)
 data class Media  (val reddit_video:Video?)

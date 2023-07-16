@@ -16,10 +16,10 @@ interface T3DAO {
     @Query("SELECT * FROM RoomT3 WHERE RoomT3.name like :name")
     fun getPost(name: String): Single<RoomT3>
 
-    @Query("SELECT * FROM RoomT3 WHERE RoomT3.subredditId like :name LIMIT 30")
+    @Query("SELECT * FROM RoomT3 WHERE RoomT3.subredditId like :name LIMIT 10")
     fun getPosts(name: String): Single<List<RoomT3>>
 
-    @Query("SELECT * FROM RoomT3 LIMIT 30")
+    @Query("SELECT * FROM RoomT3 LIMIT 10")
     fun getPosts2(): Single<List<RoomT3>>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

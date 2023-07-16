@@ -25,7 +25,7 @@ interface T5DAO {
 
         //TODO here I am cutting off before deleting, maybe should just remove totalviews
         @Query("SELECT * FROM RoomT5 WHERE isSaved= 0 AND totalViews < :repeats "+ //should be three
-                "ORDER BY displayName <= :startReturningAfter,  displayName LIMIT 20")
+                "ORDER BY displayName <= :startReturningAfter,  displayName LIMIT 10")
         fun getSubredditsFromTable(startReturningAfter:String,repeats:Int= REPEATS): Single<List<RoomT5>>
 
         @Query("SELECT * FROM RoomT5 WHERE isSaved= 1 ")

@@ -27,7 +27,6 @@ class SubredditsAndPostsVM @Inject constructor(
     private val inputEvents: PublishRelay<MyEvent> = PublishRelay.create()
 
     init {
-
         disposables.add(repo.clearDisplayed().subscribe())
     }
 
@@ -83,17 +82,17 @@ class SubredditsAndPostsVM @Inject constructor(
                 is PartialViewState.NavigateBackEffect -> state.copy(
                                                         latestEvent3= null, latestEvent5 = null,
                                                         effect = EffectType.DELETE_OR_SAVE)
-                is PartialViewState.ClearEffectEffect -> state.copy(
-                                                                            effect = null)
+                is PartialViewState.ClearEffectEffect -> state.copy(effect = null)
                 is PartialViewState.SnackbarEffect -> state.copy(
                                                         effect=EffectType.SNACKBAR,
-                                                            latestEvent3 = null,latestEvent5=null)
+                                                        latestEvent3 = null,latestEvent5=null)
             }
         }.skip(1)
     }
 
     private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewState> {
         return  Observable.merge(
+
                                 flatMapSingle {
                                                 repo.getSubreddits()
                                                     .subscribeOn(Schedulers.io())
@@ -105,7 +104,8 @@ class SubredditsAndPostsVM @Inject constructor(
                                                     .subscribeOn(Schedulers.io())
                                                     .map { list -> list.map { x -> x.toViewState() } }
                                                     .map { x -> PartialViewState.T3ListForRV(x) }
-                                               })
+
+    })
     }
 
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewState> {
@@ -113,7 +113,6 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMap{ Observable.just(PartialViewState.T3ListForRV(null))},
             flatMap {
                repo.getSubreddits(it.srList.lastOrNull()).toObservable()
-
                    .map { list -> list.map { it.toViewState() } }
                    .map { PartialViewState.T5ListForRV(it) }
                    .startWith(prefetch()).subscribeOn(Schedulers.io())

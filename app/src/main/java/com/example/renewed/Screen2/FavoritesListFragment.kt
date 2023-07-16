@@ -98,7 +98,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onDestroyView() {
         Timber.d("onDestroyView in FavoritesListFragment")
-        disposables.clear()     //here or in ondestroy?
+        disposables.clear()
         super.onDestroyView()
     }
 

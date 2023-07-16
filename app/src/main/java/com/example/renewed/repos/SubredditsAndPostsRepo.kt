@@ -23,7 +23,7 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
     override fun prefetchPosts(): Completable =
         t5Dao.getSubredditIDsNeedingPosts()
              .flattenAsObservable { it }
-             .flatMap( { api.getPostsInDateRange(it).toObservable() }, 20)
+             .flatMap( { api.getPostsInDateRange(it).toObservable() }, 10)
              .map { list -> list.data.children.map {(it.data as T3).toDbModel()} }
              .flatMapCompletable { roomT3s -> t3Dao.insertAll(roomT3s) }
 
@@ -38,7 +38,7 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
     //TODO theres a bug still i think when you start after an hour probably need to handle invalid token
     private fun loadSubredditsDb(needed: Int): Completable =
         Observable.fromIterable(List(needed){0})
-            .flatMap ( {  api.getRandomSubreddit().toObservable()} , 20)
+            .flatMap ( {  api.getRandomSubreddit().toObservable()} , 10)
             .map { (it as T5).toDbModel() }
             .flatMapCompletable { roomT5 -> t5Dao.insertT5(roomT5)}
 
