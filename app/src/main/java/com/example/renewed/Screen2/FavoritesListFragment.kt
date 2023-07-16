@@ -72,14 +72,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                         .addTo(disposables)
 
         favoritesVM.eventCompleteEvent.observeOn(AndroidSchedulers.mainThread())
-                       .subscribe({ when (it){
-                                    EffectType2.DELETE ->
-                                        favoritesVM.processInput(
-                                                 MyFavsEvent.AddSubredditsEvent(VP_PAGES_PER_LOAD))
-                                    EffectType2.LOAD ->
-                                            vp.post{}
-
-                       }},
+            .subscribe({ when (it){
+                            EffectType2.DELETE ->
+                                favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent(VP_PAGES_PER_LOAD))
+                            EffectType2.LOAD -> vp.post{}
+                            }},
                                   { Timber.e("FAVLISTERROR", it.stackTrace) })
                        .addTo(disposables)
     }
@@ -89,20 +86,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         outState.putInt("pos",selectPos)
     }
 
-    override fun onDestroy() {
-        Timber.d("onDestroy in FavoritesListFragment")
-        super.onDestroy()
-    }
-
     override fun onDestroyView() {
         Timber.d("onDestroyView in FavoritesListFragment")
         disposables.clear()
         super.onDestroyView()
-    }
-
-    override fun onPause() {
-        Timber.d("onPause in FavoritesListFragment")
-        super.onPause()
     }
 
     override fun onResume() {
@@ -128,10 +115,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             }
         }
         favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(selectPos))
-    }
-
-    override fun onStop() {
-        super.onStop()
     }
 }
 

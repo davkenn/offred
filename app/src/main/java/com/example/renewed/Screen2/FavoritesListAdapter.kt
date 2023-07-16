@@ -25,12 +25,9 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
 
     fun replaceList(idList:List<String>){
         postIds.clear()
-     //   notifyDataSetChanged()
         postIds.addAll(idList)
         notifyDataSetChanged()
     }
-
-
 
     override fun createFragment(position: Int): Fragment {
         val name = postIds[position]
@@ -40,6 +37,5 @@ class FavoritesListAdapter(private val fragment: FavoritesListFragment): Fragmen
         }
         fragList[position] = fragment
         return fragment
-
     }
 }
