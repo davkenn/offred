@@ -18,7 +18,7 @@ data class FullViewStateScreen1(
     val effect: EffectType?=null)
 
 sealed class PartialViewState(val name: String?){
-    data class T5ListForRV(val vsT5: List<ViewStateT5>): PartialViewState("T3List")
+    data class T5ListForRV(val vsT5: List<ViewStateT5>?): PartialViewState("T3List")
     data class T3ListForRV(val vsT3: List<ViewStateT3>?): PartialViewState("T5List")
     data class T3ForViewing(val t3 : ViewStateT3): PartialViewState(t3.name)
     data class T5ForViewing(val t5 : ViewStateT5): PartialViewState(t5.name)

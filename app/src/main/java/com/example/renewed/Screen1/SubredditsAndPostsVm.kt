@@ -100,8 +100,8 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
     private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewState> {
-        return Observable.merge(
-            flatMap{ Observable.just(PartialViewState.T3ListForRV(null))},
+        return Observable.concat(
+            flatMap{ Observable.just(PartialViewState.T5ListForRV(null),PartialViewState.T3ListForRV(null))},
             flatMap {
                repo.getSubreddits(it.srList.lastOrNull()).toObservable()
                    .map { list -> list.map { it.toViewState() } }

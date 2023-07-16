@@ -195,8 +195,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewState) {
         //TODO right now it is giving error if add again but bring up the posts
-        //is that right or wrong?
-
         //ANOTHER GOOD OPTION IS TO JUST MOVE IT TO THE FRONT OF THE queue
         val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
