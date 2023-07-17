@@ -211,6 +211,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun disableButtons(includingBack:Boolean) {
         if (includingBack){
+
             backButton1.visibility= INVISIBLE
             backButton1.isClickable=false
             backEnabled=false
@@ -237,15 +238,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         saveAndDeleteEnabled=true
     }
 
-    override fun onStart() {
-        super.onStart()
-        Timber.d("onStart in home Fragment")
-    }
 
-    override fun onPause() {
-        Timber.d("onResume in home Fragment")
-        super.onPause()
-    }
 
     override fun onResume() {
         Timber.d("onResume in SubredditSelectionFragment")
