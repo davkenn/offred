@@ -19,7 +19,7 @@ class RedirectInterceptor : Interceptor {
                             .build())
         }
         //handle all other redirects normally
-        if (response.isRedirect) {
+        else if (response.isRedirect) {
             response.close()
             response = chain.proceed(request.newBuilder().url(url!!).build())
         }
