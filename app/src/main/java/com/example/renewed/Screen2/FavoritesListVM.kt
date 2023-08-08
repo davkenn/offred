@@ -28,6 +28,10 @@ package com.example.renewed.Screen2
         private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
 
         init {
+
+            //TODO load fewer posts at a time
+            //TODO fix I/okhttp.OkHttpClient: <-- HTTP FAILED: java.io.IOException: Canceled
+            //maybe it has something to do with subscribing wrongly
             newPostsObservable = favsRepo.observeSavedSubreddits()
                 .flatMap { x -> Observable.just(Unit).repeat(10)
                                 .map { x.shuffled().first()}
