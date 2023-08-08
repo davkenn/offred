@@ -15,6 +15,7 @@ data class RoomT5(@PrimaryKey val name: String, val displayName: String, val des
 @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
                                   childColumns = arrayOf("link_id"), onDelete = ForeignKey.CASCADE,
                                                                     onUpdate = ForeignKey.CASCADE)])
+
 data class RoomT1(@PrimaryKey val name: String, @ColumnInfo(index = true) val link_id: String,
                                                                                 val body: String)
 

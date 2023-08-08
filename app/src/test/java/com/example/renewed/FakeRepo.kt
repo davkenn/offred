@@ -51,7 +51,7 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
         return Completable.complete()
     }
 
-    override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable {
+    override fun saveSubreddit(name: String?): Completable {
         return Completable.complete()
     }
 

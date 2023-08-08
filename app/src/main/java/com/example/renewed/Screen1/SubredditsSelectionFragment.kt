@@ -6,14 +6,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.Button
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.renewed.*
 import com.example.renewed.Screen1.Subscreen.ContentFragment
 import com.example.renewed.Screen1.Subscreen.PostFragment
@@ -26,7 +24,6 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
 import com.jakewharton.rxbinding4.view.clicks
@@ -38,21 +35,12 @@ import java.util.concurrent.TimeUnit
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
-
-    private lateinit var subRV: RecyclerView
     private lateinit var subredditAdapter: SubredditsAdapter
-    private lateinit var postRV: RecyclerView
     private lateinit var postAdapter: PostsAdapter
 
     private val disposables = CompositeDisposable()
-    private var disposable: Disposable? = null
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
-
-    private lateinit var saveButton1: Button
-    private lateinit var deleteButton1: Button
-    private lateinit var backButton1: Button
-    private lateinit var refreshButton1: Button
-    private var saveAndDeleteEnabled: Boolean? by atomic(null)
+    private var saveEnabled: Boolean? by atomic(null)
     private var backEnabled: Boolean? by atomic(null)
 
     private lateinit var navHostFragment: NavHostFragment
@@ -61,23 +49,23 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
         if (savedInstanceState==null) {
-                  disposable = subsAndPostsVM.prefetch()
+                  disposables.add(subsAndPostsVM.prefetch()
                     .andThen{
                       subsAndPostsVM.processInput(
-                        MyEvent.ScreenLoadEvent("")
-                  ) }
+                        MyEvent.ScreenLoadEvent(""))
+                   }
             .subscribeOn(Schedulers.io())
             .subscribe({ Timber.d("----done fetching both ") },
-                { Timber.e("----error fetching is ${it.localizedMessage}") })
+                { Timber.e("----error fetching is ${it.localizedMessage}") }))
         }
-        saveAndDeleteEnabled = savedInstanceState?.getBoolean("delete_enabled")
+        saveEnabled = savedInstanceState?.getBoolean("delete_enabled")
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.run {
-            saveAndDeleteEnabled?.let { putBoolean("delete_enabled", it) }
+            saveEnabled?.let { putBoolean("delete_enabled", it) }
             backEnabled?.let { putBoolean("back_enabled", it) }
         }
     }
@@ -91,35 +79,27 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
 
         val binding = FragmentSubredditsSelectionBinding.bind(view)
-        postAdapter = PostsAdapter { x ->
-            subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
-        }
-        subredditAdapter = SubredditsAdapter { x ->
-            subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name)
-            )
-        }
+        postAdapter = PostsAdapter {
+                             x -> subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
+                           }
+        subredditAdapter = SubredditsAdapter {
+                             x -> subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
+                           }
 
         fragmentSelectionBinding = binding.apply {
             postsRv.layoutManager = LinearLayoutManager(requireContext())
             postsRv.adapter = postAdapter
             subredditsRv.layoutManager = LinearLayoutManager(requireContext())
             subredditsRv.adapter = subredditAdapter
-            subRV = subredditsRv
-            postRV = postsRv
-            saveButton1 = saveButton
-            deleteButton1 = deleteButton
-            backButton1 = backButton
-            refreshButton1 = refreshButton
         }
 
-            //Gets rid of db errors when you rapidly click on one button
-            //still are errors when you click different buttons rapidly
-            //I could remove these for back and refresh combos but not for save and delete
-            //because save and delete each create two events so I had no easy way to throttle
+            //Gets rid of db errors when you rapidly click on one button still are errors when you
+        // click different buttons rapidly . I could remove these for back and refresh combos but
+        // not for save and delete bc dsave and delete each make 2 events so no easy way to throttle
+        val backClicks :Observable<MyEvent> = binding.backButton.clicks()
+                                            .map{MyEvent.UpdateViewingState(getSubNameOrNull())}
 
-        val backClicks :Observable<MyEvent> = backButton1.clicks().map{MyEvent.UpdateViewingState(getSubNameOrNull())}
-
-        val refreshClicks :Observable<MyEvent> = refreshButton1.clicks()
+        val refreshClicks :Observable<MyEvent> = binding.refreshButton.clicks()
                                      .doOnNext { subredditAdapter.clearSelected() }
                                      .map{ MyEvent.RemoveAllSubreddits(
                                               subredditAdapter.currentList.map { it.displayName })}
@@ -127,23 +107,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         val backRefreshClicks = backClicks.mergeWith(refreshClicks)
                                           .throttleFirst(200,TimeUnit.MILLISECONDS)
 
-        val deleteClicks = deleteButton1.clicks()
-                                        .throttleFirst(200,TimeUnit.MILLISECONDS)
-                                        .flatMap{Observable.just(
-                                                    MyEvent.UpdateViewingState(getSubNameOrNull()),
-                                            MyEvent.SaveOrDeleteEvent(getSubNameOrNull(),
-                                                subredditAdapter.currentList, true))}
 
-        val saveClicks = saveButton1.clicks()
+        val saveClicks = binding.saveButton.clicks()
                                     .throttleFirst(200,TimeUnit.MILLISECONDS)
                                     .flatMap { Observable.just(MyEvent.UpdateViewingState(
                                                                                 getSubNameOrNull()),
-                                                       MyEvent.SaveOrDeleteEvent(getSubNameOrNull(),
-                                                 subredditAdapter.currentList, false)) }
+                                                       MyEvent.SaveEvent(getSubNameOrNull(),
+                                                 subredditAdapter.currentList)) }
 
-        Observable.merge(backRefreshClicks, deleteClicks,saveClicks)
+        Observable.merge(backRefreshClicks,saveClicks)
                   .subscribe { subsAndPostsVM.processInput(it) }
-
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
                         { x -> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
@@ -169,7 +142,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     private fun popTopViewerElement() {
-
         if (navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
 
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
@@ -181,8 +153,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }
         //after popping the stack, its either a subreddit....
         if (navHostFragment.navController.backQueue.size > 2) enableButtons(onlyBack = false)
-        //...or a blank fragment
-        else disableButtons(true)
+        else disableButtons(true)       //...or a blank fragment
     }
 
     private fun getSubNameOrNull(): String? {
@@ -209,55 +180,44 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                                                             else enableButtons(onlyBack = false)
     }
 
+
     private fun disableButtons(includingBack:Boolean) {
         if (includingBack){
-
-            backButton1.visibility= INVISIBLE
-            backButton1.isClickable=false
+            fragmentSelectionBinding?.backButton?.visibility= INVISIBLE
+            fragmentSelectionBinding?.backButton?.isClickable=false
             backEnabled=false
         }
-        deleteButton1.visibility = INVISIBLE
-        deleteButton1.isClickable = false
-        saveButton1.visibility = INVISIBLE
-        saveButton1.isClickable = false
-        saveAndDeleteEnabled=false
-
+        fragmentSelectionBinding?.saveButton?.visibility = INVISIBLE
+        fragmentSelectionBinding?.saveButton?.isClickable = false
+        saveEnabled=false
     }
 
     private fun enableButtons(onlyBack:Boolean) {
-        backButton1.visibility= VISIBLE
-        backButton1.isClickable=true
+        fragmentSelectionBinding?.backButton?.visibility= VISIBLE
+        fragmentSelectionBinding?.backButton?.isClickable=true
         backEnabled=true
 
         if (onlyBack) return
 
-        deleteButton1.isClickable = true
-        deleteButton1.visibility = VISIBLE
-        saveButton1.visibility = VISIBLE
-        saveButton1.isClickable = true
-        saveAndDeleteEnabled=true
+        fragmentSelectionBinding?.saveButton?.visibility = VISIBLE
+        fragmentSelectionBinding?.saveButton?.isClickable = true
+        saveEnabled=true
     }
-
-
 
     override fun onResume() {
         Timber.d("onResume in SubredditSelectionFragment")
         super.onResume()
-        saveAndDeleteEnabled?.let { if (it)enableButtons(onlyBack = false)
+        saveEnabled?.let { if (it)enableButtons(onlyBack = false)
                                     else if (backEnabled != null && backEnabled as Boolean)
                                         enableButtons(onlyBack = true)
                                  else disableButtons(true)
         }
     }
+
     override fun onDestroyView() {
         fragmentSelectionBinding = null
         disposables.clear()
         super.onDestroyView()
     }
-
-    override fun onDestroy() {
-        Timber.d("onDestroy in home Fragment")
-        disposable?.dispose()
-        super.onDestroy()
-    }}
+}
 

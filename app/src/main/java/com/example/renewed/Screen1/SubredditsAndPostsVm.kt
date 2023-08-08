@@ -5,13 +5,11 @@ import com.example.renewed.models.*
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import com.jakewharton.rxrelay3.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.mergeAll
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.time.Instant
@@ -55,7 +53,7 @@ class SubredditsAndPostsVM @Inject constructor(
                 it.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
                 it.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
                 it.ofType(MyEvent.UpdateViewingState::class.java).updateViewingState() ,
-                it.ofType(MyEvent.SaveOrDeleteEvent::class.java).onSaveOrDelete(),
+                it.ofType(MyEvent.SaveEvent::class.java).onSave(),
                 it.ofType(MyEvent.ClearEffectEvent::class.java).onClear(),
                 it.ofType(MyEvent.MakeSnackBarEffect::class.java).onSnackbar()
             )
@@ -130,11 +128,11 @@ class SubredditsAndPostsVM @Inject constructor(
         })
     }
 
-    private fun Observable<MyEvent.SaveOrDeleteEvent>.onSaveOrDelete(): Observable<PartialViewState> {
+    private fun Observable<MyEvent.SaveEvent>.onSave(): Observable<PartialViewState> {
         return flatMap {
                     Observable.just(PartialViewState.T5ListForRV(
                                      it.previousState.filter { x->x.name != it.targetedSubreddit }))
-                              .startWith(repo.deleteOrSaveSubreddit(it.targetedSubreddit, it.shouldDelete)
+                              .startWith(repo.saveSubreddit(it.targetedSubreddit)
                              .subscribeOn(Schedulers.io()))
                         }
     }

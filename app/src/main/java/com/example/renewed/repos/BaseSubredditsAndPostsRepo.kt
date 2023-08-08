@@ -18,7 +18,7 @@ interface BaseSubredditsAndPostsRepo {
     fun getPosts(name: String): Single<List<RoomT3>>
 
     fun deleteUninterestingSubreddits(): Completable
-    fun deleteOrSaveSubreddit(name:String?,shouldDelete:Boolean):Completable
+    fun saveSubreddit(name:String?):Completable
 
     fun updateSubreddits(
         srList: List<String>,

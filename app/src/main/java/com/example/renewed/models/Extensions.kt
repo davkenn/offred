@@ -19,11 +19,12 @@ fun T5.toDbModel(): RoomT5 {
 }
 
 fun T3.toDbModel(): RoomT3 {
-    var thumb: String?=null
+    val thumb: String?=null
     var address: String?=null
     //TODO need to fix this and get the actual url from the other field
     if (url.startsWith("https://v.redd.it")){
-        //TODO whyd I go away from dash originally and how can I fix this so it works for all vids? another field? maybe load both?
+        //TODO whyd I go away from dash originally
+        // and how can I fix this so it works for all vids? another field? maybe load both?
                                                 address=
                                                     media?.reddit_video?.dash_url?:
                                                     secure_media?.reddit_video?.dash_url?:

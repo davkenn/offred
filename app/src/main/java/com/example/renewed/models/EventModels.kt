@@ -6,7 +6,7 @@ sealed class MyEvent{
     data class ClickOnT3ViewEvent(val name: String): MyEvent()
     data class RemoveAllSubreddits(val srList:List<String>): MyEvent()
     data class UpdateViewingState(val name: String?): MyEvent()
-    data class SaveOrDeleteEvent(val targetedSubreddit: String?,val previousState:List<ViewStateT5>,val shouldDelete:Boolean) : MyEvent()
+    data class SaveEvent(val targetedSubreddit: String?, val previousState:List<ViewStateT5>) : MyEvent()
     object ClearEffectEvent:MyEvent()
     object MakeSnackBarEffect:MyEvent()
 }

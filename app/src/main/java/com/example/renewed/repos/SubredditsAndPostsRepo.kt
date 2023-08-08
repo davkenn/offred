@@ -58,13 +58,10 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
     override fun getPosts(name:String) : Single<List<RoomT3>> = t3Dao.getPosts(name).subscribeOn(Schedulers.io())
 
     override fun deleteUninterestingSubreddits(): Completable= t5Dao.deleteUnwanted()
-    override fun deleteOrSaveSubreddit(name: String?, shouldDelete: Boolean): Completable =
-         Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
-                   .concatMapCompletable{ callUpdate(it, shouldDelete) }.subscribeOn(Schedulers.io())
 
-    private fun callUpdate(l: RoomT5, shouldDelete: Boolean)  :Completable =
-          if (!shouldDelete)  t5Dao.saveSubreddit(l.name)
-          else                t5Dao.delete(l.name)
+    override fun saveSubreddit(name: String?): Completable =
+         Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
+                   .concatMapCompletable{t5Dao.saveSubreddit(it.name) }.subscribeOn(Schedulers.io())
 
     override fun updateSubreddits(srList: List<String>, isDisplayedInAdapter: Boolean,
                                     shouldToggleDisplayedColumnInDb: Boolean): Completable =
@@ -78,5 +75,6 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
                                 isDisplayed =  if (shouldToggleDisplayedColumnInDb) (it.isDisplayed+1) % 2
                                                                             else it.isDisplayed))
                                     }.subscribeOn(Schedulers.io())
+
     override fun clearDisplayed(): Completable = t5Dao.clearDisplayed().subscribeOn(Schedulers.io())
 }

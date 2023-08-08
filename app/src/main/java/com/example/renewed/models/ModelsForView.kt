@@ -27,9 +27,11 @@ sealed class PartialViewState(val name: String?){
     object SnackbarEffect:PartialViewState("SnackbarEffect")
 }
 
+//used on Screen2
 enum class EffectType2{
     DELETE,LOAD
 }
+//Used on Screen1
 enum class EffectType{
     DELETE_OR_SAVE,SNACKBAR
 }

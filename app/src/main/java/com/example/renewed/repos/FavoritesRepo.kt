@@ -17,7 +17,6 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
 
 
     override fun insert(s: String): Completable {
-
          //TODO bug where if you add list again all things in twice
         return favs.getPosts1(s).andThen(favs.insert(CurrentFavoritesList(s)))
 
@@ -33,8 +32,6 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
     override fun deletePages(s:List<String>): Completable {
         return favs.deleteList(s)
     }
-
-
 
     override fun clearPages(): Completable {
         return favs.clearDb().startWith(t5.deleteUnsavedPosts())
@@ -65,12 +62,8 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
 
     private fun extractT3Field(it: List<Listing>): T3 = it[0].data.children[0].data as T3
 
-        private fun extractT3Field(it: Listing): T3 = it.data.children[0].data as T3
+    private fun extractT3Field(it: Listing): T3 = it.data.children[0].data as T3
 
-
-
-    //private fun extractT3Field(it: Listing): List<T3> =
-     //   it.data.children.take(2).map { it.data as T3 }
 
 }
 
