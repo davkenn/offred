@@ -9,10 +9,6 @@ import com.squareup.moshi.Json
 @JsonClass(generateAdapter = true)
 data class Holder(val data: RedditPostType, val kind: String)
 
-sealed class RedditPostType {
-    abstract val name:String
-}
-
 @JsonClass(generateAdapter = true)
 data class RedditListing(val children: List<Holder>, val before: String?, val after: String?)
 
@@ -21,6 +17,10 @@ data class PostAndComments(val data: List<RedditListing>)
 
 @JsonClass(generateAdapter = true)
 data class Listing(val data: RedditListing)
+
+sealed class RedditPostType {
+    abstract val name:String
+}
 
 @JsonClass(generateAdapter = true)
 data class T5 (override val name: String, val display_name: String, val icon_img: String?,
@@ -35,12 +35,9 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
               val subreddit: String, val subreddit_id: String, val subreddit_subscribers: Int,
               @SubredditDescription val title: String,  var url: String,  val spoiler:Boolean,
               @Json(name = "upvote_ratio") val upvoteRatio: Double,
-            //if url is permalink then create a text, if not then either vid  or photo link
-              val permalink: String, /**image link for vids**/ val thumbnail: String,
-              val created_utc: Long,val media:Media?,val secure_media:Media?, val media_metadata:List<Media2>?) : RedditPostType()
-
-
-//data class T1(override val name: String)
+            //if json permalink is a url create a text post, if not then either vid  or photo post
+              val permalink: String, val thumbnail: String, val created_utc: Long,val media:Media?,
+              val secure_media:Media?, val media_metadata:List<Media2>?) : RedditPostType()
 
 @JsonClass(generateAdapter = true)
 data class PicsAndDimens (val y:Int,val x:Int, val u:String)

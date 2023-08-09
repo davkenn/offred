@@ -20,12 +20,12 @@ package com.example.renewed.Screen2
     class FavoritesListVM @Inject constructor(
         private val favsRepo: BaseFavoritesRepo
     ): ViewModel() {
-        val eventCompleteEvent: Observable<EffectType2>
+        val eventCompleteEvent: Observable<Screen2Effect>
         val newPostsObservable:Observable<RoomT3>
         val currentlyDisplayedPosts: Observable<List<String>>
         val currentPosition: Observable<Int>
         private val disposables: CompositeDisposable = CompositeDisposable()
-        private val inputEvents: PublishRelay<MyFavsEvent> = PublishRelay.create()
+        private val inputEvents: PublishRelay<Screen2Event> = PublishRelay.create()
 
         init {
 
@@ -50,34 +50,34 @@ package com.example.renewed.Screen2
             currentlyDisplayedPosts = favsRepo.observeCurrentPostList().replay(1)
                 .autoConnect(1) { disposables.add(it) }
 
-            currentPosition = inputEvents.publish { it.ofType(MyFavsEvent.UpdatePositionEvent::class.java) }
+            currentPosition = inputEvents.publish { it.ofType(Screen2Event.UpdatePositionEvent::class.java) }
                 .map { it.newPosition }
                 .replay(1)
                 .autoConnect(1) { disposables.add(it) }
 
             eventCompleteEvent = inputEvents.publish {
                 val a = Observable.fromArray(
-                    it.ofType(MyFavsEvent.DeleteSubredditEvent::class.java).deleteThenReturn(),
-                    it.ofType(MyFavsEvent.AddSubredditsEvent::class.java).loadThenReturn(newPostsObservable))
+                    it.ofType(Screen2Event.DeleteSubredditEvent::class.java).deleteThenReturn(),
+                    it.ofType(Screen2Event.AddSubredditsEvent::class.java).loadThenReturn(newPostsObservable))
                 a.mergeAll()
                 }
             }
 
-            private fun Observable<MyFavsEvent.DeleteSubredditEvent>.deleteThenReturn() : Observable<EffectType2> {
+            private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn() : Observable<Screen2Effect> {
                 return flatMap {
                     favsRepo.deletePages(it.targets)
                         .subscribeOn(Schedulers.io())
-                        .andThen(Observable.just(EffectType2.DELETE))
+                        .andThen(Observable.just(Screen2Effect.DELETE))
                 }
             }
 
 
-            private fun Observable<MyFavsEvent.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>) : Observable<EffectType2> {
+            private fun Observable<Screen2Event.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>) : Observable<Screen2Effect> {
                      return flatMap { arg.take(it.count.toLong())
                                          .flatMapCompletable { favsRepo.insert(it.name)
                                                                        .subscribeOn(Schedulers.io())
                                           }
-                                          .andThen(Observable.just(EffectType2.LOAD))
+                                          .andThen(Observable.just(Screen2Effect.LOAD))
                                      }
             }
 
@@ -87,7 +87,7 @@ package com.example.renewed.Screen2
                 disposables.dispose()
             }
 
-            fun processInput(name: MyFavsEvent) {
+            fun processInput(name: Screen2Event) {
                 inputEvents.accept(name)
             }
         }

@@ -17,8 +17,8 @@ import com.example.renewed.Screen1.Subscreen.ContentFragment
 import com.example.renewed.Screen1.Subscreen.PostFragment
 import com.example.renewed.Screen1.Subscreen.SubredditFragment
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
-import com.example.renewed.models.EffectType
-import com.example.renewed.models.MyEvent
+import com.example.renewed.models.Screen1Effect
+import com.example.renewed.models.Screen1Event
 import com.example.renewed.models.PartialViewState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +52,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                   disposables.add(subsAndPostsVM.prefetch()
                     .andThen{
                       subsAndPostsVM.processInput(
-                        MyEvent.ScreenLoadEvent(""))
+                        Screen1Event.ScreenLoadEvent(""))
                    }
             .subscribeOn(Schedulers.io())
             .subscribe({ Timber.d("----done fetching both ") },
@@ -80,10 +80,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         val binding = FragmentSubredditsSelectionBinding.bind(view)
         postAdapter = PostsAdapter {
-                             x -> subsAndPostsVM.processInput(MyEvent.ClickOnT3ViewEvent(x.name))
+                             x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT3ViewEvent(x.name))
                            }
         subredditAdapter = SubredditsAdapter {
-                             x -> subsAndPostsVM.processInput(MyEvent.ClickOnT5ViewEvent(x.name))
+                             x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT5ViewEvent(x.name))
                            }
 
         fragmentSelectionBinding = binding.apply {
@@ -96,12 +96,12 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             //Gets rid of db errors when you rapidly click on one button still are errors when you
         // click different buttons rapidly . I could remove these for back and refresh combos but
         // not for save and delete bc dsave and delete each make 2 events so no easy way to throttle
-        val backClicks :Observable<MyEvent> = binding.backButton.clicks()
-                                            .map{MyEvent.UpdateViewingState(getSubNameOrNull())}
+        val backClicks :Observable<Screen1Event> = binding.backButton.clicks()
+                                            .map{Screen1Event.UpdateViewingState(getSubNameOrNull())}
 
-        val refreshClicks :Observable<MyEvent> = binding.refreshButton.clicks()
+        val refreshClicks :Observable<Screen1Event> = binding.refreshButton.clicks()
                                      .doOnNext { subredditAdapter.clearSelected() }
-                                     .map{ MyEvent.RemoveAllSubreddits(
+                                     .map{ Screen1Event.RemoveAllSubreddits(
                                               subredditAdapter.currentList.map { it.displayName })}
 
         val backRefreshClicks = backClicks.mergeWith(refreshClicks)
@@ -110,9 +110,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         val saveClicks = binding.saveButton.clicks()
                                     .throttleFirst(200,TimeUnit.MILLISECONDS)
-                                    .flatMap { Observable.just(MyEvent.UpdateViewingState(
+                                    .flatMap { Observable.just(Screen1Event.UpdateViewingState(
                                                                                 getSubNameOrNull()),
-                                                       MyEvent.SaveEvent(getSubNameOrNull(),
+                                                       Screen1Event.SaveEvent(getSubNameOrNull(),
                                                  subredditAdapter.currentList)) }
 
         Observable.merge(backRefreshClicks,saveClicks)
@@ -125,16 +125,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
                         if (x.effect != null){
                            when (x.effect) {
-                               EffectType.DELETE_OR_SAVE -> {
+                               Screen1Effect.DELETE_OR_SAVE -> {
                                                              popTopViewerElement()
                                                              subredditAdapter.clearSelected()
                               }
-                               EffectType.SNACKBAR -> Snackbar.make(binding.root,
+                               Screen1Effect.SNACKBAR -> Snackbar.make(binding.root,
                                    "Already in Stack. Press back to find it...", Snackbar.LENGTH_SHORT)
                                    .show()
                     }
                         //Clear the effect in case process is recreated so we don't repeat it
-                        subsAndPostsVM.processInput(MyEvent.ClearEffectEvent)
+                        subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)
                     }
                 },
                 { Timber.e("error fetching vs: ${it.localizedMessage}") })
@@ -171,7 +171,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
 
         if (inBackStack && (t3OrT5 is PartialViewState.T5ForViewing)) {
-            subsAndPostsVM.processInput(MyEvent.MakeSnackBarEffect)
+            subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
             return
         }
 

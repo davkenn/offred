@@ -13,8 +13,8 @@ import com.example.renewed.VIEWPAGER_PAGES_TOTAL
 import com.example.renewed.VP_PAGES_PER_LOAD
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
-import com.example.renewed.models.EffectType2
-import com.example.renewed.models.MyFavsEvent
+import com.example.renewed.models.Screen2Effect
+import com.example.renewed.models.Screen2Event
 import com.google.android.exoplayer2.ExoPlayer
 import com.jakewharton.rxbinding4.viewpager2.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,9 +73,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
         favoritesVM.eventCompleteEvent.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ when (it){
-                            EffectType2.DELETE ->
-                                favoritesVM.processInput(MyFavsEvent.AddSubredditsEvent(VP_PAGES_PER_LOAD))
-                            EffectType2.LOAD -> vp.post{}
+                            Screen2Effect.DELETE ->
+                                favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
+                            Screen2Effect.LOAD -> vp.post{}
                             }},
                                   { Timber.e("FAVLISTERROR", it.stackTrace) })
                        .addTo(disposables)
@@ -103,18 +103,18 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 vp.visibility=View.INVISIBLE
                 binding.loading.visibility= View.VISIBLE
                 vp.isUserInputEnabled=false
-                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(
+                favoritesVM.processInput(Screen2Event.UpdatePositionEvent(
                     position - VP_PAGES_PER_LOAD))
 
                 //when DeleteSubredditEvent returns t, SaveSubredditEvent will be called
-                favoritesVM.processInput(MyFavsEvent.DeleteSubredditEvent(
+                favoritesVM.processInput(Screen2Event.DeleteSubredditEvent(
                                                          adapter2.postIds.take(VP_PAGES_PER_LOAD)))
             }
             else {
-                favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(position))
+                favoritesVM.processInput(Screen2Event.UpdatePositionEvent(position))
             }
         }
-        favoritesVM.processInput(MyFavsEvent.UpdatePositionEvent(selectPos))
+        favoritesVM.processInput(Screen2Event.UpdatePositionEvent(selectPos))
     }
 }
 

@@ -12,7 +12,6 @@ interface T3DAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(t3s: List<RoomT3>): Completable
 
-    //TODO should this return maybe?
     @Query("SELECT * FROM RoomT3 WHERE RoomT3.name like :name")
     fun getPost(name: String): Single<RoomT3>
 

@@ -15,7 +15,6 @@ data class RoomT5(@PrimaryKey val name: String, val displayName: String, val des
 @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
                                   childColumns = arrayOf("link_id"), onDelete = ForeignKey.CASCADE,
                                                                     onUpdate = ForeignKey.CASCADE)])
-
 data class RoomT1(@PrimaryKey val name: String, @ColumnInfo(index = true) val link_id: String,
                                                                                 val body: String)
 
@@ -27,14 +26,6 @@ data class RoomT3(@PrimaryKey val name: String, @ColumnInfo(index = true) val su
                   val selftext: String, val url: String, val permalink:String, val thumbnail: String,
                   val gallery_urls: String?,val isSaved:Boolean)
 
-
-
-   /**@Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
-       childColumns = arrayOf("postId"), onDelete = ForeignKey.CASCADE,
-       onUpdate = ForeignKey.CASCADE)])
-   data class CurrentFavoritesList(@PrimaryKey(autoGenerate = true) var wID: Long = 0,
-                                   @ColumnInfo(index = true) val postId: String)
-**/
 @Entity
 data class CurrentFavoritesList( val postId: String){
     @PrimaryKey(autoGenerate = true)

@@ -40,7 +40,6 @@ class PostFragment : ContentFragment() {
     var t3Name:String?= null
     var postBinding: PostViewBinding? = null
     private val disposables = CompositeDisposable()
-    override fun getName() : String = postsVM.name
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,17 +50,7 @@ class PostFragment : ContentFragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-    //    retainInstance=true
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-    }
-
     override fun onDestroyView() {
-        //TODO need to not do this if I don't want crashes
         postBinding = null
         super.onDestroyView()
     }
@@ -71,15 +60,16 @@ class PostFragment : ContentFragment() {
         view.setBackgroundColor(Color.parseColor("black"))
         t3Name = arguments?.getString("key") ?: "NONE"
     }
+    override fun onStop() {
+        Timber.d("onStop in Post Fragment")
+        super.onStop()
+        disposables.clear()
+    }
 
     override fun onPause() {
         stopVideo()
         Timber.d("onPause in Post Fragment")
         super.onPause()
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     override fun onResume() {
@@ -138,16 +128,7 @@ class PostFragment : ContentFragment() {
                 }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
     }
 
-    override fun onDestroy() {
-        Timber.d("onDestroy in Post Fragment")
-        super.onDestroy()
-    }
-
-    override fun onStop() {
-        Timber.d("onStop in Post Fragment")
-        super.onStop()
-        disposables.clear()
-    }
+    override fun getName() : String = postsVM.name
 
     private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
         postBinding!!.url.setOnClickListener {

@@ -16,8 +16,6 @@ interface FavoritesDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(elem: CurrentFavoritesList): Completable
 
-
-
     @Query("SELECT postId FROM CurrentFavoritesList order by id ")
     fun getPosts(): Observable<List<String>>
 
@@ -30,6 +28,4 @@ interface FavoritesDAO {
 
     @Query("DELETE FROM CurrentFavoritesList where postId in (:idList) ")
     fun deleteList(idList: List<String>): Completable
-
-    //   getPostsByWeekPeriod(weeksAgo:Int):Flowable
 }

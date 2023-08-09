@@ -4,7 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.renewed.Room.RedditDatabase
-import com.example.renewed.models.MyEvent
+import com.example.renewed.Screen1.SubredditsAndPostsVM
+import com.example.renewed.models.Screen1Event
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import com.example.renewed.repos.SubredditsAndPostsRepo
 import okhttp3.OkHttpClient
@@ -39,7 +40,7 @@ class SubredditsAndPostsVMTestPreloadedDb {
 
     @Test
     fun processInput() {
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
     }
     @After
     fun tearDown() {

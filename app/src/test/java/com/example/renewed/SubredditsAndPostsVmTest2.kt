@@ -1,7 +1,7 @@
 package com.example.renewed
 
 import com.example.renewed.Screen1.SubredditsAndPostsVM
-import com.example.renewed.models.MyEvent
+import com.example.renewed.models.Screen1Event
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import org.hamcrest.MatcherAssert
 import org.junit.After
@@ -43,8 +43,8 @@ class SubredditsAndPostsVMTest2 {
 
         //WHEN
         val res = viewModel.vs.test()
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
-       viewModel.processInput(MyEvent.ClickOnT5ViewEvent("t5_tu4j3"))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
+       viewModel.processInput(Screen1Event.ClickOnT5ViewEvent("t5_tu4j3"))
 
         var l = res.await(1, TimeUnit.SECONDS)
 

@@ -56,7 +56,7 @@ class SubredditsAndPostsVMTest {
 
         //WHEN
         val res = viewModel.vs.test()
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         var l = res.await(1,TimeUnit.SECONDS)
 
         //THEN
@@ -100,7 +100,7 @@ class SubredditsAndPostsVMTest {
 
 
         val res = viewModel.vs.test()
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         var n = res.await(1,TimeUnit.SECONDS)
         res.assertError(IOException::class.java)
 
@@ -119,7 +119,7 @@ class SubredditsAndPostsVMTest {
 
         val res = viewModel.vs.test()
 
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
         res.assertValueCount(2)
         res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![0].url.contains(
@@ -143,7 +143,7 @@ class SubredditsAndPostsVMTest {
 
         val res = viewModel.vs.test()
 
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         res.await(3,TimeUnit.SECONDS)
         res.assertValueCount(2)
         //loads 3 images for galeery
@@ -166,7 +166,7 @@ class SubredditsAndPostsVMTest {
 
         val res = viewModel.vs.test()
 
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         res.await(3,TimeUnit.SECONDS)
         res.assertValueCount(2)
         //loads 3 images for galeery
@@ -191,7 +191,7 @@ class SubredditsAndPostsVMTest {
 
         val res = viewModel.vs.test()
 
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
         res.assertValueCount(2)
         res.assertValueAt(1) {
@@ -207,7 +207,7 @@ class SubredditsAndPostsVMTest {
         val end = loadJsonResponse("Berserk.json")
         mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
         val res = viewModel.vs.test()
-        viewModel.processInput(MyEvent.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         var n = res.await(1,TimeUnit.SECONDS)
         res.assertValueAt(0) { it != FullViewStateScreen1() }
     }

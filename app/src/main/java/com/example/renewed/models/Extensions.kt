@@ -9,43 +9,30 @@ fun T5.toDbModel(): RoomT5 {
     val thumb1 = icon_img ?: ""
     val thumb2 = header_img ?: ""
     val thumb3 = community_icon ?: ""
+    //choose subreddit thumbnail from a number of different json fields
     val thumbnail = thumb1.ifBlank { thumb3.substringBeforeLast("?") }.ifBlank { thumb2 }
-    return RoomT5(
-        name = name, displayName = display_name, description = fullDescription,
-        thumbnail = thumbnail, banner_img = banner_img ?: "", isSaved = false,
-        created_utc = Instant.ofEpochSecond(created_utc), totalViews = 0,
-        timeLastAccessed = Instant.now(), subscribers = subscribers
-    )
+    return RoomT5(name = name, displayName = display_name, description = fullDescription,
+                  thumbnail = thumbnail, banner_img = banner_img ?: "", isSaved = false,
+                  created_utc = Instant.ofEpochSecond(created_utc), totalViews = 0,
+                  timeLastAccessed = Instant.now(), subscribers = subscribers)
 }
 
 fun T3.toDbModel(): RoomT3 {
     val thumb: String?=null
     var address: String?=null
-    //TODO need to fix this and get the actual url from the other field
-    if (url.startsWith("https://v.redd.it")){
-        //TODO whyd I go away from dash originally
-        // and how can I fix this so it works for all vids? another field? maybe load both?
-                                                address=
-                                                    media?.reddit_video?.dash_url?:
+    //get correct video url from a number of json fields where it could be
+    if (url.startsWith("https://v.redd.it")){ address= media?.reddit_video?.dash_url?:
                                                     secure_media?.reddit_video?.dash_url?:
-                                                    media?.reddit_video?.fallback_url
-
-
-                                                                ?: (url + "/DASH_720.mp4?source=fallback url")
+                                                    media?.reddit_video?.fallback_url ?:
+                                                    (url + "/DASH_720.mp4?source=fallback url")
     }
-  //  if (media_metadata!=null && (thumb!=null) && ("gallery" !in url)) {
-    //    thumb = media_metadata.p?.last()?.u?.replace("amp;", "")
-      //  }
-    return RoomT3(
-        name = name, subredditId = subreddit_id, selftext = selftext, url = address?: url,
-        created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
-        timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
-        gallery_urls = media_metadata?.joinToString(separator = " ") {
-                                                it.p?.last()?.u?.
-                                                replace("amp;","")?:""}, isSaved = false)
+
+    return RoomT3(name = name, subredditId = subreddit_id, selftext = selftext, url = address?: url,
+                  created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
+                  timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
+                  gallery_urls = media_metadata?.joinToString(separator = " ") {
+                      it.p?.last()?.u?.replace("amp;","")?:""}, isSaved = false)
 }
-
-
 
 fun RoomT5.toViewState(): ViewStateT5 =
     ViewStateT5(

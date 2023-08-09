@@ -20,7 +20,6 @@ private val repository: BaseSubredditsAndPostsRepo
 
     fun setPost(n: String) : Single<ViewStateT3> =
         repository.getPost(n)
-                //TODO this feels really wrong
-            .doOnEvent{x,y->name =  x.subredditId}
-            .map { it.toViewState() }
+                  .doOnEvent{x,y->name =  x.subredditId} //feels bad
+                  .map { it.toViewState() }
 }

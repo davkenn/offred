@@ -22,13 +22,13 @@ class SubredditsAndPostsVM @Inject constructor(
 ): ViewModel() {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
-    private val inputEvents: PublishRelay<MyEvent> = PublishRelay.create()
+    private val inputEvents: PublishRelay<Screen1Event> = PublishRelay.create()
 
     init {
         disposables.add(repo.clearDisplayed().subscribe())
     }
 
-    fun processInput(name: MyEvent) {
+    fun processInput(name: Screen1Event) {
         inputEvents.accept(name)
     }
     val vs: Observable<FullViewStateScreen1> = inputEvents
@@ -45,17 +45,17 @@ class SubredditsAndPostsVM @Inject constructor(
         disposables.dispose()
     }
 
-    private fun Observable<MyEvent>.eventToResult(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event>.eventToResult(): Observable<PartialViewState> {
         return publish {
             val a = Observable.fromArray(
-                it.ofType(MyEvent.ScreenLoadEvent::class.java).onScreenLoad(),
-                it.ofType(MyEvent.ClickOnT5ViewEvent::class.java).onClickT5(),
-                it.ofType(MyEvent.ClickOnT3ViewEvent::class.java).onClickT3(),
-                it.ofType(MyEvent.RemoveAllSubreddits::class.java).onRefreshList(),
-                it.ofType(MyEvent.UpdateViewingState::class.java).updateViewingState() ,
-                it.ofType(MyEvent.SaveEvent::class.java).onSave(),
-                it.ofType(MyEvent.ClearEffectEvent::class.java).onClear(),
-                it.ofType(MyEvent.MakeSnackBarEffect::class.java).onSnackbar()
+                it.ofType(Screen1Event.ScreenLoadEvent::class.java).onScreenLoad(),
+                it.ofType(Screen1Event.ClickOnT5ViewEvent::class.java).onClickT5(),
+                it.ofType(Screen1Event.ClickOnT3ViewEvent::class.java).onClickT3(),
+                it.ofType(Screen1Event.RemoveAllSubreddits::class.java).onRefreshList(),
+                it.ofType(Screen1Event.UpdateViewingState::class.java).updateViewingState() ,
+                it.ofType(Screen1Event.SaveEvent::class.java).onSave(),
+                it.ofType(Screen1Event.ClearEffectEvent::class.java).onClear(),
+                it.ofType(Screen1Event.MakeSnackBarEffect::class.java).onSnackbar()
             )
             a.mergeAll()
         }
@@ -79,16 +79,16 @@ class SubredditsAndPostsVM @Inject constructor(
                                                         effect = null)
                 is PartialViewState.NavigateBackEffect -> state.copy(
                                                         latestEvent3= null, latestEvent5 = null,
-                                                        effect = EffectType.DELETE_OR_SAVE)
+                                                        effect = Screen1Effect.DELETE_OR_SAVE)
                 is PartialViewState.ClearEffectEffect -> state.copy(effect = null)
                 is PartialViewState.SnackbarEffect -> state.copy(
-                                                        effect=EffectType.SNACKBAR,
+                                                        effect=Screen1Effect.SNACKBAR,
                                                         latestEvent3 = null,latestEvent5=null)
             }
         }.skip(1)
     }
 
-    private fun Observable<MyEvent.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewState> {
         return flatMapSingle {
                 repo.getSubreddits()
                     .subscribeOn(Schedulers.io())
@@ -97,7 +97,7 @@ class SubredditsAndPostsVM @Inject constructor(
         }
     }
 
-    private fun Observable<MyEvent.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewState> {
         return Observable.merge(
             flatMap{ Observable.just(PartialViewState.T5ListForRV(null),PartialViewState.T3ListForRV(null))},
             flatMap {
@@ -108,7 +108,7 @@ class SubredditsAndPostsVM @Inject constructor(
            })
     }
 
-    private fun Observable<MyEvent.ClickOnT3ViewEvent>.onClickT3(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.ClickOnT3ViewEvent>.onClickT3(): Observable<PartialViewState> {
         return flatMapSingle {
             repo.getPost(it.name)
                 .subscribeOn(Schedulers.io())
@@ -116,7 +116,7 @@ class SubredditsAndPostsVM @Inject constructor(
         }
     }
 
-    private fun Observable<MyEvent.UpdateViewingState>.updateViewingState(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.UpdateViewingState>.updateViewingState(): Observable<PartialViewState> {
         return Observable.merge(
             flatMap { Observable.just(PartialViewState.T3ListForRV(null)) },
             flatMap {
@@ -128,7 +128,7 @@ class SubredditsAndPostsVM @Inject constructor(
         })
     }
 
-    private fun Observable<MyEvent.SaveEvent>.onSave(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.SaveEvent>.onSave(): Observable<PartialViewState> {
         return flatMap {
                     Observable.just(PartialViewState.T5ListForRV(
                                      it.previousState.filter { x->x.name != it.targetedSubreddit }))
@@ -137,7 +137,7 @@ class SubredditsAndPostsVM @Inject constructor(
                         }
     }
 
-    private fun Observable<MyEvent.ClickOnT5ViewEvent>.onClickT5(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.ClickOnT5ViewEvent>.onClickT5(): Observable<PartialViewState> {
         return Observable.merge(
             flatMapSingle { clickOnT5Event ->
                 repo.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
@@ -171,11 +171,11 @@ class SubredditsAndPostsVM @Inject constructor(
                 .onErrorComplete()
                 .doOnComplete { Timber.d("---- done fetching posts") })
 
-    private fun Observable<MyEvent.MakeSnackBarEffect>.onSnackbar(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.MakeSnackBarEffect>.onSnackbar(): Observable<PartialViewState> {
         return flatMap{Observable.just(PartialViewState.SnackbarEffect)}
     }
 
-    private fun Observable<MyEvent.ClearEffectEvent>.onClear(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.ClearEffectEvent>.onClear(): Observable<PartialViewState> {
         return flatMap{Observable.just(PartialViewState.ClearEffectEffect)}
     }
 }
