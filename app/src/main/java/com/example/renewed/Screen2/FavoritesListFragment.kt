@@ -27,7 +27,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
-
     private lateinit var binding: FragmentFavoritesListBinding
 
     @Inject

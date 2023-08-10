@@ -3,7 +3,6 @@ package com.example.renewed.models
 import java.time.Instant
 
 data class FullViewStateScreen2(
-
     val currentlyDisplayedList: List<String>,
     val position : Int,
     val effect: Screen1Effect?=null)

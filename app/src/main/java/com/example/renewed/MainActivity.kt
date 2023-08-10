@@ -28,13 +28,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-//this destroys the app for now but maybe need it
-//        sm.clearAuthToken()
-
         Timber.d("onCreate called")
-
         getAuthToken().subscribeBy{ sm.saveAuthToken(it) }
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)

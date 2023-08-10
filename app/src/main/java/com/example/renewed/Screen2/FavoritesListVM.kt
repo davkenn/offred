@@ -28,17 +28,15 @@ package com.example.renewed.Screen2
         private val inputEvents: PublishRelay<Screen2Event> = PublishRelay.create()
 
         init {
-
-            //TODO load fewer posts at a time
-            //TODO fix I/okhttp.OkHttpClient: <-- HTTP FAILED: java.io.IOException: Canceled
-            //maybe it has something to do with subscribing wrongly
             newPostsObservable = favsRepo.observeSavedSubreddits()
                 .flatMap { x -> Observable.just(Unit).repeat(10)
                                 .map { x.shuffled().first()}
                          }
                 .flatMap { favsRepo.getRandomPosts(it.displayName, 2) }
-                .share()  //Do I need this share? seems to work ok without it.
-            //TODO need to also save it to the db here
+                .share()//Do I need this share? seems to work ok without it.
+
+//I/okhttp.OkHttpClient: <-- HTTP FAILED: java.io.IOException: Canceled is caused by this
+// take operation which ends the stream early
             newPostsObservable.take(VIEWPAGER_PAGES_TOTAL.toLong())
                               .flatMapCompletable { x -> favsRepo.insert(x.name) }
                               .startWith(favsRepo.clearPages()
