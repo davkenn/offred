@@ -107,7 +107,7 @@ package com.example.renewed.Screen2
                                          .flatMapCompletable { favsRepo.insert(it.name)
                                                                        .subscribeOn(Schedulers.io())
                                           }
-                         .andThen(Observable.just(PartialViewStateScreen2.DeleteCompleteEffect))
+                         .andThen(Observable.just(PartialViewStateScreen2.LoadCompleteEffect))
                                      }
             }
         private fun Observable<Screen2Event.AddSubredditsEvent>.loadThenReturn2(arg:Observable<RoomT3>) : Observable<Screen2Effect> {

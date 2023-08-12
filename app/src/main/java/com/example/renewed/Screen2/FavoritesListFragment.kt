@@ -85,8 +85,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 is PartialViewStateScreen2.DeleteCompleteEffect ->
                     favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
                 is PartialViewStateScreen2.LoadCompleteEffect -> vp.post{}
-      //          is PartialViewStateScreen2.Position -> {selectPos=it.position
-        //            vp.post{vp.setCurrentItem( it.position,true)}}
+
+             //       favoritesVM.processInput(Screen2Event.UpdatePositionEvent(VP_PAGES_PER_LOAD))
+        //        is PartialViewStateScreen2.Position -> {selectPos=it.position
+          //          vp.post{vp.setCurrentItem( it.position,true)}}
             }},
                 { Timber.e("FAVLISTERROR", it.stackTrace) })
             .addTo(disposables)
