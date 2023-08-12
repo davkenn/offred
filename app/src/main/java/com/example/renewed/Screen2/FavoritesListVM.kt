@@ -21,11 +21,11 @@ package com.example.renewed.Screen2
         private val favsRepo: BaseFavoritesRepo
     ): ViewModel() {
 
+        private val currentlyDisplayedPosts: Observable<List<String>>?
         val newPostsObservable:Observable<RoomT3>
 
         private val disposables: CompositeDisposable = CompositeDisposable()
         private val inputEvents: PublishRelay<Screen2Event> = PublishRelay.create()
-
 
         val vs: Observable<FullViewStateScreen2> = inputEvents
             .doOnNext { Timber.d("---- Event is $it") }
@@ -85,17 +85,17 @@ package com.example.renewed.Screen2
                     { Timber.e("error: ${it.localizedMessage}") })
                 .addTo(disposables)
 
-        processInput(Screen2Event.UpdateViewedPosts())
+            currentlyDisplayedPosts = favsRepo.observeCurrentPostList().replay(1)
+                .autoConnect(1) { disposables.add(it) }
+
+            currentlyDisplayedPosts
+                .subscribe { processInput(Screen2Event.UpdateViewedPosts(it)) }
         }
-
-
 
         private fun Observable<Screen2Event.UpdateViewedPosts>.returnPosts()
                 : Observable<PartialViewStateScreen2> =
             map {
-                PartialViewStateScreen2.Posts(it.newPosts)
-            }
-
+                PartialViewStateScreen2.Posts(it.newPosts) }
 
         private fun Observable<Screen2Event.ClearEffectEvent>.clearEffect()
                 : Observable<PartialViewStateScreen2> =
@@ -104,16 +104,14 @@ package com.example.renewed.Screen2
             }
 
 
-            private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn()
+        private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn()
                                                       : Observable<PartialViewStateScreen2> {
-                return flatMap {
-                    favsRepo.deletePages(it.targets)
-                        .subscribeOn(Schedulers.io())
-
+            return flatMap {
+                            favsRepo.deletePages(it.targets)
+                            .subscribeOn(Schedulers.io())
                         .andThen(Observable.just(PartialViewStateScreen2.DeleteCompleteEffect))
                 }
             }
-
 
         private fun Observable<Screen2Event.UpdatePositionEvent>.returnPosition()
                 : Observable<PartialViewStateScreen2> =
@@ -127,10 +125,8 @@ package com.example.renewed.Screen2
                                                                        .subscribeOn(Schedulers.io())
                                           }
                          .andThen(Observable.just(PartialViewStateScreen2.LoadCompleteEffect))
-                                     }
-            }
-
-
+                     }
+        }
 
         override fun onCleared() {
                 super.onCleared()
