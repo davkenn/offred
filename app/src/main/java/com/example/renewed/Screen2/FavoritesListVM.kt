@@ -29,7 +29,10 @@ package com.example.renewed.Screen2
         private val inputEvents: PublishRelay<Screen2Event> = PublishRelay.create()
 
 
-        val vs: Observable<PartialViewStateScreen2> = inputEvents.eventToResult()   .replay(1)
+        val vs: Observable<PartialViewStateScreen2> = inputEvents
+            .doOnNext { Timber.d("---- Event is $it") }
+            .eventToResult()
+            .doOnNext { Timber.d("---- Result is $it") }  .replay(1)
             .autoConnect(1){disposables.add(it)}
 
         private fun Observable<Screen2Event>.eventToResult(): Observable<PartialViewStateScreen2> {
@@ -37,7 +40,7 @@ package com.example.renewed.Screen2
                 val a = Observable.fromArray(
                     it.ofType(Screen2Event.DeleteSubredditEvent::class.java).deleteThenReturn(),
                     it.ofType(Screen2Event.AddSubredditsEvent::class.java).loadThenReturn(newPostsObservable),
-      //              it.ofType(Screen2Event.UpdatePositionEvent::class.java).returnPosition()
+                    it.ofType(Screen2Event.UpdatePositionEvent::class.java).returnPosition()
                 )
                 a.mergeAll()
             }

@@ -66,11 +66,11 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                            .addTo(disposables)
 
 
-        favoritesVM.currentPosition.observeOn(AndroidSchedulers.mainThread())
-                         .subscribe({ selectPos = it
-                                      vp.post{vp.setCurrentItem( selectPos,true)} },
-                                    { Timber.d("ERROR IN POS") })
-                        .addTo(disposables)
+      //  favoritesVM.currentPosition.observeOn(AndroidSchedulers.mainThread())
+        //                 .subscribe({ selectPos = it
+          //                            vp.post{vp.setCurrentItem( selectPos,true)} },
+            //                        { Timber.d("ERROR IN POS") })
+              //          .addTo(disposables)
 
      //   favoritesVM.eventCompleteEvent.observeOn(AndroidSchedulers.mainThread())
        //     .subscribe({ when (it){
@@ -87,8 +87,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 is PartialViewStateScreen2.LoadCompleteEffect -> vp.post{}
 
              //       favoritesVM.processInput(Screen2Event.UpdatePositionEvent(VP_PAGES_PER_LOAD))
-        //        is PartialViewStateScreen2.Position -> {selectPos=it.position
-          //          vp.post{vp.setCurrentItem( it.position,true)}}
+                is PartialViewStateScreen2.Position -> {selectPos=it.position
+                    vp.post{vp.setCurrentItem( selectPos,true)}}
             }},
                 { Timber.e("FAVLISTERROR", it.stackTrace) })
             .addTo(disposables)
