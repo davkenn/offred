@@ -2,7 +2,7 @@ package com.example.renewed.Screen1.Subscreen
 
 import androidx.lifecycle.ViewModel
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
-import com.example.renewed.models.PartialViewState
+import com.example.renewed.models.PartialViewStateScreen1
 import com.example.renewed.models.RoomT5
 import com.example.renewed.models.toViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +17,10 @@ class SubVM @Inject constructor(
     lateinit var name: String
         private set
 
-    fun setSub(n: String) : Single<PartialViewState.T5ForViewing> =
+    fun setSub(n: String) : Single<PartialViewStateScreen1.T5ForViewing> =
         repository.getSubreddit(n)
                   .onErrorResumeWith(Single.just(RoomT5("ERROR", "ERROR", "",
                       "", "", Instant.now(),0, Instant.now())).retry(10))
-                  .map { PartialViewState.T5ForViewing(it.toViewState() )}
+                  .map { PartialViewStateScreen1.T5ForViewing(it.toViewState() )}
                   .also { name = n }
 }

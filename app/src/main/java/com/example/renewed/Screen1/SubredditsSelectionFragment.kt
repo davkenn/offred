@@ -19,7 +19,7 @@ import com.example.renewed.Screen1.Subscreen.SubredditFragment
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
 import com.example.renewed.models.Screen1Effect
 import com.example.renewed.models.Screen1Event
-import com.example.renewed.models.PartialViewState
+import com.example.renewed.models.PartialViewStateScreen1
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -164,19 +164,19 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         return name
     }
 
-    private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewState) {
+    private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewStateScreen1) {
         //TODO right now it is giving error if add again but bring up the posts
         //ANOTHER GOOD OPTION IS TO JUST MOVE IT TO THE FRONT OF THE queue
         val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
 
-        if (inBackStack && (t3OrT5 is PartialViewState.T5ForViewing)) {
+        if (inBackStack && (t3OrT5 is PartialViewStateScreen1.T5ForViewing)) {
             subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
             return
         }
 
         navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
-        if (t3OrT5 is PartialViewState.T3ForViewing) disableButtons(includingBack = false)
+        if (t3OrT5 is PartialViewStateScreen1.T3ForViewing) disableButtons(includingBack = false)
                                                             else enableButtons(onlyBack = false)
     }
 

@@ -13,6 +13,7 @@ import com.example.renewed.VIEWPAGER_PAGES_TOTAL
 import com.example.renewed.VP_PAGES_PER_LOAD
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
+import com.example.renewed.models.PartialViewStateScreen2
 import com.example.renewed.models.Screen2Effect
 import com.example.renewed.models.Screen2Event
 import com.google.android.exoplayer2.ExoPlayer
@@ -64,21 +65,34 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                                                { Timber.e("FAVLISTERROR", it.stackTrace) })
                                            .addTo(disposables)
 
+
         favoritesVM.currentPosition.observeOn(AndroidSchedulers.mainThread())
                          .subscribe({ selectPos = it
                                       vp.post{vp.setCurrentItem( selectPos,true)} },
                                     { Timber.d("ERROR IN POS") })
                         .addTo(disposables)
 
-        favoritesVM.eventCompleteEvent.observeOn(AndroidSchedulers.mainThread())
+     //   favoritesVM.eventCompleteEvent.observeOn(AndroidSchedulers.mainThread())
+       //     .subscribe({ when (it){
+         //                   Screen2Effect.DELETE ->
+           //                     favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
+             //               Screen2Effect.LOAD -> vp.post{}
+               //             }},
+                 //                 { Timber.e("FAVLISTERROR", it.stackTrace) })
+                   //    .addTo(disposables)
+        favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe({ when (it){
-                            Screen2Effect.DELETE ->
-                                favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
-                            Screen2Effect.LOAD -> vp.post{}
-                            }},
-                                  { Timber.e("FAVLISTERROR", it.stackTrace) })
-                       .addTo(disposables)
+                is PartialViewStateScreen2.DeleteCompleteEffect ->
+                    favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
+                is PartialViewStateScreen2.LoadCompleteEffect -> vp.post{}
+      //          is PartialViewStateScreen2.Position -> {selectPos=it.position
+        //            vp.post{vp.setCurrentItem( it.position,true)}}
+            }},
+                { Timber.e("FAVLISTERROR", it.stackTrace) })
+            .addTo(disposables)
     }
+
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

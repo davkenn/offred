@@ -1,7 +1,7 @@
 package com.example.renewed
 
 import com.example.renewed.Screen1.Subscreen.SubVM
-import com.example.renewed.models.PartialViewState
+import com.example.renewed.models.PartialViewStateScreen1
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -46,7 +46,7 @@ class SubVMTest {
 
         //RETURNS A DISPLAYABLE VIEW FROM A NETWORK ERROR, JUST DISPLAY IT LIKE ANY OTHER
         tester.assertValue { it.name=="ERROR" }
-        tester.assertValue{it is PartialViewState.T5ForViewing}
+        tester.assertValue{it is PartialViewStateScreen1.T5ForViewing}
     }
 }
 

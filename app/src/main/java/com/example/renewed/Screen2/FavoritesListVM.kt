@@ -20,6 +20,7 @@ package com.example.renewed.Screen2
     class FavoritesListVM @Inject constructor(
         private val favsRepo: BaseFavoritesRepo
     ): ViewModel() {
+
         val eventCompleteEvent: Observable<Screen2Effect>
         val newPostsObservable:Observable<RoomT3>
         val currentlyDisplayedPosts: Observable<List<String>>
@@ -27,6 +28,20 @@ package com.example.renewed.Screen2
         private val disposables: CompositeDisposable = CompositeDisposable()
         private val inputEvents: PublishRelay<Screen2Event> = PublishRelay.create()
 
+
+        val vs: Observable<PartialViewStateScreen2> = inputEvents.eventToResult()   .replay(1)
+            .autoConnect(1){disposables.add(it)}
+
+        private fun Observable<Screen2Event>.eventToResult(): Observable<PartialViewStateScreen2> {
+            return publish {
+                val a = Observable.fromArray(
+                    it.ofType(Screen2Event.DeleteSubredditEvent::class.java).deleteThenReturn(),
+                    it.ofType(Screen2Event.AddSubredditsEvent::class.java).loadThenReturn(newPostsObservable),
+      //              it.ofType(Screen2Event.UpdatePositionEvent::class.java).returnPosition()
+                )
+                a.mergeAll()
+            }
+        }
         init {
             newPostsObservable = favsRepo.observeSavedSubreddits()
                 .flatMap { x -> Observable.just(Unit).repeat(10)
@@ -55,31 +70,57 @@ package com.example.renewed.Screen2
 
             eventCompleteEvent = inputEvents.publish {
                 val a = Observable.fromArray(
-                    it.ofType(Screen2Event.DeleteSubredditEvent::class.java).deleteThenReturn(),
-                    it.ofType(Screen2Event.AddSubredditsEvent::class.java).loadThenReturn(newPostsObservable))
+                    it.ofType(Screen2Event.DeleteSubredditEvent::class.java).deleteThenReturn2(),
+                    it.ofType(Screen2Event.AddSubredditsEvent::class.java).loadThenReturn2(newPostsObservable))
                 a.mergeAll()
                 }
             }
 
-            private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn() : Observable<Screen2Effect> {
+            private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn()
+                                                      : Observable<PartialViewStateScreen2> {
                 return flatMap {
                     favsRepo.deletePages(it.targets)
                         .subscribeOn(Schedulers.io())
-                        .andThen(Observable.just(Screen2Effect.DELETE))
+                        .andThen(Observable.just(PartialViewStateScreen2.DeleteCompleteEffect))
                 }
             }
 
 
-            private fun Observable<Screen2Event.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>) : Observable<Screen2Effect> {
+        private fun Observable<Screen2Event.UpdatePositionEvent>.returnPosition()
+                : Observable<PartialViewStateScreen2> =
+            map{PartialViewStateScreen2.Position(it.newPosition)}
+
+
+
+
+        private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn2() : Observable<Screen2Effect> {
+            return flatMap {
+                favsRepo.deletePages(it.targets)
+                    .subscribeOn(Schedulers.io())
+                    .andThen(Observable.just(Screen2Effect.DELETE))
+            }
+        }
+
+            private fun Observable<Screen2Event.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>)
+                                                    : Observable<PartialViewStateScreen2> {
                      return flatMap { arg.take(it.count.toLong())
                                          .flatMapCompletable { favsRepo.insert(it.name)
                                                                        .subscribeOn(Schedulers.io())
                                           }
-                                          .andThen(Observable.just(Screen2Effect.LOAD))
+                         .andThen(Observable.just(PartialViewStateScreen2.DeleteCompleteEffect))
                                      }
             }
+        private fun Observable<Screen2Event.AddSubredditsEvent>.loadThenReturn2(arg:Observable<RoomT3>) : Observable<Screen2Effect> {
+            return flatMap { arg.take(it.count.toLong())
+                .flatMapCompletable { favsRepo.insert(it.name)
+                    .subscribeOn(Schedulers.io())
+                }
+                .andThen(Observable.just(Screen2Effect.LOAD))
+            }
+        }
 
-            override fun onCleared() {
+
+        override fun onCleared() {
                 super.onCleared()
                 Timber.d("oncleared in favslistvm")
                 disposables.dispose()

@@ -1,9 +1,7 @@
 package com.example.renewed.Screen1.Subscreen
 
-import android.provider.Telephony
 import androidx.lifecycle.ViewModel
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
-import com.example.renewed.models.PartialViewState
 import com.example.renewed.models.ViewStateT3
 import com.example.renewed.models.toViewState
 import dagger.hilt.android.lifecycle.HiltViewModel

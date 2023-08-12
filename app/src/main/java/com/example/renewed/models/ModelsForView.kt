@@ -2,27 +2,34 @@ package com.example.renewed.models
 
 import java.time.Instant
 
-data class FullViewStateScreen2(
-    val currentlyDisplayedList: List<String>,
-    val position : Int,
-    val effect: Screen1Effect?=null)
 
 
 data class FullViewStateScreen1(
-    val t3ListForRV: PartialViewState.T3ListForRV?=null,
-    val t5ListForRV: PartialViewState.T5ListForRV?=null,
-    val latestEvent5: PartialViewState.T5ForViewing?=null,
-    val latestEvent3: PartialViewState.T3ForViewing?=null,
+    val t3ListForRV: PartialViewStateScreen1.T3ListForRV?=null,
+    val t5ListForRV: PartialViewStateScreen1.T5ListForRV?=null,
+    val latestEvent5: PartialViewStateScreen1.T5ForViewing?=null,
+    val latestEvent3: PartialViewStateScreen1.T3ForViewing?=null,
     val effect: Screen1Effect?=null)
 
-sealed class PartialViewState(val name: String?){
-    data class T5ListForRV(val vsT5: List<ViewStateT5>?): PartialViewState("T3List")
-    data class T3ListForRV(val vsT3: List<ViewStateT3>?): PartialViewState("T5List")
-    data class T3ForViewing(val t3 : ViewStateT3): PartialViewState(t3.name)
-    data class T5ForViewing(val t5 : ViewStateT5): PartialViewState(t5.name)
-    object NavigateBackEffect:PartialViewState("NavigateEffect")
-    object ClearEffectEffect:PartialViewState("ClearState")
-    object SnackbarEffect:PartialViewState("SnackbarEffect")
+sealed class PartialViewStateScreen1(val name: String?){
+    data class T5ListForRV(val vsT5: List<ViewStateT5>?): PartialViewStateScreen1("T3List")
+    data class T3ListForRV(val vsT3: List<ViewStateT3>?): PartialViewStateScreen1("T5List")
+    data class T3ForViewing(val t3 : ViewStateT3): PartialViewStateScreen1(t3.name)
+    data class T5ForViewing(val t5 : ViewStateT5): PartialViewStateScreen1(t5.name)
+    object NavigateBackEffect:PartialViewStateScreen1("NavigateEffect")
+    object ClearEffectEffect:PartialViewStateScreen1("ClearState")
+    object SnackbarEffect:PartialViewStateScreen1("SnackbarEffect")
+}
+
+data class FullViewStateScreen2(
+    val currentlyDisplayedList: List<String>?=null,
+    val position : Int,
+    val effect: Screen2Effect?=null)
+
+sealed class PartialViewStateScreen2(val name: String?){
+    object DeleteCompleteEffect: PartialViewStateScreen2("DeleteCompleteEffect")
+    object LoadCompleteEffect: PartialViewStateScreen2("LoadCompleteEffect")
+    data class Position(val position:Int):PartialViewStateScreen2("Position")
 }
 
 enum class Screen2Effect{

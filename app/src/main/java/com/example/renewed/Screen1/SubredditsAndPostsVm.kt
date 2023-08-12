@@ -45,7 +45,7 @@ class SubredditsAndPostsVM @Inject constructor(
         disposables.dispose()
     }
 
-    private fun Observable<Screen1Event>.eventToResult(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event>.eventToResult(): Observable<PartialViewStateScreen1> {
         return publish {
             val a = Observable.fromArray(
                 it.ofType(Screen1Event.ScreenLoadEvent::class.java).onScreenLoad(),
@@ -61,83 +61,83 @@ class SubredditsAndPostsVM @Inject constructor(
         }
     }
 
-    private fun Observable<PartialViewState>.combineResults(): Observable<FullViewStateScreen1> {
+    private fun Observable<PartialViewStateScreen1>.combineResults(): Observable<FullViewStateScreen1> {
 
         return scan(FullViewStateScreen1()) { state, event ->
             when (event) {
-                is PartialViewState.T5ListForRV -> state.copy(
+                is PartialViewStateScreen1.T5ListForRV -> state.copy(
                                                         t5ListForRV = event, latestEvent5 = null,
                                                         latestEvent3 = null, effect = null)
-                is PartialViewState.T3ListForRV -> state.copy(
+                is PartialViewStateScreen1.T3ListForRV -> state.copy(
                                                         t3ListForRV = event, latestEvent5 = null,
                                                         latestEvent3 = null, effect = null)
-                is PartialViewState.T5ForViewing -> state.copy(
+                is PartialViewStateScreen1.T5ForViewing -> state.copy(
                                                         latestEvent5 = event, latestEvent3 = null,
                                                         effect = null)
-                is PartialViewState.T3ForViewing -> state.copy(
+                is PartialViewStateScreen1.T3ForViewing -> state.copy(
                                                         latestEvent3 = event, latestEvent5 = null,
                                                         effect = null)
-                is PartialViewState.NavigateBackEffect -> state.copy(
+                is PartialViewStateScreen1.NavigateBackEffect -> state.copy(
                                                         latestEvent3= null, latestEvent5 = null,
                                                         effect = Screen1Effect.DELETE_OR_SAVE)
-                is PartialViewState.ClearEffectEffect -> state.copy(effect = null)
-                is PartialViewState.SnackbarEffect -> state.copy(
+                is PartialViewStateScreen1.ClearEffectEffect -> state.copy(effect = null)
+                is PartialViewStateScreen1.SnackbarEffect -> state.copy(
                                                         effect=Screen1Effect.SNACKBAR,
                                                         latestEvent3 = null,latestEvent5=null)
             }
         }.skip(1)
     }
 
-    private fun Observable<Screen1Event.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewStateScreen1> {
         return flatMapSingle {
                 repo.getSubreddits()
                     .subscribeOn(Schedulers.io())
                     .map { list -> list.map { x -> x.toViewState() } }
-                    .map { PartialViewState.T5ListForRV(it) }
+                    .map { PartialViewStateScreen1.T5ListForRV(it) }
         }
     }
 
-    private fun Observable<Screen1Event.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewStateScreen1> {
         return Observable.merge(
-            flatMap{ Observable.just(PartialViewState.T5ListForRV(null),PartialViewState.T3ListForRV(null))},
+            flatMap{ Observable.just(PartialViewStateScreen1.T5ListForRV(null),PartialViewStateScreen1.T3ListForRV(null))},
             flatMap {
                repo.getSubreddits(it.srList.lastOrNull()).toObservable()
                    .map { list -> list.map { it.toViewState() } }
-                   .map { PartialViewState.T5ListForRV(it) }
+                   .map { PartialViewStateScreen1.T5ListForRV(it) }
                    .startWith(prefetch()).subscribeOn(Schedulers.io())
            })
     }
 
-    private fun Observable<Screen1Event.ClickOnT3ViewEvent>.onClickT3(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.ClickOnT3ViewEvent>.onClickT3(): Observable<PartialViewStateScreen1> {
         return flatMapSingle {
             repo.getPost(it.name)
                 .subscribeOn(Schedulers.io())
-                .map { x -> PartialViewState.T3ForViewing(x.toViewState()) }
+                .map { x -> PartialViewStateScreen1.T3ForViewing(x.toViewState()) }
         }
     }
 
-    private fun Observable<Screen1Event.UpdateViewingState>.updateViewingState(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.UpdateViewingState>.updateViewingState(): Observable<PartialViewStateScreen1> {
         return Observable.merge(
-            flatMap { Observable.just(PartialViewState.T3ListForRV(null)) },
+            flatMap { Observable.just(PartialViewStateScreen1.T3ListForRV(null)) },
             flatMap {
                 repo.updateSubreddits(srList=
                     if (it.name == null) listOf() else listOf(it.name),
                     isDisplayedInAdapter = false, shouldToggleDisplayedColumnInDb = true)
                     .subscribeOn(Schedulers.io())
-                    .andThen(Observable.just(PartialViewState.NavigateBackEffect))
+                    .andThen(Observable.just(PartialViewStateScreen1.NavigateBackEffect))
         })
     }
 
-    private fun Observable<Screen1Event.SaveEvent>.onSave(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.SaveEvent>.onSave(): Observable<PartialViewStateScreen1> {
         return flatMap {
-                    Observable.just(PartialViewState.T5ListForRV(
+                    Observable.just(PartialViewStateScreen1.T5ListForRV(
                                      it.previousState.filter { x->x.name != it.targetedSubreddit }))
                               .startWith(repo.saveSubreddit(it.targetedSubreddit)
                              .subscribeOn(Schedulers.io()))
                         }
     }
 
-    private fun Observable<Screen1Event.ClickOnT5ViewEvent>.onClickT5(): Observable<PartialViewState> {
+    private fun Observable<Screen1Event.ClickOnT5ViewEvent>.onClickT5(): Observable<PartialViewStateScreen1> {
         return Observable.merge(
             flatMapSingle { clickOnT5Event ->
                 repo.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
@@ -145,7 +145,7 @@ class SubredditsAndPostsVM @Inject constructor(
                     .subscribeOn(Schedulers.io())
                     .andThen(repo.getPosts(clickOnT5Event.name)
                     .map { list -> list.map { x -> x.toViewState() }}
-                    .map { x -> PartialViewState.T3ListForRV(x) })
+                    .map { x -> PartialViewStateScreen1.T3ListForRV(x) })
             },
             flatMapSingle {
                 repo.getSubreddit(it.name)
@@ -156,7 +156,7 @@ class SubredditsAndPostsVM @Inject constructor(
                                                     thumbnail = "", banner_img = "", subscribers=5))
                     .retry(1))
                     .subscribeOn(Schedulers.io())
-                    .map { x -> PartialViewState.T5ForViewing(x.toViewState()) }
+                    .map { x -> PartialViewStateScreen1.T5ForViewing(x.toViewState()) }
             })
     }
 
@@ -171,11 +171,11 @@ class SubredditsAndPostsVM @Inject constructor(
                 .onErrorComplete()
                 .doOnComplete { Timber.d("---- done fetching posts") })
 
-    private fun Observable<Screen1Event.MakeSnackBarEffect>.onSnackbar(): Observable<PartialViewState> {
-        return flatMap{Observable.just(PartialViewState.SnackbarEffect)}
+    private fun Observable<Screen1Event.MakeSnackBarEffect>.onSnackbar(): Observable<PartialViewStateScreen1> {
+        return flatMap{Observable.just(PartialViewStateScreen1.SnackbarEffect)}
     }
 
-    private fun Observable<Screen1Event.ClearEffectEvent>.onClear(): Observable<PartialViewState> {
-        return flatMap{Observable.just(PartialViewState.ClearEffectEffect)}
+    private fun Observable<Screen1Event.ClearEffectEvent>.onClear(): Observable<PartialViewStateScreen1> {
+        return flatMap{Observable.just(PartialViewStateScreen1.ClearEffectEffect)}
     }
 }
