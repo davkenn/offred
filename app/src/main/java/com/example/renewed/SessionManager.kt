@@ -2,8 +2,7 @@ package com.example.renewed
 
 import android.content.Context
 import android.content.SharedPreferences
-//This file was copied and adapted from url:
-//https://github.com/tirgei/RetrofitAuthorization
+//This file was copied and adapted from url: https://github.com/tirgei/RetrofitAuthorization
 class SessionManager (context: Context) {
     private var prefs: SharedPreferences = context.getSharedPreferences(
                                         context.getString(R.string.app_name), Context.MODE_PRIVATE)

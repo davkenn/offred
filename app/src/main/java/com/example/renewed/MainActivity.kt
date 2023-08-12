@@ -20,12 +20,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
-
     @Inject lateinit var auth:AuthAPI
     @Inject lateinit var sm:SessionManager
     private lateinit var navController: NavController
     private lateinit var bottomNavigationView: BottomNavigationView
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +47,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             "DO_NOT_TRACK_THIS_DEViCE")
             .map {  it.getOrDefault("access_token","") }
     }
+
     private fun toggleFullscreen(id:Int) {
         if (id == R.id.feed) {
             bottomNavigationView.visibility = View.GONE
@@ -63,8 +62,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             bottomNavigationView.visibility = View.VISIBLE
             val ctrl = WindowCompat.getInsetsController(window,
                                                       window.decorView.findViewById(R.id.selection))
-
-           ctrl.show(WindowInsetsCompat.Type.navigationBars())
+            ctrl.show(WindowInsetsCompat.Type.navigationBars())
          }
     }
 

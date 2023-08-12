@@ -14,5 +14,4 @@ class OffredApplication : Application() {
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
         Timber.d("onCreate called")
     }
-
 }

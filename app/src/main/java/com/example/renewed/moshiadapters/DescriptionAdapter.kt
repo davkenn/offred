@@ -5,8 +5,6 @@ import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonQualifier
 import com.squareup.moshi.ToJson
 
-
-
 @Retention(AnnotationRetention.RUNTIME)
 @JsonQualifier
 annotation class SubredditDescription

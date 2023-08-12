@@ -51,13 +51,11 @@ interface T5DAO {
         @Query("UPDATE RoomT5 SET isDisplayed=0")
         fun clearDisplayed() : Completable
 
-
         @Query("DELETE FROM RoomT3  WHERE RoomT3.subredditId IN (SELECT name from RoomT5 WHERE RoomT5.isSaved=1) and RoomT3.isSaved=0")   //this num must be same as num loaded
         fun deleteUnsavedPosts() : Completable
         //FOR UI TESTING
         @Query("UPDATE RoomT5 SET totalViews=0 and isDisplayed=0 and isSaved=0")
         fun clearViews() : Unit
-
 
         @Query("SELECT * FROM RoomT5")
         fun getAllRows(): List<RoomT5>

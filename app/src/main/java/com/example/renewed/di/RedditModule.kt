@@ -119,7 +119,6 @@ object ExoPlayerModule {
                                                                     ExoPlayer.Builder(ctx).build()
 }
 
-
 @InstallIn(SingletonComponent::class)
 @Module
 object FavsRepoModule {
