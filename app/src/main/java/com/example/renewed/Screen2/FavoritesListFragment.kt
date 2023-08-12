@@ -14,9 +14,11 @@ import com.example.renewed.VP_PAGES_PER_LOAD
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.PartialViewStateScreen2
+import com.example.renewed.models.Screen1Effect
 import com.example.renewed.models.Screen2Effect
 import com.example.renewed.models.Screen2Event
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding4.viewpager2.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -80,18 +82,25 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                //             }},
                  //                 { Timber.e("FAVLISTERROR", it.stackTrace) })
                    //    .addTo(disposables)
-        favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ when (it){
-                is PartialViewStateScreen2.DeleteCompleteEffect ->
-                    favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
-                is PartialViewStateScreen2.LoadCompleteEffect -> vp.post{}
 
-             //       favoritesVM.processInput(Screen2Event.UpdatePositionEvent(VP_PAGES_PER_LOAD))
-                is PartialViewStateScreen2.Position -> {selectPos=it.position
-                    vp.post{vp.setCurrentItem( selectPos,true)}}
-                is PartialViewStateScreen2.Posts -> adapter2.replaceList(it.posts) }
-            },
-                { Timber.e("FAVLISTERROR", it.stackTrace) })
+
+        favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
+            .subscribe { x ->
+                x.position?.let {
+                    selectPos = it.position
+                    vp.post { vp.setCurrentItem(selectPos, true) }
+                }
+                x.currentlyDisplayedList?.let { adapter2.replaceList(it.posts) }
+                x.effect?.let {
+                    when (x.effect) {
+                        Screen2Effect.DELETE -> favoritesVM.processInput(
+                            Screen2Event.AddSubredditsEvent(
+                                VP_PAGES_PER_LOAD
+                            )
+                        )
+                        Screen2Effect.LOAD -> vp.post {}
+                    }
+                }}
             .addTo(disposables)
     }
 

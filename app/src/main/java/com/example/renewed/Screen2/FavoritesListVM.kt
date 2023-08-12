@@ -29,7 +29,7 @@ package com.example.renewed.Screen2
         private val inputEvents: PublishRelay<Screen2Event> = PublishRelay.create()
 
 
-        val vs: Observable<PartialViewStateScreen2> = inputEvents
+        val vs: Observable<FullViewStateScreen2> = inputEvents
             .doOnNext { Timber.d("---- Event is $it") }
             .eventToResult()
             .doOnNext { Timber.d("---- Result is $it") }
