@@ -28,7 +28,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private lateinit var binding: FragmentFavoritesListBinding
-
     @Inject
     lateinit var exo: ExoPlayer
     private val favoritesVM: FavoritesListVM by viewModels()
@@ -41,15 +40,12 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
         selectPos = savedInstanceState?.getInt("pos") ?: 0
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated in FavoritesListFragment")
         adapter2 = FavoritesListAdapter(this)
-
         binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
             vp = pager
@@ -71,18 +67,13 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                     favoritesVM.processInput(Screen2Event.ClearEffectEvent)
                     when (x.effect) {
                         Screen2Effect.DELETE ->
-                           favoritesVM.processInput(
-                            Screen2Event.AddSubredditsEvent(
-                                VP_PAGES_PER_LOAD
-                            )
+                           favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD)
                         )
                         Screen2Effect.LOAD ->  vp.post{}
                     }
                 }}
             .addTo(disposables)
     }
-
-
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -108,10 +99,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 vp.isUserInputEnabled=false
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(
                     position - VP_PAGES_PER_LOAD))
-
                 //when DeleteSubredditEvent returns t, SaveSubredditEvent will be called
                 favoritesVM.processInput(Screen2Event.DeleteSubredditEvent(
-                                                         adapter2.postIds.take(VP_PAGES_PER_LOAD)))
+                                       adapter2.postIds.take(VP_PAGES_PER_LOAD)))
             }
             else {
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(position))

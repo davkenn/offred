@@ -17,7 +17,6 @@ sealed class Screen2Event{
     data class UpdatePositionEvent(val newPosition: Int): Screen2Event()
     data class DeleteSubredditEvent(val targets:List<String>):Screen2Event()
     data class AddSubredditsEvent(val count:Int = 6):Screen2Event()
-
     data class UpdateViewedPosts(val newPosts:List<String>): Screen2Event()
     object ClearEffectEvent:Screen2Event()
 }

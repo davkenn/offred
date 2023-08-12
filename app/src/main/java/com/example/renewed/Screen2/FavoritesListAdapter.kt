@@ -7,7 +7,7 @@ import com.example.renewed.Screen1.Subscreen.PostFragment
 import com.example.renewed.VIEWPAGER_PAGES_TOTAL
 
 class FavoritesListAdapter(private val fragment: FavoritesListFragment): FragmentStateAdapter(fragment) {
-    var postIds: MutableList<String> = mutableListOf<String>()
+    var postIds: MutableList<String> = mutableListOf()
     var fragList: MutableList<PostFragment?> = arrayOfNulls<PostFragment>(VIEWPAGER_PAGES_TOTAL).toMutableList()
     var a = arrayOfNulls<PostFragment>(VIEWPAGER_PAGES_TOTAL).toMutableList()
 
