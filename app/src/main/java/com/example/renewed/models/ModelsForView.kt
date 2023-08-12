@@ -22,8 +22,8 @@ sealed class PartialViewStateScreen1(val name: String?){
 }
 
 data class FullViewStateScreen2(
-    val currentlyDisplayedList: List<String>?=null,
-    val position : Int,
+    val currentlyDisplayedList: PartialViewStateScreen2.Posts?=null,
+    val position : PartialViewStateScreen2.Position?=null,
     val effect: Screen2Effect?=null)
 
 sealed class PartialViewStateScreen2(val name: String?){

@@ -32,9 +32,24 @@ package com.example.renewed.Screen2
         val vs: Observable<PartialViewStateScreen2> = inputEvents
             .doOnNext { Timber.d("---- Event is $it") }
             .eventToResult()
-            .doOnNext { Timber.d("---- Result is $it") }  .replay(1)
+            .doOnNext { Timber.d("---- Result is $it") }
+            .combineResults()
+            .doOnNext { Timber.d("----Combined is $it") }
+            .replay(1)
             .autoConnect(1){disposables.add(it)}
 
+        private fun Observable<PartialViewStateScreen2>.combineResults(): Observable<FullViewStateScreen2> {
+
+            return scan(FullViewStateScreen2()) { state, event ->
+                when (event) {
+                    is PartialViewStateScreen2.LoadCompleteEffect -> state.copy(effect = Screen2Effect.LOAD)
+                    is PartialViewStateScreen2.DeleteCompleteEffect -> state.copy(effect = Screen2Effect.DELETE)
+                    is PartialViewStateScreen2.Posts -> state.copy(currentlyDisplayedList = event)
+                    is PartialViewStateScreen2.Position -> state.copy(position = event)
+                }
+
+            }.skip(1)
+        }
         private fun Observable<Screen2Event>.eventToResult(): Observable<PartialViewStateScreen2> {
             return publish {
                 val a = Observable.fromArray(
@@ -110,6 +125,16 @@ package com.example.renewed.Screen2
 
 
         private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn2() : Observable<Screen2Effect> {
+            return flatMap {
+                favsRepo.deletePages(it.targets)
+                    .subscribeOn(Schedulers.io())
+                    .andThen(Observable.just(Screen2Effect.DELETE))
+            }
+        }
+
+        private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn3() : Observable<Screen2Effect> {
+
+
             return flatMap {
                 favsRepo.deletePages(it.targets)
                     .subscribeOn(Schedulers.io())
