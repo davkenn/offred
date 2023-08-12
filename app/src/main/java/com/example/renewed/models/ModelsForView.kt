@@ -29,6 +29,7 @@ data class FullViewStateScreen2(
 sealed class PartialViewStateScreen2(val name: String?){
     object DeleteCompleteEffect: PartialViewStateScreen2("DeleteCompleteEffect")
     object LoadCompleteEffect: PartialViewStateScreen2("LoadCompleteEffect")
+    object ClearEffectEffect:PartialViewStateScreen2("ClearState")
     data class Position(val position:Int):PartialViewStateScreen2("Position")
     data class Posts(val posts:List<String>):PartialViewStateScreen2("Position")
 }

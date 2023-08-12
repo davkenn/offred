@@ -13,10 +13,7 @@ import com.example.renewed.VIEWPAGER_PAGES_TOTAL
 import com.example.renewed.VP_PAGES_PER_LOAD
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
-import com.example.renewed.models.PartialViewStateScreen2
-import com.example.renewed.models.Screen1Effect
-import com.example.renewed.models.Screen2Effect
-import com.example.renewed.models.Screen2Event
+import com.example.renewed.models.*
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding4.viewpager2.*
@@ -44,6 +41,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
         selectPos = savedInstanceState?.getInt("pos") ?: 0
+
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,29 +59,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             favorites.setBackgroundColor(Color.parseColor("black"))
             Glide.with(this@FavoritesListFragment).load(R.drawable.ic_loading).into(loading)
         }
-//added the filter in vm
-  //      favoritesVM.currentlyDisplayedPosts.filter{it.size== VIEWPAGER_PAGES_TOTAL }
-    //                                       .observeOn(AndroidSchedulers.mainThread())
-      //                                     .subscribe({adapter2.replaceList(it) },
-        //                                       { Timber.e("FAVLISTERROR", it.stackTrace) })
-          //                                 .addTo(disposables)
-
-
-      //  favoritesVM.currentPosition.observeOn(AndroidSchedulers.mainThread())
-        //                 .subscribe({ selectPos = it
-          //                            vp.post{vp.setCurrentItem( selectPos,true)} },
-            //                        { Timber.d("ERROR IN POS") })
-              //          .addTo(disposables)
-
-     //   favoritesVM.eventCompleteEvent.observeOn(AndroidSchedulers.mainThread())
-       //     .subscribe({ when (it){
-         //                   Screen2Effect.DELETE ->
-           //                     favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
-             //               Screen2Effect.LOAD -> vp.post{}
-               //             }},
-                 //                 { Timber.e("FAVLISTERROR", it.stackTrace) })
-                   //    .addTo(disposables)
-
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe { x ->
@@ -92,13 +68,15 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 }
                 x.currentlyDisplayedList?.let { adapter2.replaceList(it.posts) }
                 x.effect?.let {
+                    favoritesVM.processInput(Screen2Event.ClearEffectEvent)
                     when (x.effect) {
-                        Screen2Effect.DELETE -> favoritesVM.processInput(
+                        Screen2Effect.DELETE ->
+                           favoritesVM.processInput(
                             Screen2Event.AddSubredditsEvent(
                                 VP_PAGES_PER_LOAD
                             )
                         )
-                        Screen2Effect.LOAD -> vp.post {}
+                        Screen2Effect.LOAD ->  vp.post{}
                     }
                 }}
             .addTo(disposables)
