@@ -1,5 +1,7 @@
 package com.example.renewed.models
 
+import io.reactivex.rxjava3.core.Observable
+
 sealed class Screen1Event{
     data class ScreenLoadEvent(val name:String?): Screen1Event()
     data class ClickOnT5ViewEvent(val name: String): Screen1Event() //this returns two things one a view state and one a view effect
@@ -15,5 +17,7 @@ sealed class Screen2Event{
     data class UpdatePositionEvent(val newPosition: Int): Screen2Event()
     data class DeleteSubredditEvent(val targets:List<String>):Screen2Event()
     data class AddSubredditsEvent(val count:Int = 6):Screen2Event()
+
+    data class UpdateViewedPosts(val newPosts:List<String>): Screen2Event()
 }
 

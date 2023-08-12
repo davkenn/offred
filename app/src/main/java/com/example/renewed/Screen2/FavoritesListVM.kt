@@ -40,7 +40,9 @@ package com.example.renewed.Screen2
                 val a = Observable.fromArray(
                     it.ofType(Screen2Event.DeleteSubredditEvent::class.java).deleteThenReturn(),
                     it.ofType(Screen2Event.AddSubredditsEvent::class.java).loadThenReturn(newPostsObservable),
-                    it.ofType(Screen2Event.UpdatePositionEvent::class.java).returnPosition()
+                    it.ofType(Screen2Event.UpdatePositionEvent::class.java).returnPosition(),
+                    it.ofType(Screen2Event.UpdateViewedPosts::class.java).returnPosts()
+
                 )
                 a.mergeAll()
             }
@@ -59,12 +61,15 @@ package com.example.renewed.Screen2
                               .flatMapCompletable { x -> favsRepo.insert(x.name) }
                               .startWith(favsRepo.clearPages()
                               .subscribeOn(Schedulers.io()))
-                              .subscribe({ Timber.d("observ" ) },
+                              .subscribe({ Timber.d("observ" )
+                                         },
                                           { Timber.e("error: ${it.localizedMessage}") })
                               .addTo(disposables)
 
-            currentlyDisplayedPosts = favsRepo.observeCurrentPostList().replay(1)
+            currentlyDisplayedPosts = favsRepo.observeCurrentPostList()
+                .filter{it.size== VIEWPAGER_PAGES_TOTAL }.replay(1)
                 .autoConnect(1) { disposables.add(it) }
+            currentlyDisplayedPosts.subscribe{processInput(Screen2Event.UpdateViewedPosts(it))}
 
             currentPosition = inputEvents.publish { it.ofType(Screen2Event.UpdatePositionEvent::class.java) }
                 .map { it.newPosition }
@@ -79,11 +84,19 @@ package com.example.renewed.Screen2
                 }
             }
 
+        private fun Observable<Screen2Event.UpdateViewedPosts>.returnPosts()
+                : Observable<PartialViewStateScreen2> =
+            map {
+                PartialViewStateScreen2.Posts(it.newPosts)
+            }
+
+
             private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn()
                                                       : Observable<PartialViewStateScreen2> {
                 return flatMap {
                     favsRepo.deletePages(it.targets)
                         .subscribeOn(Schedulers.io())
+
                         .andThen(Observable.just(PartialViewStateScreen2.DeleteCompleteEffect))
                 }
             }
