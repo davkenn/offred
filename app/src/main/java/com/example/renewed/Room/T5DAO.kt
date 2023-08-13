@@ -17,9 +17,6 @@ interface T5DAO {
         @Query("SELECT COUNT(*) FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0")
         fun howManySubredditsInDb(): Single<Long>
 
-        @Query("DELETE FROM RoomT5 WHERE name = :name")
-        fun delete(name: String): Completable
-
         @Query("DELETE FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0 AND totalViews >= :maxViews")
         fun deleteUnwanted(maxViews: Int= REPEATS): Completable
 
