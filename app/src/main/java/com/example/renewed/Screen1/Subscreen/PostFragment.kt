@@ -41,10 +41,9 @@ class PostFragment : ContentFragment() {
     var postBinding: PostViewBinding? = null
     private val disposables = CompositeDisposable()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
         return binding.root
@@ -75,56 +74,56 @@ class PostFragment : ContentFragment() {
     override fun onResume() {
         Timber.d("onResume in Post Fragment ${this.t3Name}")
         super.onResume()
+        //stopVideo is called both in onPause and onResume because we don't know if onPause
+        // in the previous active Fragment will be called before or after onResume in the next
+        // active Fragment in Screen2. also, we can not just call stopVideo in onResume because
+        // onPause may not be followed by onResume if Screen2 is closed
         stopVideo()
         postsVM.setPost(t3Name!!)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
-               .subscribe({ t3ViewState -> postBinding!!.postName.text = t3ViewState.displayName
-                                           val text = t3ViewState.created + ": "
-                                           postBinding!!.timeCreated.text = text
-                                           postBinding!!.bodyText.text = t3ViewState.selftext
-                                           Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
-                                           postBinding!!.url.text = t3ViewState.url
-                        if (t3ViewState.isGalleryPost()) {
+               .subscribe({ t3ViewState ->
+                            postBinding!!.postName.text = t3ViewState.displayName
+                            val creationDate = t3ViewState.created + ": "
+                            postBinding!!.timeCreated.text = creationDate
+                            postBinding!!.bodyText.text = t3ViewState.selftext
+                            Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
+                            postBinding!!.url.text = t3ViewState.url
+                            if (t3ViewState.isGalleryPost()) {
                             //makes gallery image clickable but still focusable on other post types
-                                           postBinding!!.fullImg.isFocusable =false
-                                           postBinding!!.fullImg.isFocusableInTouchMode =false
-                                           postBinding!!.fullImg.setOnClickListener {
-                                               this@PostFragment.postsVM.pos+=1
-                                               Glide.with(this@PostFragment).load(
-                                                                    t3ViewState.galleryUrls
-                                                         ?.get(this@PostFragment.postsVM.pos % t3ViewState.galleryUrls.size)
-                                                        ).into(postBinding!!.fullImg)
+                                postBinding!!.fullImg.isFocusable =false
+                                postBinding!!.fullImg.isFocusableInTouchMode =false
+                                postBinding!!.fullImg.setOnClickListener {
+                                    this@PostFragment.postsVM.pos+=1
+                                    Glide.with(this@PostFragment).load(
+                                    t3ViewState.galleryUrls?.get(this@PostFragment.postsVM.pos %
+                                                                      t3ViewState.galleryUrls.size))
+                                                                        .into(postBinding!!.fullImg)
+                                }
+                            t3ViewState.galleryUrls?.let{ postBinding!!.fullImg.visibility = VISIBLE
+                                                Glide.with(this@PostFragment)
+                                                     .load(t3ViewState.galleryUrls[postsVM.pos%
+                                                                    t3ViewState.galleryUrls.size])
+                                                     .into(postBinding!!.fullImg)
                             }
-                        if (t3ViewState.galleryUrls!=null){
-                            postBinding!!.fullImg.visibility = VISIBLE
-                            Glide.with(this@PostFragment).load(t3ViewState.galleryUrls[postsVM.pos% t3ViewState.galleryUrls.size])
-                                .into(postBinding!!.fullImg)
-                        }
-                        val end = "\nGALLERY, click to to open..."
-                        postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
-                    }
+                                val end = "\nGALLERY, click to to open..."
+                                postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
+                            }
+                            if (t3ViewState.isUrlPost()) {  loadUrlClickListener(t3ViewState)
+                                                             postBinding!!.url.visibility= VISIBLE }
 
-                    if (t3ViewState.isUrlPost()) {
-                        loadUrlClickListener(t3ViewState)
-                        postBinding!!.url.visibility= VISIBLE
-                    }
-                    if (t3ViewState.isImagePost())  {
-                        loadImage(t3ViewState)
-                        postBinding!!.fullImg.visibility = VISIBLE
-                    }
+                            if (t3ViewState.isImagePost())  { loadImage(t3ViewState)
+                                                        postBinding!!.fullImg.visibility = VISIBLE }
+
                     //TODO not handling great if its both a thumb and certain kinds of reddit urls
-                    if (!t3ViewState.hasNoThumbnail()) {
-                        loadThumbNail(t3ViewState)
-                        postBinding!!.thumb.visibility = VISIBLE
-                    }
-                    if (t3ViewState.isVideoPost()){
-
-                        postBinding!!.timeCreated.visibility= GONE
-                        postBinding!!.bodyText.visibility=GONE
-                        postBinding!!.exoplayer.visibility=VISIBLE
-                        loadVideo(t3ViewState)
-                    }
+                            if (!t3ViewState.hasNoThumbnail()) { loadThumbNail(t3ViewState)
+                                                          postBinding!!.thumb.visibility = VISIBLE }
+                            if (t3ViewState.isVideoPost()){
+                                                    postBinding!!.timeCreated.visibility= GONE
+                                                    postBinding!!.bodyText.visibility=GONE
+                                                    postBinding!!.exoplayer.visibility=VISIBLE
+                                                    loadVideo(t3ViewState)
+                            }
                 }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
     }
 
@@ -156,18 +155,17 @@ class PostFragment : ContentFragment() {
         }
         Glide.with(this).load(viewState.thumbnail.replace("&amp;", ""))
              .apply( RequestOptions().override(150, 150))
-            .placeholder(R.drawable.ic_loading)
-            .error(ColorDrawable(Color.RED))
-            .fallback(ColorDrawable(Color.YELLOW))
+             .placeholder(R.drawable.ic_loading)
+             .error(ColorDrawable(Color.RED))
+             .fallback(ColorDrawable(Color.YELLOW))
              .into(postBinding!!.thumb)
     }
 
     private fun loadVideo(state:ViewStateT3?) {
-        playerView?.player = null
+     //   playerView?.player = null
         playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()
-        if (state?.let{!it.isVideoPost()} == true)  { return}
         exo.repeatMode = Player.REPEAT_MODE_ALL
         exo.playWhenReady= true
         exo.setMediaItem(MediaItem.fromUri(state?.url?: ""))

@@ -20,16 +20,16 @@ class SubredditFragment : ContentFragment() {
 
     override fun getName() : String = subVM.name
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+
         val binding = SubViewBinding.inflate(inflater,container,false)
         subBinding = binding
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         val name = arguments?.getString("key") ?: "NONE"
         subVM.setSub(name)

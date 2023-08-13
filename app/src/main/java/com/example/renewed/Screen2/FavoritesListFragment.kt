@@ -15,7 +15,6 @@ import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.*
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding4.viewpager2.*
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -33,23 +32,23 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     private val favoritesVM: FavoritesListVM by viewModels()
     private val disposables = CompositeDisposable()
     private lateinit var vp: ViewPager2
-    private lateinit var adapter2 : FavoritesListAdapter
-    private var selectPos: Int by atomic(0)
+    private lateinit var vpPagesAdapter : FavoritesListAdapter
+    private var savedPos: Int by atomic(0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")
         super.onCreate(savedInstanceState)
-        selectPos = savedInstanceState?.getInt("pos") ?: 0
+        savedPos = savedInstanceState?.getInt("pos") ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated in FavoritesListFragment")
-        adapter2 = FavoritesListAdapter(this)
+        vpPagesAdapter = FavoritesListAdapter(this)
         binding = FragmentFavoritesListBinding.bind(view)
         binding.apply {
             vp = pager
-            pager.adapter = adapter2
+            pager.adapter = vpPagesAdapter
             pager.offscreenPageLimit = 6
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             favorites.setBackgroundColor(Color.parseColor("black"))
@@ -59,10 +58,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
             .subscribe { x ->
                 x.position?.let {
-                    selectPos = it.position
-                    vp.post { vp.setCurrentItem(selectPos, true) }
+                    savedPos = it.position
+                    vp.post { vp.setCurrentItem(savedPos, true) }
                 }
-                x.currentlyDisplayedList?.let { adapter2.replaceList(it.posts) }
+                x.currentlyDisplayedList?.let { vpPagesAdapter.replaceList(it.posts) }
                 x.effect?.let {
                     favoritesVM.processInput(Screen2Event.ClearEffectEvent)
                     when (x.effect) {
@@ -77,7 +76,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("pos",selectPos)
+        outState.putInt("pos",savedPos)
     }
 
     override fun onDestroyView() {
@@ -93,21 +92,23 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             binding.loading.visibility=View.INVISIBLE;vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;
         }}
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
-            if (position == adapter2.postIds.size - 4 && adapter2.postIds.size == VIEWPAGER_PAGES_TOTAL) {
+            if (position == vpPagesAdapter.postIds.size - 4 && vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
                 vp.visibility=View.INVISIBLE
                 binding.loading.visibility= View.VISIBLE
                 vp.isUserInputEnabled=false
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(
                     position - VP_PAGES_PER_LOAD))
-                //when DeleteSubredditEvent returns t, SaveSubredditEvent will be called
+                //when DeleteSubredditEvent returns, SaveSubredditEvent will be called
                 favoritesVM.processInput(Screen2Event.DeleteSubredditEvent(
-                                       adapter2.postIds.take(VP_PAGES_PER_LOAD)))
+                                       vpPagesAdapter.postIds.take(VP_PAGES_PER_LOAD)))
             }
             else {
+                //update position if not reload
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(position))
             }
         }
-        favoritesVM.processInput(Screen2Event.UpdatePositionEvent(selectPos))
+        //update position on rotation
+        if (savedPos != 0) favoritesVM.processInput(Screen2Event.UpdatePositionEvent(savedPos))
     }
 }
 

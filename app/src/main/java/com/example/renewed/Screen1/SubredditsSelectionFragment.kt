@@ -37,26 +37,21 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
     private lateinit var subredditAdapter: SubredditsAdapter
     private lateinit var postAdapter: PostsAdapter
-
     private val disposables = CompositeDisposable()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
     private var saveEnabled: Boolean? by atomic(null)
     private var backEnabled: Boolean? by atomic(null)
-
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
         if (savedInstanceState==null) {
-                  disposables.add(subsAndPostsVM.prefetch()
-                    .andThen{
-                      subsAndPostsVM.processInput(
-                        Screen1Event.ScreenLoadEvent(""))
-                   }
-            .subscribeOn(Schedulers.io())
-            .subscribe({ Timber.d("----done fetching both ") },
-                { Timber.e("----error fetching is ${it.localizedMessage}") }))
+                  disposables.add(subsAndPostsVM.prefetch().andThen{
+                             subsAndPostsVM.processInput(Screen1Event.ScreenLoadEvent(""))
+                  }.subscribeOn(Schedulers.io())
+                   .subscribe({ Timber.d("----done fetching both ") },
+                             { Timber.e("----error fetching is ${it.localizedMessage}") }))
         }
         saveEnabled = savedInstanceState?.getBoolean("delete_enabled")
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
@@ -74,7 +69,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated in home Fragment")
-
         navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
 
@@ -126,7 +120,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         if (x.effect != null){
                            when (x.effect) {
                                Screen1Effect.DELETE_OR_SAVE -> {
-                                                             popTopViewerElement()
+                                                             backPressedPopCurrentSubscreen()
                                                              subredditAdapter.clearSelected()
                               }
                                Screen1Effect.SNACKBAR -> Snackbar.make(binding.root,
@@ -141,13 +135,15 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 .addTo(disposables)
     }
 
-    private fun popTopViewerElement() {
-        if (navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
 
+    private fun backPressedPopCurrentSubscreen() {
+
+        //If subscreen is a subreddit post
+        if (navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
 
+        //if subscreen is a subreddit
         } else if (navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
-
             navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
         }
@@ -158,10 +154,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun getSubNameOrNull(): String? {
         val t = navHostFragment.childFragmentManager.primaryNavigationFragment
-        var name: String?
-        t.let { name = (t as ContentFragment).getName() }
-        if (name == "BlankFragment") return null
-        return name
+        var name: String? = (t as ContentFragment).getName()
+        return if (name == "BlankFragment") null else name
     }
 
     private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewStateScreen1) {
@@ -174,12 +168,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
             return
         }
-
         navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
         if (t3OrT5 is PartialViewStateScreen1.T3ForViewing) disableButtons(includingBack = false)
                                                             else enableButtons(onlyBack = false)
     }
-
 
     private fun disableButtons(includingBack:Boolean) {
         if (includingBack){
