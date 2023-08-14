@@ -17,13 +17,13 @@ interface T5DAO {
         @Query("SELECT COUNT(*) FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0")
         fun howManySubredditsInDb(): Single<Long>
 
-        @Query("DELETE FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0 AND totalViews >= :maxViews")
-        fun deleteUnwanted(maxViews: Int= REPEATS): Completable
+        @Query("DELETE FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0")
+        fun deleteUnwanted(): Completable
 
         //TODO here I am cutting off before deleting, maybe should just remove totalviews
-        @Query("SELECT * FROM RoomT5 WHERE isSaved= 0 AND totalViews < :repeats "+ //should be three
+        @Query("SELECT * FROM RoomT5 WHERE isSaved= 0 " +
                 "ORDER BY displayName <= :startReturningAfter,  displayName LIMIT 10")
-        fun getSubredditsFromTable(startReturningAfter:String,repeats:Int= REPEATS): Single<List<RoomT5>>
+        fun getSubredditsFromTable(startReturningAfter:String): Single<List<RoomT5>>
 
         @Query("SELECT * FROM RoomT5 WHERE isSaved= 1 ")
         fun observeSavedSubreddits(): Observable<List<RoomT5>>
@@ -51,7 +51,7 @@ interface T5DAO {
         @Query("DELETE FROM RoomT3  WHERE RoomT3.subredditId IN (SELECT name from RoomT5 WHERE RoomT5.isSaved=1) and RoomT3.isSaved=0")   //this num must be same as num loaded
         fun deleteUnsavedPosts() : Completable
         //FOR UI TESTING
-        @Query("UPDATE RoomT5 SET totalViews=0 and isDisplayed=0 and isSaved=0")
+        @Query("UPDATE RoomT5 SET isDisplayed=0 and isSaved=0")
         fun clearViews() : Unit
 
         @Query("SELECT * FROM RoomT5")
