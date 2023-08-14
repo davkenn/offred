@@ -109,11 +109,12 @@ class LargeTest {
     @Test
     fun testIfButtonClickSelectsButton() {
 
+        Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv))
 
             .perform(
-                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
-                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(10, click())
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
         onView(withId(R.id.subreddits_rv))
             .check(matches(withChild(isSelected())))
@@ -257,8 +258,8 @@ class LargeTest {
             databaseBuilder(
                 ctxt,
                 RedditDatabase::class.java,
-                "RedditDB1"
-            ).createFromAsset("RedditDBTest")
+                "RedditDB2"
+            ).createFromAsset("RedditDB2")
                 .build()
         }
 
