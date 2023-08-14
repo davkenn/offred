@@ -26,7 +26,7 @@ class SubredditsAndPostsVM @Inject constructor(
     private val inputEvents: PublishRelay<Screen1Event> = PublishRelay.create()
 
     init {
-        Timber.d("init in subsandpostsvm")
+        Timber.d("oncleared in subsandpostsvm")
         disposables.add(repo.clearDisplayed().andThen(prefetch()).subscribeOn(Schedulers.io())
             .subscribeBy{processInput(Screen1Event.ScreenLoadEvent(""))})
     }
@@ -45,7 +45,6 @@ class SubredditsAndPostsVM @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
-        Timber.d("oncleared in subsandpostsvm")
         disposables.dispose()
     }
 
@@ -93,23 +92,14 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
     private fun Observable<Screen1Event.ScreenLoadEvent>.onScreenLoad(): Observable<PartialViewStateScreen1> {
-        return flatMapSingle {
-                repo.getSubreddits()
-                    .subscribeOn(Schedulers.io())
-                    .map { list -> list.map { x -> x.toViewState() } }
-                    .map { PartialViewStateScreen1.T5ListForRV(it) }
-        }
+        return flatMapSingle { getSubredditList() }
     }
 
     private fun Observable<Screen1Event.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewStateScreen1> {
         return Observable.merge(
             flatMap{ Observable.just(PartialViewStateScreen1.T5ListForRV(null),PartialViewStateScreen1.T3ListForRV(null))},
-            flatMap {
-               repo.getSubreddits(it.srList.lastOrNull()).toObservable()
-                   .map { list -> list.map { it.toViewState() } }
-                   .map { PartialViewStateScreen1.T5ListForRV(it) }
-                   .startWith(prefetch()).subscribeOn(Schedulers.io())
-           })
+            flatMap { getSubredditList(it.srList.lastOrNull()).toObservable()
+                                                .startWith(prefetch()).subscribeOn(Schedulers.io()) })
     }
 
     private fun Observable<Screen1Event.ClickOnT3ViewEvent>.onClickT3(): Observable<PartialViewStateScreen1> {
@@ -124,9 +114,8 @@ class SubredditsAndPostsVM @Inject constructor(
         return Observable.merge(
             flatMap { Observable.just(PartialViewStateScreen1.T3ListForRV(null)) },
             flatMap {
-                repo.updateSubreddits(srList=
-                    if (it.name == null) listOf() else listOf(it.name),
-                    isDisplayedInAdapter = false, shouldToggleDisplayedColumnInDb = true)
+                repo.updateSubreddits(srList= if (it.name == null) listOf() else listOf(it.name),
+                          isDisplayedInAdapter = false, shouldToggleDisplayedColumnInDb = true)
                     .subscribeOn(Schedulers.io())
                     .andThen(Observable.just(PartialViewStateScreen1.NavigateBackEffect))
         })
@@ -164,7 +153,16 @@ class SubredditsAndPostsVM @Inject constructor(
             })
     }
 
-    fun prefetch(): Completable =
+    private fun Observable<Screen1Event.MakeSnackBarEffect>.onSnackbar()
+                                : Observable<PartialViewStateScreen1> =
+                                flatMap{Observable.just(PartialViewStateScreen1.SnackbarEffect)}
+
+
+    private fun Observable<Screen1Event.ClearEffectEvent>.onClear()
+                                        : Observable<PartialViewStateScreen1> =
+                             flatMap{Observable.just(PartialViewStateScreen1.ClearEffectEffect)}
+
+    private fun prefetch(): Completable =
         repo.deleteUninterestingSubreddits()
             .andThen(repo.prefetchSubreddits()
                 .doOnError { Timber.e("----error getting subreddits ${it.stackTraceToString()}") }
@@ -175,11 +173,9 @@ class SubredditsAndPostsVM @Inject constructor(
                 .onErrorComplete()
                 .doOnComplete { Timber.d("---- done fetching posts") })
 
-    private fun Observable<Screen1Event.MakeSnackBarEffect>.onSnackbar(): Observable<PartialViewStateScreen1> {
-        return flatMap{Observable.just(PartialViewStateScreen1.SnackbarEffect)}
-    }
+    private fun getSubredditList(lastOnPreviousPage:String?=null) = repo.getSubreddits(lastOnPreviousPage)
+        .subscribeOn(Schedulers.io())
+        .map { list -> list.map { x -> x.toViewState() } }
+        .map { PartialViewStateScreen1.T5ListForRV(it) }
 
-    private fun Observable<Screen1Event.ClearEffectEvent>.onClear(): Observable<PartialViewStateScreen1> {
-        return flatMap{Observable.just(PartialViewStateScreen1.ClearEffectEffect)}
-    }
 }

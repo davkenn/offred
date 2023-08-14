@@ -29,12 +29,9 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
 
     override fun prefetchSubreddits() : Completable =
         t5Dao.howManySubredditsInDb()
-             .toObservable()
              .flatMapCompletable {  n-> loadSubredditsDb(max(0,
-                                            min(SCREEN1_DB_SIZE, SCREEN1_DB_SIZE-n.toInt())))
-                                 }
+                                            min(SCREEN1_DB_SIZE, SCREEN1_DB_SIZE-n.toInt()))) }
 
-    //TODO theres a bug still when you start after an hour probably need to handle invalid token
     private fun loadSubredditsDb(needed: Int): Completable =
         Observable.fromIterable(List(needed){0})
             .flatMap ( {  api.getRandomSubreddit().toObservable()} , 10)
@@ -47,8 +44,8 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
     override fun getSubreddits(startFeedAfterThis: String?) : Single<List<RoomT5>> =
         t5Dao.getSubredditsFromTable(if (startFeedAfterThis.isNullOrEmpty()) ""
                                     else startFeedAfterThis)
-            .flatMap { it ->
-                updateSubreddits(it.map { it.name }, isDisplayedInAdapter = true,
+            .flatMap {
+                updateSubreddits(it.map { x -> x.name }, isDisplayedInAdapter = true,
                                           shouldToggleDisplayedColumnInDb = false)
                 .andThen(Single.just(it))
             }.subscribeOn(Schedulers.io())
