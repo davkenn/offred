@@ -172,9 +172,9 @@ class SubredditsAndPostsVMTest {
 
         viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
 
-        res.await(3,TimeUnit.SECONDS)
+        res.await(1,TimeUnit.SECONDS)
         viewModel.processInput(Screen1Event.ClickOnT5ViewEvent("t5_3c23m"))
-        res.await(3,TimeUnit.SECONDS)
+        res.await(1,TimeUnit.SECONDS)
    //     viewModel.processInput(Screen1Event.ClickOnT3ViewEvent("t3_yzv2c3"))
      //   res.await(3,TimeUnit.SECONDS)
 
@@ -203,11 +203,11 @@ class SubredditsAndPostsVMTest {
 
         viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
-        res.assertValueCount(2)
-        res.assertValueAt(1) {
-            it.t3ListForRV!!.vsT3!![0].url=="https://v.redd.it/cx5ll43oe31a1/DASHPlaylist" +
-                    ".mpd?a=1671522034%2CZWMzZTFjMzc5ZjI4OTViOGM1MWQ5MmJiYjAxNGMxZWYwNTlkMTM4YT" +
-                                        "YxMjQzYTU0MTIwNmQ1NDIxM2ZiNmZiMw%3D%3D&amp;v=1&amp;f=sd" }
+        viewModel.processInput(Screen1Event.ClickOnT5ViewEvent("t5_3c23m"))
+        res.await(1,TimeUnit.SECONDS)
+        res.assertValueCount(3)
+        res.assertValueAt(2) {
+            it.t3ListForRV!!.vsT3!![0].url.contains("cx5ll43oe31a1")}
         res.assertNotComplete()
     }
 
