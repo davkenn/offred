@@ -21,9 +21,9 @@ fun T3.toDbModel(): RoomT3 {
     val thumb: String?=null
     var address: String?=null
     //get correct video url from a number of json fields where it could be
-    if (url.startsWith("https://v.redd.it")){ address= media?.reddit_video?.dash_url?:
-                                                    secure_media?.reddit_video?.dash_url?:
-                                                    media?.reddit_video?.fallback_url ?:
+    if (url.startsWith("https://v.redd.it")){ address= videoMedia?.reddit_video?.dash_url?:
+                                                    secure_Video_media?.reddit_video?.dash_url?:
+                                                    videoMedia?.reddit_video?.fallback_url ?:
                                                     (url + "/DASH_720.mp4?source=fallback url")
     }
 

@@ -7,13 +7,10 @@ import com.squareup.moshi.*
 //because the key for the object inside media_metadata has a random key
 class MediaList {
     @FromJson
-    fun parse(reader: JsonReader, mediaAdapter: JsonAdapter<Media2>, ): List<Media2> {
-
-        var ls = mutableListOf<Media2>()
+    fun parse(reader: JsonReader, mediaAdapter: JsonAdapter<GalleryMedia>, ): List<GalleryMedia> {
+        var ls = mutableListOf<GalleryMedia>()
         val jsonObj = reader.readJsonValue() as Map<String, Any>
-        jsonObj.keys.forEach{
-            ls.add(mediaAdapter.fromJsonValue(jsonObj[it])!!)
-        }
-        return ls
+        return ls.apply { jsonObj.keys.forEach { ls.add(mediaAdapter.fromJsonValue(jsonObj[it])!!)}}
     }
 }
+

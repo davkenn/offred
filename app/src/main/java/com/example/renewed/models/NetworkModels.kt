@@ -31,22 +31,23 @@ data class T5 (override val name: String, val display_name: String, val icon_img
 
 @JsonClass(generateAdapter = true)
 data class T3(override val name: String, val author: String, val ups: Int, val downs: Int,
-              val score: Int, val num_comments: Int,  @SubredditDescription val selftext: String,
+              val score: Int, val num_comments: Int, @SubredditDescription val selftext: String,
               val subreddit: String, val subreddit_id: String, val subreddit_subscribers: Int,
-              @SubredditDescription val title: String,  var url: String,  val spoiler:Boolean,
+              @SubredditDescription val title: String, var url: String, val spoiler:Boolean,
               @Json(name = "upvote_ratio") val upvoteRatio: Double,
             //if json permalink is a url create a text post, if not then either vid  or photo post
-              val permalink: String, val thumbnail: String, val created_utc: Long,val media:Media?,
-              val secure_media:Media?, val media_metadata:List<Media2>?) : RedditPostType()
+              val permalink: String, val thumbnail: String, val created_utc: Long,
+              val videoMedia:VideoMedia?, val secure_Video_media:VideoMedia?,
+              val media_metadata:List<GalleryMedia>?) : RedditPostType()
 
 @JsonClass(generateAdapter = true)
 data class PicsAndDimens (val y:Int,val x:Int, val u:String)
 
 @JsonClass(generateAdapter = true)
-data class Media2(val e:String?, val m:String?, val p: List<PicsAndDimens>?)
+data class GalleryMedia(val e:String?, val m:String?, val p: List<PicsAndDimens>?)
 
 @JsonClass(generateAdapter = true)
-data class Media  (val reddit_video:Video?)
+data class VideoMedia  (val reddit_video:Video?)
 
 @JsonClass(generateAdapter = true)
 data class Video  (val fallback_url:String?,val dash_url:String?)
