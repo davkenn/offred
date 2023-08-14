@@ -115,7 +115,7 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMap { Observable.just(PartialViewStateScreen1.T3ListForRV(null)) },
             flatMap {
                 repo.updateSubreddits(srList= if (it.name == null) listOf() else listOf(it.name),
-                          isDisplayedInAdapter = false, shouldToggleDisplayedColumnInDb = true)
+                                                     shouldToggleDisplayedColumnInDb = true)
                     .subscribeOn(Schedulers.io())
                     .andThen(Observable.just(PartialViewStateScreen1.NavigateBackEffect))
         })
@@ -133,8 +133,7 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun Observable<Screen1Event.ClickOnT5ViewEvent>.onClickT5(): Observable<PartialViewStateScreen1> {
         return Observable.merge(
             flatMapSingle { clickOnT5Event ->
-                repo.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
-                                                         shouldToggleDisplayedColumnInDb = true)
+                repo.updateSubreddits(listOf( clickOnT5Event.name), shouldToggleDisplayedColumnInDb = true)
                     .subscribeOn(Schedulers.io())
                     .andThen(repo.getPosts(clickOnT5Event.name)
                     .map { list -> list.map { x -> x.toViewState() }}

@@ -45,7 +45,7 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
         t5Dao.getSubredditsFromTable(if (startFeedAfterThis.isNullOrEmpty()) ""
                                     else startFeedAfterThis)
             .flatMap {
-                updateSubreddits(it.map { x -> x.name }, isDisplayedInAdapter = true,
+                updateSubreddits(it.map { x -> x.name },
                                           shouldToggleDisplayedColumnInDb = false)
                 .andThen(Single.just(it))
             }.subscribeOn(Schedulers.io())
@@ -59,7 +59,7 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
          Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
                    .concatMapCompletable{t5Dao.saveSubreddit(it.name) }.subscribeOn(Schedulers.io())
 
-    override fun updateSubreddits(srList: List<String>, isDisplayedInAdapter: Boolean,
+    override fun updateSubreddits(srList: List<String>,
                                     shouldToggleDisplayedColumnInDb: Boolean): Completable =
         Observable.fromIterable(srList)
             //TODO im just swallowing the error here, change back from maybe to see prob
@@ -67,7 +67,6 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
             .concatMapCompletable {
                 t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
                     //so as not to double count a view, views only updated when sent into adapter
-                                totalViews= if (isDisplayedInAdapter) it.totalViews+1  else it.totalViews,
                                 isDisplayed =  if (shouldToggleDisplayedColumnInDb) (it.isDisplayed+1) % 2
                                                                             else it.isDisplayed))
                                     }.subscribeOn(Schedulers.io())

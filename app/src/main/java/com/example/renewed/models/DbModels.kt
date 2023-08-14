@@ -10,7 +10,7 @@ import java.time.Instant
 data class RoomT5(@PrimaryKey val name: String, val displayName: String, val description: String,
                   val thumbnail: String, val banner_img: String, val timeLastAccessed: Instant,
                   val subscribers: Int, val created_utc: Instant, val isSaved: Boolean = false,
-                  val totalViews: Int = 0, val isDisplayed: Int = 0)
+                  val isDisplayed: Int = 0)
 
 @Entity(foreignKeys = [ForeignKey(entity = RoomT3::class, parentColumns = arrayOf("name"),
                                   childColumns = arrayOf("link_id"), onDelete = ForeignKey.CASCADE,

@@ -22,7 +22,6 @@ interface BaseSubredditsAndPostsRepo {
 
     fun updateSubreddits(
         srList: List<String>,
-        isDisplayedInAdapter: Boolean,
         shouldToggleDisplayedColumnInDb: Boolean
     ): Completable
 
