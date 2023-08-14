@@ -46,13 +46,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
-        if (savedInstanceState==null) {
-                  disposables.add(subsAndPostsVM.prefetch().andThen{
-                             subsAndPostsVM.processInput(Screen1Event.ScreenLoadEvent(""))
-                  }.subscribeOn(Schedulers.io())
-                   .subscribe({ Timber.d("----done fetching both ") },
-                             { Timber.e("----error fetching is ${it.localizedMessage}") }))
-        }
         saveEnabled = savedInstanceState?.getBoolean("delete_enabled")
         backEnabled = savedInstanceState?.getBoolean("back_enabled")
     }
@@ -112,6 +105,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Observable.merge(backRefreshClicks,saveClicks)
                   .subscribe { subsAndPostsVM.processInput(it) }
 
+    //    subsAndPostsVM.processInput(Screen1Event.ScreenLoadEvent(""))
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
                         { x -> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
                         postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())

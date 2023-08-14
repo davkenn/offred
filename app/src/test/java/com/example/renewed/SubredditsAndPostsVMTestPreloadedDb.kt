@@ -32,7 +32,7 @@ class SubredditsAndPostsVMTestPreloadedDb {
             .build()
         mockWebServer = MockWebServer()
         apiService = setupTestRetrofit(mockWebServer,true)
-        fakerepo = SubredditsAndPostsRepo(apiService,a.subredditDao(),a.postsDao() )
+        fakerepo = SubredditsAndPostsRepo(a.subredditDao(),a.postsDao(),apiService )
         viewModel = SubredditsAndPostsVM(fakerepo)
 
     }

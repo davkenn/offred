@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.mergeAll
+import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import java.time.Instant
@@ -25,7 +26,9 @@ class SubredditsAndPostsVM @Inject constructor(
     private val inputEvents: PublishRelay<Screen1Event> = PublishRelay.create()
 
     init {
-        disposables.add(repo.clearDisplayed().subscribe())
+        Timber.d("init in subsandpostsvm")
+        disposables.add(repo.clearDisplayed().andThen(prefetch()).subscribeOn(Schedulers.io())
+            .subscribeBy{processInput(Screen1Event.ScreenLoadEvent(""))})
     }
 
     fun processInput(name: Screen1Event) {
@@ -42,6 +45,7 @@ class SubredditsAndPostsVM @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
+        Timber.d("oncleared in subsandpostsvm")
         disposables.dispose()
     }
 
