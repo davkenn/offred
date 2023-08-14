@@ -1,9 +1,6 @@
 package com.example.renewed.repos
 
-import android.util.Base64
-import android.util.Log
 import com.example.renewed.API
-import com.example.renewed.AuthAPI
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.SCREEN1_DB_SIZE
@@ -11,7 +8,6 @@ import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.lang.Integer.max
 import java.lang.Integer.min
@@ -46,7 +42,7 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
                                     else startFeedAfterThis)
             .flatMap {
                 updateSubreddits(it.map { x -> x.name },
-                                          shouldToggleDisplayedColumnInDb = false)
+                                          isDisplayedInSubscreen = false)
                 .andThen(Single.just(it))
             }.subscribeOn(Schedulers.io())
 
@@ -60,14 +56,14 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
                    .concatMapCompletable{t5Dao.saveSubreddit(it.name) }.subscribeOn(Schedulers.io())
 
     override fun updateSubreddits(srList: List<String>,
-                                    shouldToggleDisplayedColumnInDb: Boolean): Completable =
+                                  isDisplayedInSubscreen: Boolean): Completable =
         Observable.fromIterable(srList)
             //TODO im just swallowing the error here, change back from maybe to see prob
             .flatMapMaybe {t5Dao.getSubreddit(it).onErrorComplete()}
             .concatMapCompletable {
                 t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
                     //so as not to double count a view, views only updated when sent into adapter
-                                isDisplayed =  if (shouldToggleDisplayedColumnInDb) (it.isDisplayed+1) % 2
+                                isDisplayed =  if (isDisplayedInSubscreen) (it.isDisplayed+1) % 2
                                                                             else it.isDisplayed))
                                     }.subscribeOn(Schedulers.io())
 

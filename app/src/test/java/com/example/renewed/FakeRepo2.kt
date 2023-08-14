@@ -71,8 +71,7 @@ class FakeRepo2(private val apiService: API) : BaseSubredditsAndPostsRepo {
 
     override fun updateSubreddits(
         srList: List<String>,
-        isDisplayedInAdapter: Boolean,
-        shouldToggleDisplayedColumnInDb: Boolean
+        isDisplayedInSubscreen: Boolean
     ): Completable {
         return Completable.complete()
     }

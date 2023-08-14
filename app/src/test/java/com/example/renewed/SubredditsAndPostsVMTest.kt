@@ -121,12 +121,15 @@ class SubredditsAndPostsVMTest {
         val res = viewModel.vs.test()
 
         viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
-        res.await(1,TimeUnit.SECONDS)
-        res.assertValueCount(2)
-        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![0].url.contains(
-            "v.redd.it/cx5ll43oe31a1/DASHPlaylist.mpd?")
-
+        viewModel.processInput(Screen1Event.ClickOnT3ViewEvent("t3_yzx9lh"))
+        res.await(2,TimeUnit.SECONDS)
+    res.assertValueCount(1)
+        res.assertValueAt(0) {
+            it.t3ListForRV!!.vsT3!![0].url.contains(
+                "v.redd.it/cx5ll43oe31a1/DASHPlaylist.mpd?"
+            )
         }
+
         res.assertNotComplete()
 
     }
@@ -168,14 +171,20 @@ class SubredditsAndPostsVMTest {
         val res = viewModel.vs.test()
 
         viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
+
         res.await(3,TimeUnit.SECONDS)
-        res.assertValueCount(2)
+        viewModel.processInput(Screen1Event.ClickOnT5ViewEvent("t5_3c23m"))
+        res.await(3,TimeUnit.SECONDS)
+   //     viewModel.processInput(Screen1Event.ClickOnT3ViewEvent("t3_yzv2c3"))
+     //   res.await(3,TimeUnit.SECONDS)
+
+    //    res.assertValueCount(2)
         //loads 3 images for galeery
-        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].hasNoThumbnail() }
-        res.assertValueAt(1) { !it.t3ListForRV!!.vsT3!![3].isImagePost()}
-        res.assertValueAt(1) { !it.t3ListForRV!!.vsT3!![3].isVideoPost() }
-        res.assertValueAt(1) { !it.t3ListForRV!!.vsT3!![3].isUrlPost()}
-        res.assertValueAt(1) { it.t3ListForRV!!.vsT3!![3].isGalleryPost()}
+        res.assertValueAt(2) { it.t3ListForRV!!.vsT3!![3].hasNoThumbnail() }
+        res.assertValueAt(2) { !it.t3ListForRV!!.vsT3!![3].isImagePost()}
+        res.assertValueAt(2) { !it.t3ListForRV!!.vsT3!![3].isVideoPost() }
+        res.assertValueAt(2) { !it.t3ListForRV!!.vsT3!![3].isUrlPost()}
+        res.assertValueAt(2) { it.t3ListForRV!!.vsT3!![3].isGalleryPost()}
 
         res.assertNotComplete()
     }

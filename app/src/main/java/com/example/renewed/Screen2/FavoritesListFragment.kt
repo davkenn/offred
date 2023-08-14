@@ -66,9 +66,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                     favoritesVM.processInput(Screen2Event.ClearEffectEvent)
                     when (x.effect) {
                         Screen2Effect.DELETE ->
-                           favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
-                        Screen2Effect.LOAD ->  {  binding.loading.visibility=View.INVISIBLE;
-                                            vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;}
+                            favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
+                        Screen2Effect.LOAD ->   hideLoading()
                     }
                 }}
             .addTo(disposables)
@@ -89,10 +88,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         Timber.d("onResume in FavoritesListFragment")
         super.onResume()
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
-            if (position == vpPagesAdapter.postIds.size - 4 && vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
-                vp.visibility=View.INVISIBLE
-                binding.loading.visibility= View.VISIBLE
-                vp.isUserInputEnabled=false
+            //update position if reloading posts for pages
+            if (position == vpPagesAdapter.postIds.size - 4 &&
+                       vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
+                showLoading()
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(
                     position - VP_PAGES_PER_LOAD))
                 //when DeleteSubredditEvent returns, SaveSubredditEvent will be called
@@ -106,6 +105,18 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }
         //update position on rotation
         if (savedPos != 0) favoritesVM.processInput(Screen2Event.UpdatePositionEvent(savedPos))
+    }
+
+    private fun showLoading() {
+        vp.visibility = View.INVISIBLE
+        binding.loading.visibility = View.VISIBLE
+        vp.isUserInputEnabled = false
+    }
+
+    private fun hideLoading() {
+        binding.loading.visibility = View.INVISIBLE;
+        vp.visibility = View.VISIBLE
+        vp.isUserInputEnabled = true;
     }
 }
 

@@ -20,10 +20,6 @@ interface BaseSubredditsAndPostsRepo {
     fun deleteUninterestingSubreddits(): Completable
     fun saveSubreddit(name:String?):Completable
 
-    fun updateSubreddits(
-        srList: List<String>,
-        shouldToggleDisplayedColumnInDb: Boolean
-    ): Completable
-
+    fun updateSubreddits(srList: List<String>, isDisplayedInSubscreen: Boolean): Completable
     fun clearDisplayed(): Completable
 }

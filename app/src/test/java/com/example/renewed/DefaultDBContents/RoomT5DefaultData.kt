@@ -13,8 +13,7 @@ val t5SampleList = listOf(
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 88),
+        isSaved = false),
     RoomT5(
         name = "t5_t7yh",
         displayName = "aaaa",
@@ -24,8 +23,7 @@ val t5SampleList = listOf(
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 12)
+        isSaved = false)
 ,
 RoomT5(
 name = "t5_t88jk",
@@ -36,31 +34,28 @@ banner_img ="",
 created_utc = Instant.now(),
 timeLastAccessed = Instant.now(),
 subscribers = 8,
-isSaved = false,
-totalViews = 1),
+isSaved = false),
 
-    RoomT5(
-        name = "t5_ojj3",
-        displayName = "Faaaaaaaaaaaroses",
-        description ="A great site",
-        thumbnail ="",
-        banner_img ="",
-        created_utc = Instant.now(),
-        timeLastAccessed = Instant.now(),
-        subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
-    RoomT5(
-        name = "t5_tyuj3",
-        displayName = "A good one",
-        description ="A great site",
-        thumbnail ="",
-        banner_img ="",
-        created_utc = Instant.now(),
-        timeLastAccessed = Instant.now(),
-        subscribers = 8,
-        isSaved = false,
-        totalViews = 10000)
+RoomT5(
+    name = "t5_ojj3",
+    displayName = "Faaaaaaaaaaaroses",
+    description ="A great site",
+    thumbnail ="",
+    banner_img ="",
+    created_utc = Instant.now(),
+    timeLastAccessed = Instant.now(),
+    subscribers = 8,
+    isSaved = false),
+RoomT5(
+    name = "t5_tyuj3",
+    displayName = "A good one",
+    description ="A great site",
+    thumbnail ="",
+    banner_img ="",
+    created_utc = Instant.now(),
+    timeLastAccessed = Instant.now(),
+    subscribers = 8,
+    isSaved = false)
     ,
     RoomT5(
         name = "t5_t880k",
@@ -71,8 +66,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 88),
+        isSaved = false),
 
     RoomT5(
         name = "t5_nu896",
@@ -83,8 +77,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 60),
+        isSaved = false),
     RoomT5(
         name = "t5_tuhj3",
         displayName = "Fttttttttttses",
@@ -94,8 +87,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 340)
+        isSaved = false)
     ,
     RoomT5(
         name = "t5_tiikk",
@@ -106,8 +98,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 900),
+        isSaved = false),
 
     RoomT5(
         name = "t5_oppoi",
@@ -118,8 +109,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
     RoomT5(
         name = "t5_ty993",
         displayName = "FunDDDDDDDDDes",
@@ -129,8 +119,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0)
+        isSaved = false)
     ,
     RoomT5(
         name = "t5_yu80k",
@@ -141,8 +130,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
 
     RoomT5(
         name = "t5_t9993",
@@ -153,8 +141,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
     RoomT5(
         name = "t5_okjmj3",
         displayName = "aaaaithses",
@@ -164,8 +151,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0)
+        isSaved = false)
     ,
     RoomT5(
         name = "t5_t88012",
@@ -176,8 +162,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
 
     RoomT5(
         name = "t5_odeum",
@@ -188,8 +173,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
     RoomT5(
         name = "t5_typppo",
         displayName = "Funwi2222",
@@ -199,8 +183,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0)
+        isSaved = false)
     ,
     RoomT5(
         name = "t5_tgggg0k",
@@ -211,8 +194,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
 
     RoomT5(
         name = "t5_poi896",
@@ -223,8 +205,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
     RoomT5(
         name = "t5_lli9i",
         displayName = "Faaaits",
@@ -234,8 +215,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0)
+        isSaved = false)
     ,
     RoomT5(
         name = "t5_fiikk",
@@ -246,8 +226,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
 
     RoomT5(
         name = "t5_p0oi",
@@ -258,8 +237,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0),
+        isSaved = false),
     RoomT5(
         name = "t5_tpp93",
         displayName = "Funwiaaaes",
@@ -269,8 +247,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0)
+        isSaved = false)
     ,
     RoomT5(
         name = "t5_ool80k",
@@ -281,8 +258,7 @@ totalViews = 1),
         created_utc = Instant.now(),
         timeLastAccessed = Instant.now(),
         subscribers = 8,
-        isSaved = false,
-        totalViews = 0)
+        isSaved = false)
 
 )
 
