@@ -66,9 +66,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                     favoritesVM.processInput(Screen2Event.ClearEffectEvent)
                     when (x.effect) {
                         Screen2Effect.DELETE ->
-                           favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD)
-                        )
-                        Screen2Effect.LOAD ->  vp.post{}
+                           favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
+                        Screen2Effect.LOAD ->  {  binding.loading.visibility=View.INVISIBLE;
+                                            vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;}
                     }
                 }}
             .addTo(disposables)
@@ -88,9 +88,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onResume() {
         Timber.d("onResume in FavoritesListFragment")
         super.onResume()
-        vp.pageScrollStateChanges().subscribe(){if (vp.scrollState==ViewPager2.SCROLL_STATE_IDLE) {
-            binding.loading.visibility=View.INVISIBLE;vp.visibility=View.VISIBLE;vp.isUserInputEnabled=true;
-        }}
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
             if (position == vpPagesAdapter.postIds.size - 4 && vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
                 vp.visibility=View.INVISIBLE
