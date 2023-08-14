@@ -64,7 +64,7 @@ class LargeTest {
 
         if (allData5 == null) {
  //TODO kinda a cheat and would ned to do it for isdisplayed and also what if I delete
-            t5.getAllRows()
+   //         t5.getAllRows()
        //     t5.clearViews()
             allData5 = t5.getAllRows()
             allData3 = t3.getAllRows()

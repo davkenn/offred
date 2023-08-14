@@ -30,11 +30,7 @@ class SubredditsAndPostsVMTest {
         apiService =setupTestRetrofit(mockWebServer,true)
         fakerepo = FakeRepo2(apiService)
         viewModel = SubredditsAndPostsVM(fakerepo)
-
-
-        //    viewModel = SubredditsAndPostsVM(SubredditsAndPostsRepository(API., null,null))
     }
-
 
 
     @After

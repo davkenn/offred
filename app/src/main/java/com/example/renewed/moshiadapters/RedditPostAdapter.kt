@@ -11,7 +11,6 @@ class RedditPostAdapter {
         t1Adapter: JsonAdapter<T1>,
         t3Adapter: JsonAdapter<T3>,
         t5Adapter: JsonAdapter<T5>,
-
         moreAdapter: JsonAdapter<More>
     ): Holder {
         val jsonObj = reader.readJsonValue() as Map<String, Any>

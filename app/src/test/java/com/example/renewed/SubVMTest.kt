@@ -23,11 +23,7 @@ class SubVMTest {
         apiService =setupTestRetrofit(mockWebServer,true)
         fakerepo = FakeRepo2(apiService)
         viewModel = SubVM(fakerepo)
-
-
     }
-
-
 
     @After
     fun tearDown() {
