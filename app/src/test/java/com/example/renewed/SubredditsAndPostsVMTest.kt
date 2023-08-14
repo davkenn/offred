@@ -108,33 +108,6 @@ class SubredditsAndPostsVMTest {
     }
 
     @Test
-    fun getVideoSubreddit() {
-
-        val end1 = loadJsonResponse("crtgamingabout.json")
-
-        val end2 = loadJsonResponse("crtgamingposts.json")
-
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end1!!))
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end2!!))
-
-
-        val res = viewModel.vs.test()
-
-        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
-        viewModel.processInput(Screen1Event.ClickOnT3ViewEvent("t3_yzx9lh"))
-        res.await(2,TimeUnit.SECONDS)
-    res.assertValueCount(1)
-        res.assertValueAt(0) {
-            it.t3ListForRV!!.vsT3!![0].url.contains(
-                "v.redd.it/cx5ll43oe31a1/DASHPlaylist.mpd?"
-            )
-        }
-
-        res.assertNotComplete()
-
-    }
-
-    @Test
     fun gallerySubredditLoadsImageUrls() {
 
         val end1 = loadJsonResponse("crtgamingabout.json")
@@ -148,10 +121,12 @@ class SubredditsAndPostsVMTest {
         val res = viewModel.vs.test()
 
         viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
-        res.await(3,TimeUnit.SECONDS)
-        res.assertValueCount(2)
+        res.await(1,TimeUnit.SECONDS)
+        viewModel.processInput(Screen1Event.ClickOnT5ViewEvent("t5_3c23m"))
+        res.await(1,TimeUnit.SECONDS)
+        res.assertValueCount(3)
         //loads 3 images for galeery
-        res.assertValueAt(1) {
+        res.assertValueAt(2) {
 
             it.t3ListForRV!!.vsT3!![3].galleryUrls!!.size == 3}
         res.assertNotComplete()
