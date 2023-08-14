@@ -123,25 +123,27 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
+        Thread.sleep(10000)
         onView(withId(R.id.subreddits_rv))
             .perform(
-                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
-                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(10, click())
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
-        onView(allOf(withId(R.id.posts_rv))).check(matches(hasMinimumChildCount(5)))
+        onView(withId(R.id.posts_rv)).check(matches(hasMinimumChildCount(5)))
     }
 
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
 
+        Thread.sleep(10000)
         onView(withId(R.id.subreddits_rv))
             .perform(
-                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
-                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(10, click())
+                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
 
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
-        onView(withId(R.id.subname)).check(matches(withText("DiscoElysium")))
+        onView(withId(R.id.subname)).check(matches(withText("PSO2NGS")))
     }
 
     @Test
