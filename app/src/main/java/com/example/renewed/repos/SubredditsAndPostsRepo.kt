@@ -25,8 +25,8 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
 
     override fun prefetchSubreddits() : Completable =
         t5Dao.howManySubredditsInDb()
-             .flatMapCompletable {  n-> loadSubredditsDb(max(0,
-                                            min(SCREEN1_DB_SIZE, SCREEN1_DB_SIZE-n.toInt()))) }
+             .flatMapCompletable {  n-> loadSubredditsDb(min(15,max(0,
+                                            min(SCREEN1_DB_SIZE, SCREEN1_DB_SIZE-n.toInt())))) }
 
     private fun loadSubredditsDb(needed: Int): Completable =
         Observable.fromIterable(List(needed){0})
