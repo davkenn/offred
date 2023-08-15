@@ -41,8 +41,8 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
         t5Dao.getSubredditsFromTable(if (startFeedAfterThis.isNullOrEmpty()) ""
                                     else startFeedAfterThis)
             .flatMap {
-                updateSubreddits(it.map { x -> x.name },
-                                          isDisplayedInSubscreen = false)
+                updateSubreddits(it.map { x -> x.name }, isDisplayedInAdapter = true,
+                                          shouldToggleDisplayedColumnInDb = false)
                 .andThen(Single.just(it))
             }.subscribeOn(Schedulers.io())
 
@@ -55,15 +55,16 @@ class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
          Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
                    .concatMapCompletable{t5Dao.saveSubreddit(it.name) }.subscribeOn(Schedulers.io())
 
-    override fun updateSubreddits(srList: List<String>,
-                                  isDisplayedInSubscreen: Boolean): Completable =
+    override fun updateSubreddits(srList: List<String>, isDisplayedInAdapter: Boolean,
+                                    shouldToggleDisplayedColumnInDb: Boolean): Completable =
         Observable.fromIterable(srList)
             //TODO im just swallowing the error here, change back from maybe to see prob
             .flatMapMaybe {t5Dao.getSubreddit(it).onErrorComplete()}
             .concatMapCompletable {
                 t5Dao.updateT5(it.copy(timeLastAccessed = Instant.now(),
                     //so as not to double count a view, views only updated when sent into adapter
-                                isDisplayed =  if (isDisplayedInSubscreen) (it.isDisplayed+1) % 2
+                                totalViews= if (isDisplayedInAdapter) it.totalViews+1  else it.totalViews,
+                                isDisplayed =  if (shouldToggleDisplayedColumnInDb) (it.isDisplayed+1) % 2
                                                                             else it.isDisplayed))
                                     }.subscribeOn(Schedulers.io())
 

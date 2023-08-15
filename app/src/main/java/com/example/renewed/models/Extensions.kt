@@ -13,8 +13,8 @@ fun T5.toDbModel(): RoomT5 {
     val thumbnail = thumb1.ifBlank { thumb3.substringBeforeLast("?") }.ifBlank { thumb2 }
     return RoomT5(name = name, displayName = display_name, description = fullDescription,
                   thumbnail = thumbnail, banner_img = banner_img ?: "", isSaved = false,
-                  created_utc = Instant.ofEpochSecond(created_utc),
-                    timeLastAccessed = Instant.now(), subscribers = subscribers)
+                  created_utc = Instant.ofEpochSecond(created_utc), totalViews = 0,
+                  timeLastAccessed = Instant.now(), subscribers = subscribers)
 }
 
 fun T3.toDbModel(): RoomT3 {
