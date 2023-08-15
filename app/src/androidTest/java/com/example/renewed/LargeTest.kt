@@ -68,6 +68,8 @@ class LargeTest {
        //     t5.clearViews()
             allData5 = t5.getAllRows()
             allData3 = t3.getAllRows()
+
+            t5.clearViews()
         }
 
         val fragArgs = bundleOf()
@@ -260,8 +262,8 @@ class LargeTest {
             databaseBuilder(
                 ctxt,
                 RedditDatabase::class.java,
-                "RedditDB2"
-            ).createFromAsset("RedditDB2")
+                "RedditDB3"
+            ).createFromAsset("RedditDB3")
                 .build()
         }
 
