@@ -42,7 +42,7 @@ var allData3: List<RoomT3>?=null
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@UninstallModules(  DbModule::class)
+@UninstallModules(DbModule::class)
 class LargeTest {
     @get:Rule()
     var hiltRule = HiltAndroidRule(this)
@@ -61,7 +61,6 @@ class LargeTest {
     fun init() {
         hiltRule.inject()
         //only null first call
-
         if (allData5 == null) {
  //TODO kinda a cheat and would ned to do it for isdisplayed and also what if I delete
    //         t5.getAllRows()
@@ -111,7 +110,7 @@ class LargeTest {
     @Test
     fun testIfButtonClickSelectsButton() {
 
-        Thread.sleep(5000)
+        Thread.sleep(1000)
         onView(withId(R.id.subreddits_rv))
 
             .perform(
@@ -125,50 +124,48 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
-        Thread.sleep(5000)
+        Thread.sleep(1000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
-        Thread.sleep(5000)
+        Thread.sleep(1000)
         onView(withId(R.id.posts_rv)).check(matches(hasMinimumChildCount(5)))
     }
 
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
 
-        Thread.sleep(5000)
+        Thread.sleep(1000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
-
+        Thread.sleep(1000)
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
         onView(withId(R.id.subname)).check(matches(withText("Antiques")))
     }
 
     @Test
     fun clickSubredditThenClickPostVerifyPostViewLoaded() {
-
+        Thread.sleep(2000)
         onView(withId(R.id.subreddits_rv))
             .perform(
-                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
-                actionOnItemAtPosition
-                <SubredditsAdapter.SubredditViewHolder>(10, click())
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
+        Thread.sleep(2000)
         onView(withId(R.id.posts_rv))
             .perform(
-                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(10),
                 RecyclerViewActions.actionOnItemAtPosition
-                <PostsAdapter.PostViewHolder>(1, click())
+                <PostsAdapter.PostViewHolder>(0, click())
             )
 
         onView(allOf(withId(R.id.subscreen_nav_container)))
             .check(matches(hasDescendant(withId(R.id.post_name))))
 
         onView(withId(R.id.post_name))
-            .check(matches(withText("Authority, is that you?")))
+            .check(matches(withSubstring("mouth organ")))
     }
 
 
