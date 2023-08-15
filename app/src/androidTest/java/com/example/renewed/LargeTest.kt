@@ -125,27 +125,27 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
-        Thread.sleep(10000)
+        Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
+        Thread.sleep(5000)
         onView(withId(R.id.posts_rv)).check(matches(hasMinimumChildCount(5)))
     }
 
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
 
-        Thread.sleep(10000)
+        Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv))
             .perform(
-                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
-                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
+                actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
 
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
-        onView(withId(R.id.subname)).check(matches(withText("PSO2NGS")))
+        onView(withId(R.id.subname)).check(matches(withText("Antiques")))
     }
 
     @Test
@@ -174,7 +174,7 @@ class LargeTest {
 
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
-
+    Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv)).perform(
             actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
         )
@@ -183,7 +183,7 @@ class LargeTest {
             matches(
                 allOf(
                     hasDescendant(isSelected()),
-                    hasDescendant(withText("30PlusSkinCare"))
+                    hasDescendant(withText("Antiques"))
                 )
             )
         )
@@ -200,7 +200,7 @@ class LargeTest {
             matches(
                 allOf(
                     not(hasDescendant(isSelected())),
-                    not(hasDescendant(withText("30PlusSkinCare")))
+                    not(hasDescendant(withText("Antiques")))
                 )
             )
         )
