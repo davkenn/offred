@@ -14,7 +14,7 @@ interface T5DAO {
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         fun insertAll(t5s: List<RoomT5>): Completable
 
-        @Query("SELECT COUNT(*) FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0")
+        @Query("SELECT COUNT(*) FROM RoomT5 WHERE isSaved=0")
         fun howManySubredditsInDb(): Single<Long>
 
         @Query("DELETE FROM RoomT5 WHERE isSaved=0 AND isDisplayed=0 AND totalViews >= :maxViews")
