@@ -9,7 +9,9 @@ object CountingIdleResource {
     @JvmField
     val countingIdlingResource = CountingIdlingResource(RESOURCE)
 
-    fun increment() = countingIdlingResource.increment()
+    fun increment() {
+        countingIdlingResource.increment()
+    }
 
     fun decrement() {
         if (!countingIdlingResource.isIdleNow) {

@@ -25,6 +25,7 @@ import com.example.renewed.Screen1.SubredditsSelectionFragment
 import com.example.renewed.di.DbModule
 import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
+import com.example.renewed.test.CountingIdleResource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -116,10 +117,9 @@ class LargeTest {
 
     @Test
     fun testIfButtonClickSelectsButton() {
-
-     //   Thread.sleep(4000)
+    //    CountingIdleResource.increment()
+//CountingIdleResource.decrement()
         onView(withId(R.id.subreddits_rv))
-
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
@@ -131,37 +131,30 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
-   //     Thread.sleep(4000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
-     //   Thread.sleep(4000)
         onView(withId(R.id.posts_rv)).check(matches(hasMinimumChildCount(5)))
     }
 
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
-
-        //Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
-        //Thread.sleep(5000)
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
         onView(withId(R.id.subname)).check(matches(withText("Antiques")))
     }
 
     @Test
     fun clickSubredditThenClickPostVerifyPostViewLoaded() {
-        //Thread.sleep(4000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
-        //Thread.sleep(4000)
         onView(withId(R.id.posts_rv))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition
@@ -172,13 +165,12 @@ class LargeTest {
             .check(matches(hasDescendant(withId(R.id.post_name))))
 
         onView(withId(R.id.post_name))
-            .check(matches(withSubstring("Can you help me")))
+            .check(matches(withSubstring("Old looking mirror!")))
     }
 
 
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
-    //Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv)).perform(
             actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
         )
@@ -194,12 +186,6 @@ class LargeTest {
 
         onView(withId(R.id.refresh_button)).perform(click())
 
-      //  try {
-        //    Thread.sleep(5000)
-       // } catch (e: InterruptedException) {
-         //   e.printStackTrace()
-       // }
-
         onView(withId(R.id.subreddits_rv)).check(
             matches(
                 allOf(
@@ -210,7 +196,6 @@ class LargeTest {
         )
     }
 
-    //TODO the db needs to be recreated from asset after every test
     @Test
     fun refreshButton4FourTimesBringsUpSameList() {
 
@@ -224,11 +209,6 @@ class LargeTest {
 
         repeat(4) {
             onView(withId(R.id.refresh_button)).perform(click())
-            try {
-                Thread.sleep(1000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
         }
 
         onView(withId(R.id.subreddits_rv)).check(
