@@ -4,11 +4,15 @@ import android.content.Context
 import androidx.core.os.bundleOf
 import androidx.room.Room
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.IdlingResource
+
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
+import androidx.test.espresso.idling.CountingIdlingResource
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.renewed.Room.FavoritesDAO
@@ -59,8 +63,10 @@ class LargeTest {
 
     @Before
     fun init() {
+
         hiltRule.inject()
         //only null first call
+        IdlingRegistry.getInstance().register(CountingIdlingResource("GLOBAL"))
         if (allData5 == null) {
  //TODO kinda a cheat and would ned to do it for isdisplayed and also what if I delete
    //         t5.getAllRows()
@@ -77,6 +83,7 @@ class LargeTest {
 
     @After
     fun resetDBContents() {
+        IdlingRegistry.getInstance().unregister(CountingIdlingResource("GLOBAL"))
         db.clearAllTables()
         t5.fillDb(allData5!!)
         t3.fillDb(allData3!!)
@@ -110,7 +117,7 @@ class LargeTest {
     @Test
     fun testIfButtonClickSelectsButton() {
 
-        Thread.sleep(4000)
+     //   Thread.sleep(4000)
         onView(withId(R.id.subreddits_rv))
 
             .perform(
@@ -124,37 +131,37 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
-        Thread.sleep(4000)
+   //     Thread.sleep(4000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
-        Thread.sleep(4000)
+     //   Thread.sleep(4000)
         onView(withId(R.id.posts_rv)).check(matches(hasMinimumChildCount(5)))
     }
 
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
 
-        Thread.sleep(5000)
+        //Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
-        Thread.sleep(5000)
+        //Thread.sleep(5000)
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
         onView(withId(R.id.subname)).check(matches(withText("Antiques")))
     }
 
     @Test
     fun clickSubredditThenClickPostVerifyPostViewLoaded() {
-        Thread.sleep(4000)
+        //Thread.sleep(4000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
-        Thread.sleep(4000)
+        //Thread.sleep(4000)
         onView(withId(R.id.posts_rv))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition
@@ -171,7 +178,7 @@ class LargeTest {
 
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
-    Thread.sleep(5000)
+    //Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv)).perform(
             actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
         )
@@ -187,11 +194,11 @@ class LargeTest {
 
         onView(withId(R.id.refresh_button)).perform(click())
 
-        try {
-            Thread.sleep(5000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
+      //  try {
+        //    Thread.sleep(5000)
+       // } catch (e: InterruptedException) {
+         //   e.printStackTrace()
+       // }
 
         onView(withId(R.id.subreddits_rv)).check(
             matches(

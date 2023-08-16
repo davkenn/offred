@@ -3,6 +3,7 @@ package com.example.renewed.Screen1
 import androidx.lifecycle.ViewModel
 import com.example.renewed.models.*
 import com.example.renewed.repos.BaseSubredditsAndPostsRepo
+import com.example.renewed.test.CountingIdleResource
 import com.jakewharton.rxrelay3.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Completable
@@ -36,6 +37,7 @@ class SubredditsAndPostsVM @Inject constructor(
     }
     val vs: Observable<FullViewStateScreen1> = inputEvents
         .doOnNext { Timber.d("---- Event is $it") }
+        .doOnNext {CountingIdleResource.decrement() }
         .eventToResult()
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
