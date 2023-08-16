@@ -107,6 +107,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     //    subsAndPostsVM.processInput(Screen1Event.ScreenLoadEvent(""))
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
+
                         { x -> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
                         postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
                         x.latestEvent3?.let { t3 -> navigateToPostOrSubreddit(R.id.postFragment, t3) }

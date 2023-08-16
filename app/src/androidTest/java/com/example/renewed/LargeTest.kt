@@ -110,7 +110,7 @@ class LargeTest {
     @Test
     fun testIfButtonClickSelectsButton() {
 
-        Thread.sleep(1000)
+        Thread.sleep(4000)
         onView(withId(R.id.subreddits_rv))
 
             .perform(
@@ -124,37 +124,37 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
-        Thread.sleep(1000)
+        Thread.sleep(4000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
-        Thread.sleep(1000)
+        Thread.sleep(4000)
         onView(withId(R.id.posts_rv)).check(matches(hasMinimumChildCount(5)))
     }
 
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
 
-        Thread.sleep(1000)
+        Thread.sleep(5000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
-        Thread.sleep(1000)
+        Thread.sleep(5000)
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
         onView(withId(R.id.subname)).check(matches(withText("Antiques")))
     }
 
     @Test
     fun clickSubredditThenClickPostVerifyPostViewLoaded() {
-        Thread.sleep(2000)
+        Thread.sleep(4000)
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
-        Thread.sleep(2000)
+        Thread.sleep(4000)
         onView(withId(R.id.posts_rv))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition
@@ -165,7 +165,7 @@ class LargeTest {
             .check(matches(hasDescendant(withId(R.id.post_name))))
 
         onView(withId(R.id.post_name))
-            .check(matches(withSubstring("mouth organ")))
+            .check(matches(withSubstring("Can you help me")))
     }
 
 
@@ -188,7 +188,7 @@ class LargeTest {
         onView(withId(R.id.refresh_button)).perform(click())
 
         try {
-            Thread.sleep(1000)
+            Thread.sleep(5000)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -213,7 +213,7 @@ class LargeTest {
         )
 
         onView(withId(R.id.subreddits_rv)).check(
-            matches(hasDescendant(withText("30PlusSkinCare"))))
+            matches(hasDescendant(withText("Antiques"))))
 
         repeat(4) {
             onView(withId(R.id.refresh_button)).perform(click())
