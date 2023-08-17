@@ -14,8 +14,8 @@ object CountingIdleResource {
     }
 
     fun decrement() {
-        if (!countingIdlingResource.isIdleNow) {
+   //     if (!countingIdlingResource.isIdleNow) {
             countingIdlingResource.decrement()
-        }
+     //   }
     }
 }

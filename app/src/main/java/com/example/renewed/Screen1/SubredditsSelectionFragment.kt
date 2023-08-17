@@ -123,10 +123,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                                    "Already in Stack. Press back to find it...", Snackbar.LENGTH_SHORT)
                                    .show()
                     }
-                            CountingIdleResource.decrement()
+
                         //Clear the effect in case process is recreated so we don't repeat it
                         subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)
                     }
+                            CountingIdleResource.decrement()
                 },
                 { Timber.e("error fetching vs: ${it.localizedMessage}") })
                 .addTo(disposables)

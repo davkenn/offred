@@ -34,11 +34,11 @@ class SubredditsAndPostsVM @Inject constructor(
 
     fun processInput(name: Screen1Event) {
         inputEvents.accept(name)
-   //     CountingIdleResource.increment()
+        CountingIdleResource.increment()
     }
     val vs: Observable<FullViewStateScreen1> = inputEvents
         .doOnNext { Timber.d("---- Event is $it") }
-        .doOnNext {CountingIdleResource.increment() }
+    //    .doOnNext {CountingIdleResource.decrement() }
         .eventToResult()
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()

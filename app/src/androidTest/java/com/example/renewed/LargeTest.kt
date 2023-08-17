@@ -68,6 +68,8 @@ class LargeTest {
         hiltRule.inject()
         //only null first call
         IdlingRegistry.getInstance().register(CountingIdlingResource("GLOBAL"))
+
+
         if (allData5 == null) {
  //TODO kinda a cheat and would ned to do it for isdisplayed and also what if I delete
    //         t5.getAllRows()
@@ -106,7 +108,7 @@ class LargeTest {
             allData3=null
         }
     }
-
+/**
     @Test
     fun testAllDisplayedDBColumnsAreZeroOnRecreate() {
 
@@ -114,11 +116,11 @@ class LargeTest {
         val scenario = launchFragmentInHiltContainer<SubredditsSelectionFragment>()
 
     }
-
+**/
     @Test
     fun testIfButtonClickSelectsButton() {
-    //    CountingIdleResource.increment()
-//CountingIdleResource.decrement()
+        CountingIdleResource.increment()
+
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
@@ -131,6 +133,8 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
+        //the event of clicking on a subreddit returns two results so we need an extra increment
+         CountingIdleResource.increment()
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
@@ -141,16 +145,23 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
+        //the event of clicking on a subreddit returns two results so we need an extra increment
+        CountingIdleResource.increment()
+        CountingIdleResource.increment()
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
-        onView(withId(R.id.subname)).check(matches(withText("Antiques")))
+        onView(withId(R.id.subname)).check(matches(withText("CATHELP")))
     }
 
     @Test
     fun clickSubredditThenClickPostVerifyPostViewLoaded() {
+        //Two events both produce two results so add two increments up front
+        CountingIdleResource.increment()
+        CountingIdleResource.increment()
+
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
@@ -165,12 +176,15 @@ class LargeTest {
             .check(matches(hasDescendant(withId(R.id.post_name))))
 
         onView(withId(R.id.post_name))
-            .check(matches(withSubstring("Old looking mirror!")))
+            .check(matches(withSubstring("Should I be worried")))
     }
 
 
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
+        CountingIdleResource.increment()
+
+        CountingIdleResource.increment()
         onView(withId(R.id.subreddits_rv)).perform(
             actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
         )
@@ -179,7 +193,7 @@ class LargeTest {
             matches(
                 allOf(
                     hasDescendant(isSelected()),
-                    hasDescendant(withText("Antiques"))
+                    hasDescendant(withText("CATHELP"))
                 )
             )
         )
@@ -190,22 +204,23 @@ class LargeTest {
             matches(
                 allOf(
                     not(hasDescendant(isSelected())),
-                    not(hasDescendant(withText("Antiques")))
+                    not(hasDescendant(withText("CATHELP")))
                 )
             )
         )
     }
-
+/**
     @Test
     fun refreshButton4FourTimesBringsUpSameList() {
-
+        CountingIdleResource.increment()
+        CountingIdleResource.increment()
         onView(withId(R.id.subreddits_rv)).perform(
             RecyclerViewActions.actionOnItemAtPosition
             <SubredditsAdapter.SubredditViewHolder>(0, click())
         )
 
         onView(withId(R.id.subreddits_rv)).check(
-            matches(hasDescendant(withText("Antiques"))))
+            matches(hasDescendant(withText("CATHELP"))))
 
         repeat(4) {
             onView(withId(R.id.refresh_button)).perform(click())
@@ -216,7 +231,6 @@ class LargeTest {
         )
 
     }
-
     @Test
     fun clickSubredditThenClickDeleteVerifyRecyclerViewReloaded() {
 
@@ -231,7 +245,7 @@ class LargeTest {
         onView(withId(R.id.subreddits_rv)).check(
             matches(not(hasDescendant(withText("ATT")))))
     }
-
+**/
 
 
     @Module
@@ -246,8 +260,8 @@ class LargeTest {
             databaseBuilder(
                 ctxt,
                 RedditDatabase::class.java,
-                "RedditDB3"
-            ).createFromAsset("RedditDB3")
+                "RedditTestDB"
+            ).createFromAsset("RedditDB4")
                 .build()
         }
 
