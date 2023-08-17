@@ -109,7 +109,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     //    subsAndPostsVM.processInput(Screen1Event.ScreenLoadEvent(""))
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
 
-                        { x-> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
+                        {   x-> CountingIdleResource.decrement()
+                            x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
                         postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
                         x.latestEvent3?.let { t3 -> navigateToPostOrSubreddit(R.id.postFragment, t3) }
                         x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
@@ -127,7 +128,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         //Clear the effect in case process is recreated so we don't repeat it
                         subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)
                     }
-                            CountingIdleResource.decrement()
+
                 },
                 { Timber.e("error fetching vs: ${it.localizedMessage}") })
                 .addTo(disposables)

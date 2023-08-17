@@ -67,7 +67,7 @@ class LargeTest {
 
         hiltRule.inject()
         //only null first call
-        IdlingRegistry.getInstance().register(CountingIdlingResource("GLOBAL"))
+        IdlingRegistry.getInstance().register(CountingIdleResource.countingIdlingResource)
 
 
         if (allData5 == null) {
@@ -86,7 +86,7 @@ class LargeTest {
 
     @After
     fun resetDBContents() {
-        IdlingRegistry.getInstance().unregister(CountingIdlingResource("GLOBAL"))
+        IdlingRegistry.getInstance().unregister(CountingIdleResource.countingIdlingResource)
         db.clearAllTables()
         t5.fillDb(allData5!!)
         t3.fillDb(allData3!!)
@@ -119,13 +119,12 @@ class LargeTest {
 **/
     @Test
     fun testIfButtonClickSelectsButton() {
-        CountingIdleResource.increment()
-
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(9, click())
             )
+
         onView(withId(R.id.subreddits_rv))
             .check(matches(withChild(isSelected())))
 
@@ -133,8 +132,8 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
+
         //the event of clicking on a subreddit returns two results so we need an extra increment
-         CountingIdleResource.increment()
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
@@ -146,12 +145,13 @@ class LargeTest {
     @Test
     fun clickSubredditThenVerifySubredditViewLoaded() {
         //the event of clicking on a subreddit returns two results so we need an extra increment
-        CountingIdleResource.increment()
-        CountingIdleResource.increment()
+     //   CountingIdleResource.increment()
+
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
+
         onView(allOf(withId(R.id.subscreen_nav_container))).check(matches(hasDescendant(withId(R.id.subname))))
         onView(withId(R.id.subname)).check(matches(withText("CATHELP")))
     }
@@ -159,9 +159,6 @@ class LargeTest {
     @Test
     fun clickSubredditThenClickPostVerifyPostViewLoaded() {
         //Two events both produce two results so add two increments up front
-        CountingIdleResource.increment()
-        CountingIdleResource.increment()
-
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
@@ -182,9 +179,6 @@ class LargeTest {
 
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
-        CountingIdleResource.increment()
-
-        CountingIdleResource.increment()
         onView(withId(R.id.subreddits_rv)).perform(
             actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
         )
