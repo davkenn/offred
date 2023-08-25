@@ -41,10 +41,11 @@ class SubredditsAndPostsVM @Inject constructor(
     }
     val vs: Observable<FullViewStateScreen1> = inputEvents
         .doOnNext { Timber.d("---- Event is $it") }
-        .doOnNext {CountingIdleResource.increment() }
+//        .doOnNext {CountingIdleResource.increment() }
         .eventToResult()
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
+    //    .doOnNext {CountingIdleResource.decrement() }
         .doOnNext { Timber.d("----Combined is $it") }
         .replay(1)
         .autoConnect(1){disposables.add(it)}

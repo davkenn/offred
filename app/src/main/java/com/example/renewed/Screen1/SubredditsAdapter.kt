@@ -28,9 +28,6 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         previousSelected=null
     }
 
-    val _selected : Int
-        get() = selected
-
     inner class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
         RecyclerView.ViewHolder(elementBinding.root){
 

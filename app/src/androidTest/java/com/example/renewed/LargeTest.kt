@@ -1,6 +1,7 @@
 package com.example.renewed
 
 import android.content.Context
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.room.Room
 import androidx.test.espresso.Espresso.onView
@@ -38,17 +39,20 @@ import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.*
 import org.junit.runner.RunWith
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
-var allData5: List<RoomT5>?=null
-var allData3: List<RoomT3>?=null
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(DbModule::class)
 class LargeTest {
+
+    var allData5: List<RoomT5>?=null
+    var allData3: List<RoomT3>?=null
+
+
     @get:Rule()
     var hiltRule = HiltAndroidRule(this)
 
@@ -66,47 +70,31 @@ class LargeTest {
     fun init() {
 
         hiltRule.inject()
-        //only null first call
-        IdlingRegistry.getInstance().register(CountingIdleResource.countingIdlingResource)
 
 
+        t5.clearViews()
+        //this is only used to verify in tests
         if (allData5 == null) {
- //TODO kinda a cheat and would ned to do it for isdisplayed and also what if I delete
-   //         t5.getAllRows()
-       //     t5.clearViews()
+            //TODO kinda a cheat and would ned to do it for isdisplayed and also what if I delete
             allData5 = t5.getAllRows()
             allData3 = t3.getAllRows()
 
-            t5.clearViews()
         }
-
         val fragArgs = bundleOf()
         launchFragmentInHiltContainer<SubredditsSelectionFragment>()
+        Thread.sleep(3000)
     }
 
     @After
     fun resetDBContents() {
-        IdlingRegistry.getInstance().unregister(CountingIdleResource.countingIdlingResource)
-        db.clearAllTables()
-        t5.fillDb(allData5!!)
-        t3.fillDb(allData3!!)
+        db.close()
 
     }
 
     companion object {
-        init {
-            // things that may need to be setup before companion class member variables are instantiated
-        }
-
-        @BeforeClass @JvmStatic fun setup() {
-            // things to execute once and keep around for the class
-        }
-
-        @AfterClass @JvmStatic fun teardown() {
-
-            allData5=null
-            allData3=null
-        }
+        init {}
+        @BeforeClass @JvmStatic fun setup() {}
+        @AfterClass @JvmStatic fun teardown() {}
     }
 /**
     @Test
@@ -119,6 +107,7 @@ class LargeTest {
 **/
     @Test
     fun testIfButtonClickSelectsButton() {
+
         onView(withId(R.id.subreddits_rv))
             .perform(
                 scrollToPosition<SubredditsAdapter.SubredditViewHolder>(9),
@@ -132,7 +121,6 @@ class LargeTest {
 
     @Test
     fun clickSubredditThenVerifyPostsLoaded() {
-
         //the event of clicking on a subreddit returns two results so we need an extra increment
         onView(withId(R.id.subreddits_rv))
             .perform(
@@ -174,11 +162,14 @@ class LargeTest {
 
         onView(withId(R.id.post_name))
             .check(matches(withSubstring("Should I be worried")))
+
+
     }
 
 
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
+        Thread.sleep(3000)
         onView(withId(R.id.subreddits_rv)).perform(
             actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
         )
@@ -193,7 +184,7 @@ class LargeTest {
         )
 
         onView(withId(R.id.refresh_button)).perform(click())
-
+        Thread.sleep(3000)
         onView(withId(R.id.subreddits_rv)).check(
             matches(
                 allOf(
@@ -203,28 +194,30 @@ class LargeTest {
             )
         )
     }
-/**
     @Test
-    fun refreshButton4FourTimesBringsUpSameList() {
-        CountingIdleResource.increment()
-        CountingIdleResource.increment()
+    fun refreshButtonThreeTimesAllNewSubredditsInList() {
+
         onView(withId(R.id.subreddits_rv)).perform(
             RecyclerViewActions.actionOnItemAtPosition
             <SubredditsAdapter.SubredditViewHolder>(0, click())
         )
 
         onView(withId(R.id.subreddits_rv)).check(
-            matches(hasDescendant(withText("CATHELP"))))
+            matches(hasDescendant(withText("CATHELP")))
+        )
 
-        repeat(4) {
+        repeat(3) {
+            Thread.sleep(2000)
             onView(withId(R.id.refresh_button)).perform(click())
         }
 
-        onView(withId(R.id.subreddits_rv)).check(
-            matches(hasDescendant(withText("30PlusSkinCare")))
-        )
-
+        for (name in allData5!!) {
+            onView(withId(R.id.subreddits_rv)).check(
+                matches(not(hasDescendant(withText(name.displayName)))))
+        }
     }
+
+
     @Test
     fun clickSubredditThenClickDeleteVerifyRecyclerViewReloaded() {
 
@@ -239,7 +232,6 @@ class LargeTest {
         onView(withId(R.id.subreddits_rv)).check(
             matches(not(hasDescendant(withText("ATT")))))
     }
-**/
 
 
     @Module
@@ -249,27 +241,34 @@ class LargeTest {
         @Provides
         @Singleton
         fun provideDB(@ApplicationContext ctxt: Context): RedditDatabase {
+        //this function is a workaround for the fact that a Room in-memory database
+            //can not be created from an asset file. This function gives
+            //the db loaded from the asset a random name and then deletes all dbs
+            //before creating a new one for a test. This ensures that even though we
+            // are creating a persistent database, that database is deleted and
+            // recreated with a different name for each test
 
-            return Room.
-            databaseBuilder(
+            val c = java.util.UUID.randomUUID().toString()
+            for (f in ctxt.databaseList()) {
+                if (f.endsWith("tmp1")) ctxt.deleteDatabase(f)
+            }
+
+            return Room.databaseBuilder(
                 ctxt,
-                RedditDatabase::class.java,
-                "RedditTestDB"
-            ).createFromAsset("RedditDB4")
-                .build()
+                RedditDatabase::class.java,c+".tmp1"
+            ).createFromAsset("RedditDB4").build()
         }
 
+
         @Provides
-        @Singleton
+@Singleton
         fun provideFavsDAO(db: RedditDatabase): FavoritesDAO = db.favoritesDao()
 
-
+@Singleton
         @Provides
-        @Singleton
         fun provideT5DAO(db: RedditDatabase): T5DAO = db.subredditDao()
-
+@Singleton
         @Provides
-        @Singleton
         fun provideT3DAO(db: RedditDatabase): T3DAO = db.postsDao()
     }
 

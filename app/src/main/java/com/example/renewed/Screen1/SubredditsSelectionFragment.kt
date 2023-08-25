@@ -40,27 +40,28 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private lateinit var postAdapter: PostsAdapter
     private val disposables = CompositeDisposable()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
-    private var saveEnabled: Boolean? by atomic(null)
-    private var backEnabled: Boolean? by atomic(null)
+    private var saveEnabled: Boolean by atomic(false)
+    private var backEnabled: Boolean by atomic(false)
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
-        saveEnabled = savedInstanceState?.getBoolean("delete_enabled")
-        backEnabled = savedInstanceState?.getBoolean("back_enabled")
+         savedInstanceState?.let {
+             saveEnabled = it.getBoolean("delete_enabled")
+             backEnabled = it.getBoolean("back_enabled")
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.run {
-            saveEnabled?.let { putBoolean("delete_enabled", it) }
-            backEnabled?.let { putBoolean("back_enabled", it) }
+            putBoolean("delete_enabled", saveEnabled)
+            putBoolean("back_enabled", backEnabled)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
         Timber.d("onViewCreated in home Fragment")
         navHostFragment = childFragmentManager
@@ -68,11 +69,11 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         val binding = FragmentSubredditsSelectionBinding.bind(view)
         postAdapter = PostsAdapter {
-                             x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT3ViewEvent(x.name))
-                           }
+                x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT3ViewEvent(x.name))
+        }
         subredditAdapter = SubredditsAdapter {
-                             x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT5ViewEvent(x.name))
-                           }
+                x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT5ViewEvent(x.name))
+        }
 
         fragmentSelectionBinding = binding.apply {
             postsRv.layoutManager = LinearLayoutManager(requireContext())
@@ -85,64 +86,61 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         // click different buttons rapidly . I could remove these for back and refresh combos but
         // not for save and delete bc dsave and delete each make 2 events so no easy way to throttle
         val backClicks :Observable<Screen1Event> = binding.backButton.clicks()
-                                            .map{Screen1Event.UpdateViewingState(getSubNameOrNull())}
+            .map{Screen1Event.UpdateViewingState(getSubNameOrNull())}
 
         val refreshClicks :Observable<Screen1Event> = binding.refreshButton.clicks()
-                                     .doOnNext { subredditAdapter.clearSelected() }
-                                     .map{ Screen1Event.RemoveAllSubreddits(
-                                              subredditAdapter.currentList.map { it.displayName })}
+            .doOnNext { subredditAdapter.clearSelected() }
+            .map{ Screen1Event.RemoveAllSubreddits(subredditAdapter.currentList.map { it.displayName })}
 
         val backRefreshClicks = backClicks.mergeWith(refreshClicks)
-                                          .throttleFirst(200,TimeUnit.MILLISECONDS)
+            .throttleFirst(200,TimeUnit.MILLISECONDS)
 
 
         val saveClicks = binding.saveButton.clicks()
-                                    .throttleFirst(200,TimeUnit.MILLISECONDS)
-                                    .flatMap { Observable.just(Screen1Event.UpdateViewingState(
-                                                                                getSubNameOrNull()),
-                                                       Screen1Event.SaveEvent(getSubNameOrNull(),
-                                                 subredditAdapter.currentList)) }
+            .throttleFirst(200,TimeUnit.MILLISECONDS)
+            .flatMap {
+                Observable.just(
+                    Screen1Event.UpdateViewingState(getSubNameOrNull()),
+                    Screen1Event.SaveEvent(getSubNameOrNull(), subredditAdapter.currentList)
+                )
+            }
 
-        Observable.merge(backRefreshClicks,saveClicks)
-                  .subscribe { subsAndPostsVM.processInput(it) }
+        Observable.merge(backRefreshClicks,saveClicks).subscribe {
+            subsAndPostsVM.processInput(it)
+        }
 
     //    subsAndPostsVM.processInput(Screen1Event.ScreenLoadEvent(""))
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
-
-                        {   x-> CountingIdleResource.decrement()
-                            x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
-                        postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
-                        x.latestEvent3?.let { t3 -> navigateToPostOrSubreddit(R.id.postFragment, t3) }
-                        x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
-                        if (x.effect != null){
-                           when (x.effect) {
-                               Screen1Effect.DELETE_OR_SAVE -> {
-                                                             backPressedPopCurrentSubscreen()
-                                                             subredditAdapter.clearSelected()
-                              }
-                               Screen1Effect.SNACKBAR -> Snackbar.make(binding.root,
-                                   "Already in Stack. Press back to find it...", Snackbar.LENGTH_SHORT)
-                                   .show()
-                    }
-
+            { x-> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
+                postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
+                x.latestEvent3?.let { t3 -> navigateToPostOrSubreddit(R.id.postFragment, t3) }
+                x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
+                if (x.effect != null){
+                    when (x.effect) {
+                        Screen1Effect.DELETE_OR_SAVE ->
+                        {
+                            backPressedPopCurrentSubscreen()
+                            subredditAdapter.clearSelected()
+                        }
+                            Screen1Effect.SNACKBAR ->
+                                Snackbar.make(binding.root,"Already clicked. Press back, find",
+                                    Snackbar.LENGTH_SHORT).show()
+                        }
                         //Clear the effect in case process is recreated so we don't repeat it
                         subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)
                     }
-
-                },
-                { Timber.e("error fetching vs: ${it.localizedMessage}") })
-                .addTo(disposables)
+            },
+            { Timber.e("error fetching vs: ${it.localizedMessage}") }
+        ).addTo(disposables)
     }
-
 
     private fun backPressedPopCurrentSubscreen() {
 
-        //If subscreen is a subreddit post
-        if (navHostFragment.childFragmentManager.primaryNavigationFragment is PostFragment) {
+        val currentFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
+        if (currentFragment is PostFragment) { //If subscreen is a subreddit post
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
-
-        //if subscreen is a subreddit
-        } else if (navHostFragment.childFragmentManager.primaryNavigationFragment is SubredditFragment) {
+        }
+        else if (currentFragment is SubredditFragment) {  //if subscreen is a subreddit
             navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
             navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
         }
@@ -158,8 +156,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewStateScreen1) {
-        //TODO right now it is giving error if add again but bring up the posts
-        //ANOTHER GOOD OPTION IS TO JUST MOVE IT TO THE FRONT OF THE queue
         val inBackStack = navHostFragment.navController.backQueue
             .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
 
@@ -198,11 +194,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onResume() {
         Timber.d("onResume in SubredditSelectionFragment")
         super.onResume()
-        saveEnabled?.let { if (it)enableButtons(onlyBack = false)
-                                    else if (backEnabled != null && backEnabled as Boolean)
-                                        enableButtons(onlyBack = true)
-                                 else disableButtons(true)
-        }
+        if (saveEnabled) enableButtons(onlyBack = false)
+        else if (backEnabled) enableButtons(onlyBack = true)
+        else disableButtons(true)
     }
 
     override fun onDestroyView() {
