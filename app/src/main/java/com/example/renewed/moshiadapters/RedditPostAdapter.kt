@@ -4,6 +4,7 @@ import com.example.renewed.models.*
 import com.squareup.moshi.*
 
 
+
 class RedditPostAdapter {
     @FromJson
     fun parse(

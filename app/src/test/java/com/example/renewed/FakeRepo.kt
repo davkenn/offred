@@ -57,7 +57,8 @@ class FakeRepo @Inject constructor() : BaseSubredditsAndPostsRepo {
 
     override fun updateSubreddits(
         srList: List<String>,
-        isDisplayedInSubscreen: Boolean
+        isDisplayedInAdapter: Boolean,
+        shouldToggleDisplayedColumnInDb: Boolean
     ): Completable {
        return Completable.complete()
     }

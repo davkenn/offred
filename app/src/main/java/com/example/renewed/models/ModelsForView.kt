@@ -4,6 +4,17 @@ import java.time.Instant
 
 
 
+/**
+ * The partial and full view state classes are used by the view model to represent the latest state
+ * of the UI to the Fragment that is observing the view model. After events (button clicks,
+ * page loads etc.) are sent to the viewmodel, the view model responds
+ * to these events by updating the view state that its' fragment is observing. Events are processed
+ * and then turned into pieces of partial view state. The view model uses this partial view state
+ * to update the relevant part of the full view state that was last sent to the UI. Once the full
+ * view state is updated with the latest partial view state, that full view state is observed by the
+ * fragment.
+ *
+ */
 data class FullViewStateScreen1(
     val t3ListForRV: PartialViewStateScreen1.T3ListForRV?=null,
     val t5ListForRV: PartialViewStateScreen1.T5ListForRV?=null,
@@ -42,6 +53,14 @@ enum class Screen1Effect{
     DELETE_OR_SAVE,SNACKBAR
 }
 
+/**
+ * The Reddit API defines different entity types, including T5 for subreddits, T3 for posts in those
+ * subreddits, and T1 for comments replying to those posts. For every kind of entity that is defined
+ * in the reddit json endpoints we have three different model classes: the network models, the
+ * database models, and the view models. This way, what is parsed from network responses,  what is
+ * stored in the database, and what is displayed in the UI can all vary independently. These models
+ * represent what is presented in the UI.
+ */
 data class ViewStateT5(val name: String, val displayName: String, val description: String,
                        val thumbnail: String, val bannerImg: String, val subscribers: Int,
                        val created: String, val timeLastAccessed: Instant) {

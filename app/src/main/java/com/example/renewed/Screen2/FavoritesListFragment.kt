@@ -52,24 +52,47 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             pager.offscreenPageLimit = 6
             pager.orientation = ViewPager2.ORIENTATION_VERTICAL
             favorites.setBackgroundColor(Color.parseColor("black"))
-            Glide.with(this@FavoritesListFragment).load(R.drawable.ic_loading).into(loading)
+            Glide.with(this@FavoritesListFragment)
+                .load(R.drawable.ic_loading).into(loading)
         }
 
         favoritesVM.vs.observeOn(AndroidSchedulers.mainThread())
-            .subscribe { x ->
-                x.position?.let {
+            .subscribe { fullViewState ->
+                //upon receiving a position update view state, set the position on the viewpager
+                fullViewState.position?.let {
                     savedPos = it.position
                     vp.post { vp.setCurrentItem(savedPos, true) }
                 }
-                x.currentlyDisplayedList?.let { vpPagesAdapter.replaceList(it.posts) }
-                x.effect?.let {
+
+                //upon receiving a new list view state, update the viewpager to contain the
+                //new list
+                fullViewState.currentlyDisplayedList?.let { vpPagesAdapter.replaceList(it.posts) }
+
+                //The following sends events to implement an infinite list. When swiping forward
+                // onto one specified view pager position, an event to delete the first few pages
+                //is sent to the view model. When this returns, an event is sent to the viewmodel
+                //to load more pages and add them to the end of the viewpager. Also, an event is
+                //immediately sent to the view model which will clear the effect state so that
+                //this reload is not processed again if the screen is rotated.
+                fullViewState.effect?.let {
                     favoritesVM.processInput(Screen2Event.ClearEffectEvent)
-                    when (x.effect) {
-                        Screen2Effect.DELETE ->
-                            favoritesVM.processInput(Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD))
-                        Screen2Effect.LOAD ->   hideLoading()
+                    when (it) {
+                        //Upon getting the delete effect, the first few view pager pages were
+                        // deleted succesfully so send an event that adds the number of posts that
+                        // were deleted to the end of the viewpager
+                        Screen2Effect.DELETE -> {
+                            favoritesVM.processInput(
+                                Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD)
+                            )
+                        }
+                        //Once the load is complete, the new infinite list is ready to view so
+                        //hide loading image
+                        Screen2Effect.LOAD -> {
+                            hideLoading()
+                        }
                     }
-                }}
+                }
+            }
             .addTo(disposables)
     }
 
@@ -88,18 +111,20 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         Timber.d("onResume in FavoritesListFragment")
         super.onResume()
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
-            //update position if reloading posts for pages
+            //update position if loading new posts for new pages in infinite list
             if (position == vpPagesAdapter.postIds.size - 4 &&
-                       vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
+                vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
+
                 showLoading()
-                favoritesVM.processInput(Screen2Event.UpdatePositionEvent(
-                    position - VP_PAGES_PER_LOAD))
+                favoritesVM.processInput(
+                    Screen2Event.UpdatePositionEvent(position - VP_PAGES_PER_LOAD))
                 //when DeleteSubredditEvent returns, SaveSubredditEvent will be called
-                favoritesVM.processInput(Screen2Event.DeleteSubredditEvent(
-                                       vpPagesAdapter.postIds.take(VP_PAGES_PER_LOAD)))
+                favoritesVM.processInput(
+                    Screen2Event.DeleteSubredditEvent(vpPagesAdapter.postIds
+                        .take(VP_PAGES_PER_LOAD)))
             }
+            //update position if not reloading infinite list
             else {
-                //update position if not reload
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(position))
             }
         }
@@ -107,6 +132,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         if (savedPos != 0) favoritesVM.processInput(Screen2Event.UpdatePositionEvent(savedPos))
     }
 
+    /**
+     *
+     */
     private fun showLoading() {
         vp.visibility = View.INVISIBLE
         binding.loading.visibility = View.VISIBLE

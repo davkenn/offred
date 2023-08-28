@@ -15,8 +15,7 @@ class RedirectInterceptor : Interceptor {
         if (response.isRedirect and request.url.toString().endsWith("/r/random.json")){
             response.close()
             response = chain.proceed(request.newBuilder()
-                            .url((url?.substringBefore(".json?") ) +"about.json?")
-                            .build())
+                .url((url?.substringBefore(".json?") ) +"about.json?").build())
         }
         //handle random posts from specific subreddits. It's redirect returns www and we need oauth
         else if (response.isRedirect and request.url.toString().endsWith("/random.json")){

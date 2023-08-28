@@ -65,16 +65,19 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     override fun onBindViewHolder(holder: SubredditViewHolder, position: Int) {
         Timber.d("onBindViewHolder called")
         holder.bind(getItem(position), onClick)
+        //This branch will set the selected subreddit and highlight it when the screen reloads.
         if (position == selected){
             previousSelected?.let{it.itemView.isSelected =false }
             holder.itemView.isSelected=true
             previousSelected = holder
         }
+        //This branch will set the rest of the subreddits to not highlighted when screen is loaded
         else{
             holder.itemView.isSelected=false
         }
     }
 }
+
 object SubredditDiffCallback : DiffUtil.ItemCallback<ViewStateT5>() {
     override fun areItemsTheSame(oldItem: ViewStateT5, newItem: ViewStateT5): Boolean {
         return oldItem.name == newItem.name

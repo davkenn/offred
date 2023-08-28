@@ -13,8 +13,11 @@ import java.lang.Integer.max
 import java.lang.Integer.min
 import java.time.Instant
 
-class SubredditsAndPostsRepo(private val t5Dao: T5DAO, private val t3Dao: T3DAO,
-                             private val api: API ): BaseSubredditsAndPostsRepo {
+class SubredditsAndPostsRepo(
+    private val t5Dao: T5DAO,
+    private val t3Dao: T3DAO,
+    private val api: API
+    ): BaseSubredditsAndPostsRepo {
 
     override fun prefetchPosts(): Completable =
         t5Dao.getSubredditIDsNeedingPosts()

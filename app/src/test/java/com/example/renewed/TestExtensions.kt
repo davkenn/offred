@@ -20,8 +20,7 @@ class TestTools {
     companion object {
         fun loadJsonResponse(e: String): String? {
 
-            val inputStream = this.javaClass.classLoader!!.getResource(e)
-                .openStream()
+            val inputStream = this.javaClass.classLoader!!.getResource(e).openStream()
             val source = inputStream?.let { inputStream.source().buffer() }
             return source?.readString(StandardCharsets.UTF_8)
         }
@@ -29,7 +28,7 @@ class TestTools {
 }
 fun MockWebServer.enqueueResponse(fileName: String, code: Int) {
 
-    val inputStream = this.javaClass.classLoader!!.getResource("Berserk1.json")
+    val inputStream = this.javaClass.classLoader!!.getResource(fileName)
         .openStream()
     val source = inputStream?.let { inputStream.source().buffer() }
     source?.let {
@@ -46,23 +45,17 @@ fun setupTestRetrofit(
     attachRXAdapter: Boolean,
     isHostnameError: Boolean = false
 ): API {
-
     val mosh = Moshi.Builder()
-
-        //TODO does order matter here?
         .add(RedditPostAdapter())
         .add(RedditHolderAdapter())
         .add(DescriptionAdapter())
         .add(MediaList())
         .build()
     val okHttpClient = OkHttpClient.Builder()
-
         .build()
 
     return Retrofit.Builder()
         .baseUrl(mockWebServer.url("/"))
-
-
         .client(okHttpClient)
         .addConverterFactory(MoshiConverterFactory.create(mosh))
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())

@@ -1,19 +1,15 @@
 package com.example.renewed
 
 import android.content.Context
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.os.bundleOf
 import androidx.room.Room
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.IdlingResource
 
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
-import androidx.test.espresso.idling.CountingIdlingResource
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.renewed.Room.FavoritesDAO
@@ -26,7 +22,6 @@ import com.example.renewed.Screen1.SubredditsSelectionFragment
 import com.example.renewed.di.DbModule
 import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
-import com.example.renewed.test.CountingIdleResource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,9 +34,9 @@ import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.*
 import org.junit.runner.RunWith
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 
 @HiltAndroidTest
@@ -49,18 +44,18 @@ import javax.inject.Singleton
 @UninstallModules(DbModule::class)
 class LargeTest {
 
-    var allData5: List<RoomT5>?=null
-    var allData3: List<RoomT3>?=null
+    var initialDbContentsT5: List<RoomT5>?=null
+    var initialDbContentsT3: List<RoomT3>?=null
 
 
     @get:Rule()
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var t5: T5DAO
+    lateinit var t5Dao: T5DAO
 
     @Inject
-    lateinit var t3: T3DAO
+    lateinit var t3DAO: T3DAO
 
     @Inject
     lateinit var db: RedditDatabase
@@ -68,27 +63,24 @@ class LargeTest {
 
     @Before
     fun init() {
-
         hiltRule.inject()
+        t5Dao.clearViews()
 
-
-        t5.clearViews()
-        //this is only used to verify in tests
-        if (allData5 == null) {
-            //TODO kinda a cheat and would ned to do it for isdisplayed and also what if I delete
-            allData5 = t5.getAllRows()
-            allData3 = t3.getAllRows()
+        //When the first test runs, save the initial db contents to two local variables
+        if (initialDbContentsT5 == null) {
+            initialDbContentsT5 = t5Dao.getAllRows()
+            initialDbContentsT3 = t3DAO.getAllRows()
 
         }
-        val fragArgs = bundleOf()
+        //Start Screen1 Fragment and then...
         launchFragmentInHiltContainer<SubredditsSelectionFragment>()
+        //...give The UI time to load for each test
         Thread.sleep(3000)
     }
 
     @After
     fun resetDBContents() {
         db.close()
-
     }
 
     companion object {
@@ -96,15 +88,7 @@ class LargeTest {
         @BeforeClass @JvmStatic fun setup() {}
         @AfterClass @JvmStatic fun teardown() {}
     }
-/**
-    @Test
-    fun testAllDisplayedDBColumnsAreZeroOnRecreate() {
 
-
-        val scenario = launchFragmentInHiltContainer<SubredditsSelectionFragment>()
-
-    }
-**/
     @Test
     fun testIfButtonClickSelectsButton() {
 
@@ -162,14 +146,11 @@ class LargeTest {
 
         onView(withId(R.id.post_name))
             .check(matches(withSubstring("Should I be worried")))
-
-
     }
-
 
     @Test
     fun testIfRefreshButtonBringsNewPostsAndClearsSelected() {
-        Thread.sleep(3000)
+
         onView(withId(R.id.subreddits_rv)).perform(
             actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
         )
@@ -211,7 +192,7 @@ class LargeTest {
             onView(withId(R.id.refresh_button)).perform(click())
         }
 
-        for (name in allData5!!) {
+        for (name in initialDbContentsT5!!) {
             onView(withId(R.id.subreddits_rv)).check(
                 matches(not(hasDescendant(withText(name.displayName)))))
         }
@@ -219,7 +200,7 @@ class LargeTest {
 
 
     @Test
-    fun clickSubredditThenClickDeleteVerifyRecyclerViewReloaded() {
+    fun clickSubredditThenClickSaveVerifyRecyclerViewRemovesSubreddit() {
 
         onView(withId(R.id.subreddits_rv))
             .perform(
@@ -227,10 +208,10 @@ class LargeTest {
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>(0, click())
             )
 
-        onView(withId(R.id.delete_button)).perform(click())
+        onView(withId(R.id.save_button)).perform(click())
 
         onView(withId(R.id.subreddits_rv)).check(
-            matches(not(hasDescendant(withText("ATT")))))
+            matches(not(hasDescendant(withText("CATHELP")))))
     }
 
 
@@ -247,7 +228,6 @@ class LargeTest {
             //before creating a new one for a test. This ensures that even though we
             // are creating a persistent database, that database is deleted and
             // recreated with a different name for each test
-
             val c = java.util.UUID.randomUUID().toString()
             for (f in ctxt.databaseList()) {
                 if (f.endsWith("tmp1")) ctxt.deleteDatabase(f)
@@ -261,13 +241,14 @@ class LargeTest {
 
 
         @Provides
-@Singleton
+        @Singleton
         fun provideFavsDAO(db: RedditDatabase): FavoritesDAO = db.favoritesDao()
 
-@Singleton
+        @Singleton
         @Provides
         fun provideT5DAO(db: RedditDatabase): T5DAO = db.subredditDao()
-@Singleton
+
+        @Singleton
         @Provides
         fun provideT3DAO(db: RedditDatabase): T3DAO = db.postsDao()
     }

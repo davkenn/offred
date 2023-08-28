@@ -11,8 +11,8 @@ import java.nio.charset.StandardCharsets
 
 
 class FakeRepo2(private val apiService: API) : BaseSubredditsAndPostsRepo {
-    private var res : String? = null
 
+    private var res : String? = null
 
     override fun prefetchSubreddits(): Completable {
 
@@ -40,7 +40,6 @@ class FakeRepo2(private val apiService: API) : BaseSubredditsAndPostsRepo {
         return apiService.getRandomSubreddit()
             .map{(it as T5).toDbModel()}
             .map{ val b = mutableListOf<RoomT5>(it);b}
-
     }
 
     override fun getPost(name: String): Single<RoomT3> {
@@ -71,7 +70,8 @@ class FakeRepo2(private val apiService: API) : BaseSubredditsAndPostsRepo {
 
     override fun updateSubreddits(
         srList: List<String>,
-        isDisplayedInSubscreen: Boolean
+        isDisplayedInAdapter: Boolean,
+        shouldToggleDisplayedColumnInDb: Boolean
     ): Completable {
         return Completable.complete()
     }

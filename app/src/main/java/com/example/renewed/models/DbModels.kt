@@ -6,6 +6,14 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.time.Instant
 
+/**
+ * The Reddit API defines different entity types, including T5 for subreddits, T3 for posts in those
+ * subreddits, and T1 for comments replying to those posts. For every kind of entity that is defined
+ * in the reddit json endpoints we have three different model classes: the network models, the
+ * database models, and the view models. This way, what is parsed from network responses,  what is
+ * stored in the database, and what is displayed in the UI can all vary independently. These models
+ * represent what is stored in the database.
+ */
 @Entity
 data class RoomT5(@PrimaryKey val name: String, val displayName: String, val description: String,
                   val thumbnail: String, val banner_img: String, val timeLastAccessed: Instant,

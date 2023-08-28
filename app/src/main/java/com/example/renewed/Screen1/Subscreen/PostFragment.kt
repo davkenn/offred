@@ -29,7 +29,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class PostFragment : ContentFragment() {
 
@@ -43,7 +42,6 @@ class PostFragment : ContentFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-
         val binding = PostViewBinding.inflate(inflater,container,false)
         postBinding = binding
         return binding.root
@@ -76,35 +74,37 @@ class PostFragment : ContentFragment() {
         super.onResume()
         //stopVideo is called both in onPause and onResume because we don't know if onPause
         // in the previous active Fragment will be called before or after onResume in the next
-        // active Fragment in Screen2. also, we can not just call stopVideo in onResume because
+        // active Fragment in Screen2. Also, we can not just call stopVideo in onResume because
         // onPause may not be followed by onResume if Screen2 is closed
         stopVideo()
         postsVM.setPost(t3Name!!)
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe({ t3ViewState ->
-                            postBinding!!.postName.text = t3ViewState.displayName
-                            val creationDate = t3ViewState.created + ": "
-                            postBinding!!.timeCreated.text = creationDate
-                            postBinding!!.bodyText.text = t3ViewState.selftext
-                            Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
-                            postBinding!!.url.text = t3ViewState.url
-                            if (t3ViewState.isGalleryPost()) {
-                            //makes gallery image clickable but still focusable on other post types
-                                postBinding!!.fullImg.isFocusable =false
-                                postBinding!!.fullImg.isFocusableInTouchMode =false
-                                postBinding!!.fullImg.setOnClickListener {
-                                    this@PostFragment.postsVM.pos+=1
-                                    Glide.with(this@PostFragment).load(
-                                    t3ViewState.galleryUrls?.get(this@PostFragment.postsVM.pos %
-                                                                      t3ViewState.galleryUrls.size))
-                                                                        .into(postBinding!!.fullImg)
-                                }
-                            t3ViewState.galleryUrls?.let{ postBinding!!.fullImg.visibility = VISIBLE
-                                                Glide.with(this@PostFragment)
-                                                     .load(t3ViewState.galleryUrls[postsVM.pos%
-                                                                    t3ViewState.galleryUrls.size])
-                                                     .into(postBinding!!.fullImg)
+                   postBinding!!.postName.text = t3ViewState.displayName
+                   val creationDate = t3ViewState.created + ": "
+                   postBinding!!.timeCreated.text = creationDate
+                   postBinding!!.bodyText.text = t3ViewState.selftext
+                   Linkify.addLinks(postBinding!!.bodyText, Linkify.WEB_URLS)
+                   postBinding!!.url.text = t3ViewState.url
+                   if (t3ViewState.isGalleryPost()) {
+                       postBinding!!.fullImg.isFocusable =false //makes gallery image clickable
+                       postBinding!!.fullImg.isFocusableInTouchMode =false
+                       postBinding!!.fullImg.setOnClickListener {
+                           this@PostFragment.postsVM.pos+=1
+                           Glide.with(this@PostFragment)
+                               .load(t3ViewState.galleryUrls?.get(
+                                   this@PostFragment.postsVM.pos % t3ViewState.galleryUrls.size)
+                               )
+                               .into(postBinding!!.fullImg)
+                       }
+
+                       t3ViewState.galleryUrls?.let{ postBinding!!.fullImg.visibility = VISIBLE
+                           Glide.with(this@PostFragment)
+                               .load(
+                                   t3ViewState.galleryUrls[postsVM.pos% t3ViewState.galleryUrls.size]
+                               )
+                               .into(postBinding!!.fullImg)
                             }
                                 val end = "\nGALLERY, click to to open..."
                                 postBinding!!.postName.text = "${postBinding!!.postName.text}$end"
@@ -148,9 +148,12 @@ class PostFragment : ContentFragment() {
 
     private fun loadThumbNail(viewState: ViewStateT3)     {
         postBinding!!.thumb.visibility = VISIBLE
-        if (viewState.thumbnail == "spoiler") {postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
-                                                return}
-        if (viewState.thumbnail == "nsfw") {postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
+        if (viewState.thumbnail == "spoiler") {
+            postBinding!!.thumb.setImageResource(R.drawable.ic_spoiler)
+            return
+        }
+        if (viewState.thumbnail == "nsfw") {
+            postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
             return
         }
         Glide.with(this).load(viewState.thumbnail.replace("&amp;", ""))

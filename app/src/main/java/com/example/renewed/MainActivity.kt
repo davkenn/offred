@@ -40,6 +40,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             toggleFullscreen(destination.id) }
     }
 
+    //Fetches an Oauth2 token from Reddit. The app is userless, so no account is associated
+    //with this token
     private fun getAuthToken(): Single<String> {
         val credentials = "u3MaMah0dOe1IA:"
         val encodedCredentials: String = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
@@ -49,20 +51,27 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             .map {  it.getOrDefault("access_token","") }
     }
 
+    //When on Screen2, fullscreen mode is used. this will toggle fullscreen when Screen2 is entered
+    //and exited
     private fun toggleFullscreen(id:Int) {
         if (id == R.id.feed) {
             bottomNavigationView.visibility = View.GONE
 
             val ctrl = WindowCompat.getInsetsController(window,
-                                                       window.decorView.findViewById(R.id.favorites))
+                window.decorView.findViewById(R.id.favorites))
+
             ctrl.hide(WindowInsetsCompat.Type.statusBars())
+
             ctrl.systemBarsBehavior =
                 WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
             ctrl.hide(WindowInsetsCompat.Type.systemBars())
-        } else {
+        }
+        else {
             bottomNavigationView.visibility = View.VISIBLE
             val ctrl = WindowCompat.getInsetsController(window,
-                                                      window.decorView.findViewById(R.id.selection))
+                window.decorView.findViewById(R.id.selection))
+
             ctrl.show(WindowInsetsCompat.Type.navigationBars())
          }
     }

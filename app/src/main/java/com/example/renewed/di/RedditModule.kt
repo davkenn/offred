@@ -116,7 +116,7 @@ object ExoPlayerModule {
     @Singleton
     @Provides
     fun provideExoplayer(@ApplicationContext ctx: Context): ExoPlayer =
-                                                                    ExoPlayer.Builder(ctx).build()
+        ExoPlayer.Builder(ctx).build()
 }
 
 @InstallIn(SingletonComponent::class)
@@ -125,5 +125,5 @@ object FavsRepoModule {
     @Singleton
     @Provides
     fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO, favs: FavoritesDAO, api:API)
-                                : BaseFavoritesRepo = FavoritesRepo(t5Dao, t3Dao,favs, api)
+        : BaseFavoritesRepo = FavoritesRepo(t5Dao, t3Dao,favs, api)
 }

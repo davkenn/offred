@@ -12,12 +12,14 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import retrofit2.http.Path
 
-class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
-                    private val favs:FavoritesDAO,private val api: API): BaseFavoritesRepo {
+class FavoritesRepo(private val t5: T5DAO,
+    private val t3: T3DAO,
+    private val favs:FavoritesDAO,
+    private val api: API
+    ): BaseFavoritesRepo {
 
     override fun insert(s: String): Completable {
-         //TODO bug where if you add list again all things in twice
-        return favs.getPosts1(s).andThen(favs.insert(CurrentFavoritesList(s)))
+        return favs.insert(CurrentFavoritesList(s))
 
     }
     override fun observeSavedSubreddits(): Observable<List<RoomT5>>{
@@ -44,9 +46,6 @@ class FavoritesRepo(private val t5: T5DAO, private val t3: T3DAO,
     }
 
     private fun extractT3Field(it: List<Listing>): T3 = it[0].data.children[0].data as T3
-
-    private fun extractT3Field(it: Listing): T3 = it.data.children[0].data as T3
-
 
 }
 

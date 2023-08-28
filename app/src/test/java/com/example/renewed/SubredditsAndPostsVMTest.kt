@@ -2,6 +2,7 @@ package com.example.renewed
 
 
  import com.example.renewed.Screen1.SubredditsAndPostsVM
+ import com.example.renewed.TestTools.*
  import com.example.renewed.TestTools.Companion.loadJsonResponse
  import com.example.renewed.models.*
  import com.example.renewed.repos.BaseSubredditsAndPostsRepo
@@ -15,6 +16,7 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+
 
 
 class SubredditsAndPostsVMTest {
@@ -45,11 +47,9 @@ class SubredditsAndPostsVMTest {
     }
 
     @Test
-    fun processInput() {
+    fun sendScreenLoadEventAndCheckThatTheViewStateIsUpdatedAndStaysOpen() {
         //GIVEN
-        val end = loadJsonResponse("Berserk.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
-     //   mockWebServer.start()
+        mockWebServer.enqueueResponse("Berserk.json",200)
 
         //WHEN
         val res = viewModel.vs.test()
@@ -63,11 +63,9 @@ class SubredditsAndPostsVMTest {
         res.assertValueCount(1)
     }
     @Test
-    fun getRandomSubreddit() {
+    fun whenRepoFetchesASubredditItReturnsItAndEndsRxStream() {
         //GIVEN
-        val end = loadJsonResponse("Berserk.json")
-
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+        mockWebServer.enqueueResponse("Berserk.json",200)
 
         //WHEN
         val r = fakerepo.getSubreddits("aaa")
@@ -75,6 +73,7 @@ class SubredditsAndPostsVMTest {
         var l = t.await(1,TimeUnit.SECONDS)
 
         //THEN
+        //there will be one list with one item and stream will finish
         t.assertValueCount(1)
         t.assertValue { it.size==1 }
         t.assertComplete()
@@ -106,12 +105,8 @@ class SubredditsAndPostsVMTest {
     @Test
     fun gallerySubredditLoadsImageUrls() {
 
-        val end1 = loadJsonResponse("crtgamingabout.json")
-
-        val end2 = loadJsonResponse("crtgamingposts.json")
-
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end1!!))
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end2!!))
+        mockWebServer.enqueueResponse("crtgamingabout.json",200)
+        mockWebServer.enqueueResponse("crtgamingposts.json",200)
 
 
         val res = viewModel.vs.test()
@@ -123,20 +118,17 @@ class SubredditsAndPostsVMTest {
         res.assertValueCount(3)
         //loads 3 images for galeery
         res.assertValueAt(2) {
-
-            it.t3ListForRV!!.vsT3!![3].galleryUrls!!.size == 3}
+            it.t3ListForRV!!.vsT3!![3].galleryUrls!!.size == 3
+        }
         res.assertNotComplete()
     }
 
     @Test
     fun gallerySubredditIsOnlyGalleryTypes() {
 
-        val end1 = loadJsonResponse("crtgamingabout.json")
+        mockWebServer.enqueueResponse("crtgamingabout.json",200)
+        mockWebServer.enqueueResponse("crtgamingposts.json",200)
 
-        val end2 = loadJsonResponse("crtgamingposts.json")
-
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end1!!))
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end2!!))
 
 
         val res = viewModel.vs.test()
@@ -144,6 +136,7 @@ class SubredditsAndPostsVMTest {
         viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
 
         res.await(1,TimeUnit.SECONDS)
+        //On clicking a subreddit (a T5), a list of posts (T3s) for that subreddit will be returned
         viewModel.processInput(Screen1Event.ClickOnT5ViewEvent("t5_3c23m"))
         res.await(1,TimeUnit.SECONDS)
    //     viewModel.processInput(Screen1Event.ClickOnT3ViewEvent("t3_yzv2c3"))
@@ -163,30 +156,32 @@ class SubredditsAndPostsVMTest {
     @Test
     fun getVideoPost()
     {
-        val end1 = loadJsonResponse("crtgamingabout.json")
-
-        val end2 = loadJsonResponse("crtgamingposts.json")
-
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end1!!))
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end2!!))
+        mockWebServer.enqueueResponse("crtgamingabout.json",200)
+        mockWebServer.enqueueResponse("crtgamingposts.json",200)
 
         val res = viewModel.vs.test()
 
         viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         res.await(1,TimeUnit.SECONDS)
+        //On clicking a subreddit (a T5), a list of posts (T3s) for that subreddit will be returned
         viewModel.processInput(Screen1Event.ClickOnT5ViewEvent("t5_3c23m"))
         res.await(1,TimeUnit.SECONDS)
         res.assertValueCount(3)
+        //ensure that video post url is properly loaded
         res.assertValueAt(2) {
             it.t3ListForRV!!.vsT3!![0].url.contains("cx5ll43oe31a1")}
         res.assertNotComplete()
     }
 
+    /**
+     * The scan function in the viewmodel that combines partial view states into full view states
+     * should not return the first emission from scan, which is an empty view state. Wait until
+     * View State has content to load it.
+     */
     @Test
     fun getRidOfEmptyFullViewStateAsFirstEmission()
     {
-        val end = loadJsonResponse("Berserk.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(end!!))
+        mockWebServer.enqueueResponse("Berserk.json",200)
         val res = viewModel.vs.test()
         viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
         var n = res.await(1,TimeUnit.SECONDS)

@@ -12,7 +12,8 @@ class AuthInterceptor(val sm:SessionManager) : Interceptor {
         if (chain.request().url.toString().contains("oauth")) {
             request.addHeader("Authorization","bearer ${token ?: ""}")
         }
-        request.addHeader("User-Agent", "android:com.example.renewed:v1.0 (by /u/WorrySufficient4009)")
+        request.addHeader("User-Agent",
+            "android:com.example.renewed:v1.0 (by /u/WorrySufficient4009)")
         return chain.proceed(request.build())
     }
 }

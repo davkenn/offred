@@ -6,18 +6,25 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.renewed.Screen1.Subscreen.PostFragment
 import com.example.renewed.VIEWPAGER_PAGES_TOTAL
 
-class FavoritesListAdapter(private val fragment: FavoritesListFragment): FragmentStateAdapter(fragment) {
+class FavoritesListAdapter(private val fragment: FavoritesListFragment)
+    : FragmentStateAdapter(fragment) {
     var postIds: MutableList<String> = mutableListOf()
-    var fragList: MutableList<PostFragment?> = arrayOfNulls<PostFragment>(VIEWPAGER_PAGES_TOTAL).toMutableList()
+    var fragList: MutableList<PostFragment?> =
+        arrayOfNulls<PostFragment>(VIEWPAGER_PAGES_TOTAL).toMutableList()
     var a = arrayOfNulls<PostFragment>(VIEWPAGER_PAGES_TOTAL).toMutableList()
 
     override fun getItemCount(): Int = postIds.size
+
     override fun getItemId(position: Int): Long = postIds[position].hashCode().toLong()
-    override fun containsItem(itemId: Long): Boolean = postIds.any { it.hashCode().toLong() == itemId }
+
+    override fun containsItem(itemId: Long): Boolean =
+        postIds.any{ it.hashCode().toLong() == itemId }
 
     fun replaceList(idList:List<String>){
-        postIds.clear()
-        postIds.addAll(idList)
+        with(postIds) {
+            clear()
+            addAll(idList)
+        }
         notifyDataSetChanged()
     }
 

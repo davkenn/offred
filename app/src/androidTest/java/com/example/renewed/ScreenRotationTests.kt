@@ -21,17 +21,15 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-//TODO this is not using the db for this class but just using the standard db
+/**
+ *
+ */
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class RecreatedFragmentStateTests {
+class ScreenRotationTests {
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
-
-
-    //  @get:Rule(order=1)
-    // val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @get:Rule(order = 1)
     val fragmentRule = HiltFragmentScenarioRule(SubredditsSelectionFragment::class)
@@ -39,23 +37,19 @@ class RecreatedFragmentStateTests {
     @Before
     fun init() {
         hiltRule.inject()
-        //      activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
         fragmentRule.launchFragment(R.style.Theme_Renewed)
-
-    }
-
-    @Test
-    fun setUpActivity() {
         fragmentRule.fragmentScenario?.moveToState(Lifecycle.State.RESUMED)
         try {
             Thread.sleep(3000)
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
+    }
+
+    @Test
+    fun backButtonEnabledThenRotateScreenAndBackIsStillEnabled() {
         onView(withId(R.id.subreddits_rv))
             .perform(
-                scrollToPosition<SubredditsAdapter.SubredditViewHolder>(0),
-
                 actionOnItemAtPosition
                 <SubredditsAdapter.SubredditViewHolder>(0, ViewActions.click())
             )
@@ -66,8 +60,8 @@ class RecreatedFragmentStateTests {
                 <PostsAdapter.PostViewHolder>(0, ViewActions.click())
             )
 
+        //this will destroy the fragment and recreate it as is done on rotation
         fragmentRule.fragmentScenario?.recreate()
-
         onView(withId(R.id.back_button))
             .check(matches(isDisplayed()))
 
@@ -75,12 +69,6 @@ class RecreatedFragmentStateTests {
 
     @Test
     fun recreatedActivityHasRightButtonStateForPostView() {
-        fragmentRule.fragmentScenario?.moveToState(Lifecycle.State.RESUMED)
-        try {
-            Thread.sleep(3000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
         onView(withId(R.id.subreddits_rv))
             .perform(
                 actionOnItemAtPosition<SubredditsAdapter.SubredditViewHolder>
@@ -98,54 +86,34 @@ class RecreatedFragmentStateTests {
         onView(withId(R.id.save_button))
             .check(matches(not(isDisplayed())))
 
-
-        //  fragmentRule.fragmentScenario?.activityScenario?.moveToState(Lifecycle.State.DESTROYED)
     }
 
     @Test
     fun recreatedActivityHasRightButtonStateForSubredditView() {
-        fragmentRule.fragmentScenario?.moveToState(Lifecycle.State.RESUMED)
-        try {
-            Thread.sleep(3000)
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
-        }
         onView(withId(R.id.subreddits_rv))
-
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition
                 <SubredditsAdapter.SubredditViewHolder>(0, ViewActions.click())
             )
 
-
         fragmentRule.fragmentScenario?.recreate()
 
         onView(withId(R.id.back_button))
             .check(matches(isDisplayed()))
         onView(withId(R.id.save_button))
             .check(matches(isDisplayed()))
-
-
-        //  fragmentRule.fragmentScenario?.activityScenario?.moveToState(Lifecycle.State.DESTROYED)
     }
 
 
     @Test
     fun recreatedActivityHasRightButtonStateForBlankView() {
-        fragmentRule.fragmentScenario?.moveToState(Lifecycle.State.RESUMED)
-
-
         fragmentRule.fragmentScenario?.recreate()
 
         onView(withId(R.id.back_button))
             .check(matches(not(isDisplayed())))
         onView(withId(R.id.save_button))
             .check(matches(not(isDisplayed())))
-
-
     }
-
-
 }
 
 

@@ -5,10 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.renewed.models.CurrentFavoritesList
-import com.example.renewed.models.RoomT3
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface FavoritesDAO {
@@ -18,10 +16,6 @@ interface FavoritesDAO {
 
     @Query("SELECT postId FROM CurrentFavoritesList order by id ")
     fun getPosts(): Observable<List<String>>
-
-    @Query("DELETE FROM CurrentFavoritesList WHERE postId = :name ")
-    fun getPosts1(name:String): Completable
-
 
     @Query("DELETE FROM CurrentFavoritesList ")
     fun clearDb(): Completable

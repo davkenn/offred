@@ -48,15 +48,17 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         super.onCreate(savedInstanceState)
         Timber.d("onCreate in SubredditsSelectionFragment")
          savedInstanceState?.let {
-             saveEnabled = it.getBoolean("delete_enabled")
+             saveEnabled = it.getBoolean("save_enabled")
+
              backEnabled = it.getBoolean("back_enabled")
+
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.run {
-            putBoolean("delete_enabled", saveEnabled)
+            putBoolean("save_enabled", saveEnabled)
             putBoolean("back_enabled", backEnabled)
         }
     }

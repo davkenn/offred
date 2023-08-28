@@ -5,6 +5,9 @@ import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonQualifier
 import com.squareup.moshi.ToJson
 
+/**
+ * Adapter for subreddit description to be displayed for a subreddit on the subscreen.
+ */
 @Retention(AnnotationRetention.RUNTIME)
 @JsonQualifier
 annotation class SubredditDescription

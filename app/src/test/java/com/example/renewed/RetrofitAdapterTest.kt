@@ -17,8 +17,7 @@ class RetrofitAdapterTest {
     fun setUp() {
         mockWebServer = MockWebServer()
 
-        val coinedResponse = loadJsonResponse("Berserk.json")
-        mockWebServer.enqueue(MockResponse().setResponseCode(200).setBody(coinedResponse!!))
+        mockWebServer.enqueueResponse("Berserk.json",200)
         mockWebServer.start()
         apiService =setupTestRetrofit(mockWebServer,false)
 

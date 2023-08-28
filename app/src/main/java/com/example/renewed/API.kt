@@ -16,7 +16,7 @@ interface API {
     @GET("/r/random.json")//
     fun getRandomSubreddit(): Single<RedditPostType>
 
-    @GET("/r/{subName}/random.json")//
+    @GET("/r/{subName}/random.json")
     fun getRandomPost(@Path("subName")subName:String): Single<List<Listing>>
 
     @GET("r/{subName}/new.json")

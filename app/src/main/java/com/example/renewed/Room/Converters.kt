@@ -7,7 +7,6 @@ import java.time.Instant
 class Converters {
 
         companion object {
-            //todo is this right
             @SuppressLint("NewApi")
             @TypeConverter
             @JvmStatic

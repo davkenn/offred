@@ -1,10 +1,14 @@
 package com.example.renewed.models
 
-import io.reactivex.rxjava3.core.Observable
-
+/**
+ * Events are sent into the view model, then they are processed, resulting in updates to the view
+ * state observable that the fragments observe from the view model. These classes
+ * are complete lists of all events sent into the view model from screen 1 and all events sent
+ * into the view model from screen 2.
+ */
 sealed class Screen1Event{
     data class ScreenLoadEvent(val name:String?): Screen1Event()
-    data class ClickOnT5ViewEvent(val name: String): Screen1Event() //this returns two things one a view state and one a view effect
+    data class ClickOnT5ViewEvent(val name: String): Screen1Event()
     data class ClickOnT3ViewEvent(val name: String): Screen1Event()
     data class RemoveAllSubreddits(val srList:List<String>): Screen1Event()
     data class UpdateViewingState(val name: String?): Screen1Event()

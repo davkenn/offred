@@ -4,6 +4,12 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
+
+/**
+ * These functions convert each of the three model types into other model types. Models are
+ * converted in one direction, from network model to database model to model to be displayed in
+ * the view. Conversion does not go in the other direction.
+ */
 fun T5.toDbModel(): RoomT5 {
     val fullDescription = combineDescriptions(this.description, this.public_description)
     val thumb1 = icon_img ?: ""

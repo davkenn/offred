@@ -8,8 +8,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 interface BaseFavoritesRepo{
-
-
     fun observeSavedSubreddits(): Observable<List<RoomT5>>
     fun getRandomPosts(name: String,number:Int): Observable<RoomT3>
     fun insert(s: String): Completable

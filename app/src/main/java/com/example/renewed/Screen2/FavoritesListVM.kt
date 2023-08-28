@@ -62,19 +62,18 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
                     .map { x.shuffled().first() }
             }
             .flatMap { favsRepo.getRandomPosts(it.displayName, 2) }
-            .share()//Do I need this share? seems to work ok without it.
-//I/okhttp.OkHttpClient: <-- HTTP FAILED: java.io.IOException: Canceled is caused by this
-// take operation which ends the stream early
+            .share()
+        //okhttp.OkHttpClient: <-- HTTP FAILED: java.io.IOException: Canceled
+        //get this error on loads because take ends the stream early. But it works.
         newPostsObservable.take(VIEWPAGER_PAGES_TOTAL.toLong())
             .flatMapCompletable { x -> favsRepo.insert(x.name) }
             .startWith(
-                favsRepo.clearPages()
-                    .subscribeOn(Schedulers.io())
+                favsRepo.clearPages().subscribeOn(Schedulers.io())
             )
-            .subscribe({
-                Timber.d("observ") },
-                    { Timber.e("error: ${it.localizedMessage}") })
-                .addTo(disposables)
+            .subscribe(
+                { Timber.d("observ") },
+                { Timber.e("error: ${it.localizedMessage}") })
+            .addTo(disposables)
 
         currentlyDisplayedPosts = favsRepo.observeCurrentPostList().replay(1)
             .autoConnect(1) { disposables.add(it) }
@@ -93,8 +92,11 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
 
     private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn()
                                     : Observable<PartialViewStateScreen2> {
-            return flatMap { favsRepo.deletePages(it.targets).subscribeOn(Schedulers.io())
-                            .andThen(Observable.just(PartialViewStateScreen2.DeleteCompleteEffect))}
+        return flatMap { favsRepo.deletePages(it.targets)
+                .subscribeOn(Schedulers.io())
+            .andThen(
+                Observable.just(PartialViewStateScreen2.DeleteCompleteEffect))
+        }
     }
 
     private fun Observable<Screen2Event.UpdatePositionEvent>.returnPosition()

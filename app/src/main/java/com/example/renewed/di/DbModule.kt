@@ -18,8 +18,8 @@ import javax.inject.Singleton
 class DbModule {
     @Provides
     @Singleton
-    fun provideDB(@ApplicationContext ctxt: Context) : RedditDatabase = Room.databaseBuilder(
-                                    ctxt, RedditDatabase::class.java, "RedditDB2").build()
+    fun provideDB(@ApplicationContext ctxt: Context) : RedditDatabase =
+        Room.databaseBuilder(ctxt, RedditDatabase::class.java, "RedditDB2").build()
 
     @Provides
     @Singleton
