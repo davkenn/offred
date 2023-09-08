@@ -16,6 +16,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class DbModule {
+
     @Provides
     @Singleton
     fun provideDB(@ApplicationContext ctxt: Context) : RedditDatabase =

@@ -18,6 +18,6 @@ private val repository: BaseSubredditsAndPostsRepo
 
     fun setPost(n: String) : Single<ViewStateT3> =
         repository.getPost(n)
-                  .doOnEvent{x,y->name =  x.subredditId} //feels bad
+                  .doOnEvent{x,_->name =  x.subredditId} //feels bad
                   .map { it.toViewState() }
 }

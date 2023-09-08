@@ -159,7 +159,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewStateScreen1) {
         val inBackStack = navHostFragment.navController.backQueue
-            .any { t3OrT5.name == (it.arguments?.get("key") ?: "NOMATCH") }
+            .any { t3OrT5.name == (it.arguments?.getString("key") ?: "NOMATCH") }
 
         if (inBackStack && (t3OrT5 is PartialViewStateScreen1.T5ForViewing)) {
             subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
