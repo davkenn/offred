@@ -122,7 +122,9 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     //    subsAndPostsVM.processInput(Screen1Event.ScreenLoadEvent(""))
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
-            { x-> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
+            { x-> x.t5ListForRV?.let {
+                subredditAdapter.submitList(it.vsT5)
+            }  //    subredditAdapter.clearSelected()}
                 postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
                 x.latestEvent3?.let { t3 -> navigateToPostOrSubreddit(R.id.postFragment, t3) }
                 x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
@@ -132,11 +134,18 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         {
                             backPressedPopCurrentSubscreen()
                             subredditAdapter.clearSelected()
+
                         }
-                            Screen1Effect.SNACKBAR ->
-                                Snackbar.make(binding.root,"Already clicked. Press back, find",
-                                    Snackbar.LENGTH_SHORT).show()
+                            Screen1Effect.SNACKBAR -> {
+                                Snackbar.make(
+                                    binding.root, "Already clicked. Press back, find",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                                subredditAdapter.setSelected()
+                            }
+
                         }
+
                         //Clear the effect in case process is recreated so we don't repeat it
                         subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)
                     }

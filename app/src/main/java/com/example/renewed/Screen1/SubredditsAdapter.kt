@@ -15,17 +15,22 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.renewed.databinding.RvSubredditElemBinding
 import com.example.renewed.models.ViewStateT5
 import timber.log.Timber
-
+//because these are used across config changes, they must be global
 private var selected = -1
+private var lastSelected = -1
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
+
     var previousSelected :RecyclerView.ViewHolder? = null
 
     fun clearSelected() {
-        previousSelected?.let{it.itemView.isSelected=false}
         selected=-1
-        previousSelected=null
+    //    previousSelected = null is this line good or bad
+    }
+
+    fun setSelected() {
+        selected = lastSelected
     }
 
     inner class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
@@ -33,7 +38,8 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
 
         fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit){
             elementBinding.displayName.text = sr.displayName
-            elementBinding.root.setOnClickListener { selected = layoutPosition
+            elementBinding.root.setOnClickListener { lastSelected = selected
+                                                    selected = layoutPosition
                                                      bindingAdapter?.notifyItemChanged(selected)
                                                      fragmentContextClosure.invoke(sr)
                                                     }
