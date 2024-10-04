@@ -74,7 +74,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT3ViewEvent(x.name))
         }
         subredditAdapter = SubredditsAdapter {
-                x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT5ViewEvent(x.name))
+                x ->
+                    val inBackStack = navHostFragment.navController.backQueue.any { x.name == (it.arguments?.getString("key") ?: "NOMATCH") }
+
+            if (inBackStack) {
+                subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
+
+            }else{
+
+            subsAndPostsVM.processInput(Screen1Event.ClickOnT5ViewEvent(x.name))
+            }
         }
 
         fragmentSelectionBinding = binding.apply {
@@ -131,6 +140,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         //Clear the effect in case process is recreated so we don't repeat it
                         subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)
                     }
+
+
             },
             { Timber.e("error fetching vs: ${it.localizedMessage}") }
         ).addTo(disposables)
@@ -158,13 +169,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewStateScreen1) {
-        val inBackStack = navHostFragment.navController.backQueue
-            .any { t3OrT5.name == (it.arguments?.getString("key") ?: "NOMATCH") }
 
-        if (inBackStack && (t3OrT5 is PartialViewStateScreen1.T5ForViewing)) {
-            subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
-            return
-        }
         navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
         if (t3OrT5 is PartialViewStateScreen1.T3ForViewing) disableButtons(includingBack = false)
                                                             else enableButtons(onlyBack = false)
