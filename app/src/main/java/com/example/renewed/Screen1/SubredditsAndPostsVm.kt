@@ -40,7 +40,7 @@ class SubredditsAndPostsVM @Inject constructor(
     init {
         Timber.d("oncleared in subsandpostsvm")
         disposables.add(repo.clearDisplayed().andThen(prefetch()).subscribeOn(Schedulers.io())
-            .subscribeBy{processInput(Screen1Event.ScreenLoadEvent(""))})
+            .subscribeBy{})//processInput(Screen1Event.ScreenLoadEvent)})
     }
 
     //All Events enter the viewmodel through this function

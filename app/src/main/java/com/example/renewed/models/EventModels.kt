@@ -7,7 +7,7 @@ package com.example.renewed.models
  * into the view model from screen 2.
  */
 sealed class Screen1Event{
-    data class ScreenLoadEvent(val name:String?): Screen1Event()
+    object ScreenLoadEvent: Screen1Event()
     data class ClickOnT5ViewEvent(val name: String): Screen1Event()
     data class ClickOnT3ViewEvent(val name: String): Screen1Event()
     data class RemoveAllSubreddits(val srList:List<String>): Screen1Event()

@@ -49,7 +49,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         Timber.d("onCreate in SubredditsSelectionFragment")
          savedInstanceState?.let {
              saveEnabled = it.getBoolean("save_enabled")
-
              backEnabled = it.getBoolean("back_enabled")
 
         }
@@ -73,16 +72,14 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         postAdapter = PostsAdapter {
                 x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT3ViewEvent(x.name))
         }
-        subredditAdapter = SubredditsAdapter {
-                x ->
-                    val inBackStack = navHostFragment.navController.backQueue.any { x.name == (it.arguments?.getString("key") ?: "NOMATCH") }
+        subredditAdapter = SubredditsAdapter { x ->
+            val inBackStack = navHostFragment.navController.backQueue
+                               .any { x.name == (it.arguments?.getString("key") ?: "NOMATCH") }
 
             if (inBackStack) {
                 subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
-
             }else{
-
-            subsAndPostsVM.processInput(Screen1Event.ClickOnT5ViewEvent(x.name))
+                subsAndPostsVM.processInput(Screen1Event.ClickOnT5ViewEvent(x.name))
             }
         }
 
@@ -105,7 +102,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         val backRefreshClicks = backClicks.mergeWith(refreshClicks)
             .throttleFirst(200,TimeUnit.MILLISECONDS)
-
 
         val saveClicks = binding.saveButton.clicks()
             .throttleFirst(200,TimeUnit.MILLISECONDS)

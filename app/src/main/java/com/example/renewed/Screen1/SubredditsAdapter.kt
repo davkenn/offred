@@ -21,14 +21,13 @@ private var selected = -1
 private var lastSelected = -1
 
 class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
-    ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
+        ListAdapter<ViewStateT5, SubredditsAdapter.SubredditViewHolder>(SubredditDiffCallback) {
 
     var previousSelected :RecyclerView.ViewHolder? = null
 
     fun clearSelected() {
         previousSelected?.bindingAdapter?.notifyItemChanged(selected)
         selected=-1
-
     //    previousSelected = null is this line good or bad
     }
 

@@ -43,7 +43,7 @@ class SubredditsAndPostsVMTest2 {
 
         //WHEN
         val res = viewModel.vs.test()
-        viewModel.processInput(Screen1Event.ScreenLoadEvent(""))
+        viewModel.processInput(Screen1Event.ScreenLoadEvent)
        viewModel.processInput(Screen1Event.ClickOnT5ViewEvent("t5_tu4j3"))
 
         var l = res.await(1, TimeUnit.SECONDS)
