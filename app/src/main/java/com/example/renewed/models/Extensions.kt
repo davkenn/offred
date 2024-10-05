@@ -25,15 +25,12 @@ fun T5.toDbModel(): RoomT5 {
 }
 
 fun T3.toDbModel(): RoomT3 {
-    val thumb: String?=null
-    var address: String?=null
 
-    if (url.startsWith("https://v.redd.it")){ Timber.d("AAAAAA")
-                                                url= media?.reddit_video?.hls_url?:"" }
+    if (url.startsWith("https://v.redd.it")){ url= media?.reddit_video?.hls_url?:"" }
 
     return RoomT3(name = name, subredditId = subreddit_id, selftext = selftext, url =  url,
                   created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
-                  timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
+                  timeLastAccessed = Instant.now(), title = title, thumbnail = thumbnail,
                   gallery_urls = media_metadata?.joinToString(separator = " ") {
                       it.p?.last()?.u?.replace("amp;","")?:""}, isSaved = false)
 }

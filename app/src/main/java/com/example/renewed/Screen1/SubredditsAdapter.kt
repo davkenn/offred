@@ -43,6 +43,7 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit){
 
             elementBinding.displayName.text = sr.displayName.chunked(18).joinToString("\n")
+            Timber.d(elementBinding.displayName.text.toString())
 
             elementBinding.root.setOnClickListener { lastSelected = selected
                                                     selected = layoutPosition

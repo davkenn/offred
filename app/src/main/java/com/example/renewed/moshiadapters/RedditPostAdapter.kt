@@ -15,7 +15,6 @@ class RedditPostAdapter {
         moreAdapter: JsonAdapter<More>
     ): Holder {
         val jsonObj = reader.readJsonValue() as Map<String, Any>
-    //    check(jsonObj != null)
         val data = when (val type = jsonObj["kind"]) {
             "t5" -> t5Adapter.fromJsonValue(jsonObj["data"])!!
             "t3" -> t3Adapter.fromJsonValue(jsonObj["data"])!!
