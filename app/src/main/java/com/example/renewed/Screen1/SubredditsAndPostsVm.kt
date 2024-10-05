@@ -17,7 +17,6 @@ import timber.log.Timber
 import java.time.Instant
 import javax.inject.Inject
 
-
 @HiltViewModel
 class SubredditsAndPostsVM @Inject constructor(
     private val repo: BaseSubredditsAndPostsRepo
@@ -38,14 +37,13 @@ class SubredditsAndPostsVM @Inject constructor(
         .autoConnect(1){disposables.add(it)}
 
     init {
-        Timber.d("oncleared in subsandpostsvm")
         disposables.add(repo.clearDisplayed().andThen(prefetch()).subscribeOn(Schedulers.io())
             .subscribeBy{processInput(Screen1Event.ScreenLoadEvent)})
     }
 
     //All Events enter the viewmodel through this function
-    fun processInput(name: Screen1Event) {
-        inputEvents.accept(name)
+    fun processInput(event: Screen1Event) {
+        inputEvents.accept(event)
     }
 
     override fun onCleared() {
@@ -180,15 +178,11 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun prefetch(): Completable =
         repo.deleteUninterestingSubreddits()
             .andThen(repo.prefetchSubreddits()
-                .doOnError { Timber.e(
-                    "----error fetching subreddits ${it.stackTraceToString()}") }
-                .onErrorComplete()
-                .doOnComplete { Timber.d("---- done fetching subreddits") })
+                         .doOnError { Timber.e("----error fetching subreddits") }
+                         .onErrorComplete())
             .andThen(repo.prefetchPosts()
-                .doOnError { Timber.e(
-                    "----error getting posts ${it.stackTraceToString()}") }
-                .onErrorComplete()
-                .doOnComplete { Timber.d("---- done fetching posts") })
+                         .doOnError { Timber.e("----error fetching posts") }
+                         .onErrorComplete())
 
     private fun getSubredditList(lastOnPreviousPage:String?=null) =
         repo.getSubreddits(lastOnPreviousPage).subscribeOn(Schedulers.io())
