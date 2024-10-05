@@ -26,8 +26,8 @@ fun T5.toDbModel(): RoomT5 {
 fun T3.toDbModel(): RoomT3 {
     val thumb: String?=null
     var address: String?=null
-    //get correct video url from a number of json fields where it could be
-    if (url.startsWith("https://v.redd.it")){ address= media?.reddit_video?.fallback_url }
+
+    if (url.startsWith("https://v.redd.it")){ address= media?.reddit_video?.dash_url }
 
     return RoomT3(name = name, subredditId = subreddit_id, selftext = selftext, url = address?: url,
                   created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
