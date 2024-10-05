@@ -26,6 +26,7 @@ class SubredditsAndPostsVMTestPreloadedDb {
     @Before
     fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
+
         var a=  Room.inMemoryDatabaseBuilder(context,
             RedditDatabase::class.java
         )//.createFromAsset("RedditDB")

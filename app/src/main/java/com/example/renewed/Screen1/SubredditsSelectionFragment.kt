@@ -136,15 +136,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                             subredditAdapter.clearSelected()
 
                         }
-                            Screen1Effect.SNACKBAR -> {
+                        Screen1Effect.SNACKBAR ->
+                        {
                                 Snackbar.make(
                                     binding.root, "Already clicked. Press back, find",
                                     Snackbar.LENGTH_SHORT
                                 ).show()
                                 subredditAdapter.setSelected()
-                            }
-
                         }
+
+                    }
 
                         //Clear the effect in case process is recreated so we don't repeat it
                         subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)

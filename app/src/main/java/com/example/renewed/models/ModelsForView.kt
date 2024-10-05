@@ -50,7 +50,7 @@ enum class Screen2Effect{
 }
 
 enum class Screen1Effect{
-    DELETE_OR_SAVE,SNACKBAR
+    DELETE_OR_SAVE,SNACKBAR,
 }
 
 /**

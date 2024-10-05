@@ -25,12 +25,16 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
     var previousSelected :RecyclerView.ViewHolder? = null
 
     fun clearSelected() {
+        previousSelected?.bindingAdapter?.notifyItemChanged(selected)
         selected=-1
+
     //    previousSelected = null is this line good or bad
     }
 
     fun setSelected() {
         selected = lastSelected
+        previousSelected?.bindingAdapter?.notifyItemChanged(selected)
+
     }
 
     inner class SubredditViewHolder(private val elementBinding: RvSubredditElemBinding) :
