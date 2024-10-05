@@ -2,6 +2,7 @@ package com.example.renewed
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View.GONE
@@ -41,27 +42,22 @@ class SubredditsAdapter(private val onClick: (ViewStateT5) -> Unit) :
         RecyclerView.ViewHolder(elementBinding.root){
 
         fun bind(sr: ViewStateT5, fragmentContextClosure: (ViewStateT5) -> Unit){
-            elementBinding.displayName.text = sr.displayName
+
+            elementBinding.displayName.text = sr.displayName.chunked(18).joinToString("\n")
+
             elementBinding.root.setOnClickListener { lastSelected = selected
                                                     selected = layoutPosition
                                                      bindingAdapter?.notifyItemChanged(selected)
                                                      fragmentContextClosure.invoke(sr)
                                                     }
-            if (sr.displayName.length > 18) { elementBinding.detailImage.visibility=GONE
-                                              return
-                                            }
-            if (sr.thumbnail.isBlank()){ elementBinding.detailImage.visibility= VISIBLE
-                                    elementBinding.detailImage.setImageResource(R.color.purple_500)
-                                        return
-                                        }
-            elementBinding.detailImage.visibility=VISIBLE
-            Glide.with(this.itemView.context).load(sr.thumbnail)
+
+            Glide.with(this.itemView.context)
+                .load(sr.thumbnail)
                 .apply(
-                    RequestOptions().override(50, 50))
-                                   .placeholder(ColorDrawable(Color.BLACK))
-                                   .error(ColorDrawable(Color.RED))
-                                   .fallback(ColorDrawable(Color.YELLOW))
-                                   .into(elementBinding.detailImage)
+                        RequestOptions().override(50, 50))
+                                        .placeholder(ColorDrawable(Color.BLACK))
+                                        .error(ColorDrawable(Color.BLUE))
+                                        .into(elementBinding.detailImage)
         }
     }
 

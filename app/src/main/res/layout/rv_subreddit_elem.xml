@@ -28,11 +28,9 @@
 
         android:maxLines="2"
         android:ellipsize="end"
-      android:gravity="end"
-
+        android:gravity="end"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/detail_image"
-
         app:layout_constraintEnd_toStartOf="@id/time_last_accessed"
         app:layout_constraintStart_toEndOf="@id/detail_image"
         />
