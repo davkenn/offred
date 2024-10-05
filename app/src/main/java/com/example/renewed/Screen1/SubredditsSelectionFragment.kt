@@ -64,7 +64,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Timber.d("onViewCreated in home Fragment")
         navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
 
@@ -116,11 +115,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subsAndPostsVM.processInput(it)
         }
 
-    //    subsAndPostsVM.processInput(Screen1Event.ScreenLoadEvent(""))
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
-            { x-> x.t5ListForRV?.let {
-                subredditAdapter.submitList(it.vsT5)
-            }  //    subredditAdapter.clearSelected()}
+            { x-> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
                 postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
                 x.latestEvent3?.let { t3 -> navigateToPostOrSubreddit(R.id.postFragment, t3) }
                 x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
@@ -205,7 +201,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     override fun onResume() {
-        Timber.d("onResume in SubredditSelectionFragment")
         super.onResume()
         if (saveEnabled) enableButtons(onlyBack = false)
         else if (backEnabled) enableButtons(onlyBack = true)
