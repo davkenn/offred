@@ -1,5 +1,6 @@
 package com.example.renewed.models
 
+import timber.log.Timber
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -27,9 +28,10 @@ fun T3.toDbModel(): RoomT3 {
     val thumb: String?=null
     var address: String?=null
 
-    if (url.startsWith("https://v.redd.it")){ address= media?.reddit_video?.dash_url }
+    if (url.startsWith("https://v.redd.it")){ Timber.d("AAAAAA")
+                                                url= media?.reddit_video?.hls_url?:"" }
 
-    return RoomT3(name = name, subredditId = subreddit_id, selftext = selftext, url = address?: url,
+    return RoomT3(name = name, subredditId = subreddit_id, selftext = selftext, url =  url,
                   created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
                   timeLastAccessed = Instant.now(), title = title, thumbnail = thumb?:thumbnail,
                   gallery_urls = media_metadata?.joinToString(separator = " ") {

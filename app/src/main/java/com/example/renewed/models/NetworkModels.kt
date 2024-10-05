@@ -45,8 +45,7 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
               @Json(name = "upvote_ratio") val upvoteRatio: Double,
             //if json permalink is a url create a text post, if not then either vid  or photo post
               val permalink: String, val thumbnail: String, val created_utc: Long,
-              val media:VideoMedia?, val secure_media:VideoMedia?,
-              val media_metadata:List<GalleryMedia>?) : RedditPostType()
+              val media:VideoMedia?, val media_metadata:List<GalleryMedia>?) : RedditPostType()
 
 @JsonClass(generateAdapter = true)
 data class PicsAndDimens (val y:Int,val x:Int, val u:String)
@@ -58,7 +57,7 @@ data class GalleryMedia(val e:String?, val m:String?, val p: List<PicsAndDimens>
 data class VideoMedia  (val reddit_video:Video?)
 
 @JsonClass(generateAdapter = true)
-data class Video  (val fallback_url:String?,val dash_url:String?)
+data class Video  (val fallback_url:String?,val dash_url:String?,val hls_url:String?)
 
 @JsonClass(generateAdapter = true)
 data class T1 (override val name: String, val link_id: String, val body: String): RedditPostType()
