@@ -166,6 +166,7 @@ class PostFragment : ContentFragment() {
 
     private fun loadVideo(state:ViewStateT3?) {
      //   playerView?.player = null
+        Timber.d(state?.url)
         playerView = postBinding?.exoplayer
         playerView?.player=exo
         exo.stop()

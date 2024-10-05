@@ -45,7 +45,7 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
               @Json(name = "upvote_ratio") val upvoteRatio: Double,
             //if json permalink is a url create a text post, if not then either vid  or photo post
               val permalink: String, val thumbnail: String, val created_utc: Long,
-              val videoMedia:VideoMedia?, val secure_Video_media:VideoMedia?,
+              val media:VideoMedia?, val secure_media:VideoMedia?,
               val media_metadata:List<GalleryMedia>?) : RedditPostType()
 
 @JsonClass(generateAdapter = true)
