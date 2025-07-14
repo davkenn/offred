@@ -7,14 +7,15 @@ import com.example.renewed.models.RedditPostType
 import io.reactivex.rxjava3.core.Single
 
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface API {
+    @GET("/r/all.json")
+    fun getPostsFromAll(@Query("limit") limit: Int = 100, @Query("after") after: String? = null): Single<Listing>
 
-    @GET("/r/random.json")//
-    fun getRandomSubreddit(): Single<RedditPostType>
+    @GET("/r/{subName}/about.json")//
+    fun getSubredditDetails(@Path("subName")subName:String): Single<RedditPostType>
 
     @GET("/r/{subName}/random.json")
     fun getRandomPost(@Path("subName")subName:String): Single<List<Listing>>

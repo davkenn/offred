@@ -9,8 +9,6 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.lang.Integer.max
-import java.lang.Integer.min
 import java.time.Instant
 
 class SubredditsAndPostsRepo(
@@ -28,14 +26,18 @@ class SubredditsAndPostsRepo(
 
     override fun prefetchSubreddits() : Completable =
         t5Dao.howManySubredditsInDb()
-             .flatMapCompletable {  n-> loadSubredditsDb(min(15,max(0,
-                                            min(SCREEN1_DB_SIZE, SCREEN1_DB_SIZE-n.toInt())))) }
+             .flatMapCompletable {   loadSubredditsDb(SCREEN1_DB_SIZE-it.toInt()) }
 
     private fun loadSubredditsDb(needed: Int): Completable =
-        Observable.fromIterable(List(needed){0})
-            .flatMap ( {  api.getRandomSubreddit().toObservable()} , 10)
-            .map { (it as T5).toDbModel() }
-            .flatMapCompletable { roomT5 -> t5Dao.insertT5(roomT5)}
+                 api.getPostsFromAll(needed).flattenAsObservable { it.data.children }
+                     .map{(it.data as T3).subreddit}
+                     .distinct()
+                     .take(needed.toLong())
+                     .flatMapSingle{api.getSubredditDetails(it)}
+
+                     .flatMapCompletable{t5Dao.insertT5((it as T5).toDbModel())}
+
+
 
     override fun getSubreddit(name: String): Single<RoomT5> =
         t5Dao.getSubreddit(name)
