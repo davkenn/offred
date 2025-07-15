@@ -4,6 +4,8 @@ package com.example.renewed
 
 import com.example.renewed.models.Listing
 import com.example.renewed.models.RedditPostType
+import com.example.renewed.models.T5
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
 import retrofit2.http.GET
@@ -19,6 +21,13 @@ interface API {
 
     @GET("/r/{subName}/random.json")
     fun getRandomPost(@Path("subName")subName:String): Single<List<Listing>>
+
+    @GET("/r/{subName}/top.json")
+    fun getTopPosts(
+        @Path("subName") subName: String,
+        @Query("t") time: String = "month", // Timeframe: "hour", "day", "week", "month", "year", "all"
+        @Query("limit") limit: Int = 5    // Max number of posts to fetch (max is 100)
+    ): Observable<Listing>
 
     @GET("r/{subName}/new.json")
     fun getPostsInDateRange(@Path("subName") subName:String,
