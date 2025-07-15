@@ -107,31 +107,48 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onDestroyView()
     }
 
-    override fun onResume() {
+   override fun onResume() {
         Timber.d("onResume in FavoritesListFragment")
         super.onResume()
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
             //update position if loading new posts for new pages in infinite list
-            if (position == vpPagesAdapter.postIds.size - 4 &&
-                vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
+            if (position == VP_PAGES_PER_LOAD) {
 
                 showLoading()
                 favoritesVM.processInput(
-                    Screen2Event.UpdatePositionEvent(position - VP_PAGES_PER_LOAD))
+                    Screen2Event.LoadMoreEvent(vpPagesAdapter.postIds.take(VP_PAGES_PER_LOAD)))
                 //when DeleteSubredditEvent returns, SaveSubredditEvent will be called
-                favoritesVM.processInput(
-                    Screen2Event.DeleteSubredditEvent(vpPagesAdapter.postIds
-                        .take(VP_PAGES_PER_LOAD)))
+
             }
             //update position if not reloading infinite list
             else {
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(position))
             }
-        }
+        }.addTo(disposables)
         //update position on rotation
         if (savedPos != 0) favoritesVM.processInput(Screen2Event.UpdatePositionEvent(savedPos))
     }
 
+/**  override fun onResume() {
+      Timber.d("onResume in FavoritesListFragment")
+      super.onResume()
+      vp.pageSelections()
+          .distinctUntilChanged() // Prevents duplicate events
+          .subscribe { position ->
+              Timber.d("THELIISPOS $position")
+              if (position == vpPagesAdapter.postIds.size - 3 &&
+                  vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
+                  showLoading()
+                  favoritesVM.processInput(Screen2Event.LoadMoreEvent)
+              } else {
+                  favoritesVM.processInput(Screen2Event.UpdatePositionEvent(position))
+              }
+          }.addTo(disposables)
+
+      if (savedPos != 0) {
+          favoritesVM.processInput(Screen2Event.UpdatePositionEvent(savedPos))
+      }
+  }**/
     /**
      *
      */

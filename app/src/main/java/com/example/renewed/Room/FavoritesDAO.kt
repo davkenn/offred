@@ -10,11 +10,13 @@ import io.reactivex.rxjava3.core.Observable
 
 @Dao
 interface FavoritesDAO {
-
+   @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(elements: List<CurrentFavoritesList>): Completable
+    
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(elem: CurrentFavoritesList): Completable
 
-    @Query("SELECT postId FROM CurrentFavoritesList order by id ")
+    @Query("SELECT postId FROM CurrentFavoritesList order by id")
     fun getPosts(): Observable<List<String>>
 
     @Query("DELETE FROM CurrentFavoritesList ")

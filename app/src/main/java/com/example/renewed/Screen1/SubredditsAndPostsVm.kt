@@ -135,6 +135,7 @@ class SubredditsAndPostsVM @Inject constructor(
                             it.previousState.filter { x->x.name != it.targetedSubreddit })
                     )
                     .startWith(
+
                             repo.saveSubreddit(it.targetedSubreddit).subscribeOn(Schedulers.io())
                     )
         }

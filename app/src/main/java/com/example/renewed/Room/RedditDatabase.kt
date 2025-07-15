@@ -8,7 +8,7 @@ import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
 
     @Database(entities =[RoomT5::class, RoomT3::class,CurrentFavoritesList::class ],
-                                                    version = 1, exportSchema =false )
+                                                    version = 6, exportSchema =false )
     @TypeConverters(Converters::class)
     abstract class RedditDatabase : RoomDatabase() {
         abstract fun subredditDao(): T5DAO

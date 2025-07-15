@@ -18,12 +18,25 @@ class FavoritesRepo(private val t5: T5DAO,
     private val api: API
     ): BaseFavoritesRepo {
 
+        override fun insertAll(posts: List<String>): Completable {
+            // We need to map the list of strings to a list of your entity class.
+            val favoriteListEntities = posts.map { CurrentFavoritesList(postId = it) }
+            return favs.insertAll(favoriteListEntities)
+        }
     override fun insert(s: String): Completable {
         return favs.insert(CurrentFavoritesList(s))
 
     }
     override fun observeSavedSubreddits(): Observable<List<RoomT5>>{
         return t5.observeSavedSubreddits()
+    }
+
+    override fun getRandomPosts(name: String, number: Int): Observable<RoomT3> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getPostsFromSavedSubreddit(subreddit: RoomT5): Observable<RoomT3>{
+        return Observable.fromIterable(t3.getPosts(subreddit.name).blockingGet())
     }
 
     override fun observeCurrentPostList(): Observable<List<String>>{
@@ -38,11 +51,7 @@ class FavoritesRepo(private val t5: T5DAO,
         return favs.clearDb().startWith(t5.deleteUnsavedPosts())
     }
 
-    override fun getRandomPosts(name:String,number:Int): Observable<RoomT3> {
-        return     api.getTopPosts(name,limit=number)
-                .map{ x -> extractT3Field(x).toDbModel()}
-                .doOnNext { t3.insertAll(listOf(it)).subscribe() }
-    }
+
 
     private fun extractT3Field(it: Listing): T3 = it.data.children[0].data as T3
 

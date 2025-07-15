@@ -35,7 +35,9 @@ data class RoomT3(@PrimaryKey val name: String, @ColumnInfo(index = true) val su
                   val gallery_urls: String?,val isSaved:Boolean=false)
 
 @Entity
-data class CurrentFavoritesList( val postId: String){
+data class CurrentFavoritesList(
+    val postId: String,
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
-}
+    val id: Int = 0)
+
+

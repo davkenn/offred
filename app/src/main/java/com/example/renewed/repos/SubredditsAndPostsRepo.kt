@@ -58,7 +58,10 @@ class SubredditsAndPostsRepo(
 
     override fun saveSubreddit(name: String?): Completable =
          Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
-                   .concatMapCompletable{t5Dao.saveSubreddit(it.name) }.subscribeOn(Schedulers.io())
+                   .concatMapCompletable{t5Dao.saveSubreddit(it.name) }.
+             subscribeOn(Schedulers.io())
+
+
 
     override fun updateSubreddits(srList: List<String>, isDisplayedInAdapter: Boolean,
                                     shouldToggleDisplayedColumnInDb: Boolean): Completable =

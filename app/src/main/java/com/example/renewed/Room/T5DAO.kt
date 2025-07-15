@@ -51,6 +51,7 @@ interface T5DAO {
         fun deleteUnsavedPosts() : Completable
 
 
+
         //following methods only used for ui testing
         @Query("UPDATE RoomT5 SET totalViews=0 and isDisplayed=0 and isSaved=0")
         fun clearViews() : Unit

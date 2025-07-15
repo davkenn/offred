@@ -14,4 +14,7 @@ interface BaseFavoritesRepo{
     fun observeCurrentPostList(): Observable<List<String>>
     fun clearPages(): Completable
     fun deletePages(s: List<String>): Completable
+    fun insertAll(posts: List<String>): Completable
+
+    fun getPostsFromSavedSubreddit(subreddit: RoomT5): Observable<RoomT3>
 }
