@@ -12,7 +12,6 @@ import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
 import com.bumptech.glide.Glide
 import com.example.renewed.R
 import com.example.renewed.VP_PAGES_PER_LOAD
-import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
 import com.example.renewed.models.*
 import com.google.android.exoplayer2.ExoPlayer
@@ -36,7 +35,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
 
     private lateinit var vp: ViewPager2
     private lateinit var vpPagesAdapter : FavoritesListAdapter
-    private var savedPos: Int by atomic(0)
+    private var savedPos: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.d("onCreate in FavoritesListFragment")

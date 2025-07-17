@@ -38,8 +38,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private lateinit var postAdapter: PostsAdapter
     private val disposables = CompositeDisposable()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
-    private var saveEnabled: Boolean by atomic(false)
-    private var backEnabled: Boolean by atomic(false)
+    private var saveEnabled: Boolean = false
+    private var backEnabled: Boolean = false
     private lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,6 +79,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 subsAndPostsVM.processInput(Screen1Event.ClickOnT5ViewEvent(x.name))
             }
         }
+
+
 
         fragmentSelectionBinding = binding.apply {
             postsRv.layoutManager = LinearLayoutManager(requireContext())
