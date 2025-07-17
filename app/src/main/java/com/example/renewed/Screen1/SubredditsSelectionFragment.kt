@@ -20,7 +20,6 @@ import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
 import com.example.renewed.models.Screen1Effect
 import com.example.renewed.models.Screen1Event
 import com.example.renewed.models.PartialViewStateScreen1
-import com.example.renewed.test.CountingIdleResource
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -29,7 +28,6 @@ import io.reactivex.rxjava3.kotlin.addTo
 import timber.log.Timber
 import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -150,17 +148,16 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     private fun backPressedPopCurrentSubscreen() {
-
+        val navHost = navHostFragment.navController
         val currentFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
-        if (currentFragment is PostFragment) { //If subscreen is a subreddit post
-            navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
-        }
-        else if (currentFragment is SubredditFragment) {  //if subscreen is a subreddit
-            navHostFragment.navController.popBackStack(R.id.subredditFragment, true)
-            navHostFragment.navController.popBackStack(R.id.subredditFragment, false)
+        when (currentFragment){
+            is PostFragment -> navHost.popBackStack(R.id.subredditFragment, false)
+            is SubredditFragment -> navHost.popBackStack(R.id.subredditFragment, true)
+            else -> navHost.navigateUp()
+
         }
         //after popping the stack, its either a subreddit....
-        if (navHostFragment.navController.backQueue.size > 2) enableButtons(onlyBack = false)
+        if (navHost.backQueue.size > 2) enableButtons(onlyBack = false)
         else disableButtons(true)       //...or a blank fragment
     }
 
