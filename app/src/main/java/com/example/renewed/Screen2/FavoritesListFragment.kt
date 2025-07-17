@@ -94,22 +94,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 }
             }
             .addTo(disposables)
-    }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("pos",savedPos)
-    }
-
-    override fun onDestroyView() {
-        Timber.d("onDestroyView in FavoritesListFragment")
-        disposables.clear()
-        super.onDestroyView()
-    }
-
-   override fun onResume() {
-        Timber.d("onResume in FavoritesListFragment")
-        super.onResume()
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
             //update position if loading new posts for new pages in infinite list
             if (position == VP_PAGES_PER_LOAD+2) {
@@ -128,31 +113,24 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         }.addTo(disposables)
         //update position on rotation
         if (savedPos != 0) favoritesVM.processInput(Screen2Event.UpdatePositionEvent(savedPos))
+
     }
 
-/**  override fun onResume() {
-      Timber.d("onResume in FavoritesListFragment")
-      super.onResume()
-      vp.pageSelections()
-          .distinctUntilChanged() // Prevents duplicate events
-          .subscribe { position ->
-              Timber.d("THELIISPOS $position")
-              if (position == vpPagesAdapter.postIds.size - 3 &&
-                  vpPagesAdapter.postIds.size == VIEWPAGER_PAGES_TOTAL) {
-                  showLoading()
-                  favoritesVM.processInput(Screen2Event.LoadMoreEvent)
-              } else {
-                  favoritesVM.processInput(Screen2Event.UpdatePositionEvent(position))
-              }
-          }.addTo(disposables)
+    override fun onPause() {
+        super.onPause()
+        disposables.clear()
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("pos",savedPos)
+    }
 
-      if (savedPos != 0) {
-          favoritesVM.processInput(Screen2Event.UpdatePositionEvent(savedPos))
-      }
-  }**/
-    /**
-     *
-     */
+    override fun onDestroyView() {
+        Timber.d("onDestroyView in FavoritesListFragment")
+        super.onDestroyView()
+    }
+
+    
     private fun showLoading() {
         vp.visibility = View.INVISIBLE
         binding.loading.visibility = View.VISIBLE
