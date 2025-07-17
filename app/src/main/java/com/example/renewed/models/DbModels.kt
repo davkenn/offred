@@ -34,12 +34,21 @@ data class RoomT3(@PrimaryKey val name: String, @ColumnInfo(index = true) val su
                   val selftext: String, val url: String, val permalink:String, val thumbnail: String,
                   val gallery_urls: String?,val isSaved:Boolean=false)
 
-@Entity
-data class CurrentFavoritesList(
-    val postId: String,
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+
+@Entity(
+    tableName = "CurrentFavoritesList",
+    foreignKeys = [ForeignKey(
+        entity = RoomT3::class,
+        parentColumns = ["name"],
+        childColumns = ["postId"],
+        onDelete = ForeignKey.CASCADE 
+    )]
+)
+data class CurrentFavoritesList( // Renamed for clarity
+    @ColumnInfo(index = true) val postId: String,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val displayOrder: Long
 )
+
 
 
