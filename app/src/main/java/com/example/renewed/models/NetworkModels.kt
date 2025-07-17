@@ -29,7 +29,7 @@ data class Listing(val data: RedditListing)
 sealed class RedditPostType {
     abstract val name:String
 }
-
+//TODO PolymorphicJsonAdapterFactory
 @JsonClass(generateAdapter = true)
 data class T5 (override val name: String, val display_name: String, val icon_img: String?,
                val header_img: String?, val community_icon: String?, val banner_img: String?,
