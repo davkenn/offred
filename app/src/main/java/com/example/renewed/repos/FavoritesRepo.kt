@@ -1,16 +1,12 @@
 package com.example.renewed.repos
 
 import com.example.renewed.API
-import com.example.renewed.AuthAPI
 import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.models.*
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.kotlin.subscribeBy
-import retrofit2.http.Path
 
 class FavoritesRepo(private val t5: T5DAO,
     private val t3: T3DAO,
@@ -20,11 +16,14 @@ class FavoritesRepo(private val t5: T5DAO,
 
         override fun insertAll(posts: List<String>): Completable {
             // We need to map the list of strings to a list of your entity class.
-            val favoriteListEntities = posts.map { CurrentFavoritesList(postId = it) }
+            val favoriteListEntities = posts.map { CurrentFavoritesList(
+                postId = it,
+                displayOrder = System.currentTimeMillis()
+            ) }
             return favs.insertAll(favoriteListEntities)
         }
     override fun insert(s: String): Completable {
-        return favs.insert(CurrentFavoritesList(s))
+        return favs.insert(CurrentFavoritesList(s,displayOrder=System.currentTimeMillis()))
 
     }
     override fun observeSavedSubreddits(): Observable<List<RoomT5>>{

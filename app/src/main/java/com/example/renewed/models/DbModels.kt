@@ -38,6 +38,8 @@ data class RoomT3(@PrimaryKey val name: String, @ColumnInfo(index = true) val su
 data class CurrentFavoritesList(
     val postId: String,
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0)
+    val id: Int = 0,
+    val displayOrder: Long
+)
 
 

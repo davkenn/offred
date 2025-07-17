@@ -112,7 +112,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
         super.onResume()
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
             //update position if loading new posts for new pages in infinite list
-            if (position == VP_PAGES_PER_LOAD) {
+            if (position == VP_PAGES_PER_LOAD+2) {
 
                 showLoading()
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(2))
