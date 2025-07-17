@@ -39,6 +39,10 @@ class FavoritesRepo(private val t5: T5DAO,
         return Observable.fromIterable(t3.getPosts(subreddit.name).blockingGet())
     }
 
+    override fun currentLength(): Observable<Int>{
+        return favs.currentSize()
+    }
+
     override fun observeCurrentPostList(): Observable<List<String>>{
         return favs.getPosts()
     }

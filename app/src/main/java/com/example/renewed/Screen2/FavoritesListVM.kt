@@ -10,6 +10,7 @@ package com.example.renewed.Screen2
  import com.example.renewed.repos.BaseFavoritesRepo
  import com.jakewharton.rxrelay3.PublishRelay
  import dagger.hilt.android.lifecycle.HiltViewModel
+ import io.reactivex.rxjava3.core.Completable
  import io.reactivex.rxjava3.core.Observable
  import io.reactivex.rxjava3.disposables.CompositeDisposable
  import io.reactivex.rxjava3.kotlin.addTo
@@ -24,6 +25,7 @@ package com.example.renewed.Screen2
 @SuppressLint("CheckResult")
 @HiltViewModel
 class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRepo): ViewModel() {
+    private var currentWindowLength: Observable<Int>
     private val currentlyDisplayedPosts: Observable<List<String>>?
     private val newPostsObservable: Observable<RoomT3>
     private val disposables: CompositeDisposable = CompositeDisposable()
@@ -72,35 +74,25 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
 
     init {
 
-
-        newPostsObservable = favsRepo.observeSavedSubreddits().flatMap { Observable.fromIterable(it)}.flatMap {
-            favsRepo.getPostsFromSavedSubreddit(it)}
-
-
-
-            .share()
-        //okhttp.OkHttpClient: <-- HTTP FAILED: java.io.IOException: Canceled
-        //get this error on loads because take ends the stream early. But it works.
-        newPostsObservable
-            .take(VIEWPAGER_PAGES_TOTAL.toLong())
-            .flatMapCompletable { x -> favsRepo.insert(x.name) }
-     //       .startWith(
-       //         favsRepo.clearPages().subscribeOn(Schedulers.io())
-         //   )
-
-            .subscribe(
-                { Timber.d("observ") },
-                { Timber.e("error: ${it.localizedMessage}") })
-            .addTo(disposables)
-
+        currentWindowLength = favsRepo.currentLength().replay(1).autoConnect(1){disposables.add(it)}
         currentlyDisplayedPosts = favsRepo.observeCurrentPostList().replay(1)
             .autoConnect(1) { disposables.add(it) }
 
 
 
         currentlyDisplayedPosts.subscribe { processInput(Screen2Event.UpdateViewedPosts(it)) }
-    }
 
+        newPostsObservable = favsRepo.observeSavedSubreddits()
+            .flatMap { Observable.fromIterable(it) }.flatMap {
+                favsRepo.getPostsFromSavedSubreddit(it)
+            }
+            .share()
+
+
+        newPostsObservable
+                .take(VIEWPAGER_PAGES_TOTAL.toLong()-currentWindowLength.blockingFirst())
+                .flatMapCompletable { x -> favsRepo.insert(x.name) }.subscribe()
+    }
 
     private fun Observable<Screen2Event.UpdateViewedPosts>.returnPosts()
                                     : Observable<PartialViewStateScreen2> =
@@ -166,14 +158,10 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
                         .flatMapCompletable { newPost ->
                             favsRepo.insert(newPost.name)
                         }
-                )
-                // AFTER both deletion and insertion are fully complete...
-                .andThen(
-                    //...emit the events to update the UI.
+                ).andThen(
+
                     Observable.just(
-                        // You need to calculate the new position correctly.
-                        // Assuming you want to be near the start after reload.
-                        PartialViewStateScreen2.Position(1),
+
                         PartialViewStateScreen2.LoadCompleteEffect
                     )
                 )
@@ -181,26 +169,6 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
                 .subscribeOn(Schedulers.io())
         }
     }}
-    /**private fun Observable<Screen2Event.LoadMoreEvent>.handleLoadMore(newPostsObservable: Observable<RoomT3>): Observable<PartialViewStateScreen2> {
-        return switchMap {
-            newPostsObservable.withLatestFrom(currentlyDisplayedPosts) { all_posts, current ->
-                Pair(
-                    all_posts,
-                    current
-                )
-            }
-                .filter{(all_posts,current) -> all_posts.name !in current}.take(
-            VP_PAGES_PER_LOAD.toLong() )   .flatMapCompletable { favsRepo.insert(it.first.name)
-                           }.startWith(favsRepo.deletePages(it.targets))
-                                .andThen(Observable.just(
-                                    PartialViewStateScreen2.Position(2),
-                                    PartialViewStateScreen2.LoadCompleteEffect
-                                ))
-                        }  .subscribeOn(Schedulers.io())
-                }
-
-        }
-**/
 
 
 

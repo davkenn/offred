@@ -17,4 +17,5 @@ interface BaseFavoritesRepo{
     fun insertAll(posts: List<String>): Completable
 
     fun getPostsFromSavedSubreddit(subreddit: RoomT5): Observable<RoomT3>
+    fun currentLength(): Observable<Int>
 }

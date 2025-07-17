@@ -7,9 +7,14 @@ import androidx.room.Query
 import com.example.renewed.models.CurrentFavoritesList
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 @Dao
 interface FavoritesDAO {
+
+
+   @Query("SELECT COUNT(*) FROM CurrentFavoritesList")
+   fun currentSize(): Observable<Int>
    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(elements: List<CurrentFavoritesList>): Completable
     

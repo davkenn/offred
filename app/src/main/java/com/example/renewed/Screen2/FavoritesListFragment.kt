@@ -115,9 +115,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             if (position == VP_PAGES_PER_LOAD) {
 
                 showLoading()
+                favoritesVM.processInput(Screen2Event.UpdatePositionEvent(2))
                 favoritesVM.processInput(
                     Screen2Event.LoadMoreEvent(vpPagesAdapter.postIds.take(VP_PAGES_PER_LOAD)))
-                //when DeleteSubredditEvent returns, SaveSubredditEvent will be called
+
 
             }
             //update position if not reloading infinite list

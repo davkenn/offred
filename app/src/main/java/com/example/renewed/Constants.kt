@@ -7,4 +7,4 @@ const val ONE_SCREEN_COUNT = 10
 
 //SCREEN 2
 const val VIEWPAGER_PAGES_TOTAL = 12
-const val VP_PAGES_PER_LOAD = 4
+const val VP_PAGES_PER_LOAD = 5
