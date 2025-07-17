@@ -43,7 +43,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     //Fetches an Oauth2 token from Reddit. The app is userless, so no account is associated
     //with this token
     private fun getAuthToken(): Single<String> {
-        val credentials = "u3MaMah0dOe1IA:"
+        val credentials =  BuildConfig.API_KEY
+
         val encodedCredentials: String = Base64.encodeToString(credentials.toByteArray(), Base64.NO_WRAP)
         return auth.installedClient("Basic $encodedCredentials",
             "https://oauth.reddit.com/grants/installed_client",

@@ -9,7 +9,13 @@ plugins {
 }
 android {
     compileSdk 33
-    testOptions{unitTests.includeAndroidResources=true}
+    testOptions { unitTests.includeAndroidResources = true }
+
+    def secretsProperties = new Properties()
+    if (rootProject.file("apikey.properties").exists()) {
+        secretsProperties.load(new FileInputStream(rootProject.file("apikey.properties")))}
+
+    def apiKey = secretsProperties.getProperty("API_KEY", "")
     defaultConfig {
         applicationId "com.example.offred"
         minSdk 22
@@ -17,16 +23,12 @@ android {
         versionCode 1
         versionName "1.0"
         //for desugaring
-        multiDexEnabled=true
+        multiDexEnabled = true
 
         testInstrumentationRunner "com.example.renewed.CustomTestRunner"
-        minSdkVersion 29
-        targetSdk 31
+
     }
 
- //   dexOptions {
-   //     javaMaxHeapSize "4g"
-   // }
 
     buildFeatures {
         viewBinding true
@@ -34,8 +36,15 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_KEY", "\"$apiKey\""
+
+        }
+        debug{
+            minifyEnabled false
+
+            buildConfigField "String", "API_KEY", "\"$apiKey\""
         }
     }
     compileOptions {
