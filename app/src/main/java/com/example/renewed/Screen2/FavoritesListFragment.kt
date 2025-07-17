@@ -7,9 +7,10 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
+import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
 import com.bumptech.glide.Glide
 import com.example.renewed.R
-import com.example.renewed.VIEWPAGER_PAGES_TOTAL
 import com.example.renewed.VP_PAGES_PER_LOAD
 import com.example.renewed.atomic
 import com.example.renewed.databinding.FragmentFavoritesListBinding
@@ -30,7 +31,9 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     @Inject
     lateinit var exo: ExoPlayer
     private val favoritesVM: FavoritesListVM by viewModels()
-    private val disposables = CompositeDisposable()
+    private val viewDisposables = CompositeDisposable()
+    private val infiniteListDisposables = CompositeDisposable()
+
     private lateinit var vp: ViewPager2
     private lateinit var vpPagesAdapter : FavoritesListAdapter
     private var savedPos: Int by atomic(0)
@@ -75,31 +78,29 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 //immediately sent to the view model which will clear the effect state so that
                 //this reload is not processed again if the screen is rotated.
                 fullViewState.effect?.let {
-                    favoritesVM.processInput(Screen2Event.ClearEffectEvent)
+
                     when (it) {
-                        //Upon getting the delete effect, the first few view pager pages were
-                        // deleted succesfully so send an event that adds the number of posts that
-                        // were deleted to the end of the viewpager
-                        Screen2Effect.DELETE -> {
-                            favoritesVM.processInput(
-                                Screen2Event.AddSubredditsEvent(VP_PAGES_PER_LOAD)
-                            )
-                        }
-                        //Once the load is complete, the new infinite list is ready to view so
-                        //hide loading image
                         Screen2Effect.LOAD -> {
-                            hideLoading()
+                            showLoading()
                         }
+
                     }
                 }
             }
-            .addTo(disposables)
+            .addTo(viewDisposables)
 
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        vp.pageScrollStateChanges().subscribe(){state->if(state==SCROLL_STATE_IDLE) hideLoading() }
+     //   vp.pageScrollStateChanges().subscribe(){state->if(state== SCROLL_STATE_DRAGGING) showLoading() else hideLoading()}
         vp.pageSelections().subscribe { position -> Timber.d("THELIISPOS $position")
             //update position if loading new posts for new pages in infinite list
             if (position == VP_PAGES_PER_LOAD+2) {
-
-                showLoading()
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(2))
                 favoritesVM.processInput(
                     Screen2Event.LoadMoreEvent(vpPagesAdapter.postIds.take(VP_PAGES_PER_LOAD)))
@@ -110,15 +111,15 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
             else {
                 favoritesVM.processInput(Screen2Event.UpdatePositionEvent(position))
             }
-        }.addTo(disposables)
+        }.addTo(infiniteListDisposables)
+
         //update position on rotation
         if (savedPos != 0) favoritesVM.processInput(Screen2Event.UpdatePositionEvent(savedPos))
-
     }
 
     override fun onPause() {
         super.onPause()
-        disposables.clear()
+        infiniteListDisposables.clear()
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -128,9 +129,10 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
     override fun onDestroyView() {
         Timber.d("onDestroyView in FavoritesListFragment")
         super.onDestroyView()
+        viewDisposables.clear()
     }
 
-    
+
     private fun showLoading() {
         vp.visibility = View.INVISIBLE
         binding.loading.visibility = View.VISIBLE

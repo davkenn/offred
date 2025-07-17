@@ -3,7 +3,6 @@ package com.example.renewed.Screen2
 
  import android.annotation.SuppressLint
  import androidx.lifecycle.ViewModel
- import com.example.renewed.Room.T3DAO
  import com.example.renewed.VIEWPAGER_PAGES_TOTAL
  import com.example.renewed.VP_PAGES_PER_LOAD
  import com.example.renewed.models.*
@@ -13,9 +12,7 @@ package com.example.renewed.Screen2
  import io.reactivex.rxjava3.core.Completable
  import io.reactivex.rxjava3.core.Observable
  import io.reactivex.rxjava3.disposables.CompositeDisposable
- import io.reactivex.rxjava3.kotlin.addTo
  import io.reactivex.rxjava3.kotlin.mergeAll
- import io.reactivex.rxjava3.kotlin.withLatestFrom
  import io.reactivex.rxjava3.schedulers.Schedulers
  import timber.log.Timber
 
@@ -44,15 +41,12 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
         return scan(FullViewStateScreen2()) { state, event ->
             when (event) {
 
-                is PartialViewStateScreen2.LoadCompleteEffect -> state.copy(effect = Screen2Effect.LOAD)
-                is PartialViewStateScreen2.DeleteCompleteEffect -> state.copy(effect = Screen2Effect.DELETE)
-                is PartialViewStateScreen2.Posts -> state.copy(
-                    currentlyDisplayedList = event,
-                    effect = null
-                )
+                is PartialViewStateScreen2.LoadCompleteEffect -> state.copy(effect = Screen2Effect.LOAD_DONE)
+                is PartialViewStateScreen2.LoadStartedEffect -> state.copy(effect = Screen2Effect.LOAD)
+                is PartialViewStateScreen2.Posts -> state.copy(currentlyDisplayedList = event)
+//is this a bug with order of show loading and hide loading? should I keep effect when position updated? position when effect is updated?
+                is PartialViewStateScreen2.Position -> state.copy(position = event)
 
-                is PartialViewStateScreen2.Position -> state.copy(position = event, effect = null)
-                is PartialViewStateScreen2.ClearEffectEffect -> state.copy(effect = null)
             }
         }.skip(1)
     }
@@ -63,7 +57,7 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
                 it.ofType(Screen2Event.DeleteSubredditEvent::class.java).deleteThenReturn(),
                 it.ofType(Screen2Event.AddSubredditsEvent::class.java)
                     .loadThenReturn(newPostsObservable),
-                it.ofType(Screen2Event.ClearEffectEvent::class.java).clearEffect(),
+
                 it.ofType(Screen2Event.UpdatePositionEvent::class.java).returnPosition(),
                 it.ofType(Screen2Event.UpdateViewedPosts::class.java).returnPosts(),
                 it.ofType(Screen2Event.LoadMoreEvent::class.java).handleLoadMore(newPostsObservable)
@@ -98,9 +92,6 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
                                     : Observable<PartialViewStateScreen2> =
             map { PartialViewStateScreen2.Posts(it.newPosts) }
 
-    private fun Observable<Screen2Event.ClearEffectEvent>.clearEffect()
-                                    : Observable<PartialViewStateScreen2> =
-            map { PartialViewStateScreen2.ClearEffectEffect }
 
 
     private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn()
@@ -108,7 +99,7 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
         return flatMap { favsRepo.deletePages(it.targets)
                 .subscribeOn(Schedulers.io())
             .andThen(
-                Observable.just(PartialViewStateScreen2.DeleteCompleteEffect))
+                Observable.just(PartialViewStateScreen2.LoadStartedEffect))
         }
     }
 
@@ -158,16 +149,9 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
                         .flatMapCompletable { newPost ->
                             favsRepo.insert(newPost.name)
                         }
-                ).andThen(
+                ).startWith(Observable.just(PartialViewStateScreen2.LoadStartedEffect))
+                .subscribeOn(Schedulers.io())}
 
-                    Observable.just(
-
-                        PartialViewStateScreen2.LoadCompleteEffect
-                    )
-                )
-                // Ensure all database operations run on a background thread.
-                .subscribeOn(Schedulers.io())
-        }
     }}
 
 

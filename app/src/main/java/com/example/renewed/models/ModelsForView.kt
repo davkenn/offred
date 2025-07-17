@@ -38,15 +38,14 @@ data class FullViewStateScreen2(
     val effect: Screen2Effect?=null)
 
 sealed class PartialViewStateScreen2(val name: String?){
-    object DeleteCompleteEffect: PartialViewStateScreen2("DeleteCompleteEffect")
+    object LoadStartedEffect: PartialViewStateScreen2("LoadStartedEffect")
     object LoadCompleteEffect: PartialViewStateScreen2("LoadCompleteEffect")
-    object ClearEffectEffect:PartialViewStateScreen2("ClearState")
     data class Position(val position:Int):PartialViewStateScreen2("Position")
     data class Posts(val posts:List<String>):PartialViewStateScreen2("Position")
 }
 
 enum class Screen2Effect{
-    DELETE,LOAD
+    LOAD,LOAD_DONE
 }
 
 enum class Screen1Effect{
