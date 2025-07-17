@@ -41,7 +41,7 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
         return scan(FullViewStateScreen2()) { state, event ->
             when (event) {
 
-                is PartialViewStateScreen2.LoadCompleteEffect -> state.copy(effect = Screen2Effect.LOAD_DONE)
+
                 is PartialViewStateScreen2.LoadStartedEffect -> state.copy(effect = Screen2Effect.LOAD)
                 is PartialViewStateScreen2.Posts -> state.copy(currentlyDisplayedList = event)
 //is this a bug with order of show loading and hide loading? should I keep effect when position updated? position when effect is updated?
@@ -54,10 +54,6 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
     private fun Observable<Screen2Event>.eventToResult(): Observable<PartialViewStateScreen2> {
         return publish {
             val a = Observable.fromArray(
-                it.ofType(Screen2Event.DeleteSubredditEvent::class.java).deleteThenReturn(),
-                it.ofType(Screen2Event.AddSubredditsEvent::class.java)
-                    .loadThenReturn(newPostsObservable),
-
                 it.ofType(Screen2Event.UpdatePositionEvent::class.java).returnPosition(),
                 it.ofType(Screen2Event.UpdateViewedPosts::class.java).returnPosts(),
                 it.ofType(Screen2Event.LoadMoreEvent::class.java).handleLoadMore(newPostsObservable)
@@ -93,28 +89,11 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
             map { PartialViewStateScreen2.Posts(it.newPosts) }
 
 
-
-    private fun Observable<Screen2Event.DeleteSubredditEvent>.deleteThenReturn()
-                                    : Observable<PartialViewStateScreen2> {
-        return flatMap { favsRepo.deletePages(it.targets)
-                .subscribeOn(Schedulers.io())
-            .andThen(
-                Observable.just(PartialViewStateScreen2.LoadStartedEffect))
-        }
-    }
-
     private fun Observable<Screen2Event.UpdatePositionEvent>.returnPosition()
                                     : Observable<PartialViewStateScreen2> =
             map{PartialViewStateScreen2.Position(it.newPosition)}
 
-    private fun Observable<Screen2Event.AddSubredditsEvent>.loadThenReturn(arg:Observable<RoomT3>)
-                                    : Observable<PartialViewStateScreen2> {
-                     return flatMap { arg.take(it.count.toLong())
-                                         .flatMapCompletable { favsRepo.insert(it.name)
-                                             .subscribeOn(Schedulers.io()) }
-                         .andThen(Observable.just(PartialViewStateScreen2.LoadCompleteEffect))
-                     }
-    }
+
 
     override fun onCleared() {
         super.onCleared()
