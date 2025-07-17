@@ -113,7 +113,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         Observable.merge(backRefreshClicks,saveClicks).subscribe {
             subsAndPostsVM.processInput(it)
-        }
+        }.addTo(disposables)
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
             { x-> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
@@ -166,9 +166,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     private fun getSubNameOrNull(): String? {
         val t = navHostFragment.childFragmentManager.primaryNavigationFragment
-        var name: String? = (t as ContentFragment).getName()
+        val name = (t as? ContentFragment)?.getName()
         return if (name == "BlankFragment") null else name
     }
+
 
     private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewStateScreen1) {
 
