@@ -34,8 +34,7 @@ class SubredditsAndPostsVM @Inject constructor(
         .combineResults()
         .doOnNext { Timber.d("----Combined is $it") }
         .replay(1)
-        .autoConnect(1){disposables.add(it)}
-
+        .refCount()
     init {
         disposables.add(repo.clearDisplayed().andThen(prefetch()).subscribeOn(Schedulers.io())
             .subscribeBy{processInput(Screen1Event.ScreenLoadEvent)})
