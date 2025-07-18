@@ -34,8 +34,8 @@ import java.util.concurrent.TimeUnit
 class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_selection) {
 
     private val subsAndPostsVM: SubredditsAndPostsVM by viewModels()
-    private lateinit var subredditAdapter: SubredditsAdapter
-    private lateinit var postAdapter: PostsAdapter
+    private var subredditAdapter: SubredditsAdapter? = null
+    private var postAdapter: PostsAdapter? = null
     private val disposables = CompositeDisposable()
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
     private var saveEnabled: Boolean = false
@@ -96,8 +96,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .map{Screen1Event.UpdateViewingState(getSubNameOrNull())}
 
         val refreshClicks :Observable<Screen1Event> = binding.refreshButton.clicks()
-            .doOnNext { subredditAdapter.clearSelected() }
-            .map{ Screen1Event.RemoveAllSubreddits(subredditAdapter.currentList.map { it.displayName })}
+            .doOnNext { subredditAdapter?.clearSelected() }
+            .map{ Screen1Event.RemoveAllSubreddits(subredditAdapter?.currentList?.map{it.displayName}?: emptyList())}
 
         val backRefreshClicks = backClicks.mergeWith(refreshClicks)
             .throttleFirst(200,TimeUnit.MILLISECONDS)
@@ -107,7 +107,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             .flatMap {
                 Observable.just(
                     Screen1Event.UpdateViewingState(getSubNameOrNull()),
-                    Screen1Event.SaveEvent(getSubNameOrNull(), subredditAdapter.currentList)
+                    Screen1Event.SaveEvent(getSubNameOrNull(), subredditAdapter?.currentList?: emptyList())
                 )
             }
 
@@ -116,8 +116,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
         }.addTo(disposables)
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
-            { x-> x.t5ListForRV?.let { subredditAdapter.submitList(it.vsT5) }
-                postAdapter.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
+            { x-> x.t5ListForRV?.let { subredditAdapter?.submitList(it.vsT5) }
+                postAdapter?.submitList(x.t3ListForRV?.vsT3 ?: emptyList())
                 x.latestEvent3?.let { t3 -> navigateToPostOrSubreddit(R.id.postFragment, t3) }
                 x.latestEvent5?.let { t5 -> navigateToPostOrSubreddit(R.id.subredditFragment, t5) }
                 if (x.effect != null){
@@ -125,7 +125,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                         Screen1Effect.DELETE_OR_SAVE ->
                         {
                             backPressedPopCurrentSubscreen()
-                            subredditAdapter.clearSelected()
+                            subredditAdapter?.clearSelected()
 
                         }
                         Screen1Effect.SNACKBAR ->
@@ -134,7 +134,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                                     binding.root, "Already clicked. Press back, find",
                                     Snackbar.LENGTH_SHORT
                                 ).show()
-                                subredditAdapter.setSelected()
+                                subredditAdapter?.setSelected()
                         }
 
                     }
@@ -208,9 +208,17 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     }
 
     override fun onDestroyView() {
+
+        fragmentSelectionBinding?.postsRv?.adapter = null
+        fragmentSelectionBinding?.subredditsRv?.adapter = null
+
+        subredditAdapter = null
+        postAdapter = null
+
         fragmentSelectionBinding = null
         disposables.clear()
         super.onDestroyView()
+
     }
 }
 
