@@ -39,7 +39,7 @@ class SubredditsAndPostsVM @Inject constructor(
         .replay(1)
         .refCount()
     init {
-        disposables.add(repo.clearDisplayed().andThen(prefetch()).subscribeOn(Schedulers.io())
+        disposables.add(repo.clearDisplayed().andThen(prefetch())
             .subscribeBy{processInput(Screen1Event.ScreenLoadEvent)})
     }
 
@@ -101,12 +101,19 @@ class SubredditsAndPostsVM @Inject constructor(
     }
 
     private fun Observable<Screen1Event.RemoveAllSubreddits>.onRefreshList(): Observable<PartialViewStateScreen1> {
-        return Observable.merge(
-            flatMap{ Observable.just(PartialViewStateScreen1.T5ListForRV(null),
-                                     PartialViewStateScreen1.T3ListForRV(null))
-                   },
-            flatMap { getSubredditList(it.srList.lastOrNull()).toObservable()
-                                                .startWith(prefetch()).subscribeOn(Schedulers.io()) })
+        return flatMap { event ->
+            Observable.concat(
+                // First: Clear the lists immediately
+                Observable.just(
+                    PartialViewStateScreen1.T5ListForRV(null),
+                    PartialViewStateScreen1.T3ListForRV(null)
+                ),
+                // Then: Run prefetch and load new list
+                prefetch().andThen(
+                    getSubredditList(event.srList.lastOrNull()).toObservable()
+                )
+            )
+        }
     }
 
     private fun Observable<Screen1Event.ClickOnT3ViewEvent>.onClickT3(): Observable<PartialViewStateScreen1> {
@@ -123,7 +130,7 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMap {
                 repo.updateSubreddits(srList= if (it.name == null) listOf() else listOf(it.name),
                           isDisplayedInAdapter = false, shouldToggleDisplayedColumnInDb = true)
-                    .subscribeOn(Schedulers.io())
+
                     .andThen(Observable.just(PartialViewStateScreen1.NavigateBackEffect))
             }
         )
@@ -137,8 +144,9 @@ class SubredditsAndPostsVM @Inject constructor(
                     )
                     .startWith(
 
-                            repo.saveSubreddit(it.targetedSubreddit).subscribeOn(Schedulers.io())
+                            repo.saveSubreddit(it.targetedSubreddit)
                     )
+
         }
     }
 
@@ -147,7 +155,7 @@ class SubredditsAndPostsVM @Inject constructor(
             flatMapSingle { clickOnT5Event ->
                 repo.updateSubreddits(listOf( clickOnT5Event.name), isDisplayedInAdapter = false,
                                                          shouldToggleDisplayedColumnInDb = true)
-                    .subscribeOn(Schedulers.io())
+
                     .andThen(repo.getPosts(clickOnT5Event.name)
                     .map { list -> list.map { x -> x.toViewState() }}
                     .map { x -> PartialViewStateScreen1.T3ListForRV(x) })
@@ -160,7 +168,7 @@ class SubredditsAndPostsVM @Inject constructor(
                         created_utc = Instant.now(),timeLastAccessed = Instant.now(),
                                                     thumbnail = "", banner_img = "", subscribers=5))
                     .retry(1))
-                    .subscribeOn(Schedulers.io())
+
                     .map { x -> PartialViewStateScreen1.T5ForViewing(x.toViewState()) }
             })
     }
