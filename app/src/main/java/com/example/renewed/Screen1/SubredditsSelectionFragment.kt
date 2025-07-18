@@ -37,7 +37,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var subredditAdapter: SubredditsAdapter? = null
     private var postAdapter: PostsAdapter? = null
     private var viewDisposables: CompositeDisposable? = null
-    private var disposables: CompositeDisposable? = null
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
     private var saveEnabled: Boolean = false
     private var backEnabled: Boolean = false
@@ -64,7 +63,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewDisposables = CompositeDisposable()  // Create new one for this view
-        disposables = CompositeDisposable()
+
         // ... existing setup code ...
 
         // Change this subscription to use viewDisposables
@@ -125,7 +124,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         Observable.merge(backRefreshClicks,saveClicks).subscribe {
             subsAndPostsVM.processInput(it)
-        }.addTo(disposables!!)
+        }.addTo(viewDisposables!!)
 
         subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
             { x-> x.t5ListForRV?.let { subredditAdapter?.submitList(it.vsT5) }
@@ -158,7 +157,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
             },
             { Timber.e("error fetching vs: ${it.localizedMessage}") }
-        ).addTo(disposables!!)
+        ).addTo(viewDisposables!!)
     }
 
     private fun backPressedPopCurrentSubscreen() {
@@ -231,8 +230,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         viewDisposables?.clear()  // Clear view-specific subscriptions
         viewDisposables = null
-        disposables?.clear()
-        disposables = null
         super.onDestroyView()
 
     }
