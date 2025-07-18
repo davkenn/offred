@@ -6,6 +6,7 @@ import com.example.renewed.repos.BaseSubredditsAndPostsRepo
 import com.example.renewed.test.CountingIdleResource
 import com.jakewharton.rxrelay3.PublishRelay
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -29,10 +30,12 @@ class SubredditsAndPostsVM @Inject constructor(
     //viewstate whenever it changes
     val vs: Observable<FullViewStateScreen1> = inputEvents
         .doOnNext { Timber.d("---- Event is $it") }
+        .observeOn(Schedulers.io())
         .eventToResult()
         .doOnNext { Timber.d("---- Result is $it") }
         .combineResults()
         .doOnNext { Timber.d("----Combined is $it") }
+        .observeOn(AndroidSchedulers.mainThread())
         .replay(1)
         .refCount()
     init {
@@ -109,7 +112,6 @@ class SubredditsAndPostsVM @Inject constructor(
     private fun Observable<Screen1Event.ClickOnT3ViewEvent>.onClickT3(): Observable<PartialViewStateScreen1> {
         return flatMapSingle {
             repo.getPost(it.name)
-                .subscribeOn(Schedulers.io())
                 .map { x -> PartialViewStateScreen1.T3ForViewing(x.toViewState()) }
         }
     }
@@ -185,7 +187,7 @@ class SubredditsAndPostsVM @Inject constructor(
                          .onErrorComplete())
 
     private fun getSubredditList(lastOnPreviousPage:String?=null) =
-        repo.getSubreddits(lastOnPreviousPage).subscribeOn(Schedulers.io())
+        repo.getSubreddits(lastOnPreviousPage)
         .map { list -> list.map { x -> x.toViewState() } }
         .map { PartialViewStateScreen1.T5ListForRV(it) }
 
