@@ -62,27 +62,17 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDisposables = CompositeDisposable()  // Create new one for this view
-
-        // ... existing setup code ...
-
-        // Change this subscription to use viewDisposables
-        subsAndPostsVM.vs.observeOn(AndroidSchedulers.mainThread()).subscribe(
-            { x-> /* ... */ },
-            { Timber.e("error fetching vs: ${it.localizedMessage}") }
-        ).addTo(viewDisposables!!)  // Use viewDisposables instead
-
-
+        viewDisposables = CompositeDisposable()
         navHostFragment = childFragmentManager
             .findFragmentById(R.id.subscreen_nav_container) as NavHostFragment
-
         val binding = FragmentSubredditsSelectionBinding.bind(view)
+
         postAdapter = PostsAdapter {
                 x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT3ViewEvent(x.name))
         }
         subredditAdapter = SubredditsAdapter { x ->
             val inBackStack = navHostFragment.navController.backQueue
-                               .any { x.name == (it.arguments?.getString("key") ?: "NOMATCH") }
+                .any { x.name == (it.arguments?.getString("key") ?: "NOMATCH") }
 
             if (inBackStack) {
                 subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
@@ -91,8 +81,6 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             }
         }
 
-
-
         fragmentSelectionBinding = binding.apply {
             postsRv.layoutManager = LinearLayoutManager(requireContext())
             postsRv.adapter = postAdapter
@@ -100,7 +88,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditsRv.adapter = subredditAdapter
         }
 
-            //Gets rid of db errors when you rapidly click on one button still are errors when you
+        //Gets rid of db errors when you rapidly click on one button still are errors when you
         // click different buttons rapidly . I could remove these for back and refresh combos but
         // not for save and delete bc dsave and delete each make 2 events so no easy way to throttle
         val backClicks :Observable<Screen1Event> = binding.backButton.clicks()
