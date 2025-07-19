@@ -1,7 +1,6 @@
 package com.example.renewed.di
 
 import android.content.Context
-import android.content.SharedPreferences
 
 import com.example.renewed.*
 import com.example.renewed.Room.FavoritesDAO
@@ -31,7 +30,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class SharedPreferencesModule {
+class SessionModule {
     @Singleton
     @Provides
     fun provideSharedPreference(@ApplicationContext context: Context): SessionManager {
@@ -101,14 +100,6 @@ object RedditModule {
         .build()
 }
 
-@InstallIn(SingletonComponent::class)
-@Module
-object RepoModule {
-    @Singleton
-    @Provides
-    fun providePostsRepository(t5Dao: T5DAO, t3Dao: T3DAO,api: API ):
-            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepo( t5Dao, t3Dao,api)
-}
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -121,9 +112,13 @@ object ExoPlayerModule {
 
 @InstallIn(SingletonComponent::class)
 @Module
-object FavsRepoModule {
+object RepoModule {
+    @Singleton
+    @Provides
+    fun providePostsRepository(t5Dao: T5DAO, t3Dao: T3DAO,api: API ):
+            BaseSubredditsAndPostsRepo = SubredditsAndPostsRepo( t5Dao, t3Dao,api)
     @Singleton
     @Provides
     fun provideFavoritesRepository(t5Dao: T5DAO, t3Dao: T3DAO, favs: FavoritesDAO, api:API)
-        : BaseFavoritesRepo = FavoritesRepo(t5Dao, t3Dao,favs, api)
+            : BaseFavoritesRepo = FavoritesRepo(t5Dao, t3Dao,favs, api)
 }
