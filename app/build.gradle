@@ -18,7 +18,7 @@ android {
     def apiKey = secretsProperties.getProperty("API_KEY", "")
     defaultConfig {
         applicationId "com.example.offred"
-        minSdk 22
+        minSdk 24
         targetSdk 31
         versionCode 1
         versionName "1.0"
