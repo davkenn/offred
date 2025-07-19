@@ -46,9 +46,9 @@ class FavoritesRepo(private val t5: T5DAO,
         return favs.getPosts()
     }
 
-    override fun deletePages(s:List<String>): Completable {
-        return favs.deleteList(s)
-    }
+    override fun deletePages(s:List<String>): Completable =
+        t3.markAsViewed(s).andThen(favs.deleteList(s))
+
 
     override fun clearPages(): Completable {
         return favs.clearDb().startWith(t5.deleteUnsavedPosts())

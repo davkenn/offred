@@ -34,7 +34,7 @@ class SubredditsAndPostsRepo(
 
     private fun loadSubredditsDb(needed: Int): Completable =
                  api.getPostsFromAll(needed,currentAfterToken).doOnSuccess{currentAfterToken= it.data.after}
-                     .flattenAsObservable { it.data.children }.doOnNext {  }
+                     .flattenAsObservable { it.data.children }
                      .map{(it.data as T3).subreddit}
                      .distinct()
                      .take(needed.toLong())

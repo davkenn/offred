@@ -15,7 +15,7 @@ interface T3DAO {
     @Query("SELECT * FROM RoomT3 WHERE RoomT3.name like :name")
     fun getPost(name: String): Single<RoomT3>
 
-    @Query("SELECT * FROM RoomT3 WHERE RoomT3.subredditId like :name ORDER BY RoomT3.subredditId LIMIT 10")
+    @Query("SELECT * FROM RoomT3 WHERE RoomT3.subredditId like :name AND wasViewed=0 ORDER BY RoomT3.subredditId LIMIT 10")
     fun getPosts(name: String): Single<List<RoomT3>>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -27,5 +27,8 @@ interface T3DAO {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun fillDb(t5s: List<RoomT3>): Unit
+
+    @Query("UPDATE RoomT3 SET wasViewed=1 WHERE name IN (:postIds)")
+    fun markAsViewed(postIds:List<String>): Completable
 
 }
