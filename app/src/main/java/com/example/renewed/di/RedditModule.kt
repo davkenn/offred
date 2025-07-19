@@ -6,11 +6,6 @@ import com.example.renewed.*
 import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
-import com.example.renewed.models.More
-import com.example.renewed.models.RedditPostType
-import com.example.renewed.models.T1
-import com.example.renewed.models.T3
-import com.example.renewed.models.T5
 import com.example.renewed.repos.BaseFavoritesRepo
 import com.example.renewed.moshiadapters.DescriptionAdapter
 import com.example.renewed.moshiadapters.MediaList
@@ -21,8 +16,6 @@ import com.example.renewed.repos.FavoritesRepo
 import com.example.renewed.repos.SubredditsAndPostsRepo
 import com.google.android.exoplayer2.ExoPlayer
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapters.PolymorphicJsonAdapterFactory
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -100,17 +93,10 @@ object RedditModule {
     @Singleton
     @Provides
     fun provideMoshi(): Moshi = Moshi.Builder()
-        .add(
-            PolymorphicJsonAdapterFactory.of(RedditPostType::class.java, "kind")
-                .withSubtype(T1::class.java,   "t1")
-                .withSubtype(T3::class.java,   "t3")
-                .withSubtype(T5::class.java,   "t5")
-                .withSubtype(More::class.java, "more")
-              // optional fallback
-        )
+        .add(RedditPostAdapter())
+        .add(RedditHolderAdapter())
         .add(DescriptionAdapter())
         .add(MediaList())
-        .addLast(KotlinJsonAdapterFactory())
         .build()
 }
 
