@@ -2,13 +2,12 @@ package com.example.renewed.Screen2
 
 import android.graphics.Color
 import android.os.Bundle
-
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE
+import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_SETTLING
 import com.bumptech.glide.Glide
 import com.example.renewed.R
 import com.example.renewed.VP_PAGES_PER_LOAD
@@ -70,25 +69,6 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                 //new list
                 fullViewState.currentlyDisplayedList?.let { vpPagesAdapter.replaceList(it.posts) }
 
-                //The following sends events to implement an infinite list. When swiping forward
-                // onto one specified view pager position, an event to delete the first few pages
-                //is sent to the view model. When this returns, an event is sent to the viewmodel
-                //to load more pages and add them to the end of the viewpager. Also, an event is
-                //immediately sent to the view model which will clear the effect state so that
-                //this reload is not processed again if the screen is rotated.
-                fullViewState.effect?.let {
-
-                    when (it) {
-                        Screen2Effect.LOAD -> {
-                            showLoading()
-                        }
-                        Screen2Effect.LOAD_DONE -> {
-                            hideLoading()
-                        }
-//TODO fix this
-                        else -> {}
-                    }
-                }
             }
             .addTo(viewDisposables)
 

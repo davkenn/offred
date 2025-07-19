@@ -61,9 +61,7 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
             a.mergeAll()
         }
     }
-
     init {
-
         currentWindowLength = favsRepo.currentLength().replay(1).autoConnect(1){disposables.add(it)}
         currentlyDisplayedPosts = favsRepo.observeCurrentPostList().replay(1)
             .autoConnect(1) { disposables.add(it) }
