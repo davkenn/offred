@@ -9,6 +9,7 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import timber.log.Timber
 import java.time.Instant
 
 class SubredditsAndPostsRepo(
@@ -17,6 +18,7 @@ class SubredditsAndPostsRepo(
     private val api: API
     ): BaseSubredditsAndPostsRepo {
 
+    private var currentAfterToken: String? = null
     override fun prefetchPosts(): Completable =
         t5Dao.getSubredditIDsNeedingPosts()
              .flattenAsObservable { it }
@@ -25,11 +27,14 @@ class SubredditsAndPostsRepo(
              .flatMapCompletable { roomT3s -> t3Dao.insertAll(roomT3s) }
 
     override fun prefetchSubreddits() : Completable =
-        t5Dao.howManySubredditsInDb()
-             .flatMapCompletable {   loadSubredditsDb(SCREEN1_DB_SIZE-it.toInt()) }
+        t5Dao.howManySubredditsInDb().
+                doOnSuccess{ Timber.e("IN DB: $it")}
+             .flatMapCompletable {   loadSubredditsDb(SCREEN1_DB_SIZE-it.toInt())}
+
 
     private fun loadSubredditsDb(needed: Int): Completable =
-                 api.getPostsFromAll(needed).flattenAsObservable { it.data.children }
+                 api.getPostsFromAll(needed,currentAfterToken).doOnSuccess{currentAfterToken= it.data.after}
+                     .flattenAsObservable { it.data.children }.doOnNext {  }
                      .map{(it.data as T3).subreddit}
                      .distinct()
                      .take(needed.toLong())
