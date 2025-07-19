@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.text.Html
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
@@ -141,7 +142,8 @@ class PostFragment : ContentFragment() {
                  .into(postBinding!!.fullImg)
         }
         else{
-            Glide.with(this@PostFragment).load(t3ViewState.url)
+            val decodedUrl = Html.fromHtml(t3ViewState.thumbnail,Html.FROM_HTML_MODE_LEGACY).toString()
+            Glide.with(this@PostFragment).load(decodedUrl)
                 .into(postBinding!!.fullImg)
         }
     }
@@ -156,7 +158,8 @@ class PostFragment : ContentFragment() {
             postBinding!!.thumb.setImageResource(R.drawable.ic_nsfw)
             return
         }
-        Glide.with(this).load(viewState.thumbnail.replace("&amp;", ""))
+        val decodedUrl = Html.fromHtml(viewState.thumbnail,Html.FROM_HTML_MODE_LEGACY).toString()
+        Glide.with(this).load(decodedUrl)
              .apply( RequestOptions().override(150, 150))
              .placeholder(R.drawable.ic_loading)
              .error(ColorDrawable(Color.RED))
