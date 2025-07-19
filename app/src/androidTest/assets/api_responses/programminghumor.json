@@ -1,0 +1,4430 @@
+{
+  "kind": "Listing",
+  "data": {
+    "after": "t3_1m37knm",
+    "dist": 26,
+    "modhash": "7deiytr5q222d2a874e9c584d63c2e14bcbc7644d10284156f",
+    "geo_filter": null,
+    "children": [
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "Think you can tell a good joke from a bad meme? Prove it.\n\nr/ProgrammerHumor is recruiting new mods. No, you don’t have to be terminally online (seriously, go touch grass sometimes). We just need folks who care enough to help keep the sub from devolving into an endless scroll of reposts and low-effort memes.\n\nModeration here is pretty low-key. It mostly involves removing the occasional off-topic post, answering modmail from confused users, and gently reminding people that not every screenshot of Stack Overflow belongs on the front page.\n\nNo prior experience required — just a sense of humor and the ability to click a “remove” button every now and then.\n\nIf you’re active, have a decent sense of humor, and know how to tell the difference between \"funny\" and \"oh god not this again,\" we’d love to have you on the team.\n\nThink you’re up for it? [Apply here!](https://forms.gle/BDZ8NuPsdX5NHqEx9)",
+          "author_fullname": "t2_ghefn",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "weAreLookingForNewMods",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Mod post"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "",
+          "downs": 0,
+          "thumbnail_height": null,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1llsmj6",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.74,
+          "author_flair_background_color": "",
+          "subreddit_type": "public",
+          "ups": 18,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": null,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": false,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Mod post",
+          "can_mod_post": false,
+          "score": 18,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "self",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [
+            {
+              "e": "text",
+              "t": "cat flair.txt | sudo sh"
+            }
+          ],
+          "gildings": {
+
+          },
+          "post_hint": "self",
+          "content_categories": null,
+          "is_self": true,
+          "mod_note": null,
+          "created": 1751027331,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "richtext",
+          "domain": "self.ProgrammerHumor",
+          "allow_live_comments": false,
+          "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;Think you can tell a good joke from a bad meme? Prove it.&lt;/p&gt;\n\n&lt;p&gt;&lt;a href=\"/r/ProgrammerHumor\"&gt;r/ProgrammerHumor&lt;/a&gt; is recruiting new mods. No, you don’t have to be terminally online (seriously, go touch grass sometimes). We just need folks who care enough to help keep the sub from devolving into an endless scroll of reposts and low-effort memes.&lt;/p&gt;\n\n&lt;p&gt;Moderation here is pretty low-key. It mostly involves removing the occasional off-topic post, answering modmail from confused users, and gently reminding people that not every screenshot of Stack Overflow belongs on the front page.&lt;/p&gt;\n\n&lt;p&gt;No prior experience required — just a sense of humor and the ability to click a “remove” button every now and then.&lt;/p&gt;\n\n&lt;p&gt;If you’re active, have a decent sense of humor, and know how to tell the difference between &amp;quot;funny&amp;quot; and &amp;quot;oh god not this again,&amp;quot; we’d love to have you on the team.&lt;/p&gt;\n\n&lt;p&gt;Think you’re up for it? &lt;a href=\"https://forms.gle/BDZ8NuPsdX5NHqEx9\"&gt;Apply here!&lt;/a&gt;&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://external-preview.redd.it/78KB0azRK6e3Pl1C86lEHo-FnsuFy2LiuE0fSJqgM2k.png?auto=webp&amp;s=ac98903b8aeb841428121088c1af9d0473ddf629",
+                  "width": 1200,
+                  "height": 630
+                },
+                "resolutions": [
+                  {
+                    "url": "https://external-preview.redd.it/78KB0azRK6e3Pl1C86lEHo-FnsuFy2LiuE0fSJqgM2k.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=99b744b3ade663339d831af0634248ef340a0fa9",
+                    "width": 108,
+                    "height": 56
+                  },
+                  {
+                    "url": "https://external-preview.redd.it/78KB0azRK6e3Pl1C86lEHo-FnsuFy2LiuE0fSJqgM2k.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=9aa7bfdd0b323debf96a28acae6ff8d6d624827d",
+                    "width": 216,
+                    "height": 113
+                  },
+                  {
+                    "url": "https://external-preview.redd.it/78KB0azRK6e3Pl1C86lEHo-FnsuFy2LiuE0fSJqgM2k.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=c4b8ea6abc92e4e0bf0f03425fb1ae0b7f93649d",
+                    "width": 320,
+                    "height": 168
+                  },
+                  {
+                    "url": "https://external-preview.redd.it/78KB0azRK6e3Pl1C86lEHo-FnsuFy2LiuE0fSJqgM2k.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=8cc28ad2f001322a04601a79d2d75bb1dc365e50",
+                    "width": 640,
+                    "height": 336
+                  },
+                  {
+                    "url": "https://external-preview.redd.it/78KB0azRK6e3Pl1C86lEHo-FnsuFy2LiuE0fSJqgM2k.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=d7ac67b8519c6278a8385ea55f730730a079586c",
+                    "width": 960,
+                    "height": 504
+                  },
+                  {
+                    "url": "https://external-preview.redd.it/78KB0azRK6e3Pl1C86lEHo-FnsuFy2LiuE0fSJqgM2k.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=de78dbd9609de6dc8ac970bb11a14f2e91447086",
+                    "width": 1080,
+                    "height": 567
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "78KB0azRK6e3Pl1C86lEHo-FnsuFy2LiuE0fSJqgM2k"
+              }
+            ],
+            "enabled": false
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "c020a52e-924a-11ea-915f-0eef16541a21",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": "cat flair.txt | sudo sh",
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "num_reports": null,
+          "distinguished": "moderator",
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#ff4500",
+          "id": "1llsmj6",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "Dougley",
+          "discussion_type": null,
+          "num_comments": 17,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": "dark",
+          "permalink": "/r/ProgrammerHumor/comments/1llsmj6/wearelookingfornewmods/",
+          "stickied": true,
+          "url": "https://www.reddit.com/r/ProgrammerHumor/comments/1llsmj6/wearelookingfornewmods/",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1751027331,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_1eh7wbhl8b",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "trueHappinesss",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 101,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3zhoz",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.97,
+          "author_flair_background_color": null,
+          "ups": 11315,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 11315,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/3x0IEij6hHQ6z6t9EI3GluYfjzh1kjOhOYNHvI3pI1Q.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752940170,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/057qb963rudf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/057qb963rudf1.jpeg?auto=webp&amp;s=be466149a665e712c5fc6cb552c393330d1e8fed",
+                  "width": 1080,
+                  "height": 784
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/057qb963rudf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=52674aad0814d417934990a6718af2ad94f8b752",
+                    "width": 108,
+                    "height": 78
+                  },
+                  {
+                    "url": "https://preview.redd.it/057qb963rudf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=85eb56a1d721921b9ea702e610d38d278a48172e",
+                    "width": 216,
+                    "height": 156
+                  },
+                  {
+                    "url": "https://preview.redd.it/057qb963rudf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=31583e6832b5da0820026ddc381a4176fc55787d",
+                    "width": 320,
+                    "height": 232
+                  },
+                  {
+                    "url": "https://preview.redd.it/057qb963rudf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=5417f895a42d3b2043af6cfba50639157652271e",
+                    "width": 640,
+                    "height": 464
+                  },
+                  {
+                    "url": "https://preview.redd.it/057qb963rudf1.jpeg?width=960&amp;crop=smart&amp;auto=webp&amp;s=c4e9c3a6c00e7638e9d0fedbe8e6f3eb2d949589",
+                    "width": 960,
+                    "height": 696
+                  },
+                  {
+                    "url": "https://preview.redd.it/057qb963rudf1.jpeg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=2dca4403402074b2d5898edb9e7373d49d141bf1",
+                    "width": 1080,
+                    "height": 784
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "T4vcVTsSIPpMcHHmWPA9x-JouNnJlrwN3V7YMs_EBPs"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3zhoz",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "WinnieFlicker_67",
+          "discussion_type": null,
+          "num_comments": 91,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m3zhoz/truehappinesss/",
+          "stickied": false,
+          "url": "https://i.redd.it/057qb963rudf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752940170,
+          "num_crossposts": 2,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_3i498xh9",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "ctrlCCC",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3sq6j",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.95,
+          "author_flair_background_color": null,
+          "ups": 1310,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 1310,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/GTHmh-xJ_dwWcrx7AohaZWknP99kQMzAl24VtSg64Bc.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752920043,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/b2eramn83tdf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/b2eramn83tdf1.jpeg?auto=webp&amp;s=a431d1f4a435f00988947b78cc9384ab44e0c8a5",
+                  "width": 640,
+                  "height": 911
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/b2eramn83tdf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=1b336a1265ee85333b5bf770a0fe94ea687c3a48",
+                    "width": 108,
+                    "height": 153
+                  },
+                  {
+                    "url": "https://preview.redd.it/b2eramn83tdf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=b31f6ee6727e5b9f6854ffc068efe5f1d60b21ca",
+                    "width": 216,
+                    "height": 307
+                  },
+                  {
+                    "url": "https://preview.redd.it/b2eramn83tdf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=981988955a34144c0249c6bce1ba21ad473ce2e5",
+                    "width": 320,
+                    "height": 455
+                  },
+                  {
+                    "url": "https://preview.redd.it/b2eramn83tdf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=355c6d959f922d0794b6aec668f3fa4816eeef02",
+                    "width": 640,
+                    "height": 911
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "v9sWaBIXktkLYp6cnd-hxsxhnfDXealUC6mY366fBxA"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3sq6j",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "ryanbraun13bucks",
+          "discussion_type": null,
+          "num_comments": 87,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m3sq6j/ctrlccc/",
+          "stickied": false,
+          "url": "https://i.redd.it/b2eramn83tdf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752920043,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_jtdlu2d6",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "canWeAddThisOneLastThing",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 93,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3ycfp",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.99,
+          "author_flair_background_color": null,
+          "ups": 353,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 353,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/yACN42dbYtEx6c3OejAn8Jhzj80-ufnk2dOcnKIWzTg.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752937278,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/mfask1fiiudf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/mfask1fiiudf1.jpeg?auto=webp&amp;s=ba18128a44da84b7619ecb197d089b393f1c174f",
+                  "width": 750,
+                  "height": 500
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/mfask1fiiudf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=f95b25ecfe4baafa5210b577bfc776be81a07230",
+                    "width": 108,
+                    "height": 72
+                  },
+                  {
+                    "url": "https://preview.redd.it/mfask1fiiudf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=2dbaeaf9e04e234f5cc94d1b0590a57fc2e0bb37",
+                    "width": 216,
+                    "height": 144
+                  },
+                  {
+                    "url": "https://preview.redd.it/mfask1fiiudf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=764631a1b10af0cff31f02333829f6d1dd031438",
+                    "width": 320,
+                    "height": 213
+                  },
+                  {
+                    "url": "https://preview.redd.it/mfask1fiiudf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=a77da73b2c4a1e622c600553a1ae1ffc39fe4f94",
+                    "width": 640,
+                    "height": 426
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "DIu1TtHG6TGXDqSnqtDe8yX6mKzd9EUngiO9Ymj2NbQ"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3ycfp",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "Colorful_antler",
+          "discussion_type": null,
+          "num_comments": 13,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m3ycfp/canweaddthisonelastthing/",
+          "stickied": false,
+          "url": "https://i.redd.it/mfask1fiiudf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752937278,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "https://www.reddit.com/r/interestingasfuck/s/asA097fq8B\n\nThis is not AI generated image ",
+          "author_fullname": "t2_72z1d6gn",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "challengingJob",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3q9nc",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.93,
+          "author_flair_background_color": "transparent",
+          "ups": 1291,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": "0d974c6c-008a-11e9-984a-0ebd37c29be8",
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 1291,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/IsD8G9P5KPknLj0T23B_nn3aDUrpdoQvPVdTW7FCicQ.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [
+            {
+              "a": ":c:",
+              "e": "emoji",
+              "u": "https://emoji.redditmedia.com/90m33mta1h421_t5_2tex6/c"
+            }
+          ],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752910300,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "richtext",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;&lt;a href=\"https://www.reddit.com/r/interestingasfuck/s/asA097fq8B\"&gt;https://www.reddit.com/r/interestingasfuck/s/asA097fq8B&lt;/a&gt;&lt;/p&gt;\n\n&lt;p&gt;This is not AI generated image &lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/bi857zgaasdf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/bi857zgaasdf1.jpeg?auto=webp&amp;s=a535b9f39eedea19a3206eee85202056266db30b",
+                  "width": 1143,
+                  "height": 1842
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/bi857zgaasdf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=76738cb6e7146df838206692cdd361d2ca91be43",
+                    "width": 108,
+                    "height": 174
+                  },
+                  {
+                    "url": "https://preview.redd.it/bi857zgaasdf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=17eb96c1c583e1eece831f39754e31bb97556d14",
+                    "width": 216,
+                    "height": 348
+                  },
+                  {
+                    "url": "https://preview.redd.it/bi857zgaasdf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=168d2e3d7e51579e384915316d7ed021d9730ff0",
+                    "width": 320,
+                    "height": 515
+                  },
+                  {
+                    "url": "https://preview.redd.it/bi857zgaasdf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=6387a13b7499486c07937d44fa350f48bf95ccfc",
+                    "width": 640,
+                    "height": 1031
+                  },
+                  {
+                    "url": "https://preview.redd.it/bi857zgaasdf1.jpeg?width=960&amp;crop=smart&amp;auto=webp&amp;s=803aeb5c8dda76b09b2ef0fa7ccf18eb1dd547db",
+                    "width": 960,
+                    "height": 1547
+                  },
+                  {
+                    "url": "https://preview.redd.it/bi857zgaasdf1.jpeg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=28932769bfbea9cb2bcb0d2ebf73eaf75db39de5",
+                    "width": 1080,
+                    "height": 1740
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "6ApLFLK2O3_65dNmG7NRZwBbJuwkB9A0L4Kk_zDk4v8"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": ":c:",
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3q9nc",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "yuva-krishna-memes",
+          "discussion_type": null,
+          "num_comments": 64,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": "dark",
+          "permalink": "/r/ProgrammerHumor/comments/1m3q9nc/challengingjob/",
+          "stickied": false,
+          "url": "https://i.redd.it/bi857zgaasdf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752910300,
+          "num_crossposts": 1,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_72z1d6gn",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "approvedFinally",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3ypy1",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.97,
+          "author_flair_background_color": "transparent",
+          "ups": 190,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": "0d974c6c-008a-11e9-984a-0ebd37c29be8",
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 190,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://a.thumbs.redditmedia.com/vvSW8qjONhpIxk6fvQMQ1DyBcmW3FCCHkqybgQOcSV4.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [
+            {
+              "a": ":c:",
+              "e": "emoji",
+              "u": "https://emoji.redditmedia.com/90m33mta1h421_t5_2tex6/c"
+            }
+          ],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752938221,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "richtext",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/1450d2abludf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/1450d2abludf1.jpeg?auto=webp&amp;s=50f5c84e2fc4807fe4d13deac2d9c27cde2acb03",
+                  "width": 842,
+                  "height": 1126
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/1450d2abludf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=7dcadddff168fb3235511057742733eb5ad39b4d",
+                    "width": 108,
+                    "height": 144
+                  },
+                  {
+                    "url": "https://preview.redd.it/1450d2abludf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=8b237e19a6527ef0c24b3279b2d7f100bd86d30d",
+                    "width": 216,
+                    "height": 288
+                  },
+                  {
+                    "url": "https://preview.redd.it/1450d2abludf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=3dde53c206922ba26e69074fa454aade8fcef339",
+                    "width": 320,
+                    "height": 427
+                  },
+                  {
+                    "url": "https://preview.redd.it/1450d2abludf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=46ba384e2e6383237e218b95bc9d23d1d0a70a4f",
+                    "width": 640,
+                    "height": 855
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "dhnh_dcLBrCukWtnndFe3oY2HS2cWfEuVwa1munQxtg"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": ":c:",
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3ypy1",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "yuva-krishna-memes",
+          "discussion_type": null,
+          "num_comments": 9,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": "dark",
+          "permalink": "/r/ProgrammerHumor/comments/1m3ypy1/approvedfinally/",
+          "stickied": false,
+          "url": "https://i.redd.it/1450d2abludf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752938221,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_1qvavba9ek",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "checkOutMyCode",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3lq4z",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.95,
+          "author_flair_background_color": null,
+          "ups": 1715,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 1715,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/EayRBXly-5lYotxXSsKaHWoYnvMJikSU0n9PQozCf2I.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752894416,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/vch87332zqdf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/vch87332zqdf1.jpeg?auto=webp&amp;s=d6fc136f97f8b453c1b6c5ff429215fe0ea0b189",
+                  "width": 736,
+                  "height": 947
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/vch87332zqdf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=5e52ff42ac97d0fbd56a1410111d58bb5cb19ffe",
+                    "width": 108,
+                    "height": 138
+                  },
+                  {
+                    "url": "https://preview.redd.it/vch87332zqdf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=2432bd28c2377533409dc3a7a2eb5cef6133c38a",
+                    "width": 216,
+                    "height": 277
+                  },
+                  {
+                    "url": "https://preview.redd.it/vch87332zqdf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=d5c60fd9c81d63de30f2a536032a589a3b0f6e82",
+                    "width": 320,
+                    "height": 411
+                  },
+                  {
+                    "url": "https://preview.redd.it/vch87332zqdf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=5288a3084ad16c9f7cf56f2941929c008addde8d",
+                    "width": 640,
+                    "height": 823
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "DvJx27HSwdtWbWeXg7oZdV9UtwYbY_Vm4huRnMTzjLI"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3lq4z",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "NimbuNomad",
+          "discussion_type": null,
+          "num_comments": 66,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m3lq4z/checkoutmycode/",
+          "stickied": false,
+          "url": "https://i.redd.it/vch87332zqdf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752894416,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_7wnyi9nc",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "theyAreRare",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 134,
+          "top_awarded_type": null,
+          "hide_score": true,
+          "name": "t3_1m43jx5",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.91,
+          "author_flair_background_color": null,
+          "ups": 69,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 69,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/NagKbi7CIrEu1FOshOoHYS5mOzZcp5_vMFSshDnVOmc.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752950270,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/nlxbf155lvdf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/nlxbf155lvdf1.jpeg?auto=webp&amp;s=a936fdf8335488b782935f251ddb05cac67ae212",
+                  "width": 640,
+                  "height": 614
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/nlxbf155lvdf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=36ca7956dc97c1449327b9e65db64b9dc30dde66",
+                    "width": 108,
+                    "height": 103
+                  },
+                  {
+                    "url": "https://preview.redd.it/nlxbf155lvdf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=8a29c786732cb2bf5fa861d006977718cc732a68",
+                    "width": 216,
+                    "height": 207
+                  },
+                  {
+                    "url": "https://preview.redd.it/nlxbf155lvdf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=0e91dcf3a362d1a018ab38e036616f5894416689",
+                    "width": 320,
+                    "height": 307
+                  },
+                  {
+                    "url": "https://preview.redd.it/nlxbf155lvdf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=152276389beb998e0b2562511f2b69da6fcf08a3",
+                    "width": 640,
+                    "height": 614
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "1jbImgbrxCvuTmvX17dwdNlIwWtA2IYlnooP5CeK_T4"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m43jx5",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "nonsenseis",
+          "discussion_type": null,
+          "num_comments": 2,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m43jx5/theyarerare/",
+          "stickied": false,
+          "url": "https://i.redd.it/nlxbf155lvdf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752950270,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_7wnyi9nc",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "didEverythingThere",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m35npg",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.99,
+          "author_flair_background_color": null,
+          "ups": 4444,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 4444,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://a.thumbs.redditmedia.com/IfvT2JyQJrvk7yYVmXF8oJZN4jhfEK_iKIkQ5JO11D8.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752853162,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/il48yczdkndf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/il48yczdkndf1.jpeg?auto=webp&amp;s=94f51f5a5da139228b44b2a5b61ff96ac0154527",
+                  "width": 608,
+                  "height": 747
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/il48yczdkndf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=394cf8170fa10afe747272562b0a1bacf326f2cf",
+                    "width": 108,
+                    "height": 132
+                  },
+                  {
+                    "url": "https://preview.redd.it/il48yczdkndf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=676210a1c731a2f880be9b8e56ae99a1c8470994",
+                    "width": 216,
+                    "height": 265
+                  },
+                  {
+                    "url": "https://preview.redd.it/il48yczdkndf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=5b267c2587b8dba7861b8004dfb6c31f78bca37a",
+                    "width": 320,
+                    "height": 393
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "Dh54Qb726xh8vki8DJ6Z1BVpPLrdSK9jWwGmxOlxQmY"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m35npg",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "nonsenseis",
+          "discussion_type": null,
+          "num_comments": 67,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m35npg/dideverythingthere/",
+          "stickied": false,
+          "url": "https://i.redd.it/il48yczdkndf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752853162,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_4s8irf0w",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "iNeedSomeContext",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 137,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m38xpc",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.95,
+          "author_flair_background_color": null,
+          "ups": 2804,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 2804,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/KV5KmjwsEN4Hg5uOnQGZP8HHt2K4XxeQJoPEzjZh0Ss.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752860708,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/xewsv7nt6odf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/xewsv7nt6odf1.jpeg?auto=webp&amp;s=6fce8901d3573573818e966e92611a5f628e527a",
+                  "width": 509,
+                  "height": 499
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/xewsv7nt6odf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=495863147fb504ecc3e45154f94242ccef9dcbe7",
+                    "width": 108,
+                    "height": 105
+                  },
+                  {
+                    "url": "https://preview.redd.it/xewsv7nt6odf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=61874d165c2ab83348be5b4656ec00d9716bf7b4",
+                    "width": 216,
+                    "height": 211
+                  },
+                  {
+                    "url": "https://preview.redd.it/xewsv7nt6odf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=06d34418f79a7bd340937177f2a3feb6f0863d05",
+                    "width": 320,
+                    "height": 313
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "D5oD2HqH2NPM_1WZlNUnUiA_Q3Ubwm0SVfgVl5PUevE"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m38xpc",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "catalyst16812",
+          "discussion_type": null,
+          "num_comments": 251,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m38xpc/ineedsomecontext/",
+          "stickied": false,
+          "url": "https://i.redd.it/xewsv7nt6odf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752860708,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_als0jili",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "uiDesignTrendSimulator2000",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 63,
+          "top_awarded_type": null,
+          "hide_score": true,
+          "name": "t3_1m43flv",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.93,
+          "author_flair_background_color": null,
+          "ups": 25,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 25,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/Z2Fn3OlsvDVYWUkV6FTpOGWwIh6gd5RuGkF9AXmiD5c.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752949982,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/lxsaoa4wjvdf1.gif",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?format=png8&amp;s=439cf78c2cc24ab9f17a4330f86730ff625d2622",
+                  "width": 1920,
+                  "height": 872
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=108&amp;crop=smart&amp;format=png8&amp;s=e8e0b203018aac5abdfa623cbb3b01013d7d0fd3",
+                    "width": 108,
+                    "height": 49
+                  },
+                  {
+                    "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=216&amp;crop=smart&amp;format=png8&amp;s=6a14bcddf5cb4a75a5aaa9084ceead2a072c87ab",
+                    "width": 216,
+                    "height": 98
+                  },
+                  {
+                    "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=320&amp;crop=smart&amp;format=png8&amp;s=39b3f8896b0e860cf16c6a72b3654b562a243481",
+                    "width": 320,
+                    "height": 145
+                  },
+                  {
+                    "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=640&amp;crop=smart&amp;format=png8&amp;s=9280a972f6075b1dcf655b1a2a6ed2d6ee601753",
+                    "width": 640,
+                    "height": 290
+                  },
+                  {
+                    "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=960&amp;crop=smart&amp;format=png8&amp;s=22f2c901eacccca5415a6f79551a75ef6e3c2db0",
+                    "width": 960,
+                    "height": 436
+                  },
+                  {
+                    "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=1080&amp;crop=smart&amp;format=png8&amp;s=bc1eb218bfd8d9c7f0357f012fc30edb6af318a8",
+                    "width": 1080,
+                    "height": 490
+                  }
+                ],
+                "variants": {
+                  "gif": {
+                    "source": {
+                      "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?s=cf26ac0daa91dcaa4351266c550e284f9a759495",
+                      "width": 1920,
+                      "height": 872
+                    },
+                    "resolutions": [
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=108&amp;crop=smart&amp;s=324ca94a7a766d2c73f5619e619ae2de890ce842",
+                        "width": 108,
+                        "height": 49
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=216&amp;crop=smart&amp;s=43f764e926326f67d397dc4be2fc25895f6a59f7",
+                        "width": 216,
+                        "height": 98
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=320&amp;crop=smart&amp;s=58b51169a2dea1340b2ffe48ba267c42ebf8ca2f",
+                        "width": 320,
+                        "height": 145
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=640&amp;crop=smart&amp;s=4509b2df9b89d090ddacbd65c817c86a047e6c48",
+                        "width": 640,
+                        "height": 290
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=960&amp;crop=smart&amp;s=c6245b65b34e95a4325eb8a035e97ea38f063da7",
+                        "width": 960,
+                        "height": 436
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=1080&amp;crop=smart&amp;s=de4d98cfa36c098df7001e9210f5e5f2ce3f8335",
+                        "width": 1080,
+                        "height": 490
+                      }
+                    ]
+                  },
+                  "mp4": {
+                    "source": {
+                      "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?format=mp4&amp;s=b6de8e3410f23ed3fb5ad636df020a568e06b88c",
+                      "width": 1920,
+                      "height": 872
+                    },
+                    "resolutions": [
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=108&amp;format=mp4&amp;s=1011b75de4c2ea57607c636ec5f6c609665d6623",
+                        "width": 108,
+                        "height": 49
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=216&amp;format=mp4&amp;s=0fa6abcb99fcdca3266036e952eec8aa7555008f",
+                        "width": 216,
+                        "height": 98
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=320&amp;format=mp4&amp;s=209990c6ca2e8c8fc3f1dee3d3d70d0cd05fe4fe",
+                        "width": 320,
+                        "height": 145
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=640&amp;format=mp4&amp;s=35e5dfeb7465a54378fa7558220aaca83b5e05a4",
+                        "width": 640,
+                        "height": 290
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=960&amp;format=mp4&amp;s=7f937cf1aa22b1b01a0911f55f698805035cdd91",
+                        "width": 960,
+                        "height": 436
+                      },
+                      {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=1080&amp;format=mp4&amp;s=d32e9f78a606aec71399a36685e164113903dbf4",
+                        "width": 1080,
+                        "height": 490
+                      }
+                    ]
+                  }
+                },
+                "id": "OIDvetdAJ4GTvEbyDBSdU2qemH1ZSg1QFEOkeJhBnFQ"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m43flv",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "throwaway490215",
+          "discussion_type": null,
+          "num_comments": 3,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m43flv/uidesigntrendsimulator2000/",
+          "stickied": false,
+          "url": "https://i.redd.it/lxsaoa4wjvdf1.gif",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752949982,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_1qzlr0sk53",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "user",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m37wbx",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.99,
+          "author_flair_background_color": null,
+          "ups": 2716,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 2716,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/0cigIzA05UIO3JdmEv2hJZ4025wba71BBjWXKmNT_Ow.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752858357,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/v8x91c0uzndf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/v8x91c0uzndf1.jpeg?auto=webp&amp;s=e60ad0482ce086e52b9c6a3b96d4a6689c9fc30f",
+                  "width": 822,
+                  "height": 1079
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/v8x91c0uzndf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=20278044cef92fae48f6e64b021653c2afb1a000",
+                    "width": 108,
+                    "height": 141
+                  },
+                  {
+                    "url": "https://preview.redd.it/v8x91c0uzndf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=d0980a878edd1c69d337aef8e7e066681ec33e9b",
+                    "width": 216,
+                    "height": 283
+                  },
+                  {
+                    "url": "https://preview.redd.it/v8x91c0uzndf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=f8ae73c77661cd125df46d82c01e2bebdf95fc3f",
+                    "width": 320,
+                    "height": 420
+                  },
+                  {
+                    "url": "https://preview.redd.it/v8x91c0uzndf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=68683a44262cafce51f15235fd7f5d6c71a613fe",
+                    "width": 640,
+                    "height": 840
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "-Xmn4zMGBkLpjkvwfiYvcOATGxQ7BOEZ5M77MUFptIQ"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m37wbx",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "Technical_You_3136",
+          "discussion_type": null,
+          "num_comments": 14,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m37wbx/user/",
+          "stickied": false,
+          "url": "https://i.redd.it/v8x91c0uzndf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752858357,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_134ysusgf5",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "iLoveWhenThisHappens",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m2wagi",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.94,
+          "author_flair_background_color": null,
+          "ups": 24291,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 24291,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://a.thumbs.redditmedia.com/0GWey4o1pRtB8jS9Y4U_S2ciwv0pLnElzEphEp4Z6g4.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752825129,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/yh6vri619ldf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/yh6vri619ldf1.jpeg?auto=webp&amp;s=72759593aec3d0cc7ee5574bf67743eff2faedf1",
+                  "width": 500,
+                  "height": 500
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/yh6vri619ldf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=f820cdded4a4c04af6f1e9205b6e62b0786f4e01",
+                    "width": 108,
+                    "height": 108
+                  },
+                  {
+                    "url": "https://preview.redd.it/yh6vri619ldf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=64c69c61397512a570852cca71806b77e1609e24",
+                    "width": 216,
+                    "height": 216
+                  },
+                  {
+                    "url": "https://preview.redd.it/yh6vri619ldf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=c36cb4ee7fd72e0a39c7d213f004b9353c4a1e7b",
+                    "width": 320,
+                    "height": 320
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "whn8GPf_uaF65fCx7wki27FMJatf4WusiVKQ6SW8uXA"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m2wagi",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "CryptographerWise840",
+          "discussion_type": null,
+          "num_comments": 281,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m2wagi/ilovewhenthishappens/",
+          "stickied": false,
+          "url": "https://i.redd.it/yh6vri619ldf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752825129,
+          "num_crossposts": 3,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_1t17k97w",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "gitIsSoEasy",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 94,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m35htn",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.95,
+          "author_flair_background_color": null,
+          "ups": 2737,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 2737,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/6Q_KDYpyZpdAcrhWrXJANBAr1Ur3Lc547lPGXrrsoaI.jpg",
+          "author_cakeday": true,
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752852788,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/oeu3bsn2jndf1.png",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/oeu3bsn2jndf1.png?auto=webp&amp;s=2e7a283855867458e688a0dd7844a30b160003d2",
+                  "width": 1199,
+                  "height": 811
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/oeu3bsn2jndf1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=ab91dd1a2f414a061c899c931af78d60eab58d97",
+                    "width": 108,
+                    "height": 73
+                  },
+                  {
+                    "url": "https://preview.redd.it/oeu3bsn2jndf1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=983b06ddadbbf92f43a67e412a7856ec4382cc82",
+                    "width": 216,
+                    "height": 146
+                  },
+                  {
+                    "url": "https://preview.redd.it/oeu3bsn2jndf1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=84de25bf5dbf8fed29d583505d5e617a2ce26977",
+                    "width": 320,
+                    "height": 216
+                  },
+                  {
+                    "url": "https://preview.redd.it/oeu3bsn2jndf1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=f19f5bde85e92af589e1004e8233f7ef99b3e2ac",
+                    "width": 640,
+                    "height": 432
+                  },
+                  {
+                    "url": "https://preview.redd.it/oeu3bsn2jndf1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=248631b2a0d9e283df2920fcce0b2c91790fe2e2",
+                    "width": 960,
+                    "height": 649
+                  },
+                  {
+                    "url": "https://preview.redd.it/oeu3bsn2jndf1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=6ca7cef459bc8afe2b3acc6cdce650c94d6b507d",
+                    "width": 1080,
+                    "height": 730
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "OHCbApXv9tt1T_J3RZQ7sqfPFXVsqJKbxo5iY41pLcc"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m35htn",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "spartan117S",
+          "discussion_type": null,
+          "num_comments": 294,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m35htn/gitissoeasy/",
+          "stickied": false,
+          "url": "https://i.redd.it/oeu3bsn2jndf1.png",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752852788,
+          "num_crossposts": 1,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_803r9mlo",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "sameSameButDifferent",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": true,
+          "name": "t3_1m443pv",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.89,
+          "author_flair_background_color": null,
+          "ups": 14,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 14,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/m-9QBvFqp-YeiaLQ90CJobOvzvTz2vQneIUVYUhyXQA.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752951643,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/6n5olly7pvdf1.png",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/6n5olly7pvdf1.png?auto=webp&amp;s=1bce3b0be07dd617f5c089422a3b0d0c3c4e5bf2",
+                  "width": 719,
+                  "height": 998
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/6n5olly7pvdf1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=2c89e55f3e1e342aee5aeb5ca54a16833fae4334",
+                    "width": 108,
+                    "height": 149
+                  },
+                  {
+                    "url": "https://preview.redd.it/6n5olly7pvdf1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=ce37e5b5abd2a0367db1558771816383fbcf4ef5",
+                    "width": 216,
+                    "height": 299
+                  },
+                  {
+                    "url": "https://preview.redd.it/6n5olly7pvdf1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=a31d187022b5a1591c7fca22169ab429f2d90ad4",
+                    "width": 320,
+                    "height": 444
+                  },
+                  {
+                    "url": "https://preview.redd.it/6n5olly7pvdf1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=e8b7217543ac45a454030177008ce112a1468f81",
+                    "width": 640,
+                    "height": 888
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "V0JWPPa1p462UsdM-_vUwQ-mcUG9KY-1eZ4_ukz7Zsg"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m443pv",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "nightwalker_7112",
+          "discussion_type": null,
+          "num_comments": 3,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m443pv/samesamebutdifferent/",
+          "stickied": false,
+          "url": "https://i.redd.it/6n5olly7pvdf1.png",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752951643,
+          "num_crossposts": 1,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_1qvavba9ek",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "notTonight",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 128,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m2xjx5",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.97,
+          "author_flair_background_color": null,
+          "ups": 7612,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 7612,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/z51r_gy2VrcsI02eTyC7BVSxsbMuFHPHjsVpcnWVGKs.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752830090,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/cnozuz9snldf1.png",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/cnozuz9snldf1.png?auto=webp&amp;s=6e412506b038cc736b1f3abc91c5df57283a1850",
+                  "width": 1080,
+                  "height": 989
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/cnozuz9snldf1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=01f97f2b405fd6e356b49652cc514c8643be3ae8",
+                    "width": 108,
+                    "height": 98
+                  },
+                  {
+                    "url": "https://preview.redd.it/cnozuz9snldf1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=e34616c2288689e41d2bdc59935bf3a53fe77d29",
+                    "width": 216,
+                    "height": 197
+                  },
+                  {
+                    "url": "https://preview.redd.it/cnozuz9snldf1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=39d97e48152c4be835b18b51a6fb316b1bc12585",
+                    "width": 320,
+                    "height": 293
+                  },
+                  {
+                    "url": "https://preview.redd.it/cnozuz9snldf1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=ffa7bae0b95d5d1b498d8acb3e6b6ccbdf9d9233",
+                    "width": 640,
+                    "height": 586
+                  },
+                  {
+                    "url": "https://preview.redd.it/cnozuz9snldf1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=fb44fb3b0e33f4399dcddea33c63bcac18f52bc7",
+                    "width": 960,
+                    "height": 879
+                  },
+                  {
+                    "url": "https://preview.redd.it/cnozuz9snldf1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=878741f49f845b12f5b2c5d49a57cb83f0e5bfcc",
+                    "width": 1080,
+                    "height": 989
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "DZfcmbI0hPM3-exSrR96P70oySMuAiDctco9bv-5ww8"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m2xjx5",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "NimbuNomad",
+          "discussion_type": null,
+          "num_comments": 94,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m2xjx5/nottonight/",
+          "stickied": false,
+          "url": "https://i.redd.it/cnozuz9snldf1.png",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752830090,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_1afnwem4vg",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "gottaOptimize",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 126,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m32a0s",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.99,
+          "author_flair_background_color": null,
+          "ups": 2951,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 2951,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/DO_jUc8ThQc1utrHYZ8f-z5tFGhDpe8yjrdc4LAiVrM.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752845131,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/87tckseiwmdf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/87tckseiwmdf1.jpeg?auto=webp&amp;s=187d966fc5f85425b0e216ed9cfc7cba78c0ae3b",
+                  "width": 998,
+                  "height": 900
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/87tckseiwmdf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=965c7207e81f93b4c2962be946519a5a388fe503",
+                    "width": 108,
+                    "height": 97
+                  },
+                  {
+                    "url": "https://preview.redd.it/87tckseiwmdf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=2889fd56b85e4bcff7650eda043556898802447f",
+                    "width": 216,
+                    "height": 194
+                  },
+                  {
+                    "url": "https://preview.redd.it/87tckseiwmdf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=db0065588a51ffca43d40459a5c92ff25c08d877",
+                    "width": 320,
+                    "height": 288
+                  },
+                  {
+                    "url": "https://preview.redd.it/87tckseiwmdf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=abe69f277bf658ccfc6031a709f4ec15346e5fcf",
+                    "width": 640,
+                    "height": 577
+                  },
+                  {
+                    "url": "https://preview.redd.it/87tckseiwmdf1.jpeg?width=960&amp;crop=smart&amp;auto=webp&amp;s=3f5a8c9ab394c5f3b79fd38fb7b9f5def5f0ff09",
+                    "width": 960,
+                    "height": 865
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "UbY2qwNRGxh5DN2KCclcUVher3CKMb3PRPto_Qj_PiY"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m32a0s",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "Shiroyasha_2308",
+          "discussion_type": null,
+          "num_comments": 60,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m32a0s/gottaoptimize/",
+          "stickied": false,
+          "url": "https://i.redd.it/87tckseiwmdf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752845131,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_sb8hiyyx",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "tux",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 119,
+          "top_awarded_type": null,
+          "hide_score": true,
+          "name": "t3_1m43vad",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.79,
+          "author_flair_background_color": null,
+          "ups": 11,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 11,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/zHIb0EtXo5LGFPzAM0XxJPXROEXpXvS9PnN0lF1qIeY.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752951061,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/qtalidytmvdf1.png",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/qtalidytmvdf1.png?auto=webp&amp;s=f6a080083c10ff455e2a5f320e03cccf15046b10",
+                  "width": 960,
+                  "height": 818
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/qtalidytmvdf1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=4358cea5d566e03793abda068b47a364e28c2b62",
+                    "width": 108,
+                    "height": 92
+                  },
+                  {
+                    "url": "https://preview.redd.it/qtalidytmvdf1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=de6199cc50894703ebe30d3b3aa4f1d5e752771c",
+                    "width": 216,
+                    "height": 184
+                  },
+                  {
+                    "url": "https://preview.redd.it/qtalidytmvdf1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=0d9ef384acd4e8e29ec16b1fe5da861dc04259b4",
+                    "width": 320,
+                    "height": 272
+                  },
+                  {
+                    "url": "https://preview.redd.it/qtalidytmvdf1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=2d5a3f2b72c51fcabaac11a15b036c6ac4742245",
+                    "width": 640,
+                    "height": 545
+                  },
+                  {
+                    "url": "https://preview.redd.it/qtalidytmvdf1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=1a3947501dffed211cff21e6c609bb0940b8ed48",
+                    "width": 960,
+                    "height": 818
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "bTifO2jaN0RykWHbg1FZrZYNgMUbXdJ7PXD2DkijH84"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m43vad",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "RepulsiveLie2953",
+          "discussion_type": null,
+          "num_comments": 5,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m43vad/tux/",
+          "stickied": false,
+          "url": "https://i.redd.it/qtalidytmvdf1.png",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752951061,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_1qzlr0sk53",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "theAiHighlightedTheComplainFromTheReviewsAsAFeatureKek",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 98,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m384c6",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.97,
+          "author_flair_background_color": null,
+          "ups": 862,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 862,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/TFUx7uuyAsR0H-5-4TZge-dQgQU0SmlcCMj5DtUs0AI.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752858849,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/wz89xyra1odf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/wz89xyra1odf1.jpeg?auto=webp&amp;s=410a1c2fdb8a324ddca510f3ac3d242077e11e8f",
+                  "width": 1080,
+                  "height": 757
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/wz89xyra1odf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=04a193be7bfc8fe5ed407e38956835ac994b02e9",
+                    "width": 108,
+                    "height": 75
+                  },
+                  {
+                    "url": "https://preview.redd.it/wz89xyra1odf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=89512209a13f17ca4e05944ea6edf855689eabee",
+                    "width": 216,
+                    "height": 151
+                  },
+                  {
+                    "url": "https://preview.redd.it/wz89xyra1odf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=57b1bbf7a391059395b4f67e8dd5b0d3853e2f09",
+                    "width": 320,
+                    "height": 224
+                  },
+                  {
+                    "url": "https://preview.redd.it/wz89xyra1odf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=2989ef6cbe1af4f1c0db7831b33994639979b87d",
+                    "width": 640,
+                    "height": 448
+                  },
+                  {
+                    "url": "https://preview.redd.it/wz89xyra1odf1.jpeg?width=960&amp;crop=smart&amp;auto=webp&amp;s=12b584b2e7bca3b09e96f7c28928bee8de16d4ce",
+                    "width": 960,
+                    "height": 672
+                  },
+                  {
+                    "url": "https://preview.redd.it/wz89xyra1odf1.jpeg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=16df6b4e2ae7d273d1633b82a6b2aa118c34d16e",
+                    "width": 1080,
+                    "height": 757
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "K6dnWRxuB7b67y6YNK62IbinL3yayp_24YiM0QRZg-Y"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m384c6",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "Technical_You_3136",
+          "discussion_type": null,
+          "num_comments": 16,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m384c6/theaihighlightedthecomplainfromthereviewsasafeatur/",
+          "stickied": false,
+          "url": "https://i.redd.it/wz89xyra1odf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752858849,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_6l7a291c",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "newAndImproved",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 78,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m30tw8",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.99,
+          "author_flair_background_color": null,
+          "ups": 1920,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 1920,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/7U1WGPZj-Fu3d4tRHUH8do5zScuLElhkbHQBg1h46Sc.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752841198,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/eaaecrickmdf1.png",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/eaaecrickmdf1.png?auto=webp&amp;s=2643f28a92a730514a1e244ccc25e6570693ac0d",
+                  "width": 1920,
+                  "height": 1080
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/eaaecrickmdf1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=3e0a1e5e96986fb44ef0743b502a781246f34a25",
+                    "width": 108,
+                    "height": 60
+                  },
+                  {
+                    "url": "https://preview.redd.it/eaaecrickmdf1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=4dd65597199cace7e7809f8bd803bf474b0e3160",
+                    "width": 216,
+                    "height": 121
+                  },
+                  {
+                    "url": "https://preview.redd.it/eaaecrickmdf1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=ce59dece3503a153b424b6f92f4be325dd0e00ff",
+                    "width": 320,
+                    "height": 180
+                  },
+                  {
+                    "url": "https://preview.redd.it/eaaecrickmdf1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=17e8ab3937c3c2f01ba92e9fb6bc1b6922d0aa47",
+                    "width": 640,
+                    "height": 360
+                  },
+                  {
+                    "url": "https://preview.redd.it/eaaecrickmdf1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=6d65ed2ec4810628b507cd0a2a507fcbf7948497",
+                    "width": 960,
+                    "height": 540
+                  },
+                  {
+                    "url": "https://preview.redd.it/eaaecrickmdf1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=e065eca08e7b9d38e2f809799e452ee4df7f2552",
+                    "width": 1080,
+                    "height": 607
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "Go8AcrmxvTUKs62Fc9QfNaeo0QMk06pRedNnptuUcF0"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m30tw8",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "nicbarkeragain",
+          "discussion_type": null,
+          "num_comments": 48,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m30tw8/newandimproved/",
+          "stickied": false,
+          "url": "https://i.redd.it/eaaecrickmdf1.png",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752841198,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_ilw1x6as",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "chartProjectLifetime",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 105,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3lknv",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.9,
+          "author_flair_background_color": "transparent",
+          "ups": 120,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": "1598a064-008a-11e9-915f-0ece1b967634",
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 120,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/aLorWl4I-3F1Sn0pke47Si4dezGx21ExsW0K03DTDpo.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [
+            {
+              "a": ":cs:",
+              "e": "emoji",
+              "u": "https://emoji.redditmedia.com/b4nqy6spzg421_t5_2tex6/cs"
+            }
+          ],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752893948,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "richtext",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/ufxdec6lxqdf1.png",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/ufxdec6lxqdf1.png?auto=webp&amp;s=7e590ff55bf62f185cff2b9f4c11d44261c14995",
+                  "width": 1920,
+                  "height": 1449
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/ufxdec6lxqdf1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=ea233a42a6c912505a9287cd14f6812136d0a65f",
+                    "width": 108,
+                    "height": 81
+                  },
+                  {
+                    "url": "https://preview.redd.it/ufxdec6lxqdf1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=3f3a45704257d14432b6b7597524513129c89f7f",
+                    "width": 216,
+                    "height": 163
+                  },
+                  {
+                    "url": "https://preview.redd.it/ufxdec6lxqdf1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=70c7791bee7934fde2b7f0445a15d1d2308beaaa",
+                    "width": 320,
+                    "height": 241
+                  },
+                  {
+                    "url": "https://preview.redd.it/ufxdec6lxqdf1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=2d6fdb1c2659852070f946df1ea71a1dc1705c19",
+                    "width": 640,
+                    "height": 483
+                  },
+                  {
+                    "url": "https://preview.redd.it/ufxdec6lxqdf1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=15243f467461623991366fa9cf3f420d0891fead",
+                    "width": 960,
+                    "height": 724
+                  },
+                  {
+                    "url": "https://preview.redd.it/ufxdec6lxqdf1.png?width=1080&amp;crop=smart&amp;auto=webp&amp;s=7593c76302e9db3d0aa8938a0635aba25eac8d5d",
+                    "width": 1080,
+                    "height": 815
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "Tw2pUwE3hYGazknMUe-UBlnY0LZYWlx4eoFKw4kM5oI"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": ":cs:",
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3lknv",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "kbegiedza",
+          "discussion_type": null,
+          "num_comments": 6,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": "dark",
+          "permalink": "/r/ProgrammerHumor/comments/1m3lknv/chartprojectlifetime/",
+          "stickied": false,
+          "url": "https://i.redd.it/ufxdec6lxqdf1.png",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752893948,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "Old photo of mine, tried my best to do most cursed hello world in C#",
+          "author_fullname": "t2_4e9s5",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "cursedCsharp",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 105,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3g53i",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.91,
+          "author_flair_background_color": "transparent",
+          "ups": 258,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": "1598a064-008a-11e9-915f-0ece1b967634",
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 258,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://a.thumbs.redditmedia.com/p6aM0Jx6TLQSGje0z5licFQzXAVRPpTeo665kV1gIw4.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [
+            {
+              "a": ":cs:",
+              "e": "emoji",
+              "u": "https://emoji.redditmedia.com/b4nqy6spzg421_t5_2tex6/cs"
+            }
+          ],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752878216,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "richtext",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": "&lt;!-- SC_OFF --&gt;&lt;div class=\"md\"&gt;&lt;p&gt;Old photo of mine, tried my best to do most cursed hello world in C#&lt;/p&gt;\n&lt;/div&gt;&lt;!-- SC_ON --&gt;",
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/jew9forvmpdf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/jew9forvmpdf1.jpeg?auto=webp&amp;s=9ccb3dcfb545341949dea68748949dcf1308c720",
+                  "width": 4032,
+                  "height": 3024
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/jew9forvmpdf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=df9da8ca7b849ad4af0138431bb785fc10ce2402",
+                    "width": 108,
+                    "height": 81
+                  },
+                  {
+                    "url": "https://preview.redd.it/jew9forvmpdf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=c2840c94ae101be03ba6ae24dbe655b039803011",
+                    "width": 216,
+                    "height": 162
+                  },
+                  {
+                    "url": "https://preview.redd.it/jew9forvmpdf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=62cbee18f9b2f33e274742e2d75b858a738361e9",
+                    "width": 320,
+                    "height": 240
+                  },
+                  {
+                    "url": "https://preview.redd.it/jew9forvmpdf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=3977f8a550cd18eef8f273348a476043912dc20f",
+                    "width": 640,
+                    "height": 480
+                  },
+                  {
+                    "url": "https://preview.redd.it/jew9forvmpdf1.jpeg?width=960&amp;crop=smart&amp;auto=webp&amp;s=dc75636d45d082e0bbfd666524bf3b8a7cfdb43b",
+                    "width": 960,
+                    "height": 720
+                  },
+                  {
+                    "url": "https://preview.redd.it/jew9forvmpdf1.jpeg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=31856b07a9efe96bbe3523723e80ebecc319d45f",
+                    "width": 1080,
+                    "height": 810
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "zXzMJsrCZsZelN9O7CjT1IYvkEV1IzpReySinFy0g4A"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": ":cs:",
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3g53i",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "Evangeder",
+          "discussion_type": null,
+          "num_comments": 66,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": "dark",
+          "permalink": "/r/ProgrammerHumor/comments/1m3g53i/cursedcsharp/",
+          "stickied": false,
+          "url": "https://i.redd.it/jew9forvmpdf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752878216,
+          "num_crossposts": 1,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_10s7nda",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "perfectDate",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3bmxa",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.95,
+          "author_flair_background_color": "transparent",
+          "ups": 305,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": "2fe60290-008a-11e9-ba3a-0edd34b083f8",
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 305,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/nB57mFuItZ0Jh1btDfBXHrWux3ta6dYe1O_tw1LCLJY.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [
+            {
+              "a": ":py:",
+              "e": "emoji",
+              "u": "https://emoji.redditmedia.com/u2ijjhenzg421_t5_2tex6/py"
+            },
+            {
+              "a": ":m:",
+              "e": "emoji",
+              "u": "https://emoji.redditmedia.com/amhnmqnz1h421_t5_2tex6/m"
+            },
+            {
+              "a": ":rust:",
+              "e": "emoji",
+              "u": "https://emoji.redditmedia.com/8jtzpkgy6mgd1_t5_2tex6/rust"
+            },
+            {
+              "a": ":bash:",
+              "e": "emoji",
+              "u": "https://emoji.redditmedia.com/rwl5cqhahmd31_t5_2tex6/bash"
+            }
+          ],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752867037,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "richtext",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/l6df1vhnpodf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/l6df1vhnpodf1.jpeg?auto=webp&amp;s=a7c5111d75366cb390c9b0e425e520b921129128",
+                  "width": 737,
+                  "height": 900
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/l6df1vhnpodf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=490a9c557f979f140dda9a13444d49b158cd05c5",
+                    "width": 108,
+                    "height": 131
+                  },
+                  {
+                    "url": "https://preview.redd.it/l6df1vhnpodf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=d2210b7eb4450ee4f4c93b04711a38a00190ddb1",
+                    "width": 216,
+                    "height": 263
+                  },
+                  {
+                    "url": "https://preview.redd.it/l6df1vhnpodf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=4bae50d2e5048c5d7a134ebe1d08a5fde3ec23e9",
+                    "width": 320,
+                    "height": 390
+                  },
+                  {
+                    "url": "https://preview.redd.it/l6df1vhnpodf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=9368b9cd5bc505af85d4a25f558e30bd58c724b0",
+                    "width": 640,
+                    "height": 781
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "Pg_K3YTJVgBcN-Z1sU9mz4MbOuY4HLd_lpuel_qHlAU"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": ":py: :m: :rust: :bash:",
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3bmxa",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "ManagerOfLove",
+          "discussion_type": null,
+          "num_comments": 7,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": "dark",
+          "permalink": "/r/ProgrammerHumor/comments/1m3bmxa/perfectdate/",
+          "stickied": false,
+          "url": "https://i.redd.it/l6df1vhnpodf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752867037,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_8shcjyw3",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "justWhy",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Advanced"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "",
+          "downs": 0,
+          "thumbnail_height": 48,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m3r507",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.71,
+          "author_flair_background_color": null,
+          "ups": 23,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Advanced",
+          "can_mod_post": false,
+          "score": 23,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/cquXLplGYe3jMWhz8VI6LdGpvIDHnT2hd74SKOo5M5I.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752913633,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/5akqhg87ksdf1.jpeg",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/5akqhg87ksdf1.jpeg?auto=webp&amp;s=5164e306dee1a568e77abb49ebf934c6ecc472ab",
+                  "width": 2132,
+                  "height": 746
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/5akqhg87ksdf1.jpeg?width=108&amp;crop=smart&amp;auto=webp&amp;s=7fe11b78cd4f60e29ced369bc94455a9190b2646",
+                    "width": 108,
+                    "height": 37
+                  },
+                  {
+                    "url": "https://preview.redd.it/5akqhg87ksdf1.jpeg?width=216&amp;crop=smart&amp;auto=webp&amp;s=fa00bc2e1f2c1ab04524f3c405217ff28bc83da0",
+                    "width": 216,
+                    "height": 75
+                  },
+                  {
+                    "url": "https://preview.redd.it/5akqhg87ksdf1.jpeg?width=320&amp;crop=smart&amp;auto=webp&amp;s=ce25da8317341a5692f7f7ba8bf3b18297fe0f1f",
+                    "width": 320,
+                    "height": 111
+                  },
+                  {
+                    "url": "https://preview.redd.it/5akqhg87ksdf1.jpeg?width=640&amp;crop=smart&amp;auto=webp&amp;s=840b58e89be7718ff64a56f49be3ed886adf1b53",
+                    "width": 640,
+                    "height": 223
+                  },
+                  {
+                    "url": "https://preview.redd.it/5akqhg87ksdf1.jpeg?width=960&amp;crop=smart&amp;auto=webp&amp;s=813924e2ebfc741f58a7084ab01aea924faa6832",
+                    "width": 960,
+                    "height": 335
+                  },
+                  {
+                    "url": "https://preview.redd.it/5akqhg87ksdf1.jpeg?width=1080&amp;crop=smart&amp;auto=webp&amp;s=986bbabd75d5624b0f334531099914b9caf4ceba",
+                    "width": 1080,
+                    "height": 377
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "BVumjLePRrrRc2uS92SIrehWEg2pm-XkpmxL7ErfV-Y"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "bbe0c3dc-3d6e-11ed-884c-7a60c9fae7a5",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m3r507",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "Kanha_Kanhaiya",
+          "discussion_type": null,
+          "num_comments": 17,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m3r507/justwhy/",
+          "stickied": false,
+          "url": "https://i.redd.it/5akqhg87ksdf1.jpeg",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752913633,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_3xzz10an",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "fromVibeToObliviousCoding",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 139,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m312ho",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.97,
+          "author_flair_background_color": null,
+          "ups": 829,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 829,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/flOr7tdhnCOY_xk-iUAFyQCEGvVGWkGcKlTr6smjcqk.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752841861,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/id6e1y0qmmdf1.png",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/id6e1y0qmmdf1.png?auto=webp&amp;s=a359f906e260350e33c674981c521bc88a7dc42e",
+                  "width": 1079,
+                  "height": 1078
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/id6e1y0qmmdf1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=05e353d498ce3c1ff5f5e252547d11fcd6767514",
+                    "width": 108,
+                    "height": 107
+                  },
+                  {
+                    "url": "https://preview.redd.it/id6e1y0qmmdf1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=2f9ebf3b90b4f296189382d55986bbfa9e708353",
+                    "width": 216,
+                    "height": 215
+                  },
+                  {
+                    "url": "https://preview.redd.it/id6e1y0qmmdf1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=cc1bea6c11435dae710d25641e11584b2fa34441",
+                    "width": 320,
+                    "height": 319
+                  },
+                  {
+                    "url": "https://preview.redd.it/id6e1y0qmmdf1.png?width=640&amp;crop=smart&amp;auto=webp&amp;s=6fb6071da52798b8e9a3549728ca61b656a94280",
+                    "width": 640,
+                    "height": 639
+                  },
+                  {
+                    "url": "https://preview.redd.it/id6e1y0qmmdf1.png?width=960&amp;crop=smart&amp;auto=webp&amp;s=587efbbdb45017cb48afc795ed7c47c7f91e698c",
+                    "width": 960,
+                    "height": 959
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "piA_CMjxET0520Ia_C8tXhs14aymLw3l_-as7ow8PuY"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m312ho",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "tbhaxor",
+          "discussion_type": null,
+          "num_comments": 21,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m312ho/fromvibetoobliviouscoding/",
+          "stickied": false,
+          "url": "https://i.redd.it/id6e1y0qmmdf1.png",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752841861,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      },
+      {
+        "kind": "t3",
+        "data": {
+          "approved_at_utc": null,
+          "subreddit": "ProgrammerHumor",
+          "selftext": "",
+          "author_fullname": "t2_1hm4mrfkjw",
+          "saved": false,
+          "mod_reason_title": null,
+          "gilded": 0,
+          "clicked": false,
+          "title": "itsRevolutionary",
+          "link_flair_richtext": [
+            {
+              "e": "text",
+              "t": "Meme"
+            }
+          ],
+          "subreddit_name_prefixed": "r/ProgrammerHumor",
+          "hidden": false,
+          "pwls": 6,
+          "link_flair_css_class": "meme",
+          "downs": 0,
+          "thumbnail_height": 140,
+          "top_awarded_type": null,
+          "hide_score": false,
+          "name": "t3_1m37knm",
+          "quarantine": false,
+          "link_flair_text_color": "light",
+          "upvote_ratio": 0.97,
+          "author_flair_background_color": null,
+          "ups": 348,
+          "total_awards_received": 0,
+          "media_embed": {
+
+          },
+          "thumbnail_width": 140,
+          "author_flair_template_id": null,
+          "is_original_content": false,
+          "user_reports": [],
+          "secure_media": null,
+          "is_reddit_media_domain": true,
+          "is_meta": false,
+          "category": null,
+          "secure_media_embed": {
+
+          },
+          "link_flair_text": "Meme",
+          "can_mod_post": false,
+          "score": 348,
+          "approved_by": null,
+          "is_created_from_ads_ui": false,
+          "author_premium": false,
+          "thumbnail": "https://b.thumbs.redditmedia.com/JPkvwha2ofhMsEK8WJkFC-f0moX6DaFVKUsbN-7NXvE.jpg",
+          "edited": false,
+          "author_flair_css_class": null,
+          "author_flair_richtext": [],
+          "gildings": {
+
+          },
+          "post_hint": "image",
+          "content_categories": null,
+          "is_self": false,
+          "subreddit_type": "public",
+          "created": 1752857635,
+          "link_flair_type": "richtext",
+          "wls": 6,
+          "removed_by_category": null,
+          "banned_by": null,
+          "author_flair_type": "text",
+          "domain": "i.redd.it",
+          "allow_live_comments": false,
+          "selftext_html": null,
+          "likes": null,
+          "suggested_sort": null,
+          "banned_at_utc": null,
+          "url_overridden_by_dest": "https://i.redd.it/n4xb9wmgxndf1.png",
+          "view_count": null,
+          "archived": false,
+          "no_follow": false,
+          "is_crosspostable": true,
+          "pinned": false,
+          "over_18": false,
+          "preview": {
+            "images": [
+              {
+                "source": {
+                  "url": "https://preview.redd.it/n4xb9wmgxndf1.png?auto=webp&amp;s=2a7128e74ee51c36005f3191eba877a1d52f816c",
+                  "width": 501,
+                  "height": 799
+                },
+                "resolutions": [
+                  {
+                    "url": "https://preview.redd.it/n4xb9wmgxndf1.png?width=108&amp;crop=smart&amp;auto=webp&amp;s=7fc6b97e5be61e583d24688ebe958b6e195610e3",
+                    "width": 108,
+                    "height": 172
+                  },
+                  {
+                    "url": "https://preview.redd.it/n4xb9wmgxndf1.png?width=216&amp;crop=smart&amp;auto=webp&amp;s=31cc60c0cfab34355eb80df886baa0e40dc815f0",
+                    "width": 216,
+                    "height": 344
+                  },
+                  {
+                    "url": "https://preview.redd.it/n4xb9wmgxndf1.png?width=320&amp;crop=smart&amp;auto=webp&amp;s=6413816f39963f67bd0e411737c05ddbc414ea18",
+                    "width": 320,
+                    "height": 510
+                  }
+                ],
+                "variants": {
+
+                },
+                "id": "4UqQR8pGqTr-WBKoOZkxcjOl8aj2qayTuZDBReF2PqA"
+              }
+            ],
+            "enabled": true
+          },
+          "all_awardings": [],
+          "awarders": [],
+          "media_only": false,
+          "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+          "can_gild": false,
+          "spoiler": false,
+          "locked": false,
+          "author_flair_text": null,
+          "treatment_tags": [],
+          "visited": false,
+          "removed_by": null,
+          "mod_note": null,
+          "distinguished": null,
+          "subreddit_id": "t5_2tex6",
+          "author_is_blocked": false,
+          "mod_reason_by": null,
+          "num_reports": null,
+          "removal_reason": null,
+          "link_flair_background_color": "#373c3f",
+          "id": "1m37knm",
+          "is_robot_indexable": true,
+          "report_reasons": null,
+          "author": "0xlostincode",
+          "discussion_type": null,
+          "num_comments": 7,
+          "send_replies": true,
+          "contest_mode": false,
+          "mod_reports": [],
+          "author_patreon_flair": false,
+          "author_flair_text_color": null,
+          "permalink": "/r/ProgrammerHumor/comments/1m37knm/itsrevolutionary/",
+          "stickied": false,
+          "url": "https://i.redd.it/n4xb9wmgxndf1.png",
+          "subreddit_subscribers": 4580839,
+          "created_utc": 1752857635,
+          "num_crossposts": 0,
+          "media": null,
+          "is_video": false
+        }
+      }
+    ],
+    "before": null
+  }
+}

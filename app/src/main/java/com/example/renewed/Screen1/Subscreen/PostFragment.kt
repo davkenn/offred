@@ -142,7 +142,7 @@ class PostFragment : ContentFragment() {
                  .into(postBinding!!.fullImg)
         }
         else{
-            val decodedUrl = Html.fromHtml(t3ViewState.thumbnail,Html.FROM_HTML_MODE_LEGACY).toString()
+            val decodedUrl = Html.fromHtml(t3ViewState.url,Html.FROM_HTML_MODE_LEGACY).toString()
             Glide.with(this@PostFragment).load(decodedUrl)
                 .into(postBinding!!.fullImg)
         }

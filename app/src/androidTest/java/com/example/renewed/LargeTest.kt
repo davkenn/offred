@@ -71,7 +71,9 @@ class LargeTest {
              "blackpeopletwitter.json",
             "blackpeopletwitterpost1.json",
             "blueskyskeets.json",
-            "blueskyskeetspost1.json"
+            "blueskyskeetspost1.json",
+            "programminghumor.json",
+            "programminghumorpost1.json"
         )
 
 

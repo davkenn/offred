@@ -26,10 +26,10 @@ private fun mapRedditError(error: Throwable): Throwable {
 }
 
 // Extension functions
-fun <T> Single<T>.handleRedditErrors(): Single<T> =
+fun <T : Any> Single<T>.handleRedditErrors(): Single<T> =
     this.onErrorResumeNext { Single.error(mapRedditError(it)) }
 
-fun <T> Observable<T>.handleRedditErrors(): Observable<T> =
+fun <T : Any> Observable<T>.handleRedditErrors(): Observable<T> =
     this.onErrorResumeNext { Observable.error(mapRedditError(it)) }
 
 fun Completable.handleRedditErrors(): Completable =
