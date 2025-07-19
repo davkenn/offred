@@ -82,7 +82,8 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorites_list) {
                         Screen2Effect.LOAD -> {
                             showLoading()
                         }
-
+//TODO fix this
+                        else -> {}
                     }
                 }
             }

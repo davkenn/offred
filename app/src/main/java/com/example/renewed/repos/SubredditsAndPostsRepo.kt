@@ -61,10 +61,21 @@ class SubredditsAndPostsRepo(
 
     override fun deleteUninterestingSubreddits(): Completable= t5Dao.deleteUnwanted()
 
-    override fun saveSubreddit(name: String?): Completable =
-         Observable.fromIterable(listOf(name)).flatMapSingle{t5Dao.getSubreddit(name!!)}
-                   .concatMapCompletable{t5Dao.saveSubreddit(it.name) }.
-             subscribeOn(Schedulers.io())
+    override fun saveSubreddit(name: String?): Completable {
+        if (name == null) {
+            return Completable.complete()
+        }
+
+    // Now that we know 'name' is not null, we can safely start the chain.
+    // t5Dao.getSubreddit(name) already returns a Single, so we can start there.
+    return t5Dao.getSubreddit(name)
+    .flatMapCompletable { roomT5 ->
+        // Use the result from getSubreddit to perform the save
+        t5Dao.saveSubreddit(roomT5.name)
+    }
+    .subscribeOn(Schedulers.io())
+}
+
 
 
 

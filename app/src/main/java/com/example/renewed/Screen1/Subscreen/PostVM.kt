@@ -13,11 +13,12 @@ class PostVM @Inject constructor(
 private val repository: BaseSubredditsAndPostsRepo
 ): ViewModel() {
     var pos: Int=0
-    lateinit var name: String
+    var name: String? = null
         private set
+
 
     fun setPost(n: String) : Single<ViewStateT3> =
         repository.getPost(n)
-                  .doOnEvent{x,_->name =  x.subredditId} //feels bad
+                  .doOnEvent{x,_->name =  x?.subredditId} //feels bad
                   .map { it.toViewState() }
 }

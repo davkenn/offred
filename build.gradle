@@ -1,35 +1,32 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = '1.6'
-
     ext {
-        // Sdk and tools
-        compileSdkVersion = 33
+        compileSdkVersion = 34
         minSdkVersion = 28
-        targetSdkVersion = 30
+        targetSdkVersion = 34
 
-        // App dependencies
+        // App dependencies - Updated for compatibility
+        hiltVersion = '2.48'
+        lifecycleVersion = '2.6.2'
+        roomVersion = '2.6.1'
+        glideVersion = '4.16.0'
+        navigationVersion = '2.7.7' // Updated for better compatibility
+
+        // Other dependencies
         rxjavaVersion = '3.0.0'
         appCompatVersion = '1.1.0'
         constraintLayoutVersion = '2.0.0-beta3'
         coreTestingVersion = '2.0.0'
         espressoVersion = '3.1.1'
         fragmentVersion = '1.5.4'
-        glideVersion = '4.10.0'
         gradleVersion = '7.0.2'
-        hiltVersion = '2.44.2'
- //       junitVersion = '4.12'
         junitVersion = '4.13'
-        kotlinVersion = '1.4.30'
         ktlintVersion = '0.38.1'
         ktxVersion = '1.0.2'
-        lifecycleVersion = '2.4.0'
         materialVersion = '1.2.0'
-        navigationVersion = '2.4.1'
         okhttpVersion = '4.10.0'
         pagingVersion = '3.0.1'
         retrofitVersion = '2.9.0'
-        roomVersion = '2.3.0'
         runnerVersion = '1.0.1'
         truthVersion = '0.42'
         testExtJunit = '1.1.0'
@@ -45,14 +42,10 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
+        classpath 'com.android.tools.build:gradle:8.1.1'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22'
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
-
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
     }
 }
 

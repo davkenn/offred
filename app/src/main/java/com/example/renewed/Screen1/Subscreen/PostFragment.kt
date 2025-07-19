@@ -128,7 +128,7 @@ class PostFragment : ContentFragment() {
                 }, { Timber.e("Error in binding ${it.localizedMessage}")}).addTo(disposables )
     }
 
-    override fun getName() : String = postsVM.name
+    override fun getName() : String = postsVM.name?:""
 
     private fun loadUrlClickListener(t3ViewState: ViewStateT3) =
         postBinding!!.url.setOnClickListener {

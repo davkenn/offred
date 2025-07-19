@@ -71,8 +71,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                 x -> subsAndPostsVM.processInput(Screen1Event.ClickOnT3ViewEvent(x.name))
         }
         subredditAdapter = SubredditsAdapter { x ->
-            val inBackStack = navHostFragment.navController.backQueue
-                .any { x.name == (it.arguments?.getString("key") ?: "NOMATCH") }
+            val inBackStack = navHostFragment.navController.currentBackStack.value
+                .any { entry -> entry.arguments?.getString("key") ==x.name }
 
             if (inBackStack) {
                 subsAndPostsVM.processInput(Screen1Event.MakeSnackBarEffect)
@@ -158,7 +158,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
         }
         //after popping the stack, its either a subreddit....
-        if (navHost.backQueue.size > 2) enableButtons(onlyBack = false)
+        if (navHost.currentBackStack.value.size > 2) enableButtons(onlyBack = false)
         else disableButtons(true)       //...or a blank fragment
     }
 
