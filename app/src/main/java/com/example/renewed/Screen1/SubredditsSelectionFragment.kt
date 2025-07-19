@@ -14,8 +14,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.renewed.*
 import com.example.renewed.Screen1.Subscreen.ContentFragment
-import com.example.renewed.Screen1.Subscreen.PostFragment
-import com.example.renewed.Screen1.Subscreen.SubredditFragment
 import com.example.renewed.databinding.FragmentSubredditsSelectionBinding
 import com.example.renewed.models.Screen1Effect
 import com.example.renewed.models.Screen1Event
@@ -38,27 +36,8 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private var postAdapter: PostsAdapter? = null
     private var viewDisposables: CompositeDisposable? = null
     private var fragmentSelectionBinding: FragmentSubredditsSelectionBinding? = null
-    private var saveEnabled: Boolean = false
-    private var backEnabled: Boolean = false
+
     private lateinit var navHostFragment: NavHostFragment
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Timber.d("onCreate in SubredditsSelectionFragment")
-         savedInstanceState?.let {
-             saveEnabled = it.getBoolean("save_enabled")
-             backEnabled = it.getBoolean("back_enabled")
-
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.run {
-            putBoolean("save_enabled", saveEnabled)
-            putBoolean("back_enabled", backEnabled)
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,6 +67,22 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
             subredditsRv.adapter = subredditAdapter
         }
 
+        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.postFragment -> {
+                    // When viewing a post, only the back button is enabled.
+                    enableButtons(onlyBack = true)
+                }
+                R.id.subredditFragment -> {
+                    // When viewing a subreddit, both back and save are enabled.
+                    enableButtons(onlyBack = false)
+                }
+                else -> {
+                    // On the start destination (blank fragment), all buttons are disabled.
+                    disableButtons()
+                }
+            }
+        }
         //Gets rid of db errors when you rapidly click on one button still are errors when you
         // click different buttons rapidly . I could remove these for back and refresh combos but
         // not for save and delete bc dsave and delete each make 2 events so no easy way to throttle
@@ -135,14 +130,10 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
                                 ).show()
                                 subredditAdapter?.setSelected()
                         }
-
                     }
-
                         //Clear the effect in case process is recreated so we don't repeat it
-                        subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)
+                    subsAndPostsVM.processInput(Screen1Event.ClearEffectEvent)
                     }
-
-
             },
             { Timber.e("error fetching vs: ${it.localizedMessage}") }
         ).addTo(viewDisposables!!)
@@ -151,15 +142,7 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
     private fun backPressedPopCurrentSubscreen() {
         val navHost = navHostFragment.navController
         val currentFragment = navHostFragment.childFragmentManager.primaryNavigationFragment
-        when (currentFragment){
-            is PostFragment -> navHost.popBackStack(R.id.subredditFragment, false)
-            is SubredditFragment -> navHost.popBackStack(R.id.subredditFragment, true)
-            else -> navHost.navigateUp()
-
-        }
-        //after popping the stack, its either a subreddit....
-        if (navHost.currentBackStack.value.size > 2) enableButtons(onlyBack = false)
-        else disableButtons(true)       //...or a blank fragment
+        navHost.navigateUp()
     }
 
     private fun getSubNameOrNull(): String? {
@@ -170,52 +153,39 @@ class SubredditsSelectionFragment : Fragment(R.layout.fragment_subreddits_select
 
 
     private fun navigateToPostOrSubreddit(@IdRes resId: Int, t3OrT5: PartialViewStateScreen1) {
-
         navHostFragment.navController.navigate(resId, bundleOf("key" to t3OrT5.name))
-        if (t3OrT5 is PartialViewStateScreen1.T3ForViewing) disableButtons(includingBack = false)
-                                                            else enableButtons(onlyBack = false)
+
     }
 
-    private fun disableButtons(includingBack:Boolean) {
-        if (includingBack){
-            fragmentSelectionBinding?.backButton?.visibility= INVISIBLE
-            fragmentSelectionBinding?.backButton?.isClickable=false
-            backEnabled=false
-        }
+    private fun disableButtons() {
+        fragmentSelectionBinding?.backButton?.visibility = INVISIBLE
+        fragmentSelectionBinding?.backButton?.isClickable = false
         fragmentSelectionBinding?.saveButton?.visibility = INVISIBLE
         fragmentSelectionBinding?.saveButton?.isClickable = false
-        saveEnabled=false
     }
 
-    private fun enableButtons(onlyBack:Boolean) {
-        fragmentSelectionBinding?.backButton?.visibility= VISIBLE
-        fragmentSelectionBinding?.backButton?.isClickable=true
-        backEnabled=true
 
-        if (onlyBack) return
+    private fun enableButtons(onlyBack: Boolean) {
+        fragmentSelectionBinding?.backButton?.visibility = VISIBLE
+        fragmentSelectionBinding?.backButton?.isClickable = true
 
-        fragmentSelectionBinding?.saveButton?.visibility = VISIBLE
-        fragmentSelectionBinding?.saveButton?.isClickable = true
-        saveEnabled=true
+        if (onlyBack) {
+            // Explicitly hide the save button when only the back button should be visible.
+            fragmentSelectionBinding?.saveButton?.visibility = INVISIBLE
+            fragmentSelectionBinding?.saveButton?.isClickable = false
+        } else {
+            // Show the save button otherwise.
+            fragmentSelectionBinding?.saveButton?.visibility = VISIBLE
+            fragmentSelectionBinding?.saveButton?.isClickable = true
+        }
     }
-
-    override fun onResume() {
-        super.onResume()
-        if (saveEnabled) enableButtons(onlyBack = false)
-        else if (backEnabled) enableButtons(onlyBack = true)
-        else disableButtons(true)
-    }
-
     override fun onDestroyView() {
 
         fragmentSelectionBinding?.postsRv?.adapter = null
         fragmentSelectionBinding?.subredditsRv?.adapter = null
-
         subredditAdapter = null
         postAdapter = null
-
         fragmentSelectionBinding = null
-
         viewDisposables?.clear()  // Clear view-specific subscriptions
         viewDisposables = null
         super.onDestroyView()
