@@ -1,7 +1,5 @@
 package com.example.renewed
 
-import android.content.Context
-import androidx.room.Room
 import androidx.test.espresso.Espresso.onView
 
 import androidx.test.espresso.action.ViewActions.click
@@ -12,43 +10,37 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.RedditDatabase
 import com.example.renewed.Room.T3DAO
 import com.example.renewed.Room.T5DAO
 import com.example.renewed.Screen1.PostsAdapter
 
 import com.example.renewed.Screen1.SubredditsSelectionFragment
-import com.example.renewed.di.TestDbModule
-import com.example.renewed.models.RoomT3
-import com.example.renewed.models.RoomT5
+import com.example.renewed.models.Holder
+import com.example.renewed.models.Listing
 import com.example.renewed.models.T3
 import com.example.renewed.models.T5
 import com.example.renewed.models.toDbModel
 import com.squareup.moshi.Moshi
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.squareup.moshi.Types
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
-import dagger.hilt.components.SingletonComponent
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.*
 import org.junit.runner.RunWith
 import java.io.InputStreamReader
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class LargeTest {
-
-    @get:Rule()
+    @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 1)
+    val disableAnimationsRule = DisableAnimationsRule()
+
 
     @Inject
     lateinit var t5Dao: T5DAO
@@ -64,33 +56,56 @@ class LargeTest {
         hiltRule.inject()
 
         // --- Populate the database from local JSON files using Moshi ---
-        val t5Adapter = moshi.adapter(T5::class.java)
+        val listingAdapter = moshi.adapter(Listing::class.java)
+        val holderAdapter = moshi.adapter(Holder::class.java)
         val t3Adapter = moshi.adapter(T3::class.java)
 
-        val t5List = emptyList<String>()
-            .mapNotNull { fileName ->
-                val jsonString = readJsonFromResources(fileName)
-                t5Adapter.fromJson(jsonString)?.toDbModel()
-            }
 
-        val t3List = listOf("lana.json")//"handledeletedpost.json","handleimagegallery.json","handlelink.json","handlensdwclickthru.json")
-            .mapNotNull { fileName ->
-                val jsonString = readJsonFromResources(fileName)
-                t3Adapter.fromJson(jsonString)?.toDbModel()
-            }
+        val jsonFiles = listOf(
+            "crtgamingabout.json",
+            "crtgamingpost1.json",// A single T5 object
+            "lanapost1.json",        // A single T5 object
+            "lana.json",           // A single T3 object
+            "interestingasfuck.json"  ,
+            "interestingasfuckpost1.json" // A file that starts with a list of Listings
+        )
+
+
+        val allHolders = jsonFiles.flatMap { fileName ->
+            val jsonString = readJsonFromResources(fileName)
+            parsePolymorphicJson(jsonString)
+        }
+
+        // Separate the Holders into T3s and T5s
+        val t5List = allHolders.mapNotNull { it.data as? T5 }.map { it.toDbModel() }
+        val t3List = allHolders.mapNotNull { it.data as? T3 }.map { it.toDbModel() }
 
         // Insert the converted data into the database
-        t5Dao.insertAll(t5List).blockingAwait()
-        t3Dao.insertAll(t3List).blockingAwait()
+        if (t5List.isNotEmpty()) t5Dao.insertAll(t5List).blockingAwait()
+        if (t3List.isNotEmpty()) t3Dao.insertAll(t3List).blockingAwait()
         // --- End of data population ---
 
         launchFragmentInHiltContainer<SubredditsSelectionFragment>()
         Thread.sleep(2000)
     }
 
-    /**
-     * Helper function to read a JSON file from the test assets directory.
-     */
+
+    private fun parsePolymorphicJson(jsonString: String): List<Holder> {
+        if (jsonString.trim().startsWith("[")) {
+            // It's a list. Parse it as a List of Listings.
+            val listType = Types.newParameterizedType(List::class.java, Listing::class.java)
+            val listAdapter = moshi.adapter<List<Listing>>(listType)
+            val listings = listAdapter.fromJson(jsonString) ?: emptyList()
+            // Extract the 'children' (which are Holders) from each Listing and flatten the result.
+            return listings.flatMap { it.data.children }
+        } else if (jsonString.trim().startsWith("{")) {
+            // It's a single object. Parse it as one Holder.
+            val holderAdapter = moshi.adapter(Holder::class.java)
+            val holder = holderAdapter.fromJson(jsonString)
+            return if (holder != null) listOf(holder) else emptyList()
+        }
+        return emptyList() // Return empty for invalid or empty JSON
+    }
     private fun readJsonFromResources(fileName: String): String {
         val context = InstrumentationRegistry.getInstrumentation().context
         val inputStream = context.assets.open("api_responses/$fileName")
