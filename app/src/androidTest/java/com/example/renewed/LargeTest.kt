@@ -73,7 +73,9 @@ class LargeTest {
             "blueskyskeets.json",
             "blueskyskeetspost1.json",
             "programminghumor.json",
-            "programminghumorpost1.json"
+            "programminghumorpost1.json",
+            "damnthatsinteresting.json",
+            "damnthatsinterestingpost1.json"
         )
 
 
