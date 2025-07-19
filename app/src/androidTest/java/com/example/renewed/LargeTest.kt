@@ -66,8 +66,12 @@ class LargeTest {
             "crtgamingpost1.json",// A single T5 object
             "lanapost1.json",        // A single T5 object
             "lana.json",           // A single T3 object
-            "interestingasfuck.json"  ,
-            "interestingasfuckpost1.json" // A file that starts with a list of Listings
+            "interestingasfuck.json",
+            "interestingasfuckpost1.json",
+             "blackpeopletwitter.json",
+            "blackpeopletwitterpost1.json",
+            "blueskyskeets.json",
+            "blueskyskeetspost1.json"
         )
 
 
@@ -118,8 +122,6 @@ class LargeTest {
         db.clearAllTables()
         db.close()
     }
-
-
 
     @After
     fun resetDBContents() {
