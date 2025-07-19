@@ -37,7 +37,7 @@ class SubredditsAndPostsVM @Inject constructor(
         .doOnNext { Timber.d("----Combined is $it") }
         .observeOn(AndroidSchedulers.mainThread())
         .replay(1)
-        .refCount()
+        .autoConnect(1) { disposables.add(it) }
     init {
         disposables.add(repo.clearDisplayed().andThen(prefetch())
             .subscribeBy{processInput(Screen1Event.ScreenLoadEvent)})
