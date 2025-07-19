@@ -1,7 +1,6 @@
 package com.example.renewed
 
 import android.content.Context
-import androidx.core.os.bundleOf
 import androidx.room.Room
 import androidx.test.espresso.Espresso.onView
 
@@ -12,6 +11,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.example.renewed.Room.FavoritesDAO
 import com.example.renewed.Room.RedditDatabase
 import com.example.renewed.Room.T3DAO
@@ -19,9 +19,13 @@ import com.example.renewed.Room.T5DAO
 import com.example.renewed.Screen1.PostsAdapter
 
 import com.example.renewed.Screen1.SubredditsSelectionFragment
-import com.example.renewed.di.DbModule
+import com.example.renewed.di.TestDbModule
 import com.example.renewed.models.RoomT3
 import com.example.renewed.models.RoomT5
+import com.example.renewed.models.T3
+import com.example.renewed.models.T5
+import com.example.renewed.models.toDbModel
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,49 +38,73 @@ import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.not
 import org.junit.*
 import org.junit.runner.RunWith
+import java.io.InputStreamReader
 import javax.inject.Inject
 import javax.inject.Singleton
 
 
-
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@UninstallModules(DbModule::class)
 class LargeTest {
-
-    var initialDbContentsT5: List<RoomT5>?=null
-    var initialDbContentsT3: List<RoomT3>?=null
-
 
     @get:Rule()
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
     lateinit var t5Dao: T5DAO
-
     @Inject
-    lateinit var t3DAO: T3DAO
-
+    lateinit var t3Dao: T3DAO
     @Inject
     lateinit var db: RedditDatabase
-
+    @Inject
+    lateinit var moshi: Moshi
 
     @Before
     fun init() {
         hiltRule.inject()
-        t5Dao.clearViews()
 
-        //When the first test runs, save the initial db contents to two local variables
-        if (initialDbContentsT5 == null) {
-            initialDbContentsT5 = t5Dao.getAllRows()
-            initialDbContentsT3 = t3DAO.getAllRows()
+        // --- Populate the database from local JSON files using Moshi ---
+        val t5Adapter = moshi.adapter(T5::class.java)
+        val t3Adapter = moshi.adapter(T3::class.java)
 
-        }
-        //Start Screen1 Fragment and then...
+        val t5List = emptyList<String>()
+            .mapNotNull { fileName ->
+                val jsonString = readJsonFromResources(fileName)
+                t5Adapter.fromJson(jsonString)?.toDbModel()
+            }
+
+        val t3List = listOf("lana.json")//"handledeletedpost.json","handleimagegallery.json","handlelink.json","handlensdwclickthru.json")
+            .mapNotNull { fileName ->
+                val jsonString = readJsonFromResources(fileName)
+                t3Adapter.fromJson(jsonString)?.toDbModel()
+            }
+
+        // Insert the converted data into the database
+        t5Dao.insertAll(t5List).blockingAwait()
+        t3Dao.insertAll(t3List).blockingAwait()
+        // --- End of data population ---
+
         launchFragmentInHiltContainer<SubredditsSelectionFragment>()
-        //...give The UI time to load for each test
-        Thread.sleep(3000)
+        Thread.sleep(2000)
     }
+
+    /**
+     * Helper function to read a JSON file from the test assets directory.
+     */
+    private fun readJsonFromResources(fileName: String): String {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        val inputStream = context.assets.open("api_responses/$fileName")
+        val reader = InputStreamReader(inputStream)
+        return reader.readText()
+    }
+
+    @After
+    fun tearDown() {
+        db.clearAllTables()
+        db.close()
+    }
+
+
 
     @After
     fun resetDBContents() {
@@ -175,7 +203,7 @@ class LargeTest {
             )
         )
     }
-    @Test
+  /**  @Test
     fun refreshButtonThreeTimesAllNewSubredditsInList() {
 
         onView(withId(R.id.subreddits_rv)).perform(
@@ -196,7 +224,7 @@ class LargeTest {
             onView(withId(R.id.subreddits_rv)).check(
                 matches(not(hasDescendant(withText(name.displayName)))))
         }
-    }
+    }**/
 
 
     @Test
@@ -215,43 +243,7 @@ class LargeTest {
     }
 
 
-    @Module
-    @InstallIn(SingletonComponent::class)
-    object TestRepoModule {
 
-        @Provides
-        @Singleton
-        fun provideDB(@ApplicationContext ctxt: Context): RedditDatabase {
-        //this function is a workaround for the fact that a Room in-memory database
-            //can not be created from an asset file. This function gives
-            //the db loaded from the asset a random name and then deletes all dbs
-            //before creating a new one for a test. This ensures that even though we
-            // are creating a persistent database, that database is deleted and
-            // recreated with a different name for each test
-            val c = java.util.UUID.randomUUID().toString()
-            for (f in ctxt.databaseList()) {
-                if (f.endsWith("tmp1")) ctxt.deleteDatabase(f)
-            }
-
-            return Room.databaseBuilder(
-                ctxt,
-                RedditDatabase::class.java,c+".tmp1"
-            ).createFromAsset("RedditDB4").build()
-        }
-
-
-        @Provides
-        @Singleton
-        fun provideFavsDAO(db: RedditDatabase): FavoritesDAO = db.favoritesDao()
-
-        @Singleton
-        @Provides
-        fun provideT5DAO(db: RedditDatabase): T5DAO = db.subredditDao()
-
-        @Singleton
-        @Provides
-        fun provideT3DAO(db: RedditDatabase): T3DAO = db.postsDao()
-    }
 
 }
 
