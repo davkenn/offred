@@ -29,15 +29,13 @@ data class Listing<T : Thing>(
 
 @JsonClass(generateAdapter = true)
 data class RedditListing<T : Thing>(
-    val children: List<Holder<T>>,  // Fix: Use Holder wrapper
+    val children: List<Holder<T>>,
     val after: String?,
     val before: String?
 )
-
 sealed class Thing {
     abstract val name:String
 }
-
 @JsonClass(generateAdapter = true)
 data class T5 (override val name: String, val display_name: String, val icon_img: String?,
                val header_img: String?, val community_icon: String?, val banner_img: String?,
@@ -56,7 +54,7 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
               val media:VideoMedia?, val media_metadata:List<GalleryMedia>?) : Thing()
 
 @JsonClass(generateAdapter = true)
-data class PicsAndDimens (val y:Int,val x:Int, val u:String)
+data class PicsAndDimens (val y:Int,val x:Int, @HtmlDecoded val u:String)
 
 @JsonClass(generateAdapter = true)
 data class GalleryMedia(val e:String?, val m:String?, val p: List<PicsAndDimens>?)

@@ -4,7 +4,6 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-
 /**
  * These functions convert each of the three model types into other model types. Models are
  * converted in one direction, from network model to database model to model to be displayed in
@@ -12,11 +11,12 @@ import java.time.format.DateTimeFormatter
  */
 fun T5.toDbModel(): RoomT5 {
     val fullDescription = combineDescriptions(this.description, this.public_description)
-    val thumb1 = icon_img ?: ""
-    val thumb2 = header_img ?: ""
-    val thumb3 = community_icon ?: ""
-    //choose subreddit thumbnail from a number of different json fields
-    val thumbnail = thumb1.ifBlank { thumb3.substringBeforeLast("?") }.ifBlank { thumb2 }
+
+    val thumbnail = listOfNotNull(icon_img, community_icon, header_img)
+        .firstOrNull { it.isNotBlank() }
+        ?.substringBeforeLast("?")
+        ?: ""
+
     return RoomT5(name = name, displayName = display_name, description = fullDescription,
                   thumbnail = thumbnail, banner_img = banner_img ?: "", isSaved = false,
                   created_utc = Instant.ofEpochSecond(created_utc), totalViews = 0,
@@ -25,13 +25,17 @@ fun T5.toDbModel(): RoomT5 {
 
 fun T3.toDbModel(): RoomT3 {
 
-    if (url.startsWith("https://v.redd.it")){ url= media?.reddit_video?.hls_url?:"" }
+    val transformedUrl = if (url.startsWith("https://v.redd.it")) {
+        media?.reddit_video?.hls_url ?: url
+    } else {
+        url
+    }
 
-    return RoomT3(name = name, subredditId = subreddit_id, selftext = selftext, url =  url,
+    return RoomT3(name = name, subredditId = subreddit_id, selftext = selftext, url =  transformedUrl,
                   created_utc = Instant.ofEpochSecond(created_utc), permalink = permalink,
                   timeLastAccessed = Instant.now(), title = title, thumbnail = thumbnail,
                   gallery_urls = media_metadata?.joinToString(separator = " ") {
-                      it.p?.last()?.u?.replace("amp;","")?:""}, isSaved = false)
+                      it.p?.last()?.u?:""}, isSaved = false)
 }
 
 fun RoomT5.toViewState(): ViewStateT5 =
