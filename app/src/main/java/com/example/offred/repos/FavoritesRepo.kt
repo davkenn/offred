@@ -56,7 +56,7 @@ class FavoritesRepo(private val t5: T5DAO,
 
 
 
-    private fun extractT3Field(it: Listing): T3 = it.data.children[0] as T3
+    private fun extractT3Field(it: Listing<T3>): T3 = it.data.children[0].data
 
 }
 

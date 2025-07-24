@@ -39,13 +39,9 @@ class FavoritesListVM @Inject constructor(private val favsRepo: BaseFavoritesRep
     private fun Observable<PartialViewStateScreen2>.combineResults(): Observable<FullViewStateScreen2> {
         return scan(FullViewStateScreen2()) { state, event ->
             when (event) {
-
-
                 is PartialViewStateScreen2.LoadStartedEffect -> state.copy(effect = Screen2Effect.LOAD)
                 is PartialViewStateScreen2.Posts -> state.copy(currentlyDisplayedList = event)
-//is this a bug with order of show loading and hide loading? should I keep effect when position updated? position when effect is updated?
                 is PartialViewStateScreen2.Position -> state.copy(position = event)
-
             }
         }.skip(1)
     }

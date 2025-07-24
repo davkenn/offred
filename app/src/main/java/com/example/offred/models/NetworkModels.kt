@@ -15,18 +15,28 @@ import com.squareup.moshi.Json
  * represent what is parsed from the network.
  */
 @JsonClass(generateAdapter = true)
-data class RedditListing(val children: List<Thing>, val before: String?, val after: String?)
+data class Holder<T : Thing>(
+    val data: T, val kind:String)
 
 @JsonClass(generateAdapter = true)
-data class PostAndComments(val data: List<RedditListing>)
+data class PostAndComments(val data: List<Listing<Thing>>)
 
 @JsonClass(generateAdapter = true)
-data class Listing(val data: RedditListing)
+data class Listing<T : Thing>(
+    val data: RedditListing<T>
+)
+
+@JsonClass(generateAdapter = true)
+data class RedditListing<T : Thing>(
+    val children: List<Holder<T>>,  // Fix: Use Holder wrapper
+    val after: String?,
+    val before: String?
+)
 
 sealed class Thing {
     abstract val name:String
 }
-//TODO PolymorphicJsonAdapterFactory
+
 @JsonClass(generateAdapter = true)
 data class T5 (override val name: String, val display_name: String, val icon_img: String?,
                val header_img: String?, val community_icon: String?, val banner_img: String?,
