@@ -5,7 +5,7 @@ import com.squareup.moshi.*
 
 
 
-class RedditPostAdapter {
+class RedditPostAdapter {}/**
     @FromJson
     fun parse(
         reader: JsonReader,
@@ -27,10 +27,11 @@ class RedditPostAdapter {
 }
 
 class RedditHolderAdapter {
-    @FromJson fun RedditPostFromHolder(holder: Holder): RedditPostType = holder.data
-    @ToJson fun HolderFromRedditPost(event: RedditPostType): Holder =
+    @FromJson fun RedditPostFromHolder(holder: Holder): Thing = holder.data
+    @ToJson fun HolderFromRedditPost(event: Thing): Holder =
         Holder(event, event.name.takeWhile { it != '_' })
 }
 
 
 
+**/

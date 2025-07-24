@@ -23,7 +23,7 @@ class SubredditsAndPostsRepo(
         t5Dao.getSubredditIDsNeedingPosts()
              .flattenAsObservable { it }
              .flatMap( { api.getPostsInDateRange(it).toObservable() }, 10)
-             .map { list -> list.data.children.map {(it.data as T3).toDbModel()} }
+             .map { list -> list.data.children.map {(it as T3).toDbModel()} }
              .flatMapCompletable { roomT3s -> t3Dao.insertAll(roomT3s) }
 
     override fun prefetchSubreddits() : Completable =
@@ -35,7 +35,7 @@ class SubredditsAndPostsRepo(
     private fun loadSubredditsDb(needed: Int): Completable =
                  api.getPostsFromAll(needed,currentAfterToken).doOnSuccess{currentAfterToken= it.data.after}
                      .flattenAsObservable { it.data.children }
-                     .map{(it.data as T3).subreddit}
+                     .map{(it as T3).subreddit}
                      .distinct()
                      .take(needed.toLong())
                      .flatMapSingle{api.getSubredditDetails(it)}

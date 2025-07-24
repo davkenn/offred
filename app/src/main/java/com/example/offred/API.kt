@@ -3,7 +3,7 @@ package com.example.offred
 
 
 import com.example.offred.models.Listing
-import com.example.offred.models.RedditPostType
+import com.example.offred.models.Thing
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
@@ -16,7 +16,7 @@ interface API {
     fun getPostsFromAll(@Query("limit") limit: Int = 100, @Query("after") after: String? = null): Single<Listing>
 
     @GET("/r/{subName}/about.json")//
-    fun getSubredditDetails(@Path("subName")subName:String): Single<RedditPostType>
+    fun getSubredditDetails(@Path("subName")subName:String): Single<Thing>
 
     @GET("/r/{subName}/random.json")
     fun getRandomPost(@Path("subName")subName:String): Single<List<Listing>>

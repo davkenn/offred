@@ -15,10 +15,7 @@ import com.squareup.moshi.Json
  * represent what is parsed from the network.
  */
 @JsonClass(generateAdapter = true)
-data class Holder(val data: RedditPostType, val kind: String)
-
-@JsonClass(generateAdapter = true)
-data class RedditListing(val children: List<Holder>, val before: String?, val after: String?)
+data class RedditListing(val children: List<Thing>, val before: String?, val after: String?)
 
 @JsonClass(generateAdapter = true)
 data class PostAndComments(val data: List<RedditListing>)
@@ -26,7 +23,7 @@ data class PostAndComments(val data: List<RedditListing>)
 @JsonClass(generateAdapter = true)
 data class Listing(val data: RedditListing)
 
-sealed class RedditPostType {
+sealed class Thing {
     abstract val name:String
 }
 //TODO PolymorphicJsonAdapterFactory
@@ -35,7 +32,7 @@ data class T5 (override val name: String, val display_name: String, val icon_img
                val header_img: String?, val community_icon: String?, val banner_img: String?,
                val url: String, val subscribers: Int, val active_user_count: Int, val created_utc: Long,
                @SubredditDescription val description: String,
-               @SubredditDescription val public_description: String): RedditPostType()
+               @SubredditDescription val public_description: String): Thing()
 
 @JsonClass(generateAdapter = true)
 data class T3(override val name: String, val author: String, val ups: Int, val downs: Int,
@@ -45,7 +42,7 @@ data class T3(override val name: String, val author: String, val ups: Int, val d
               @Json(name = "upvote_ratio") val upvoteRatio: Double,
             //if json permalink is a url create a text post, if not then either vid  or photo post
               val permalink: String, val thumbnail: String, val created_utc: Long,
-              val media:VideoMedia?, val media_metadata:List<GalleryMedia>?) : RedditPostType()
+              val media:VideoMedia?, val media_metadata:List<GalleryMedia>?) : Thing()
 
 @JsonClass(generateAdapter = true)
 data class PicsAndDimens (val y:Int,val x:Int, val u:String)
@@ -60,10 +57,10 @@ data class VideoMedia  (val reddit_video:Video?)
 data class Video  (val fallback_url:String?,val dash_url:String?,val hls_url:String?)
 
 @JsonClass(generateAdapter = true)
-data class T1 (override val name: String, val link_id: String, val body: String): RedditPostType()
+data class T1 (override val name: String, val link_id: String, val body: String): Thing()
 
 //if you fetch from a post a list of its replies and limit it to some number of posts n,
 //you will also get a more datatype at the end giving you links to more replies
 //Right now my moshi parser is failing posts with tons of replies and thus with a more
 @JsonClass(generateAdapter = true)
-data class More (override val name: String, val children: List<String>): RedditPostType()
+data class More (override val name: String, val children: List<String>): Thing()
