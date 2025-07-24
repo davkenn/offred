@@ -1,7 +1,8 @@
 package com.example.offred.models
 
 
-import com.example.offred.moshiadapters.SubredditDescription
+import com.example.offred.moshiadapters.HtmlDecoded
+import com.example.offred.moshiadapters.HtmlDecodedAdapter
 import com.squareup.moshi.JsonClass
 
 import com.squareup.moshi.Json
@@ -41,14 +42,14 @@ sealed class Thing {
 data class T5 (override val name: String, val display_name: String, val icon_img: String?,
                val header_img: String?, val community_icon: String?, val banner_img: String?,
                val url: String, val subscribers: Int, val active_user_count: Int, val created_utc: Long,
-               @SubredditDescription val description: String,
-               @SubredditDescription val public_description: String): Thing()
+               @HtmlDecoded val description: String,
+               @HtmlDecoded val public_description: String): Thing()
 
 @JsonClass(generateAdapter = true)
 data class T3(override val name: String, val author: String, val ups: Int, val downs: Int,
-              val score: Int, val num_comments: Int, @SubredditDescription val selftext: String,
+              val score: Int, val num_comments: Int, @HtmlDecoded val selftext: String,
               val subreddit: String, val subreddit_id: String, val subreddit_subscribers: Int,
-              @SubredditDescription val title: String, var url: String, val spoiler:Boolean,
+              @HtmlDecoded val title: String, var url: String, val spoiler:Boolean,
               @Json(name = "upvote_ratio") val upvoteRatio: Double,
             //if json permalink is a url create a text post, if not then either vid  or photo post
               val permalink: String, val thumbnail: String, val created_utc: Long,

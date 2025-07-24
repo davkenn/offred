@@ -5,7 +5,7 @@ import com.squareup.moshi.*
 
 //media_metadata json key contains full images and not thumbnails. Need a special adapter
 //because the key for the object inside media_metadata has a random key
-class MediaList {
+class MediaAdapter {
     @FromJson
     fun parse(reader: JsonReader, mediaAdapter: JsonAdapter<GalleryMedia>, ): List<GalleryMedia> {
         var ls = mutableListOf<GalleryMedia>()
