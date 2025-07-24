@@ -1,0 +1,34 @@
+package com.example.offred.Room
+
+import androidx.room.*
+import com.example.offred.models.RoomT3
+import com.example.offred.models.RoomT5
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
+
+@Dao
+interface T3DAO {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(t3s: List<RoomT3>): Completable
+
+    @Query("SELECT * FROM RoomT3 WHERE RoomT3.name like :name")
+    fun getPost(name: String): Single<RoomT3>
+
+    @Query("SELECT * FROM RoomT3 WHERE RoomT3.subredditId like :name AND wasViewed=0 ORDER BY RoomT3.subredditId LIMIT 10")
+    fun getPosts(name: String): Single<List<RoomT3>>
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    fun updateT3(t5: RoomT5): Completable
+
+    //FOR UI TESTING
+    @Query("SELECT * FROM RoomT3")
+    fun getAllRows(): List<RoomT3>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun fillDb(t5s: List<RoomT3>): Unit
+
+    @Query("UPDATE RoomT3 SET wasViewed=1 WHERE name IN (:postIds)")
+    fun markAsViewed(postIds:List<String>): Completable
+
+}

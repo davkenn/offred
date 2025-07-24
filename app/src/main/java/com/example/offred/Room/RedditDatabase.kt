@@ -1,0 +1,21 @@
+package com.example.offred.Room
+
+import androidx.room.Database
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.offred.models.CurrentFavoritesList
+import com.example.offred.models.RoomT3
+import com.example.offred.models.RoomT5
+
+    @Database(entities =[RoomT5::class, RoomT3::class,CurrentFavoritesList::class ],
+                                                    version = 11, exportSchema =false )
+    @TypeConverters(Converters::class)
+    abstract class RedditDatabase : RoomDatabase() {
+        abstract fun subredditDao(): T5DAO
+        abstract fun postsDao(): T3DAO
+        abstract fun favoritesDao():FavoritesDAO
+    }
+
+
+
+

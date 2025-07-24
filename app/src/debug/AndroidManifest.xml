@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.renewed">
+    package="com.example.offred">
 
 
     <application>
-        <activity android:name="com.example.renewed.HiltTestActivity"
+        <activity android:name="com.example.offred.HiltTestActivity"
             android:exported="false" />
 
     </application>

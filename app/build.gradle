@@ -8,7 +8,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 android {
-    namespace 'com.example.renewed'
+    namespace 'com.example.offred'
     compileSdk 34
     testOptions { unitTests.includeAndroidResources = true }
 
@@ -26,7 +26,7 @@ android {
         //for desugaring
         multiDexEnabled = true
 
-        testInstrumentationRunner "com.example.renewed.CustomTestRunner"
+        testInstrumentationRunner "com.example.offred.CustomTestRunner"
 
     }
 
