@@ -1,0 +1,194 @@
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    //hilt
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
+}
+android {
+    namespace 'com.example.offred'
+    compileSdk 34
+    testOptions { unitTests.includeAndroidResources = true }
+
+    def secretsProperties = new Properties()
+    if (rootProject.file("apikey.properties").exists()) {
+        secretsProperties.load(new FileInputStream(rootProject.file("apikey.properties")))}
+
+    def apiKey = secretsProperties.getProperty("API_KEY", "")
+    defaultConfig {
+        applicationId "com.example.offred"
+        minSdk 28
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+        //for desugaring
+        multiDexEnabled = true
+
+        testInstrumentationRunner "com.example.renewed.CustomTestRunner"
+
+    }
+
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "API_KEY", "\"$apiKey\""
+
+        }
+        debug{
+            minifyEnabled false
+
+            buildConfigField "String", "API_KEY", "\"$apiKey\""
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    sourceSets {
+        debug {
+            assets {
+                srcDirs 'src/debug/assets'
+            }
+        }
+    }
+
+}
+
+
+
+dependencies {
+
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    implementation "androidx.datastore:datastore-preferences-rxjava3:1.0.0"
+//    implementation "androidx.media3:media3-exoplayer:1.0.0-beta02"
+  //  implementation "androidx.media3:media3-ui:1.0.0-beta02"
+  // implementation "androidx.media3:media3-exoplayer-dash:1.0.0-beta02"
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.2'
+
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.2'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.2'
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    implementation 'androidx.test.uiautomator:uiautomator:2.3.0'
+    implementation 'androidx.test.espresso:espresso-contrib:3.5.0-alpha05'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0-alpha05'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
+    debugImplementation 'androidx.test:runner:1.5.1'
+    androidTestImplementation 'androidx.test:rules:1.5.0'
+    debugImplementation("androidx.fragment:fragment-testing:1.6.0-alpha03")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
+
+
+    // Feature module Support
+    implementation("androidx.navigation:navigation-dynamic-features-fragment:$navigationVersion")
+
+    // Testing Navigation
+    androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
+    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+
+    implementation "io.reactivex.rxjava3:rxandroid:$rootProject.rxjavaVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rootProject.rxjavaVersion"
+    implementation "io.reactivex.rxjava3:rxkotlin:3.0.1"
+
+    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
+
+    implementation("com.squareup.moshi:moshi:1.15.1")
+    implementation("com.squareup.moshi:moshi-adapters:1.15.1")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
+
+
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
+
+    implementation "com.squareup.retrofit2:converter-moshi:$rootProject.retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$rootProject.retrofitVersion"
+
+    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+    //noinspection GradleDependency
+    implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"
+    kapt "com.google.dagger:hilt-compiler:$rootProject.hiltVersion"
+
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$rootProject.hiltVersion"
+    // ...with Kotlin.
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$rootProject.hiltVersion"
+
+    // ...with Java.
+    androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:$rootProject.hiltVersion"
+
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation 'androidx.fragment:fragment-ktx:1.5.4'
+
+    implementation "androidx.activity:activity-ktx:1.6.1"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
+    //do I need this?
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$rootProject.lifecycleVersion"
+
+    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
+
+    implementation "androidx.room:room-rxjava3:$rootProject.roomVersion"
+    testImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+
+    androidTestImplementation("com.squareup.rx.idler:rx3-idler:0.11.0")
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.okhttpVersion"
+
+    androidTestImplementation "androidx.test:core:1.5.0"
+    // Kotlin extensions for androidx.test.core
+    androidTestImplementation "androidx.test:core-ktx:1.5.0"
+
+
+    debugImplementation "androidx.test:core:1.5.0"
+    // Kotlin extensions for androidx.test.core
+    debugImplementation "androidx.test:core-ktx:1.5.0"
+
+
+    // AndroidX Test - JVM testing
+    implementation 'androidx.core:core-ktx:1.9.0'
+
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+
+    testImplementation "org.hamcrest:hamcrest-all:1.3"
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+
+
+    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
+
+    implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-core:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-appcompat:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-drawerlayout:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-leanback:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-recyclerview:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-slidingpanelayout:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-swiperefreshlayout:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-viewpager:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-viewpager2:4.0.0'
+    implementation 'com.jakewharton.rxbinding4:rxbinding-material:4.0.0'
+    implementation 'com.jakewharton.rxrelay3:rxrelay:3.0.1'
+
+}

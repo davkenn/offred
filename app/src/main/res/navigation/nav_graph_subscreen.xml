@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph_subscreen"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/blankFragment">
+
+    <fragment
+        android:id="@+id/postFragment"
+        android:name="com.example.offred.Screen1.Subscreen.PostFragment"
+        android:label="Post">
+        <argument
+            android:name="key"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_postFragment_to_subredditFragment"
+            app:destination="@id/subredditFragment" />
+        <action
+            android:id="@+id/action_postFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
+    </fragment>
+<!--        tools:layout="@layout/post_view" -->
+
+
+
+
+    <fragment
+        android:id="@+id/subredditFragment"
+        android:name="com.example.offred.Screen1.Subscreen.SubredditFragment"
+        android:label="Subreddit">
+        <argument
+            android:name="key"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_subredditFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+        <action
+            android:id="@+id/action_subredditFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
+    </fragment>
+     <!--   tools:layout="@layout/sub_view"-->
+
+
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.example.offred.Screen1.Subscreen.BlankFragment"
+        android:label="Blank">
+        <action
+            android:id="@+id/action_blankFragment_to_subredditFragment"
+            app:destination="@id/subredditFragment" />
+        <action
+            android:id="@+id/action_blankFragment_to_postFragment"
+            app:destination="@id/postFragment" />
+    </fragment>
+<!--        tools:layout="@layout/blank_view"-->
+
+
+
+</navigation>

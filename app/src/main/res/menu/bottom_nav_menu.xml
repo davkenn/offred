@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/discover"
+            android:enabled= "true"
+            android:contentDescription="FIND ALL YOUR POSTS TO FOLLOW"
+            android:title="DISCOVER" />
+
+    <item
+        android:id="@+id/feed"
+        android:enabled= "true"
+        android:contentDescription="see Followed"
+        android:title="YOUR FEED" />
+
+    </menu>

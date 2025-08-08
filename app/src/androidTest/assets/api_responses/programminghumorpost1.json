@@ -1,0 +1,533 @@
+[
+  {
+    "kind": "Listing",
+    "data": {
+      "after": null,
+      "dist": 1,
+      "modhash": "zq17qil9ub610cc0de14abcf93acd0bee234104fb34865752b",
+      "geo_filter": "",
+      "children": [
+        {
+          "kind": "t3",
+          "data": {
+            "approved_at_utc": null,
+            "subreddit": "ProgrammerHumor",
+            "selftext": "",
+            "user_reports": [],
+            "saved": false,
+            "mod_reason_title": null,
+            "gilded": 0,
+            "clicked": false,
+            "title": "uiDesignTrendSimulator2000",
+            "link_flair_richtext": [
+              {
+                "e": "text",
+                "t": "Meme"
+              }
+            ],
+            "subreddit_name_prefixed": "r/ProgrammerHumor",
+            "hidden": false,
+            "pwls": 6,
+            "link_flair_css_class": "meme",
+            "downs": 0,
+            "thumbnail_height": 63,
+            "top_awarded_type": null,
+            "hide_score": true,
+            "name": "t3_1m43flv",
+            "quarantine": false,
+            "link_flair_text_color": "light",
+            "upvote_ratio": 0.93,
+            "author_flair_background_color": null,
+            "ups": 23,
+            "total_awards_received": 0,
+            "media_embed": {
+
+            },
+            "thumbnail_width": 140,
+            "author_flair_template_id": null,
+            "is_original_content": false,
+            "author_fullname": "t2_als0jili",
+            "secure_media": null,
+            "is_reddit_media_domain": true,
+            "is_meta": false,
+            "category": null,
+            "secure_media_embed": {
+
+            },
+            "link_flair_text": "Meme",
+            "can_mod_post": false,
+            "score": 23,
+            "approved_by": null,
+            "is_created_from_ads_ui": false,
+            "author_premium": false,
+            "thumbnail": "https://b.thumbs.redditmedia.com/Z2Fn3OlsvDVYWUkV6FTpOGWwIh6gd5RuGkF9AXmiD5c.jpg",
+            "edited": false,
+            "author_flair_css_class": null,
+            "author_flair_richtext": [],
+            "gildings": {
+
+            },
+            "post_hint": "image",
+            "content_categories": null,
+            "is_self": false,
+            "subreddit_type": "public",
+            "created": 1752949982,
+            "link_flair_type": "richtext",
+            "wls": 6,
+            "removed_by_category": null,
+            "banned_by": null,
+            "author_flair_type": "text",
+            "domain": "i.redd.it",
+            "allow_live_comments": false,
+            "selftext_html": null,
+            "likes": null,
+            "suggested_sort": null,
+            "banned_at_utc": null,
+            "url_overridden_by_dest": "https://i.redd.it/lxsaoa4wjvdf1.gif",
+            "view_count": null,
+            "archived": false,
+            "no_follow": false,
+            "is_crosspostable": true,
+            "pinned": false,
+            "over_18": false,
+            "preview": {
+              "images": [
+                {
+                  "source": {
+                    "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?format=png8&amp;s=439cf78c2cc24ab9f17a4330f86730ff625d2622",
+                    "width": 1920,
+                    "height": 872
+                  },
+                  "resolutions": [
+                    {
+                      "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=108&amp;crop=smart&amp;format=png8&amp;s=e8e0b203018aac5abdfa623cbb3b01013d7d0fd3",
+                      "width": 108,
+                      "height": 49
+                    },
+                    {
+                      "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=216&amp;crop=smart&amp;format=png8&amp;s=6a14bcddf5cb4a75a5aaa9084ceead2a072c87ab",
+                      "width": 216,
+                      "height": 98
+                    },
+                    {
+                      "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=320&amp;crop=smart&amp;format=png8&amp;s=39b3f8896b0e860cf16c6a72b3654b562a243481",
+                      "width": 320,
+                      "height": 145
+                    },
+                    {
+                      "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=640&amp;crop=smart&amp;format=png8&amp;s=9280a972f6075b1dcf655b1a2a6ed2d6ee601753",
+                      "width": 640,
+                      "height": 290
+                    },
+                    {
+                      "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=960&amp;crop=smart&amp;format=png8&amp;s=22f2c901eacccca5415a6f79551a75ef6e3c2db0",
+                      "width": 960,
+                      "height": 436
+                    },
+                    {
+                      "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=1080&amp;crop=smart&amp;format=png8&amp;s=bc1eb218bfd8d9c7f0357f012fc30edb6af318a8",
+                      "width": 1080,
+                      "height": 490
+                    }
+                  ],
+                  "variants": {
+                    "gif": {
+                      "source": {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?s=cf26ac0daa91dcaa4351266c550e284f9a759495",
+                        "width": 1920,
+                        "height": 872
+                      },
+                      "resolutions": [
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=108&amp;crop=smart&amp;s=324ca94a7a766d2c73f5619e619ae2de890ce842",
+                          "width": 108,
+                          "height": 49
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=216&amp;crop=smart&amp;s=43f764e926326f67d397dc4be2fc25895f6a59f7",
+                          "width": 216,
+                          "height": 98
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=320&amp;crop=smart&amp;s=58b51169a2dea1340b2ffe48ba267c42ebf8ca2f",
+                          "width": 320,
+                          "height": 145
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=640&amp;crop=smart&amp;s=4509b2df9b89d090ddacbd65c817c86a047e6c48",
+                          "width": 640,
+                          "height": 290
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=960&amp;crop=smart&amp;s=c6245b65b34e95a4325eb8a035e97ea38f063da7",
+                          "width": 960,
+                          "height": 436
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=1080&amp;crop=smart&amp;s=de4d98cfa36c098df7001e9210f5e5f2ce3f8335",
+                          "width": 1080,
+                          "height": 490
+                        }
+                      ]
+                    },
+                    "mp4": {
+                      "source": {
+                        "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?format=mp4&amp;s=b6de8e3410f23ed3fb5ad636df020a568e06b88c",
+                        "width": 1920,
+                        "height": 872
+                      },
+                      "resolutions": [
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=108&amp;format=mp4&amp;s=1011b75de4c2ea57607c636ec5f6c609665d6623",
+                          "width": 108,
+                          "height": 49
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=216&amp;format=mp4&amp;s=0fa6abcb99fcdca3266036e952eec8aa7555008f",
+                          "width": 216,
+                          "height": 98
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=320&amp;format=mp4&amp;s=209990c6ca2e8c8fc3f1dee3d3d70d0cd05fe4fe",
+                          "width": 320,
+                          "height": 145
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=640&amp;format=mp4&amp;s=35e5dfeb7465a54378fa7558220aaca83b5e05a4",
+                          "width": 640,
+                          "height": 290
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=960&amp;format=mp4&amp;s=7f937cf1aa22b1b01a0911f55f698805035cdd91",
+                          "width": 960,
+                          "height": 436
+                        },
+                        {
+                          "url": "https://preview.redd.it/lxsaoa4wjvdf1.gif?width=1080&amp;format=mp4&amp;s=d32e9f78a606aec71399a36685e164113903dbf4",
+                          "width": 1080,
+                          "height": 490
+                        }
+                      ]
+                    }
+                  },
+                  "id": "OIDvetdAJ4GTvEbyDBSdU2qemH1ZSg1QFEOkeJhBnFQ"
+                }
+              ],
+              "enabled": true
+            },
+            "all_awardings": [],
+            "awarders": [],
+            "media_only": false,
+            "link_flair_template_id": "fe277d42-440f-11e8-8ec3-0eac434afc94",
+            "can_gild": false,
+            "spoiler": false,
+            "locked": false,
+            "author_flair_text": null,
+            "treatment_tags": [],
+            "visited": false,
+            "removed_by": null,
+            "mod_note": null,
+            "distinguished": null,
+            "subreddit_id": "t5_2tex6",
+            "author_is_blocked": false,
+            "mod_reason_by": null,
+            "num_reports": null,
+            "removal_reason": null,
+            "link_flair_background_color": "#373c3f",
+            "id": "1m43flv",
+            "is_robot_indexable": true,
+            "num_duplicates": 0,
+            "report_reasons": null,
+            "author": "throwaway490215",
+            "discussion_type": null,
+            "num_comments": 3,
+            "send_replies": true,
+            "media": null,
+            "contest_mode": false,
+            "author_patreon_flair": false,
+            "author_flair_text_color": null,
+            "permalink": "/r/ProgrammerHumor/comments/1m43flv/uidesigntrendsimulator2000/",
+            "stickied": false,
+            "url": "https://i.redd.it/lxsaoa4wjvdf1.gif",
+            "subreddit_subscribers": 4580837,
+            "created_utc": 1752949982,
+            "num_crossposts": 0,
+            "mod_reports": [],
+            "is_video": false
+          }
+        }
+      ],
+      "before": null
+    }
+  },
+  {
+    "kind": "Listing",
+    "data": {
+      "after": null,
+      "dist": null,
+      "modhash": "zq17qil9ub610cc0de14abcf93acd0bee234104fb34865752b",
+      "geo_filter": "",
+      "children": [
+        {
+          "kind": "t1",
+          "data": {
+            "subreddit_id": "t5_2tex6",
+            "approved_at_utc": null,
+            "author_is_blocked": false,
+            "comment_type": null,
+            "awarders": [],
+            "mod_reason_by": null,
+            "banned_by": null,
+            "author_flair_type": "richtext",
+            "total_awards_received": 0,
+            "subreddit": "ProgrammerHumor",
+            "author_flair_template_id": "22c4246c-3a90-11e9-be11-0e41d2a38c4e",
+            "likes": null,
+            "replies": "",
+            "user_reports": [],
+            "saved": false,
+            "id": "n41dy53",
+            "banned_at_utc": null,
+            "mod_reason_title": null,
+            "gilded": 0,
+            "archived": false,
+            "collapsed_reason_code": null,
+            "no_follow": true,
+            "author": "project-shasta",
+            "can_mod_post": false,
+            "created_utc": 1752950353,
+            "send_replies": true,
+            "parent_id": "t3_1m43flv",
+            "score": 3,
+            "author_fullname": "t2_l6zn8l",
+            "approved_by": null,
+            "mod_note": null,
+            "all_awardings": [],
+            "collapsed": false,
+            "body": "Would be funny if the next Apple Design would look like Windows 3.11 and everyone is like \"yeah, that's how it's done\".",
+            "edited": false,
+            "top_awarded_type": null,
+            "author_flair_css_class": null,
+            "name": "t1_n41dy53",
+            "is_submitter": false,
+            "downs": 0,
+            "author_flair_richtext": [
+              {
+                "a": ":js:",
+                "u": "https://emoji.redditmedia.com/f91b61ulzg421_t5_2tex6/js",
+                "e": "emoji"
+              },
+              {
+                "a": ":ts:",
+                "u": "https://emoji.redditmedia.com/4p3f8nf604j21_t5_2tex6/ts",
+                "e": "emoji"
+              },
+              {
+                "a": ":dart:",
+                "u": "https://emoji.redditmedia.com/3lshvkna04j21_t5_2tex6/dart",
+                "e": "emoji"
+              },
+              {
+                "a": ":gd:",
+                "u": "https://emoji.redditmedia.com/6vuuf99sfts41_t5_2tex6/gd",
+                "e": "emoji"
+              }
+            ],
+            "author_patreon_flair": false,
+            "body_html": "&lt;div class=\"md\"&gt;&lt;p&gt;Would be funny if the next Apple Design would look like Windows 3.11 and everyone is like &amp;quot;yeah, that&amp;#39;s how it&amp;#39;s done&amp;quot;.&lt;/p&gt;\n&lt;/div&gt;",
+            "removal_reason": null,
+            "collapsed_reason": null,
+            "distinguished": null,
+            "associated_award": null,
+            "stickied": false,
+            "author_premium": false,
+            "can_gild": false,
+            "gildings": {
+
+            },
+            "unrepliable_reason": null,
+            "author_flair_text_color": "dark",
+            "score_hidden": false,
+            "permalink": "/r/ProgrammerHumor/comments/1m43flv/uidesigntrendsimulator2000/n41dy53/",
+            "subreddit_type": "public",
+            "locked": false,
+            "report_reasons": null,
+            "created": 1752950353,
+            "author_flair_text": ":js::ts::dart::gd:",
+            "treatment_tags": [],
+            "link_id": "t3_1m43flv",
+            "subreddit_name_prefixed": "r/ProgrammerHumor",
+            "controversiality": 0,
+            "depth": 0,
+            "author_flair_background_color": "transparent",
+            "collapsed_because_crowd_control": null,
+            "mod_reports": [],
+            "num_reports": null,
+            "ups": 3
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "subreddit_id": "t5_2tex6",
+            "approved_at_utc": null,
+            "author_is_blocked": false,
+            "comment_type": null,
+            "awarders": [],
+            "mod_reason_by": null,
+            "banned_by": null,
+            "author_flair_type": "text",
+            "total_awards_received": 0,
+            "subreddit": "ProgrammerHumor",
+            "author_flair_template_id": null,
+            "likes": null,
+            "replies": "",
+            "user_reports": [],
+            "saved": false,
+            "id": "n41d5s8",
+            "banned_at_utc": null,
+            "mod_reason_title": null,
+            "gilded": 0,
+            "archived": false,
+            "collapsed_reason_code": null,
+            "no_follow": true,
+            "author": "throwaway490215",
+            "can_mod_post": false,
+            "created_utc": 1752950099,
+            "send_replies": true,
+            "parent_id": "t3_1m43flv",
+            "score": 2,
+            "author_fullname": "t2_als0jili",
+            "approved_by": null,
+            "mod_note": null,
+            "all_awardings": [],
+            "collapsed": false,
+            "body": "Woke up to Firefox rounding the corners of their buttons on the home screen. With Apple's choice to add Vista era transparency I believe we have the necessary data points to plot the rest of the century.",
+            "edited": false,
+            "top_awarded_type": null,
+            "author_flair_css_class": null,
+            "name": "t1_n41d5s8",
+            "is_submitter": true,
+            "downs": 0,
+            "author_flair_richtext": [],
+            "author_patreon_flair": false,
+            "body_html": "&lt;div class=\"md\"&gt;&lt;p&gt;Woke up to Firefox rounding the corners of their buttons on the home screen. With Apple&amp;#39;s choice to add Vista era transparency I believe we have the necessary data points to plot the rest of the century.&lt;/p&gt;\n&lt;/div&gt;",
+            "removal_reason": null,
+            "collapsed_reason": null,
+            "distinguished": null,
+            "associated_award": null,
+            "stickied": false,
+            "author_premium": false,
+            "can_gild": false,
+            "gildings": {
+
+            },
+            "unrepliable_reason": null,
+            "author_flair_text_color": null,
+            "score_hidden": false,
+            "permalink": "/r/ProgrammerHumor/comments/1m43flv/uidesigntrendsimulator2000/n41d5s8/",
+            "subreddit_type": "public",
+            "locked": false,
+            "report_reasons": null,
+            "created": 1752950099,
+            "author_flair_text": null,
+            "treatment_tags": [],
+            "link_id": "t3_1m43flv",
+            "subreddit_name_prefixed": "r/ProgrammerHumor",
+            "controversiality": 0,
+            "depth": 0,
+            "author_flair_background_color": null,
+            "collapsed_because_crowd_control": null,
+            "mod_reports": [],
+            "num_reports": null,
+            "ups": 2
+          }
+        },
+        {
+          "kind": "t1",
+          "data": {
+            "subreddit_id": "t5_2tex6",
+            "approved_at_utc": null,
+            "author_is_blocked": false,
+            "comment_type": null,
+            "awarders": [],
+            "mod_reason_by": null,
+            "banned_by": null,
+            "author_flair_type": "richtext",
+            "total_awards_received": 0,
+            "subreddit": "ProgrammerHumor",
+            "author_flair_template_id": "4106eb66-008a-11e9-99bb-0e14bd9c134c",
+            "likes": null,
+            "replies": "",
+            "user_reports": [],
+            "saved": false,
+            "id": "n41gqju",
+            "banned_at_utc": null,
+            "mod_reason_title": null,
+            "gilded": 0,
+            "archived": false,
+            "collapsed_reason_code": null,
+            "no_follow": true,
+            "author": "RiceBroad4552",
+            "can_mod_post": false,
+            "created_utc": 1752951250,
+            "send_replies": true,
+            "parent_id": "t3_1m43flv",
+            "score": 1,
+            "author_fullname": "t2_nn910oimk",
+            "approved_by": null,
+            "mod_note": null,
+            "all_awardings": [],
+            "collapsed": false,
+            "body": "It's not very realistic, but incredibly funny! Still laughing. 😂",
+            "edited": false,
+            "top_awarded_type": null,
+            "author_flair_css_class": null,
+            "name": "t1_n41gqju",
+            "is_submitter": false,
+            "downs": 0,
+            "author_flair_richtext": [
+              {
+                "a": ":s:",
+                "u": "https://emoji.redditmedia.com/ovq7qpwtzg421_t5_2tex6/s",
+                "e": "emoji"
+              }
+            ],
+            "author_patreon_flair": false,
+            "body_html": "&lt;div class=\"md\"&gt;&lt;p&gt;It&amp;#39;s not very realistic, but incredibly funny! Still laughing. 😂&lt;/p&gt;\n&lt;/div&gt;",
+            "removal_reason": null,
+            "collapsed_reason": null,
+            "distinguished": null,
+            "associated_award": null,
+            "stickied": false,
+            "author_premium": false,
+            "can_gild": false,
+            "gildings": {
+
+            },
+            "unrepliable_reason": null,
+            "author_flair_text_color": "dark",
+            "score_hidden": false,
+            "permalink": "/r/ProgrammerHumor/comments/1m43flv/uidesigntrendsimulator2000/n41gqju/",
+            "subreddit_type": "public",
+            "locked": false,
+            "report_reasons": null,
+            "created": 1752951250,
+            "author_flair_text": ":s:",
+            "treatment_tags": [],
+            "link_id": "t3_1m43flv",
+            "subreddit_name_prefixed": "r/ProgrammerHumor",
+            "controversiality": 0,
+            "depth": 0,
+            "author_flair_background_color": "transparent",
+            "collapsed_because_crowd_control": null,
+            "mod_reports": [],
+            "num_reports": null,
+            "ups": 1
+          }
+        }
+      ],
+      "before": null
+    }
+  }
+]
